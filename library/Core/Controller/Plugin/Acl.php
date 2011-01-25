@@ -31,11 +31,26 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     );
 
     /**
-     * Url to redirect when user unlogined
+     * Error page settings
      *
-     * @var string
+     * @var array
      */
-    protected $_unLogined = '/';
+    protected $_errorPage = array(
+        'module'     => 'error',
+        'controller' => 'error',
+        'action'     => 'notfound'
+    );
+
+    /**
+     * Denied page settings
+     *
+     * @var array
+     */
+    protected $_loginPage = array(
+        'module'     => 'users',
+        'controller' => 'login',
+        'action'     => 'index'
+    );
 
     /**
      * default role name
@@ -94,18 +109,16 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
      */
     public function __construct(Array $options = array())
     {
-        if (isset($options['notfound'])) {
-            $this->_notFound   = array('module'    => (isset($options['notfound']['module'])?
-                                                       $options['notfound']['module']:null),
-                                      'controller' => $options['notfound']['controller'],
-                                      'action'     => $options['notfound']['action']);
+        if (isset($options['error'])) {
+            $this->_errorPage = array_merge($this->_errorPage, $options['error']);
         }
 
         if (isset($options['denied'])) {
-            $this->_deniedPage = array('module'    => (isset($options['denied']['module'])?
-                                                       $options['denied']['module']:null),
-                                      'controller' => $options['denied']['controller'],
-                                      'action'     => $options['denied']['action']);
+            $this->_deniedPage = array_merge($this->_deniedPage, $options['denied']);
+        }
+
+        if (isset($options['login'])) {
+            $this->_loginPage = array_merge($this->_loginPage, $options['login']);
         }
 
         if (isset($options['role'])) {
@@ -258,9 +271,10 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
 
     /**
      * Deny Access Function
-     * Redirects to errorPage,
+     * Redirects to denied/error/login page,
      * this can be called from an action using the action helper
      *
+     * @todo Create logic for separate error page (notfound or some else)
      * @return void
      */
     public function denyAccess()
@@ -268,15 +282,19 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
         $session = new Zend_Session_Namespace('Zend_Request');
         $session->params = $this->_request->getParams();
 
+
         if (Zend_Auth::getInstance()->hasIdentity()) {
+            // user logined, but don't have access
             $this->_request->setModuleName($this->_deniedPage['module']);
             $this->_request->setControllerName($this->_deniedPage['controller']);
             $this->_request->setActionName($this->_deniedPage['action']);
             $this->_request->setDispatched(false);
         } else {
-            Zend_Controller_Front::getInstance()
-                                 ->getResponse()
-                                 ->setRedirect($this->_unLogined);
+            // is guest - go to login page
+            $this->_request->setModuleName($this->_loginPage['module']);
+            $this->_request->setControllerName($this->_loginPage['controller']);
+            $this->_request->setActionName($this->_loginPage['action']);
+            $this->_request->setDispatched(false);
         }
     }
 

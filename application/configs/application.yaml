@@ -54,7 +54,6 @@ production:
               module: default
               controller: error
               action: denied
-            unlogined: /login
             role: guest
             cache: on
             
