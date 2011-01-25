@@ -1,0 +1,67 @@
+<?php echo $this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <?php
+               $this->stylesheet()->controller();
+              $this->javascript()->action();
+
+              echo $this->headTitle($this->__('Browser of Images'));
+               echo $this->headLink();
+               echo $this->headScript();
+
+              echo $this->dojo()
+                        ->enable()
+                        ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
+                        ->setCdnDojoPath(Zend_Dojo::CDN_DOJO_PATH_GOOGLE)
+                        ->setCdnVersion('1.5.0')
+        ?>
+        <script type="text/javascript">
+        //<![CDATA[
+            var DELETE_URL = '<?php echo $this->url(array("action"=> "delete"));?>';
+        //]]>            
+        </script>
+    </head>
+
+    <body class="tundra">
+        <input type="hidden" id="path" value="<?php echo $this->sDir;?>"/>
+        
+        <?php if ( count($this->aList[0] ) > 0 || count($this->aList[1]) > 0) : ?>
+            <ul id="directory-view">
+                <?php foreach($this->aList[0] as $aDir):?>
+                      
+                    <li onclick="updateDir('<?php echo $aDir['path']; ?>')"    class="folder-view pointer <?php echo($aDir['isEmpty'])?'':'folder-view-full';?>">
+                        <span class="folder-title"><?php echo $aDir['entry'];?></span>
+                    </li>
+
+                <?php endforeach;?>
+
+                
+               <?php 
+                   $iNumber=-1;
+                   foreach($this->aList[1] as $sEntry => $aFile):
+                   $iNumber++;
+               ?>
+
+                    <li onclick="selectImage('<?php echo $aFile['relative'];?>', '<?php echo $aFile['thumb'];?>', '<?php echo $sEntry; ?>', <?php echo $aFile['width'];?>, <?php echo $aFile['height'];?>);"
+                        onmouseover="showSize('<?php echo $iNumber;?>');"
+                        onmouseout="hideSize('<?php echo $iNumber;?>');"
+                        class="pointer image-view" id="li<?php echo $iNumber;?>" />
+                        <img src="<?php echo $aFile['thumb']; ?>"
+                             alt="<?php echo $sEntry;?>"
+                             class="image"/>
+                        <span class="size">
+                             <?php echo $aFile['width'].'x'.$aFile['height']; ?>
+                        </span>
+                        <span onclick="deleteFile('<?php echo $sEntry;?>');" class="delete"></span>
+                    </li>
+
+                <?php endforeach;?>
+
+            </ul>
+        <?php else:?>
+        
+            <?php $this->_e('No files or Directories') ?>
+            
+        <?php endif;?>
+    </body>
+</html>

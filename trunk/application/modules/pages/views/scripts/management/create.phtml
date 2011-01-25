@@ -1,0 +1,22 @@
+<?php $this->headScript()->captureStart();?>
+    IMAGES_URL = '<?php echo $this->url(array('action'=> 'index', 'controller' => 'images'));?>';
+<?php $this->headScript()->captureEnd();
+
+    $this->stylesheet()->controller();
+    
+    $this->dojo()
+         ->requireModule('dijit.form.Button')
+         ->requireModule('dojox.layout.FloatingPane') 
+         ->requireModule('dijit._editor.plugins.FullScreen') 
+         ->requireModule('dijit._editor.plugins.ViewSource') 
+         ->requireModule('core.editor.plugins.ImageManager')
+/*
+         ->requireModule('dijit._editor.plugins.LinkDialog')
+         ->requireModule('dijit._editor.plugins.FontChoice') 
+         ->requireModule('core.editor.plugins.EditSource')
+         ->requireModule('core.editor.plugins.Manager')
+*/
+         ;
+    
+    echo $this->createForm;
+?>

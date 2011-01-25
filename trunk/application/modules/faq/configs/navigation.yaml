@@ -1,0 +1,16 @@
+faqmanagment:
+  label: Faq
+  uri:
+  pages:
+    create:
+      label: Create New Question
+      module: faq
+      controller: management
+      action: create
+      route: default
+    edit:
+      label: Edit Questions
+      module: faq
+      controller: management
+      action: index
+      route: default

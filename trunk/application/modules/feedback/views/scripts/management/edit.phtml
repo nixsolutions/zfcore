@@ -1,0 +1,14 @@
+<?php
+if (isset($this->form)) {
+    $this->javascript()->controller();
+    $this->dojo()->onLoadCaptureStart();
+?>
+function(){
+    onButtonEdit();
+    onButtonReset();
+}
+<?php
+    $this->dojo()->onLoadCaptureEnd();
+    echo $this->form;
+}
+?>

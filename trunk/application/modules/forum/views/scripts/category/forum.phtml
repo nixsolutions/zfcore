@@ -1,0 +1,63 @@
+<?php 
+    $this->stylesheet()->module(); 
+    $this->stylesheet()->action();
+?>
+
+<h2>Categories</h2>
+<table>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Category</th>
+      <th>Topics</th>
+      <th>Comments</th>
+      <th>Last post</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php if (count($this->cats)>0): ?>
+    <?php foreach($this->cats as $cat): ?>
+    <tr>
+      <td>&nbsp;</td>
+      <td width="50%">
+        <a href="<?php echo $this->url(array('controller'=>'category', 'action'=>'index', 'id'=>$cat['id'])) ?>"><?php echo $cat['ctg_title'] ?></a><br />
+        <?php echo $cat['ctg_description'] ?>
+      </td>
+      <td><?php echo $cat['count_posts'] ?></td>
+      <td><?php echo $cat['count_comments'] ?></td>
+      <td width="25%">last post</td>
+    </tr>
+    <?php endforeach; endif; ?>
+  </tbody>
+</table>
+
+<?php if (count($this->paginator)>0): ?>
+<h2>Posts</h2>
+<table>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Post</th>
+      <th>Author</th>
+      <th>Viewed</th>
+      <th>Commented</th>
+      <th>Last comment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php foreach($this->paginator as $post): ?>
+    <tr>
+      <td>&nbsp;</td>
+      <td width="50%">
+        <a href="<?php echo $this->url(array('controller'=>'post', 'action'=>'index', 'id'=>$post['id'])) ?>"><?php echo $post['post_title'] ?></a>
+      </td>
+      <td><?php echo $post['login'] ?></td>
+      <td><?php echo $post['post_view_count'] ?></td>
+      <td><?php echo $post['count_comments'] ?></td>
+      <td>Last comment</td>
+    </tr>
+    <?php endforeach; ?>
+  </tbody>
+</table>
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+<?php endif; ?>

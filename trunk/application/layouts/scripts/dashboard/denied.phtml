@@ -1,0 +1,23 @@
+<?php echo $this->render('dashboard/partial/header.phtml');?>
+
+    <div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
+    
+        <div id="main-content"> <!-- Main Content Section with everything -->
+
+            <?php echo $this->render('dashboard/partial/messages.phtml');?>
+                        
+            <div class="content shadow">
+                <?php echo $this->layout()->content ?>
+            </div>
+            
+            <div class="clear"></div>
+
+            <div id="footer">
+                <small>
+                    &#169; Copyright 2009 <a href="http://nixsolutions.com" title="NIX Solutions Ltd.">NIX Solutions Ltd.</a>
+                </small>
+            </div><!-- End #footer -->
+
+        </div> <!-- End #main-content -->
+
+<?php echo $this->render('dashboard/partial/footer.phtml');?>

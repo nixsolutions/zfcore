@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Zend Framework Installer</title>
+        <link type='text/css' rel='stylesheet' href='index.css' />
+    </head>
+    <body>
+        <div id="content">
+            <h2>Create Symlink</h2>
+            <p>
+                Requried FollowSymlinks option:
+                <code>ln -s /path/to/zf/public /var/www/htdocs</code>
+            </p>
+
+            <h2>Create directories</h2>
+            <p>
+                Run index.sh script
+                <code>
+
+
+                </code>
+                Directories <span>cache</span>, <span>logs</span> and <span>captcha</span> (for forms) should be writable:
+                <code>
+                    chmod a+w /path/to/zf/data/*<br/>
+                    chmod a+w /path/to/zf/public/images/captcha/
+                </code>
+            </p>
+
+            <h2>Set environment</h2>
+            <p>
+                Open file <span>public/.htaccess</span> and change <strong>APPLICATION_ENVIRONMENT</strong> define to site environment,<br/>
+                commonly one of "development", "staging", "testing", "production", but wholly dependent on your organization's and/or site's needs.<br/>
+                <br/>
+                Configuration file is requried (see <span>application/config/application.ini</span>).
+            </p>
+
+            <h2>Run DB Migrations</h2>
+            <p>
+                Open directory bin and run migration:
+                <code>
+                    cd /bin/
+                    ./zfc.sh up migration
+                </code>
+            </p>
+            
+            <h2>Run Unit Tests</h2>
+            <p>
+                Unit tests aviable on CLI
+                <code>
+                    cd /path/to/zf/tests/<br/>
+                    <em># Run main test suite</em><br/>
+                    phpunit ./<br/>
+                </code>
+
+                For generate reports you should be remove comments from "logging" part of phpunit.xml and
+                create directory <span>tests/reports</span> with permissions for write
+                <br/>
+                Reports is available on follow link: <a href="tests/reports/" title="phpUnit report">tests/reports</a>
+            </p>
+
+        </div>
+    </body>
+</html>

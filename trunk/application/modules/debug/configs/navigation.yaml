@@ -1,0 +1,34 @@
+debugmanagment:
+  label: Debug
+  uri:
+  pages:
+    session:
+      label: Sessions
+      module: debug
+      controller: session
+      action: index
+      route: default
+    file:
+      label: System Files
+      module: debug
+      controller: file
+      action: index
+      route: default
+    logs:
+      label: Logs
+      module: debug
+      controller: logs
+      action: index
+      route: default
+    option:
+      label: Options Table
+      module: debug
+      controller: option
+      action: index
+      route: default
+    contrab:
+      label: Crontab
+      module: debug
+      controller: crontab
+      action:index
+      route:default

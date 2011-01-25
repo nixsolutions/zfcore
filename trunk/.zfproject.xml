@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<projectProfile>
+  <projectDirectory>
+    <projectProfileFile filesystemName=".zfproject.xml"/>
+    <applicationDirectory classNamePrefix="Application_">
+      <apisDirectory enabled="false"/>
+      <configsDirectory>
+        <applicationConfigFile type="ini"/>
+      </configsDirectory>
+      <controllersDirectory enabled="false"/>
+      <layoutsDirectory enabled="false"/>
+      <modelsDirectory>
+        <modelFile modelName="Image"/>
+        <modelFile modelName="Mail"/>
+        <modelFile modelName="Option"/>
+        <modelFile modelName="Page"/>
+        <modelFile modelName="User"/>
+      </modelsDirectory>
+      <modulesDirectory>
+        <moduleDirectory moduleName="admin">
+          <apisDirectory enabled="false"/>
+          <configsDirectory enabled="false"/>
+          <controllersDirectory>
+            <controllerFile controllerName="index">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="error">
+              <actionMethod actionName="error"/>
+              <actionMethod actionName="notfound"/>
+              <actionMethod actionName="denied"/>
+            </controllerFile>
+            <controllerFile controllerName="pages">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="mail">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="store"/>
+              <actionMethod actionName="edit"/>
+            </controllerFile>
+          </controllersDirectory>
+          <layoutsDirectory enabled="false"/>
+          <modelsDirectory/>
+          <viewsDirectory>
+            <viewScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="index">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="error">
+                <viewScriptFile forActionName="error"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="pages">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="mail">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+            </viewScriptsDirectory>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
+        <moduleDirectory moduleName="default">
+          <apisDirectory enabled="false"/>
+          <configsDirectory enabled="false"/>
+          <controllersDirectory>
+            <controllerFile controllerName="index">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+            <controllerFile controllerName="error">
+              <actionMethod actionName="error"/>
+              <actionMethod actionName="notfound"/>
+              <actionMethod actionName="denied"/>
+            </controllerFile>
+            <controllerFile controllerName="users">
+              <actionMethod actionName="index"/>
+              <actionMethod actionName="profile"/>
+            </controllerFile>
+            <controllerFile controllerName="pages">
+              <actionMethod actionName="index"/>
+            </controllerFile>
+          </controllersDirectory>
+          <layoutsDirectory enabled="false"/>
+          <modelsDirectory>
+            <dbTableDirectory>
+              <dbTableFile dbTableName="Test"/>
+            </dbTableDirectory>
+          </modelsDirectory>
+          <viewsDirectory>
+            <viewScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="index">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="error">
+                <viewScriptFile forActionName="error"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="users">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+              <viewControllerScriptsDirectory forControllerName="pages">
+                <viewScriptFile forActionName="index"/>
+              </viewControllerScriptsDirectory>
+            </viewScriptsDirectory>
+            <viewHelpersDirectory/>
+            <viewFiltersDirectory/>
+          </viewsDirectory>
+        </moduleDirectory>
+      </modulesDirectory>
+      <viewsDirectory enabled="false"/>
+      <bootstrapFile filesystemName="Bootstrap.php"/>
+    </applicationDirectory>
+    <dataDirectory>
+      <cacheDirectory/>
+      <searchIndexesDirectory enabled="false"/>
+      <localesDirectory enabled="false"/>
+      <logsDirectory/>
+      <sessionsDirectory/>
+      <uploadsDirectory/>
+    </dataDirectory>
+    <libraryDirectory>
+      <zfStandardLibraryDirectory enabled="false"/>
+    </libraryDirectory>
+    <publicDirectory>
+      <publicStylesheetsDirectory enabled="false"/>
+      <publicScriptsDirectory enabled="false"/>
+      <publicImagesDirectory enabled="false"/>
+      <publicIndexFile filesystemName="index.php"/>
+      <htaccessFile filesystemName=".htaccess"/>
+    </publicDirectory>
+    <temporaryDirectory enabled="false"/>
+    <testsDirectory>
+      <testPHPUnitConfigFile filesystemName="phpunit.xml"/>
+      <testApplicationDirectory>
+        <testApplicationBootstrapFile filesystemName="bootstrap.php"/>
+        <testApplicationControllerDirectory>
+          <testApplicationControllerFile filesystemName="ControllerTestCase.php"/>
+        </testApplicationControllerDirectory>
+      </testApplicationDirectory>
+      <testLibraryDirectory>
+        <testLibraryBootstrapFile filesystemName="bootstrap.php"/>
+      </testLibraryDirectory>
+    </testsDirectory>
+  </projectDirectory>
+</projectProfile>

@@ -1,0 +1,39 @@
+<noscript> <!-- Show a notification if the user has disabled javascript -->
+    <div class="notification error">
+        <div>
+            <?php $this->_e('Javascript is disabled or is not supported by your browser.'.
+                            'Please <a href="http://browsehappy.com/" title="Upgrade to a better browser">upgrade</a> your browser or '.
+                            '<a href="http://www.google.com/support/bin/answer.py?answer=23852" title="Enable Javascript in your browser">enable</a>'.
+                            'Javascript to navigate the interface properly.'); ?>
+        </div>
+    </div>
+</noscript>
+
+
+<?php if ((0 != $this->FlashMessenger()->count()) or $this->messages) :?>
+    <script type="text/javascript">
+        dojo.require("dojo.fx");
+        dojo.addOnLoad(function(){ 
+            var messages = dojo.byId('messages');
+            dojo.fx.wipeIn({node:messages}).play();
+            setTimeout(function(){
+                dojo.fx.wipeOut({node:messages}).play();
+            }, 3200);
+        });
+    </script>
+    <div id="messages" class="opacity shadow" style="display: none;">
+        <ul>
+            <?php
+                foreach ($this->FlashMessenger()->getMessages() as $message) :
+                      echo "<li>".$this->__($message)."</li>";
+                endforeach;
+
+                foreach ((array)$this->messages as $message) :
+                      echo "<li>".$this->__($message)."</li>";
+                endforeach;
+            ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
+

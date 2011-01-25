@@ -1,0 +1,16 @@
+<h1>Login</h1>
+<h3>Use <strong>admin:123456</strong> for login</h3>
+<div>
+<?php echo $this->form; ?>
+<p class="small">
+    <a href="<?php echo $this->url(array('module' => 'users',
+                                         'controller'=>'register',
+                                         'action'=>'index'),
+                                   'default'); ?>">Register now</a> |
+    <a href="<?php echo $this->url(array('module' => 'users',
+                                         'controller'=>'register',
+                                         'action'=>'forget-password'),
+                                   'default'); ?>">Forget Password</a>
+</p>
+</div>
+

@@ -1,0 +1,29 @@
+<?php
+if (isset($this->form)) {
+    $this->dojo()->addStyleSheet($this->dojo()->getCdnBase() . $this->dojo()->getCdnVersion() . '/dojox/form/resources/FileInput.css')
+                 ->requireModule('dojox.form.FileInput');
+    //$this->javascript()->controller();
+    $this->dojo()->onLoadCaptureStart();
+?>
+function(){
+    onSelectTemplate();
+    onInputFile();
+    onButtonReset();
+}
+
+<?php
+    $this->dojo()->onLoadCaptureEnd();
+    $this->javascript()->controller();
+
+    $this->dojo()
+         ->requireModule('dijit.form.Button')
+         ->requireModule('dojox.layout.FloatingPane')
+         ->requireModule('dojox.editor.plugins.Preview')
+         ->requireModule('dijit._editor.plugins.FullScreen')
+         ->requireModule('dijit._editor.plugins.ViewSource')
+         ->requireModule('core.editor.plugins.ImageManager')
+         ;
+
+    echo $this->form;
+}
+?>

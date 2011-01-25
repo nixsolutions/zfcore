@@ -1,0 +1,7 @@
+dbup:
+  type: Zend_Controller_Router_Route
+  route: sync/:login/:pass/*
+  defaults:
+    module: sync
+    controller: index
+    action: index

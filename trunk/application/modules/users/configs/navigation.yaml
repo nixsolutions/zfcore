@@ -1,0 +1,16 @@
+usermanagment:
+  label: Users
+  uri:
+  pages:
+    create:
+      label:Create
+      module:users
+      controller:management
+      action:create
+      route:default
+    edit:
+      label:Edit
+      module:users
+      controller:management
+      action:index
+      route:default

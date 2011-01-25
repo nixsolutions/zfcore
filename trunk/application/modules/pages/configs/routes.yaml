@@ -1,0 +1,24 @@
+pages:
+  type: Zend_Controller_Router_Route_Regex
+  route: ([a-z0-9\-]+)\.html
+  defaults:
+    module: pages
+    controller: index
+    action: index
+  map:
+    alias: 1
+  reverse: %s.html
+sitemap:
+  type: Zend_Controller_Router_Route_Static
+  route: sitemap.html
+  defaults:
+    module: pages
+    controller: index
+    action: sitemap
+sitemapxml:
+  type: Zend_Controller_Router_Route_Static
+  route: sitemap.xml
+  defaults:
+    module: pages
+    controller: index
+    action: sitemapxml

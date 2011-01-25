@@ -1,0 +1,15 @@
+mvc:
+  users:
+    index:
+      allow: user
+    login:
+      index:
+        allow: guest
+        deny: user
+      logout:
+        allow: user
+    register:
+      allow: guest
+      deny: user
+    management:
+      allow: admin

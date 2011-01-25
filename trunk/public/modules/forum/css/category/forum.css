@@ -1,0 +1,16 @@
+table {
+  border: 1px solid #999;
+  width: 100%;
+}
+th {
+  text-align: left;
+  font-size: 16px;
+  background-color: #666;
+  color: #fff;
+  padding: 4px;
+}
+td {
+  font-size: 14px;
+  padding: 6px;
+  background-color: #f3f3f3;
+}

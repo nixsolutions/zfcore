@@ -1,0 +1,88 @@
+<?php echo $this->render('images/partial/header.phtml');?>
+    <div id="image-manager-error"></div>
+    <form action="<?php echo $this->url(array('action'=>'upload'));?>" id="managerForm" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="returnto" value="<?php echo $this->url();?>" />
+        <div>
+            <label for="dirPath"><?php $this->_e('Folder') ?>: </label>
+
+            <input type="text" name="dirPath" class="dirWidth" id="dirPath" onchange="updateDir(this)" value="<?php echo $this->sDir;?>" dojoType="dijit.form.TextBox" readonly="on"/>
+            <button onclick="goUpDir();" id="up-dir" title="Directory Up"  dojoType="dijit.form.Button"></button>
+
+        </div>
+        <iframe src="<?php echo $this->url(array('action'=>'browser'));?>?dir=<?php echo $this->sDir;?>" name="imgManager" id="imgManager" scrolling="auto" title="Image Selection" frameborder="0" width="100%" class="file_frame">
+            <body class="form"></body>
+        </iframe>
+        
+        <!-- image properties -->
+        
+        <table border="0" width="100%" align="center">
+            <tr>
+                <td width="50" align="right"><?php $this->_e('Upload') ?>:</td>
+                <td width="350"><input type="file" name="upload" id="upload" dojoType="dojox.form.FileInput"/></td>
+
+                    <td align="right" width="100"></td>
+                <td colspan="2" align="right"><button class="right" type="submit" dojoType="dijit.form.Button"><?php $this->_e('Upload') ?></button></td>
+            </tr>
+
+            <tr><td colspan="4"><hr /></td></tr>
+
+            <tr>
+                <td align="right"><label for="f_url"><?php $this->_e('Image&#160;File') ?></label></td>
+                <td><input type="text" id="f_url" class="largelWidth" value="" disabled="on" dojoType="dijit.form.TextBox" /><input type="hidden" id="f_url_thumb" value=""/></td>
+
+                    <td align="right"><label for="f_size"><?php $this->_e('Size') ?></label></td>
+                <td rowspan="4" valign="top">
+                    <label for="f_size0" class="pointer"><input type="radio" checked="checked" id="f_size0" name="f_size" value="0"  dojoType="dijit.form.RadioButton">Original</label>
+                    <br/>
+                    <?php foreach ($this->aOptions['thumbSizes'] as $iKey => $sThumb):?>
+                <input type="radio" 
+                       id="f_size<?php echo $iKey;?>" 
+                       title="<?php echo $sThumb['width'];?>x<?php echo $sThumb['height'];?>" 
+                       name="f_size"
+                       value="<?php echo $iKey;?>" 
+                       dojoType="dijit.form.RadioButton" />            
+                        <label for="f_size<?php echo $iKey;?>" class="pointer">
+                <?php echo $sThumb['width'];?>x<?php echo $sThumb['height'];?>
+                </label><br/>
+                <?php endforeach;?>
+                    <label for="f_big" class="pointer"><input type="checkbox" id="f_big" name="f_big" value="big" dojoType="dijit.form.CheckBox" />Link to original</label>
+                </td>
+            </tr>
+            <tr>
+                  <td align="right"><label for="f_alt"><?php $this->_e('Alt / Title') ?></label></td>
+                <td><input type="text" id="f_alt" class="largelWidth" value="" dojoType="dijit.form.TextBox" /></td>
+                <td rowspan="3"></td>
+            </tr>
+
+            <tr>
+                <td align="right"><label for="f_align"><?php $this->_e('Align') ?></label></td>
+                <td>
+                    <select size="1" id="f_align" title="Positioning of this image" dojoType="dijit.form.ComboBox">
+                        <option selected="selected"><?php $this->_e('not set') ?></option>
+                        <option><?php $this->_e('left') ?></option>
+                        <option><?php $this->_e('right') ?></option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td align="right"><label for="f_class"><?php $this->_e('Class') ?></label></td>
+                <td>
+                    <select id="f_class" dojoType="dijit.form.ComboBox" maxlength="6">
+                    <?php foreach ($this->aOptions['cssClasses'] as $sClass):?>
+                        <option><?php echo $sClass;?></option>
+                    <?php endforeach;?>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="4" align="right">
+                    <button onclick="onOK();" dojoType="dijit.form.Button" id="button-ok" disabled="on"><?php $this->_e('OK') ?></button>
+                    <button onclick="onCancel();" dojoType="dijit.form.Button"><?php $this->_e('Cancel') ?></button>
+                </td>
+            </tr>
+        </table>
+        <!--// image properties -->
+    </form>
+<?php echo $this->render('images/partial/footer.phtml');?>

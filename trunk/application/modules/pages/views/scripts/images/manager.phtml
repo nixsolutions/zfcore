@@ -1,0 +1,45 @@
+<?php
+$this->dojo()
+     ->addStyleSheet($this->dojo()->getCdnBase() . $this->dojo()->getCdnVersion() . '/dojox/form/resources/FileInput.css')
+     ->requireModule('dojo.parser')
+     ->addStyleSheetModule('dijit.themes.tundra')
+     ->requireModule('dijit.form.Button')
+     ->requireModule('dijit.form.TextBox')
+     ->requireModule('dijit.form.ComboBox')
+     ->requireModule('dijit.form.RadioButton')
+     ->requireModule('dijit.form.CheckBox')
+     ->requireModule('dijit.form.Textarea')
+     ->requireModule('dojox.layout.FloatingPane')
+     ->requireModule('dijit.Toolbar')
+     ->requireModule('dojox.form.FileInput');
+
+$this->stylesheet()->controller();
+$this->javascript()->controller();
+
+?>
+
+<script type="text/javascript">
+//<![CDATA[
+    var VALID_FILES     = ['<?php echo join("', '", $this->aOptions["extensions"]);?>'];
+//]]>
+</script>
+
+<form action="<?php echo $this->url(array('action'=>'upload'));?>" id="managerForm" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="returnto" value="<?php echo $this->url();?>" />
+    <div>
+        <label for="dirPath"><?php $this->_e('Folder') ?>: </label>
+        
+        <?php echo $this->textBox('dirPath', $this->sDir, array('class' => 'dirWidth', 'onchange' => 'updateDir(this)', 'readonly' => 'on'));?>
+        <?php echo $this->button('up-dir', '', array('onclick'=>'goUpDir();', 'title' => 'Directory Up'));?>
+    </div>
+    <iframe src="<?php echo $this->url(array('action'=>'browser'));?>?dir=<?php echo $this->sDir;?>" name="imgManager" id="imgManager" scrolling="auto" title="Image Selection" frameborder="0" width="100%" class="file_frame">
+    </iframe>
+    
+    <!-- image properties -->
+    
+    <label class="left" for="upload"><?php $this->_e('Upload') ?>:</label>
+    <input class="left" type="file" name="upload" id="upload" dojoType="dojox.form.FileInput"/>
+    <button class="right" type="submit" dojoType="dijit.form.Button"><?php $this->_e('Upload') ?></button>
+    
+    <!--// image properties -->    
+</form>

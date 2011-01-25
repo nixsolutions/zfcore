@@ -1,0 +1,28 @@
+forummanagment:
+  label: Forum
+  uri:
+  pages:
+    create:
+      label: Create New Post
+      module: forum
+      controller: management
+      action: create
+      route: default
+    edit:
+      label: Edit Posts
+      module: forum
+      controller: management
+      action: index
+      route: default
+    categorycreate:
+      label: Create New Category
+      module: forum
+      controller: category-management
+      action: create
+      route: default
+    categoryedit:
+      label: Edit Category
+      module: forum
+      controller: category-management
+      action: index
+      route: default

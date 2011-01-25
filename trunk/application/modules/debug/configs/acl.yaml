@@ -1,0 +1,16 @@
+mvc:
+  debug:
+    session:
+      allow:admin
+    file:
+      allow:admin
+    logs:
+      allow:admin
+    option:
+      allow:admin
+    crontab:
+      allow:admin
+    index:
+      allow:admin
+    error:
+      allow:admin

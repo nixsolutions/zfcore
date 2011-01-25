@@ -1,0 +1,9 @@
+<?php
+   $this->headTitle($this->Page->title .' » ', Zend_View_Helper_Placeholder_Container_Abstract::PREPEND);
+   $this->headMeta()->appendName('keywords',    empty($this->Page->keywords)    ? $this->Page->title : $this->Page->keywords);
+   $this->headMeta()->appendName('description', empty($this->Page->description) ? $this->Page->title : $this->Page->description);
+?>
+
+
+<?php echo $this->Page->content ?>
+

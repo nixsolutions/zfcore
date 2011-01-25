@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+
+RewriteBase /
+RewriteEngine On
+
+# protect source code
+RewriteRule ^(.*/)*\.svn/ / [F,L]
+
+</IfModule>

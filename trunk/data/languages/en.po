@@ -1,0 +1,243 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZFCore\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-25 14:59+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Anton Shevchuk <Anton.Shevchuk@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11) ? 0 : ((n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20)) ? 1 : 2);\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UKRAINE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;translate\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: d:\\creative\\work\\zfcore\\trunk\\application\n"
+
+#: d:\creative\work\zfcore\trunk\application/layouts/scripts/dashboard/partial/header.phtml:5
+msgid " Admin Panel"
+msgstr " Admin Panel"
+
+#: d:\creative\work\zfcore\trunk\application/layouts/scripts/dashboard/partial/messages.phtml:4
+msgid "Javascript is disabled or is not supported by your browser.Please <a href=\"http://browsehappy.com/\" title=\"Upgrade to a better browser\">upgrade</a> your browser or <a href=\"http://www.google.com/support/bin/answer.py?answer=23852\" title=\"Enable Javascript in your browser\">enable</a>Javascript to navigate the interface properly."
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/error/denied.phtml:1
+msgid "You attempt to access to protected page!"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/error/denied.phtml:2
+msgid "Your current role is not allowed this action!"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/error/error.phtml:1
+msgid "An error occurred"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/error/internal.phtml:1
+#: d:\creative\work\zfcore\trunk\application/modules/default/views/scripts/error/internal.phtml:1
+msgid "Internal Server Error"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/error/notfound.phtml:1
+msgid "The page you are searching, not found."
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/mail/index.phtml:11
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/mail/index.phtml:65
+msgid "Alias"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/mail/index.phtml:16
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/mail/index.phtml:66
+msgid "Subject"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/mail/index.phtml:21
+msgid "Body"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/mail/index.phtml:78
+msgid "Filter"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/admin/views/scripts/mail/index.phtml:82
+msgid "Undo"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/faq/views/scripts/index/index.phtml:5
+#: d:\creative\work\zfcore\trunk\application/modules/faq/views/scripts/index/index.phtml:13
+msgid "hide"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/faq/views/scripts/index/index.phtml:6
+msgid "show"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/faq/views/scripts/index/index.phtml:12
+msgid "Contents"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/faq/views/scripts/management/index.phtml:8
+#: d:\creative\work\zfcore\trunk\application/modules/faq/views/scripts/management/index.phtml:46
+msgid "Question"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/faq/views/scripts/management/index.phtml:13
+#: d:\creative\work\zfcore\trunk\application/modules/faq/views/scripts/management/index.phtml:47
+msgid "Answer"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/faq/views/scripts/management/index.phtml:88
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/category-management/index.phtml:62
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:83
+msgid "Create New"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/faq/views/scripts/management/index.phtml:97
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/category-management/index.phtml:66
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:87
+msgid "Delete Selected"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:15
+msgid "ID"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:20
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:78
+msgid "Sender"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:25
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:79
+msgid "Email"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:35
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:81
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:19
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:54
+msgid "Status"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:40
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:82
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:24
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:55
+msgid "Date create"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:45
+msgid "Last update"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:83
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:29
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:56
+msgid "Date update"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/feedback/views/scripts/management/index.phtml:121
+msgid "Submit"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/category-management/index.phtml:9
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/category-management/index.phtml:34
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:9
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:52
+msgid "Title"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/category-management/index.phtml:14
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/category-management/index.phtml:35
+msgid "Description"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:14
+#: d:\creative\work\zfcore\trunk\application/modules/forum/views/scripts/management/index.phtml:53
+msgid "Text"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/browser.phtml:8
+msgid "Browser of Images"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/browser.phtml:60
+msgid "No files or Directories"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:6
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/manager.phtml:24
+msgid "Folder"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:20
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:24
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/manager.phtml:34
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/manager.phtml:36
+msgid "Upload"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:30
+msgid "Image&#160;File"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:33
+msgid "Size"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:52
+msgid "Alt / Title"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:58
+msgid "Align"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:61
+msgid "not set"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:62
+msgid "left"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:63
+msgid "right"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:69
+msgid "Class"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:81
+msgid "OK"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/index.phtml:82
+msgid "Cancel"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/pages/views/scripts/images/partial/header.phtml:7
+msgid "Image Manager"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/users/views/scripts/management/index.phtml:9
+#: d:\creative\work\zfcore\trunk\application/modules/users/views/scripts/management/index.phtml:49
+msgid "Login"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/users/views/scripts/management/index.phtml:14
+#: d:\creative\work\zfcore\trunk\application/modules/users/views/scripts/management/index.phtml:50
+msgid "Role"
+msgstr ""
+
+#: d:\creative\work\zfcore\trunk\application/modules/users/views/scripts/management/index.phtml:29
+#: d:\creative\work\zfcore\trunk\application/modules/users/views/scripts/management/index.phtml:53
+msgid "Date login"
+msgstr ""
+

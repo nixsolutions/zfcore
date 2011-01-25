@@ -1,0 +1,8 @@
+<IfModule mod_rewrite.c>
+
+RewriteEngine On
+
+RewriteBase /tests/
+RewriteRule ^report/(.*)$ - [L]
+RewriteRule (.*) report/$1 [L]
+</IfModule>

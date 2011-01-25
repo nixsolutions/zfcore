@@ -1,0 +1,22 @@
+staticpages:
+  label: Pages
+  uri:
+  pages:
+    create:
+      label: Create
+      module: pages
+      controller: management
+      action: create
+      route: default
+    edit:
+      label: Edit
+      module: pages
+      controller: management
+      action: index
+      route: default
+    browse:
+      label: Image Manager
+      module: pages
+      controller: images
+      action: manager
+      route: default

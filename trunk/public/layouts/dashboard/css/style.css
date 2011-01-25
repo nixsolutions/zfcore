@@ -1,0 +1,303 @@
+/* 
+    Document   : style.css
+    Created on : 09.06.2009, 12:18:34
+    Author     : Anton Shevchuk
+    Description:
+        Styles for admin module
+*/
+ 
+html{
+    margin:0;
+    padding:0;
+    margin-bottom: 1px; /* Always show a scrollbar to avoid jumping when the scrollbar appears */
+}
+
+body {
+    height: 100%;
+    min-width:1000px;
+    color:#555;
+    font:62.5%/1.6 Verdana,Tahoma,sans-serif;
+    line-height:1.5em;
+    background: #f0f0f0 url('images/bg-body.gif') top left repeat-y;
+}
+
+div, ul, ol, li, dl, dt, dd, p, img {
+    margin:0;
+    padding:0;
+    border:0
+}
+
+li ul, li ol {
+    padding-left:20px;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+}
+
+h1 {font-size:2.0em }
+h2 {font-size:1.8em }
+h3 {font-size:1.6em; margin:12px 0}
+h4 {font-size:1.4em; margin:8px  0}
+h5 {font-size:1.2em; margin:6px  0}
+h6 {font-size:1.2em; margin:4px  0}
+
+pre {
+    font-size:1.0em;
+    line-height:1.4em;
+    white-space: pre-wrap; /* css-3 */
+    white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+blockquote{ padding-left:6px }
+
+a {
+    outline:none;
+    text-decoration:none;
+}
+
+.aligncenter,
+div.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.alignleft, .left { float: left }
+.alignright, .right { float: right }
+.clear { clear:both }
+.hide  { display:none }
+
+ul, li{
+    padding:0;
+    margin:0;
+    list-style:none;
+}
+/*Box*/
+.box {
+    border:#ccc solid 1px;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    -webkit-border-radius: 6px
+}
+/*/Box*/
+/*Opacity*/
+.opacity {
+    background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABBJREFUeNpi+P9/yxmAAAMACTIDf5NbzpMAAAAASUVORK5CYII=);
+    background:rgba(255, 255, 180, 0.8);
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#85fffcc0, endColorstr=#85fffcc0);
+}
+/*/Opacity*/
+/*Shadow*/
+.shadow {
+    border:#ccc solid 1px;
+    box-shadow: 0 0 3px #aaa;
+    -moz-box-shadow: 0 0 3px #aaa;
+    -webkit-box-shadow: 0 0 3px #aaa
+}
+/*/Shadow*/
+/*Layout*/
+.breadcrumbs {
+    font-size: 12px;
+    padding:10px;
+    margin:10px auto;
+    height:40px;
+    background:#fff;
+    height:24px;
+    line-height:24px;
+}
+.content {
+    overflow:hidden;
+    background:#fff;
+    padding:10px;
+}
+
+#messages {
+    padding:0;
+    z-index:999;
+    font-weight:700;
+    font-size:1.6em;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:24px;
+    line-height:24px;    
+    padding:10px 0;
+    border:0;
+    border-bottom:1px solid #aaa;
+}
+    #messages ul {
+        /*width:1024px;*/
+        margin:0 20px;
+    }
+    #messages li {
+        padding:2px 0;
+    }
+/*/Layout*/
+/*Forms*/
+label {
+    font-weight:700;
+    padding-left:4px;
+}
+.zend_form_dojo dd{
+    padding:4px 2px;
+}
+
+.zend_form_dojo input{
+    padding:1px;
+}
+
+.zend_form_dojo .errors{
+	color:#f55;
+	font-weight:900;
+}
+
+/*/Forms*/
+
+/*Datagrid*/
+.gridControl {
+    padding:4px 0;
+}
+.gridButton .dijitButtonNode {
+    /*margin:0 1px !important;
+	padding: 0px !important;
+	height:19px !important;
+	font-size:0.8em;*/
+}
+.gridButtonHover .dijitButtonNode {
+	
+}
+.gridButtonFocused .dijitButtonNode {
+	
+}
+.gridButtonActive .dijitButtonNode {
+	
+}
+/*/Datagrid*/
+
+/********************************      Basic Structure      ********************************/
+
+#body-wrapper {
+    width:100%;
+    background: url('images/bg-radial-gradient.gif') fixed 230px top no-repeat;
+}                
+#main-content {
+    position:relative;
+    margin: 0 30px 0 240px;
+    /*padding: 40px 0 0 0;*/
+}
+
+#footer {
+    border-top: 1px solid #ccc;
+    margin: 40px 0 0 0;
+    padding: 20px 0;
+    font-size: 12px;
+}
+/********************************      Sidebar      ********************************/
+
+#sidebar {
+                background: url('images/bg-sidebar.gif') top left no-repeat;
+                width: 230px;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+                color: #888;
+                font-size: 11px;
+                }
+
+#sidebar #sidebar-wrapper {
+                margin: 0 0 0 9px;
+                }
+
+#sidebar a,
+#sidebar a:active {
+                color:#ccc;
+                }
+
+#sidebar a:hover {
+                color:#fff;
+                }
+
+#sidebar #logo {
+                margin: 40px 0 40px 0;
+                background: url('images/logo.png') center center no-repeat;
+                width: 100%;
+                height:104px;
+                display:block;
+                }
+
+#sidebar #profile-links {
+                padding: 0 15px 20px 15px;
+                text-align: right;
+                line-height: 1.5em;
+                }
+
+/************ Sidebar Accordion Menu ************/
+
+#sidebar .navigation {
+                width: 206px;
+                padding: 0;
+                margin: 0 0 0 15px;
+                font-family: Helvetica, Arial, sans-serif;
+                }
+
+#sidebar .navigation li {
+                list-style: none;
+                padding-bottom: 10px;
+                text-align: right;
+                }
+
+#sidebar .navigation > li > span,
+#sidebar .navigation > li > a {
+                background: transparent url('images/bg-menu-item-green.gif') right center no-repeat; /* Background image for default color scheme - green */
+                padding: 10px 15px;
+                color: #fff;
+                font-size: 14px;
+                cursor: pointer;
+                display: block;
+                text-decoration: none;
+                }
+
+#sidebar .navigation  > li.active > span,
+#sidebar .navigation  > li.active > a {
+                background-image: url('images/bg-menu-item-current.gif') !important;
+                color: #333;
+                font-weight: bold;
+                }
+
+#sidebar .navigation ul {
+                padding: 0;
+                font-size: 12px;
+                margin: 0;
+                }
+
+#sidebar .navigation ul li {
+                list-style: none;
+                margin: 0;
+                text-align: right;
+				padding: 0;
+                }
+
+#sidebar .navigation ul li a {
+                padding: 8px 15px;
+                display: block;
+                color: #aaa;
+                font-size: 13px;
+                line-height: 1.2em;
+                }
+
+#sidebar .navigation ul li a:hover,
+#sidebar .navigation ul li.active a,
+#sidebar .navigation ul li.active a:hover {
+                color: #fff;
+                }
+
+#sidebar .navigation ul li.active a {
+                background: transparent url('images/menu-current-arrow.gif') right center no-repeat !important;
+                }

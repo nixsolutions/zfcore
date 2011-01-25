@@ -1,0 +1,102 @@
+<?php
+
+$this->dojo()->addStyleSheet($this->dojo()->getCdnBase() . $this->dojo()->getCdnVersion() . '/dojox/grid/resources/tundraGrid.css')
+             ->requireModule('core.grid.Scaffold')
+             ->onLoadCaptureStart();
+?>
+function onLoad() {
+    var cells = [{
+        name: "<?php $this->_e('Question')?>",
+        field: "question",
+        width: "auto",
+        formatter: html2textFormatter
+    },{
+        name: "<?php $this->_e('Answer')?>",
+        field: "answer",
+        width: "auto",
+        formatter: html2textFormatter
+    }];
+    
+    var datagrid = new core.grid.Scaffold(cells, 
+                                          'gridContainer',
+                                          '<?php echo $this->url();?>',
+                                          true,
+                                          true);
+    
+    function html2textFormatter(data){
+        var text = data.replace(/\&lt;(.*?)\>/g, '');
+        if (text.length > 75) text = text.substr(0, 75)+'...';
+        return text;
+    }
+}
+<?php $this->dojo()->onLoadCaptureEnd(); ?>
+<div class="gridControl">
+<?php
+    echo $this->comboBox(
+        'grid-field', 
+        'title',
+        array(
+            'jsid' => 'grid-field',
+            'autocomplete' => false
+        ),
+        array(), 
+        array(
+            'question' => $this->__('Question'),
+            'answer'   => $this->__('Answer')
+        )
+    );
+    
+    echo $this->validationTextBox(
+        'grid-filter',
+        '*',
+        array(
+            'jsid'     => 'grid-filter',
+            'regExp'   => '[\S\s]+',
+            'required' => 'true'
+        ),
+        array('style' => 'padding:2px 1px 1px')
+    );
+                                                 
+    echo $this->button(
+        'grid-search', 
+        $this->__('Filter'), 
+        array(
+            'jsid'      => 'grid-search',
+            'baseClass' => 'gridButton'
+        )
+    );
+    
+    echo $this->button(
+        'grid-undo', 
+        $this->__('Undo'), 
+        array(
+            'jsid'      => 'grid-undo',
+            'baseClass' => 'gridButton'
+        )
+    );
+?>
+</div>
+
+<div class="gridContainer" id="gridContainer" style="height:300px;"></div>
+
+<div class="gridControl">
+<?php
+    echo $this->button(
+        'grid-new', 
+        $this->__('Create New'), 
+        array(
+            'jsid'      => 'grid-new',
+            'baseClass' => 'gridButton'
+        )
+    );
+    
+    echo $this->button(
+        'grid-del', 
+        $this->__('Delete Selected'), 
+        array(
+            'jsid'      => 'grid-del',
+            'baseClass' => 'gridButton'
+        )
+    );
+?>
+</div>

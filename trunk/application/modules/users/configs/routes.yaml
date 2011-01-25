@@ -1,0 +1,14 @@
+login:
+ type: Zend_Controller_Router_Route_Static
+ route: login
+ defaults:
+   module: users
+   controller: login
+   action: index
+logout:
+ type: Zend_Controller_Router_Route_Static
+ route: logout
+ defaults:
+  module: users
+  controller: login
+  action: logout

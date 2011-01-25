@@ -1,0 +1,50 @@
+<?php echo $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <?php echo $this->headMeta() ?>
+        <?php echo $this->headTitle($this->__(' Admin Panel')) ?>
+        <?php echo $this->headLink()->prependStylesheet($this->baseUrl('/layouts/dashboard/css/style.css'))
+                        ->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'), 'PREPEND')?>
+
+
+        <?php echo $this->headStyle() ?>
+        <?php
+            /** include dojo library */
+
+            if (file_exists(realpath(APPLICATION_PATH . '/../public/scripts/dojo/dojo.js'))){
+                $this->dojo()
+                     ->setLocalPath($this->baseUrl('/scripts/dojo/dojo.js'));
+            } else {
+                $this->dojo()
+                     ->enable()
+                     ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
+                     ->setCdnDojoPath(Zend_Dojo::CDN_DOJO_PATH_GOOGLE)
+                     ->registerModulePath('core', '/scripts/core')
+                     ->setCdnVersion('1.5.0');
+            }
+
+            /** add dojo biuld layer */
+            if (file_exists(realpath(APPLICATION_PATH . '/../public/scripts/dojo/scaffold.js'))){
+                $this->dojo()
+                     ->addLayer($this->baseUrl('/scripts/dojo/scaffold.js'));
+            }
+
+            $this->dojo()
+                 ->requireModule('dojo.parser')
+                 ->requireModule('dojo.fx')
+
+                 /** use dojo theme tundra */
+                 ->addStyleSheetModule('dijit.themes.tundra')
+                 ->setDjConfig(array('isDebug' => false, 
+                                     'parseOnLoad' => true,
+                                     'baseUrl' => './'))
+                    ;
+
+            /** echo out the dojo <script> tags */
+            echo $this->dojo();
+        ?>
+        <?php echo $this->headScript()
+                        ->appendFile($this->baseUrl('/layouts/dashboard/scripts/ui.js')); ?>
+
+    </head>
+    <body class="tundra">

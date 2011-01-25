@@ -1,0 +1,400 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZFCore\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-07-26 12:17+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Anton Shevchuk <Anton.Shevchuk@gmail.com>\n"
+"Language-Team: NIX Solutions\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11) ? 0 : ((n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20)) ? 1 : 2);\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UKRAINE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: _;__;_e;translate;setLabel;setValue;setMessage;setLegend\n"
+"X-Poedit-Basepath: d:\\projects\\zfcore.dark.php.nixsolutions.com\\\n"
+"X-Poedit-SearchPath-0: application\n"
+
+#: application/models/Mail/Form/Create.php:46
+msgid "Alias"
+msgstr ""
+
+#: application/models/Mail/Form/Create.php:62
+msgid "Subject"
+msgstr ""
+
+#: application/models/Mail/Form/Create.php:79
+msgid "Body"
+msgstr ""
+
+#: application/models/Mail/Form/Create.php:94
+msgid "Body (text)"
+msgstr ""
+
+#: application/models/Mail/Form/Create.php:109
+msgid "Description"
+msgstr ""
+
+#: application/models/Mail/Form/Create.php:126
+msgid "From Name"
+msgstr ""
+
+#: application/models/Mail/Form/Create.php:144
+msgid "From Email"
+msgstr ""
+
+#: application/models/Mail/Form/Create.php:164
+msgid "To Name"
+msgstr ""
+
+#: application/models/Mail/Form/Create.php:182
+msgid "To Email"
+msgstr ""
+
+#: application/models/Mail/Form/Create.php:202
+msgid "Create"
+msgstr ""
+
+#: application/models/Mail/Form/Create.php:213
+msgid "With signature"
+msgstr ""
+
+#: application/models/Mail/Form/Edit.php:31
+#: application/models/Mail/Form/Layout.php:33
+msgid "Save"
+msgstr ""
+
+#: application/models/Mail/Form/Send.php:51
+msgid "Send"
+msgstr ""
+
+#: application/models/Mail/Form/Send.php:61
+msgid "Select filter"
+msgstr ""
+
+#: application/models/Mail/Form/Send.php:83
+msgid "Type Email"
+msgstr ""
+
+#: application/models/Mail/Form/Send.php:96
+msgid "Ingore user settings"
+msgstr ""
+
+#: application/models/User/Form/Forget.php:29
+#: application/models/User/Form/Register.php:74
+msgid "Email"
+msgstr ""
+
+#: application/models/User/Form/Forget.php:43
+msgid "Restore"
+msgstr ""
+
+#: application/models/User/Form/Login.php:23
+#: application/models/User/Form/Register.php:34
+msgid "User name"
+msgstr ""
+
+#: application/models/User/Form/Login.php:35
+#: application/models/User/Form/Register.php:54
+msgid "Password"
+msgstr ""
+
+#: application/models/User/Form/Login.php:44
+msgid "Remember Me"
+msgstr ""
+
+#: application/models/User/Form/Login.php:47
+msgid "Login"
+msgstr ""
+
+#: application/models/User/Form/Register.php:65
+msgid "Password again"
+msgstr ""
+
+#: application/models/User/Form/Register.php:120
+msgid "Register"
+msgstr ""
+
+#: application/models/User/Form/Admin/Create.php:81
+msgid "First name"
+msgstr ""
+
+#: application/models/User/Form/Admin/Create.php:105
+msgid "Last name"
+msgstr ""
+
+#: application/models/User/Form/Admin/Create.php:129
+msgid "Role"
+msgstr ""
+
+#: application/models/User/Form/Admin/Create.php:150
+msgid "Status"
+msgstr ""
+
+#: application/models/User/Form/Admin/Create.php:221
+msgid "Date login"
+msgstr ""
+
+#: application/models/User/Form/Admin/Create.php:236
+msgid "Date create"
+msgstr ""
+
+#: application/models/User/Form/Admin/Create.php:251
+msgid "Login ip"
+msgstr ""
+
+#: application/models/User/Form/Admin/Create.php:265
+msgid "Login count"
+msgstr ""
+
+#: application/modules/admin/controllers/MailController.php:110
+msgid "Not found such mail alias "
+msgstr ""
+
+#: application/modules/default/controllers/ErrorController.php:37
+msgid "The page you requested was not found."
+msgstr ""
+
+#: application/modules/default/controllers/ErrorController.php:43
+msgid "An unexpected error occurred with your request. Please try again later."
+msgstr ""
+
+#: application/modules/feedback/models/Feedback/Form/Reply.php:50
+msgid "Sender"
+msgstr ""
+
+#: application/modules/feedback/models/Feedback/Form/Reply.php:115
+msgid "By Template"
+msgstr ""
+
+#: application/modules/feedback/models/Feedback/Form/Reply.php:146
+msgid "Attachment Image: "
+msgstr ""
+
+#: application/modules/feedback/models/Feedback/Form/Reply.php:167
+msgid "Save copy message"
+msgstr ""
+
+#: application/modules/feedback/models/Feedback/Form/Reply.php:169
+msgid "0"
+msgstr ""
+
+#: application/modules/forum/models/Category/Form/Admin/Create.php:83
+#: application/modules/forum/models/Post/Form/Admin/Create.php:91
+msgid "Category"
+msgstr ""
+
+#: application/modules/forum/models/Post/Form/Create.php:70
+msgid "create"
+msgstr ""
+
+#: application/modules/forum/models/Post/Form/Create.php:80
+msgid "category"
+msgstr ""
+
+#: application/modules/users/controllers/LoginController.php:38
+msgid "Now You're Logging!"
+msgstr ""
+
+#: application/modules/users/controllers/LoginController.php:61
+#: application/modules/users/controllers/LoginController.php:70
+msgid "Authorization error. Please check login or/and password"
+msgstr ""
+
+#: application/modules/users/controllers/LoginController.php:86
+msgid "Logout successfull"
+msgstr ""
+
+#: application/modules/users/controllers/RegisterController.php:85
+msgid "The user with specified data not found! Possibly you're already confirmed your registration"
+msgstr ""
+
+#: application/modules/users/controllers/RegisterController.php:117
+msgid "The confirmation email to reset your password is sent. Please check your email "
+msgstr ""
+
+#: application/modules/users/controllers/RegisterController.php:126
+msgid "Your email is not registered"
+msgstr ""
+
+#: application/modules/users/controllers/RegisterController.php:150
+msgid "Your password reset request was cancelled"
+msgstr ""
+
+#: application/modules/users/controllers/RegisterController.php:157
+msgid "You got new password. Please check your email"
+msgstr ""
+
+#: application/modules/users/controllers/RegisterController.php:163
+msgid "The user with specified data not found! Possibly you're already confirmed your reset password data"
+msgstr ""
+
+#: application/layouts/scripts/dashboard/partial/header.phtml:5
+msgid " Admin Panel"
+msgstr ""
+
+#: application/layouts/scripts/dashboard/partial/messages.phtml:4
+msgid "Javascript is disabled or is not supported by your browser.Please <a href=\"http://browsehappy.com/\" title=\"Upgrade to a better browser\">upgrade</a> your browser or <a href=\"http://www.google.com/support/bin/answer.py?answer=23852\" title=\"Enable Javascript in your browser\">enable</a>Javascript to navigate the interface properly."
+msgstr ""
+
+#: application/modules/admin/views/scripts/error/denied.phtml:1
+#: application/modules/default/views/scripts/error/denied.phtml:1
+msgid "You attempt to access to protected page!"
+msgstr ""
+
+#: application/modules/admin/views/scripts/error/denied.phtml:2
+#: application/modules/default/views/scripts/error/denied.phtml:2
+msgid "Your current role is not allowed this action!"
+msgstr ""
+
+#: application/modules/admin/views/scripts/error/error.phtml:1
+#: application/modules/default/views/scripts/error/error.phtml:1
+msgid "An error occurred"
+msgstr ""
+
+#: application/modules/admin/views/scripts/error/internal.phtml:1
+#: application/modules/default/views/scripts/error/internal.phtml:1
+msgid "Internal Server Error"
+msgstr ""
+
+#: application/modules/admin/views/scripts/error/notfound.phtml:1
+#: application/modules/default/views/scripts/error/notfound.phtml:1
+msgid "The page you are searching, not found."
+msgstr ""
+
+#: application/modules/admin/views/scripts/mail/index.phtml:78
+msgid "Filter"
+msgstr ""
+
+#: application/modules/admin/views/scripts/mail/index.phtml:82
+msgid "Undo"
+msgstr ""
+
+#: application/modules/faq/views/scripts/index/index.phtml:5
+#: application/modules/faq/views/scripts/index/index.phtml:13
+msgid "hide"
+msgstr ""
+
+#: application/modules/faq/views/scripts/index/index.phtml:6
+msgid "show"
+msgstr ""
+
+#: application/modules/faq/views/scripts/index/index.phtml:12
+msgid "Contents"
+msgstr ""
+
+#: application/modules/faq/views/scripts/management/index.phtml:8
+#: application/modules/faq/views/scripts/management/index.phtml:46
+msgid "Question"
+msgstr ""
+
+#: application/modules/faq/views/scripts/management/index.phtml:13
+#: application/modules/faq/views/scripts/management/index.phtml:47
+msgid "Answer"
+msgstr ""
+
+#: application/modules/faq/views/scripts/management/index.phtml:88
+#: application/modules/forum/views/scripts/category-management/index.phtml:62
+#: application/modules/forum/views/scripts/management/index.phtml:83
+msgid "Create New"
+msgstr ""
+
+#: application/modules/faq/views/scripts/management/index.phtml:97
+#: application/modules/forum/views/scripts/category-management/index.phtml:66
+#: application/modules/forum/views/scripts/management/index.phtml:87
+msgid "Delete Selected"
+msgstr ""
+
+#: application/modules/feedback/views/scripts/management/index.phtml:15
+msgid "ID"
+msgstr ""
+
+#: application/modules/feedback/views/scripts/management/index.phtml:45
+#: application/modules/feedback/views/scripts/management/index.phtml:83
+#: application/modules/forum/views/scripts/management/index.phtml:29
+#: application/modules/forum/views/scripts/management/index.phtml:56
+msgid "Date update"
+msgstr ""
+
+#: application/modules/feedback/views/scripts/management/index.phtml:121
+msgid "Submit"
+msgstr ""
+
+#: application/modules/forum/views/scripts/category-management/index.phtml:9
+#: application/modules/forum/views/scripts/category-management/index.phtml:34
+#: application/modules/forum/views/scripts/management/index.phtml:9
+#: application/modules/forum/views/scripts/management/index.phtml:52
+msgid "Title"
+msgstr ""
+
+#: application/modules/forum/views/scripts/management/index.phtml:14
+#: application/modules/forum/views/scripts/management/index.phtml:53
+msgid "Text"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/browser.phtml:8
+msgid "Browser of Images"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/browser.phtml:60
+msgid "No files or Directories"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:6
+#: application/modules/pages/views/scripts/images/manager.phtml:24
+msgid "Folder"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:20
+#: application/modules/pages/views/scripts/images/index.phtml:24
+#: application/modules/pages/views/scripts/images/manager.phtml:34
+#: application/modules/pages/views/scripts/images/manager.phtml:36
+msgid "Upload"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:30
+msgid "Image&#160;File"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:33
+msgid "Size"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:52
+msgid "Alt / Title"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:58
+msgid "Align"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:61
+msgid "not set"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:62
+msgid "left"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:63
+msgid "right"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:69
+msgid "Class"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:81
+msgid "OK"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/index.phtml:82
+msgid "Cancel"
+msgstr ""
+
+#: application/modules/pages/views/scripts/images/partial/header.phtml:7
+msgid "Image Manager"
+msgstr ""
+

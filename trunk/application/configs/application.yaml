@@ -1,0 +1,137 @@
+production:
+  phpSettings:
+    display_startup_errors: false
+    display_errors: false
+  includePaths:
+    library: APPLICATION_PATH/../library
+  pluginPaths:
+    Core_Application_Resource: Core/Application/Resource
+  bootstrap:
+    path: APPLICATION_PATH/Bootstrap.php
+    class: Bootstrap
+  appnamespace: Application
+  autoloadernamespaces:
+    - Core
+  resources:
+    frontController:
+      moduleDirectory: APPLICATION_PATH/modules
+      moduleControllerDirectoryName: controllers
+      defaultControllerName: index
+      defaultAction: index
+      defaultModule: default
+      baseurl: /
+      env: APPLICATION_ENV
+      params:
+        prefixdefaultmodule: true
+        displayExceptions: false
+
+      plugins:
+        translate:
+          class: Core_Controller_Plugin_Translate
+          stackindex: 20
+          options:
+            default: en
+            locales:
+              ru: ru_RU
+              ua: uk_UA
+              en: en_GB
+              us: en_US
+            adapter: gettext
+            content: APPLICATION_PATH/../data/languages/
+            scan: filename
+            disableNotices: on
+            logUntranslated: off
+            logMessage: Undefined message '%message%' in '%locale%'
+            logPath: APPLICATION_PATH/../data/logs/lang.log
+
+        acl:
+          class: Core_Controller_Plugin_Acl
+          stackindex: 30
+          options:
+            config: acl
+            allowAll: on
+            denied:
+              module: default
+              controller: error
+              action: denied
+            unlogined: /login
+            role: guest
+            cache: on
+            
+        routes:
+          class: Core_Controller_Plugin_Routes
+          stackindex: 40
+          options:
+            config: routes
+            cache: off
+
+        navigation:
+          class: Core_Controller_Plugin_Navigation
+          stackindex: 50
+          options:
+            config: navigation
+            section: default
+            cache: off
+            
+    modules:
+    db:
+      adapter: pdo_mysql
+      params:
+        host: localhost
+        username: p_zfc
+        password: zfc
+        dbname: p_zfc
+        charset: utf8
+      isDefaultTableAdapter: true
+    layout:
+      layout: default/layout
+      layoutPath: APPLICATION_PATH/layouts/scripts/
+    session:
+      save_path: APPLICATION_PATH/../data/session
+    auth: true
+    mailer:
+      storage:
+        type: DbTable
+        options:
+          table: Model_Mail_Table"
+      transport:
+        type: ZendMail
+        options:
+          transport: Zend_Mail_Transport_Smtp
+          host: stubmail.nixsolutions.com
+          port: 2500
+# replyEmail is equal
+          fromEmail: zfc@nixsolutions.com
+# replyName is equal
+          fromName: ZFCore Webmaster
+          charset: UTF-8
+  view:
+    title: ZFCore - $Rev: 222 $
+    doctype: XHTML1_STRICT
+    encoding: UTF-8
+
+testing:
+  _extends: production
+  phpSettings:
+    display_startup_errors: true
+    display_errors: true
+  resources:
+    db:
+      params:
+        host: elephant.nixsolutions.com
+        username: p_zfc2
+        dbname: p_zfc2
+        persistent: true
+
+development:
+  _extends: production
+  phpSettings:
+    display_startup_errors: true
+    display_errors: true
+
+  resources:
+    db:
+      params:
+        profiler:
+          enabled:true
+          class:Zend_Db_Profiler_Firebug

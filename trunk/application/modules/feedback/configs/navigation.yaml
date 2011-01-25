@@ -1,0 +1,10 @@
+feedbackmanagment:
+  label: Feedback
+  uri:
+  pages:
+    edit:
+      label:Edit Feedbacks
+      module:feedback
+      controller:management
+      action:index
+      route:default

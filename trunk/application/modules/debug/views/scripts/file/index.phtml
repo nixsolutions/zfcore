@@ -1,0 +1,40 @@
+<?php
+//$this->headLink()->appendStylesheet($this->baseUrl('http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css'));
+$this->dojo()->addStyleSheet($this->dojo()->getCdnBase() . $this->dojo()->getCdnVersion() . '/dojox/grid/resources/tundraGrid.css');
+$this->dojo()->requireModule('dojo.data.ItemFileReadStore');
+$this->dojo()->requireModule('dojox.data.QueryReadStore');
+$this->dojo()->requireModule('dojox.data.JsonRestStore');
+$this->dojo()->requireModule('dojo.data.ItemFileWriteStore');
+$this->dojo()->requireModule('dijit.Tree');
+$this->stylesheet()->controller();
+$this->javascript()->controller();
+?>
+
+<div dojoType='dojox.data.JsonRestStore' jsId='store' target='/debug/file/lazy/format/json/node' loadLazyValues='true'>
+</div>
+<div dojoType='dijit.tree.ForestStoreModel' jsId='treeModel' store='store'
+rootId='root' rootLabel='Folders' deferItemLoadingUntilExpand='true' query="{type: 'Root'}"
+childrenAttrs='children'>
+</div>
+<div dojoType='dijit.Tree' id='tree' model='treeModel' labelAttrs='label' persist='false' autoExpand='false' openOnClick='true' showRoot="false">
+    <script type='dojo/method' event='onClick' args='item'>
+        if (store.getValue(item, "type") != 'dir') {
+            page.FileReader.loadFile(store.getValue(item, "id"));
+        }
+    </script>
+</div>
+
+<div id ="fileContent">
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
