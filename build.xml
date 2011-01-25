@@ -30,7 +30,7 @@
     </target>
     <target name="phpmd">
         <exec dir="${basedir}" executable="phpmd" failonerror="false">
-            <arg line=". xml codesize,unusedcode,naming --reportfile '${basedir}/build/logs/pmd.xml' --ignore 'bin,migrations,public'"/>
+            <arg line=". xml codesize,unusedcode,naming --reportfile '${basedir}/build/logs/pmd.xml' --exclude 'bin,migrations,public'"/>
         </exec>
     </target>
     <target name="pdepend">
