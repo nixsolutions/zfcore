@@ -2,13 +2,16 @@
 /**
  * Controller plugin that sets the correct paths to the Zend_Layout instances
  * 
- * You can initialize this is plugin in your application.ini
+ * You can initialize this is plugin in your application.yaml
  * 
  * <code>
- * resources.frontController.plugins[] = "Core_Controller_Plugin_Navigation"
- * ; or
- * resources.frontController.plugins.navigation.classname = "Core_Controller_Plugin_Navigation"
- * resources.frontController.plugins.navigation.options.config =APPLICATION_PATH "/configs/navigation.xml"
+ * navigation:
+ *   class: Core_Controller_Plugin_Navigation
+ *   stackindex: 50
+ *   options:
+ *     config: navigation
+ *     section: dashboard
+ *     cache: off
  * </code>
  * 
  * @uses       Zend_Controller_Plugin_Abstract
@@ -37,6 +40,13 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
      * @var string
      */
     protected $_config = 'navigation';
+
+    /**
+     * section
+     *
+     * @var string
+     */
+    protected $_section = 'dashboard';
         
     /**
      * cache using
@@ -59,11 +69,11 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
         if (isset($options['config'])) {
             $this->_config = $options['config'];
         }
-        
+
         if (isset($options['section'])) {
             $this->_section = $options['section'];
         }
-       
+
         if (isset($options['cache'])) {
             $this->_cache = $options['cache'];
         }
@@ -92,7 +102,7 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
     {
         $section = $this->_getSection();
         
-        if ($section == 'dashboard') {
+        if ($section == $this->_section) {
             $this->_initNavigation();
         }
     }
@@ -130,7 +140,7 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
             // Acl is not inited            
         }
     }
-    
+
     /**
      * get section
      *
@@ -138,21 +148,21 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
      */
     protected function _getSection()
     {
-        // Getting layout name from Core_Controller_Plugin_Layout, 
-        // extracting layout type (admin|default) and setting it as $this->_section  
+        // Getting layout name from Core_Controller_Plugin_Layout,
+        // extracting layout type (admin|default) and setting it as $this->_section
         $currentLayout = Zend_Layout::getMvcInstance()->getLayout();
-        
+
         $currentLayout = preg_split('/\//', $currentLayout);
-        
+
         if (isset($currentLayout[0])) {
             $section = $currentLayout[0];
         } else {
             $section = $this->_section;
         }
-        
+
         return $section;
     }
-    
+
     /**
      * get config
      *

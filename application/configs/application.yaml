@@ -69,7 +69,7 @@ production:
           stackindex: 50
           options:
             config: navigation
-            section: default
+            section: dashboard
             cache: off
             
     modules:
@@ -121,6 +121,11 @@ testing:
         username: p_zfc2
         dbname: p_zfc2
         persistent: true
+    frontController:
+      plugins:
+        acl:
+          options:
+            allowAll: off
 
 development:
   _extends: production
