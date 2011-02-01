@@ -2,15 +2,14 @@
 /**
  * Front Controller Application Resources
  *
- * You can use this is resource in your application.ini
+ * You can use this is resource in your application.yaml
  * <code>
- * ; set classname
- * resources.frontController.plugins.acl.class = "Core_Controller_Plugin_Acl"
- * resources.frontController.plugins.acl.stackindex = 0
- * ; set some options
- * resources.frontController.plugins.acl.options.denied.controller = error
- * resources.frontController.plugins.acl.options.denied.action = denied
- * resources.frontController.plugins.acl.options.role = guest
+ * acl:
+ *   class: Core_Controller_Plugin_Acl
+ *   stackindex: 30
+ *   options:
+ *     config: acl
+ *     allowAll: on
  * </code>
  *
  * @category   Core

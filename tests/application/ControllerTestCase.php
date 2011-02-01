@@ -37,7 +37,7 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
     {
         $this->bootstrap = new Zend_Application(
             APPLICATION_ENV,
-            APPLICATION_PATH . '/configs/application.ini'
+            APPLICATION_PATH . '/configs/application.yaml'
         );
 
         parent::setUp();
@@ -53,7 +53,7 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
     {
         $application = new Zend_Application(
             APPLICATION_ENV,
-            APPLICATION_PATH . '/configs/application.ini'
+            APPLICATION_PATH . '/configs/application.yaml'
         );
         
 //        $application->bootstrap();

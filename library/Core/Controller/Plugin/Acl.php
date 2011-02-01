@@ -36,7 +36,7 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
      * @var array
      */
     protected $_errorPage = array(
-        'module'     => 'error',
+        'module'     => 'default',
         'controller' => 'error',
         'action'     => 'notfound'
     );
@@ -182,7 +182,6 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     {
         if (null == $this->_acl) {
             $config = $this->_getConfig();
-
             $this->setAcl(new Core_Acl($config));
 
             Zend_Registry::set('Acl', $this->_acl);
@@ -233,16 +232,14 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
         /** Check resource */
         if (!$this->getAcl()->has($resourceName)) {
             if ($this->_allowAll) {
-                $this->allowAccess();
-                return;
+                return true;
             } elseif (Zend_Controller_Front::getInstance()->getParam('env') == 'development') {
                 $this->getResponse()
                      ->appendBody("<h2>Resource \"$resourceName\" not found in ACL rules</h2>");
-                $this->allowAccess();
-                return;
+                return true;
             } else {
-                $this->denyAccess();
-                return;
+                $this->toError();
+                return false;
             }
         }
 
@@ -252,50 +249,60 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
             $resourceName,
             $request->getActionName()
         )) {
-            $this->allowAccess();
+            return true;
         } else {
-            /** Redirect to access denied page */
-            $this->denyAccess();
+            /** Save request to session */
+            $session = new Zend_Session_Namespace('Zend_Request');
+            $session->params = $this->_request->getParams();
+
+            /** Redirect to access denied page or login */
+            if (Zend_Auth::getInstance()->hasIdentity()) {
+                $this->toDenied();
+            } else {
+                $this->toLogin();
+            }
         }
     }
-
+    
     /**
-     * Allow Access Function
+     * Redirects to denied page
      *
      * @return void
      */
-    public function allowAccess()
+    public function toDenied()
     {
-        // TODO: ?
+        // user logined, but don't have access
+        $this->_request->setModuleName($this->_deniedPage['module']);
+        $this->_request->setControllerName($this->_deniedPage['controller']);
+        $this->_request->setActionName($this->_deniedPage['action']);
+        $this->_request->setDispatched(false);
     }
 
     /**
-     * Deny Access Function
-     * Redirects to denied/error/login page,
-     * this can be called from an action using the action helper
+     * Redirects to error page
      *
-     * @todo Create logic for separate error page (notfound or some else)
      * @return void
      */
-    public function denyAccess()
+    public function toError()
     {
-        $session = new Zend_Session_Namespace('Zend_Request');
-        $session->params = $this->_request->getParams();
-
-
-        if (Zend_Auth::getInstance()->hasIdentity()) {
-            // user logined, but don't have access
-            $this->_request->setModuleName($this->_deniedPage['module']);
-            $this->_request->setControllerName($this->_deniedPage['controller']);
-            $this->_request->setActionName($this->_deniedPage['action']);
-            $this->_request->setDispatched(false);
-        } else {
-            // is guest - go to login page
-            $this->_request->setModuleName($this->_loginPage['module']);
-            $this->_request->setControllerName($this->_loginPage['controller']);
-            $this->_request->setActionName($this->_loginPage['action']);
-            $this->_request->setDispatched(false);
-        }
+        // resource exist, but user is guest - go to login page
+        $this->_request->setModuleName($this->_errorPage['module']);
+        $this->_request->setControllerName($this->_errorPage['controller']);
+        $this->_request->setActionName($this->_errorPage['action']);
+        $this->_request->setDispatched(false);
     }
 
+    /**
+     * Redirects to login page
+     *
+     * @return void
+     */
+    public function toLogin()
+    {
+        // resource exist, but user is guest - go to login page
+        $this->_request->setModuleName($this->_loginPage['module']);
+        $this->_request->setControllerName($this->_loginPage['controller']);
+        $this->_request->setActionName($this->_loginPage['action']);
+        $this->_request->setDispatched(false);
+    }
 }

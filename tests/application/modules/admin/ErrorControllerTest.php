@@ -24,10 +24,10 @@ class Admin_ErrorControllerTest extends ControllerTestCase
     public function testGuestAccessDenied()
     {
         $this->dispatch('/admin');
-        $this->assertRedirectTo('/login');
-        /*$this->assertModule('users');
+
+        $this->assertModule('users');
         $this->assertController('login');
-        $this->assertAction('index');*/
+        $this->assertAction('index');
     }
     
     /**
@@ -41,11 +41,9 @@ class Admin_ErrorControllerTest extends ControllerTestCase
         
         $this->dispatch('/admin/foo');
 
-//        $this->assertRedirectTo('/login');
-        
         $this->assertModule('default');
         $this->assertController('error');
-        $this->assertAction('error');
+        $this->assertAction('notfound');
     }
     
     /**
