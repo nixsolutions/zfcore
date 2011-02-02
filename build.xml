@@ -68,5 +68,5 @@
                 --output ${basedir}/build/phpcb" />
         </exec>
     </target>
-    <target name="build" depends="clean, prepare, phpdoc, phpmd, phpcs, phpcpd, pdepend, phpcb, phpunit"/>
+    <target name="build" depends="clean, prepare, phpdoc, phploc, phpmd, phpcs, phpcpd, pdepend, phpcb, phpunit"/>
 </project>
