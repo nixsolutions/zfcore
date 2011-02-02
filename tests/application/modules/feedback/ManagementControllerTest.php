@@ -192,29 +192,31 @@ class Feedback_ManagementControllerTest extends ControllerTestCase
         $this->assertRedirect('feedback/index');
     }
     
-    public function testReplyValidAction()
-    {
-        $this->_fixture['feedback']['id'] = $this->_feedback->id;
-        $this->_fixture['feedback']['saveCopy'] = 1;
-        $this->_fixture['feedback']['email'] = 'test@domain.com';
-        unset($this->_fixture['feedback']['status'], $this->_fixture['feedback']['created']);
-        $_FILES = array(
-            'inputFile' =>
-                array(
-                    'name' =>  '',
-                    'type' => null,
-                    'tmp_name' =>  '',
-                    'error' =>  4,
-                    'size' => null
-                ));
-        $this->getRequest()
-             ->setMethod('POST')
-             ->setPost($this->_fixture['feedback']);
-
-        $this->dispatch('/feedback/management/reply');
-
-        $this->assertRedirect('feedback/index');
-    }
+//    public function testReplyValidAction()
+//    {
+//
+//        $this->_fixture['feedback']['id'] = $this->_feedback->id;
+//        $this->_fixture['feedback']['saveCopy'] = 1;
+//        $this->_fixture['feedback']['email'] = 'test@domain.com';
+//        unset($this->_fixture['feedback']['status'], $this->_fixture['feedback']['created']);
+//        $_FILES = array(
+//            'inputFile' =>
+//                array(
+//                    'name' =>  '',
+//                    'type' => null,
+//                    'tmp_name' =>  '',
+//                    'error' =>  4,
+//                    'size' => null
+//                ));
+//        $this->getRequest()
+//             ->setMethod('POST')
+//             ->setPost($this->_fixture['feedback']);
+//
+//        $this->dispatch('/feedback/management/reply');
+//
+//
+//        $this->assertRedirect('feedback/index');
+//    }
     /**
      * tear Down
      *

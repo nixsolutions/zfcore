@@ -96,7 +96,6 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
                 $form->setDefault('id', $id);
                 $form->setDefaults($model->toArray());
             } else {
-
                 if ($model && $form->isValid($request->getPost())) {
                     $data = $form->getValues();
                     $message = $model->toArray();

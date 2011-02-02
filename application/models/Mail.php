@@ -14,7 +14,7 @@ class Model_Mail
      *
      * @return bool
      */
-    public function register($aUser)
+    public static function register($aUser)
     {
         $template = Core_Mailer::getTemplate('registration');
         $template->toEmail = $aUser->email;
@@ -32,7 +32,7 @@ class Model_Mail
      *
      * @return bool
      */
-    public function forgetPassword($aUser)
+    public static function forgetPassword($aUser)
     {
         $template = Core_Mailer::getTemplate('forgetPassword');
         $template->toEmail = $aUser->email;
@@ -50,7 +50,7 @@ class Model_Mail
      *
      * @return bool
      */
-    public function newPassword($aUser, $aPassword)
+    public static function newPassword($aUser, $aPassword)
     {
         $template = Core_Mailer::getTemplate('newPassword');
         $template->toEmail = $aUser->email;
@@ -69,7 +69,7 @@ class Model_Mail
      * @param Core_Mailer_Template $template
      * @return bool
      */
-    public function sendArbitraryMessage(Core_Mailer_Template $template)
+    public static function sendArbitraryMessage(Core_Mailer_Template $template)
     {
         if ($template->signature) {
             $template = self::assignLayout($template);
@@ -82,7 +82,7 @@ class Model_Mail
      * @param  array $data
      * @return null|Zend_Mime_Part
      */
-    public function getMimePart($data)
+    public static function getMimePart($data)
     {
         if (is_array($data)) {
             $mime = new Zend_Mime_Part(file_get_contents($data['file']));
@@ -109,7 +109,7 @@ class Model_Mail
      * Get Layout
      *
      */
-    public function getLayout()
+    public static function getLayout()
     {
         return Model_Option::get('signature');
     }
@@ -120,7 +120,7 @@ class Model_Mail
      * @param string $value
      * @return object Model_Option
      */
-    public function setLayout($value)
+    public static function setLayout($value)
     {
         return Model_Option::set('signature', $value);
     }
@@ -146,7 +146,7 @@ class Model_Mail
      * @return void
      * @todo new Model
      */
-    public function send($aParams)
+    public static function send($aParams)
     {
         $template = new Core_Mailer_Template($aParams);
         

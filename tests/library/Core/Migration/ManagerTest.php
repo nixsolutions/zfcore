@@ -53,7 +53,7 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
         $this->assertEquals($expected, $result->rowCount());
 
-        while($tableName = $result->fetchColumn()) {
+        while ($tableName = $result->fetchColumn()) {
             Zend_Db_Table_Abstract::getDefaultAdapter()
                 ->query("DROP TABLE `".$tableName."`");
         }
@@ -120,7 +120,7 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
         $this->assertEquals($expected, $result->rowCount());
 
-        while($tableName = $result->fetchColumn()) {
+        while ($tableName = $result->fetchColumn()) {
             Zend_Db_Table_Abstract::getDefaultAdapter()
                 ->query("DROP TABLE `".$tableName."`");
         }
@@ -158,7 +158,7 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
         $this->assertEquals($expected, $result->rowCount());
 
-        while($tableName = $result->fetchColumn()) {
+        while ($tableName = $result->fetchColumn()) {
             Zend_Db_Table_Abstract::getDefaultAdapter()
                 ->query("DROP TABLE `".$tableName."`");
         }
@@ -183,7 +183,7 @@ class Core_Migration_ManagerTest extends ControllerTestCase
             $result = Zend_Db_Table_Abstract::getDefaultAdapter()
                 ->query("SHOW TABLES LIKE 'items_%';");
 
-            while($tableName = $result->fetchColumn()) {
+            while ($tableName = $result->fetchColumn()) {
                 Zend_Db_Table_Abstract::getDefaultAdapter()
                     ->query("DROP TABLE `".$tableName."`");
             }
