@@ -27,6 +27,12 @@
     			  --output HTML:Smarty:PHP"/>
         </exec>
     </target>
+    <target name="phploc">
+        <exec dir="${basedir}" executable="phploc">
+            <arg line="--log-csv ${basedir}/build/logs/phploc.csv" />
+            <arg line="." />
+        </exec>
+    </target>
     <target name="phpcpd">
         <exec dir="${basedir}" executable="phpcpd" failonerror="false">
             <arg line="--log-pmd build/logs/phpcpd.xml
