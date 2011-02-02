@@ -18,21 +18,21 @@ class Core_Mailer_Storage_DbTableTest extends ControllerTestCase
         $this->_adapter = array(
             'storage' => array('type'    => 'DbTable',
                                'options' => array(
-                                    'table'  => Model_Mail_Table
+                                    'table'  => 'Model_Mail_Table'
                                )),
             'transport' => array('type'    => 'ZendMail',
                                  'options' => array(
-                                    'transport' => Zend_Mail_Transport_Sendmail
+                                    'transport' => 'Zend_Mail_Transport_Sendmail'
                                  )),
            );
 
-        $this->_fixture = array( 'fromEmail' => 'secunda@nixsolutions.com',
-                                 'fromName'  => 'Snesar Alexandr',
-                                 'subject'   => 'Test'.date('Y-m-d H:i:s'),
-                                 'body'      => 'Test Mailer',
+        $this->_fixture = array( 'fromEmail' => 'test'.time().'@nixsolutions.com',
+                                 'fromName'  => 'Test '.time(),
+                                 'subject'   => 'Test '.date('Y-m-d H:i:s'),
+                                 'body'      => 'Test Mailer<br/><br/>With subject: %subject%',
                                  'alias'     => 'test',
                                  'id'        => 23,
-                                 'altBody'   => ''
+                                 'altBody'   => "Test Mailer\n\nWith subject: %subject%"
                                 );  
 
                                 $mail = new Model_Mail_Table();
@@ -60,8 +60,9 @@ class Core_Mailer_Storage_DbTableTest extends ControllerTestCase
      */
     public function tearDown()
     {
-        $this->_mail->delete();
-        
+        if ($this->_mail) {
+            $this->_mail->delete();
+        }
         parent::tearDown();
     }
 }

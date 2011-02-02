@@ -137,59 +137,78 @@ class Migration_20090101_000000_00 extends Core_Migration_Abstract
         
         $this->insert('mail_templates', array(
             'alias'   =>  'registration',
+            'subject' =>  'Registration on %host%',
+            'description' => 'User registration letter',
             'body'    =>  'Please, confirm your registration<br/><br/>'.
                           'Click the folowing link:<br/>'.
-                          '<a href="http://%host%/users/register/confirm-registration/hash/%hash%">http://%host%/users/register/confirm-registration/hash/%hash%</a>',  
+                          '<a href="http://%host%/users/register/confirm-registration/hash/%hash%">http://%host%/users/register/confirm-registration/hash/%hash%</a>'.
+                          '<br />'.
+                          'With best regards,<br />'.
+                          '<a href="http://%host%/>%host% team</a>',   
             'altBody' =>  'Please confirm your registration\n\n'.
                           'Open the folowing link in your browser: \n'.
-                          'http://%host%/users/register/confirm-registration/hash/%hash%',  
+                          'http://%host%/users/register/confirm-registration/hash/%hash%'.
+                          "\n\n\n".
+                          "With best regards,\n".
+                          "%host% team",
             'signature' => 'true'
         ));
         $this->insert('mail_templates', array( 
             'alias'   =>  'forgetPassword',
+            'subject' =>  'Forget password on %host%',
+            'description' => 'User forget password letter',
             'body'    =>  'You\'re ask to reset your password.<br/><br/>'.
                           'Please confirm that you wish to reset it clicking on the url:<br />'.
                           '<a href="http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/yes">http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/yes</a><br/><br/>'.
                           'If this message was created due to mistake, you can cancel password reset via next link:<br />'.
                           '<a href="http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/no">
-http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/no</a>', 
+http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/no</a>'.
+                          '<br />'.
+                          'With best regards,<br />'.
+                          '<a href="http://%host%/>%host% team</a>',
             'altBody' =>  'You\'re ask to reset your password.\n\n'.
                           'Please confirm that you wish to reset it clicking on the url:\n'.
                           'http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/yes\n\n'.
                           'If this message was created due to mistake, you can cancel password reset via next link:\n'.
-                          'http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/no',  
+                          'http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/no'.
+                          "\n\n\n".
+                          "With best regards,\n".
+                          "%host% team",
             'signature' => 'true'
         ));
         
         
         $this->insert('mail_templates', array(
             'alias'   =>  'newPassword',
+            'subject' =>  'New password for %host%',
+            'description' => '',
             'body'    =>  'You\'re ask to reset your password.<br/><br/>'.
                           'Your new password is:<br />'.
-                          '<b>%password%</b>',
-            'altBody' =>  'You\'re ask to reset your password.\n\n'.
-                          'Your new password is:\n'.
-                          '%password%',
+                          '<b>%password%</b>'.
+                          '<br />'.
+                          'With best regards,<br />'.
+                          '<a href="http://%host%/>%host% team</a>',
+            'altBody' =>  "You're ask to reset your password.\n\n".
+                          "Your new password is:\n".
+                          "%password%".
+                          "\n\n\n".
+                          "With best regards,\n".
+                          "%host% team",
             'signature' => 'true'
         ));
 
 
         $this->insert('mail_templates', array(
             'alias'   =>  'reply',
-            'body'    =>  'Thank you for your letter!<br />'.
-                            '<br />'.
-                            '<br />'.
-                            '<br />'.
-                            '<br />'.
-                            'Best regards,<br />'.
-                            'ZFC team',
-            'altBody' =>  'Thank you for your letter!<br />'.
-                            '<br />'.
-                            '<br />'.
-                            '<br />'.
-                            '<br />'.
-                            'Best regards,<br />'.
-                            'ZFC team',
+            'subject' =>  'Thank you for your letter',
+            'body'    =>  'Thank you for your letter!'.
+                          '<br />'.
+                          'With best regards,<br />'.
+                          '<a href="http://%host%/>%host% team</a>',
+            'altBody' =>  "Thank you for your letter!".
+                          "\n\n\n".
+                          "With best regards,\n".
+                          "%host% team",
             'signature' => 'true'
         ));
     }

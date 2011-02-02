@@ -34,7 +34,7 @@ class Core_MailerTest extends ControllerTestCase
             Core_Mailer::init();
             $this->fail('This message should not be dispayed');
         } catch (Core_Mailer_Exception $e) {
-            $this->assertType('string', $e->getMessage());
+            $this->assertInternalType('string', $e->getMessage());
         }
         
         try {
@@ -46,7 +46,7 @@ class Core_MailerTest extends ControllerTestCase
             Core_Mailer::init($data);
             $this->fail('This message should not be dispayed');
         } catch (Core_Mailer_Exception $e) {
-            $this->assertType('string', $e->getMessage());
+            $this->assertInternalType('string', $e->getMessage());
         }
     }
     
