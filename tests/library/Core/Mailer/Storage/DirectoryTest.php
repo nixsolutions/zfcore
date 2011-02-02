@@ -15,11 +15,11 @@ class Core_Mailer_Storage_DirectoryTest extends ControllerTestCase
     {
         parent::setUp();
         
-        $this->_tempDir  = APPLICATION_PATH.'/templatemail/';
+        $this->_tempDir  = APPLICATION_PATH.'/../data/templatemail/';
         
         $this->_tempFile = 'test';
         
-        mkdir($this->_tempDir);
+        is_dir($this->_tempDir) or mkdir($this->_tempDir);
         
         $this->_adapter = array(
             'storage'    => array('type'    => 'Directory',
@@ -28,7 +28,9 @@ class Core_Mailer_Storage_DirectoryTest extends ControllerTestCase
                                  )),
             'transport' => array('type'    => 'ZendMail',
                                  'options' => array(
-                                    'transport' => Zend_Mail_Transport_Sendmail
+                                    'transport' => array(
+                                            'class'=>'Zend_Mail_Transport_Sendmail'
+                                        )
                                  )),
              );
         $this->_fixture = array( 'toEmail' => 'secunda@nixsolutions.com',

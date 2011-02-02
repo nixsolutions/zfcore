@@ -34,6 +34,7 @@ class Core_Application_Resource_Mailer
     public function init()
     {
         $registry = Zend_Registry::getInstance();
+
         $registry->set('Core_Mailer_Config', $this->getOptions());
     }
 }

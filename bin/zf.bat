@@ -41,3 +41,4 @@ GOTO RUN
 SET ZF_SCRIPT=%PHP_DIR%\zf.php
 "%PHP_BIN%" -d safe_mode=Off -f "%ZF_SCRIPT%" -- %*
 
+

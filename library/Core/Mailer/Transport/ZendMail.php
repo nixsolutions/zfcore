@@ -40,8 +40,9 @@ class Core_Mailer_Transport_ZendMail
 
         if (isset($options['transport'])) {
             $this->_setupTransport();
-            $this->_setupDefaults();
         }
+        
+        $this->_setupDefaults();
     }
 
     /**
@@ -54,27 +55,32 @@ class Core_Mailer_Transport_ZendMail
     {
         $options = $this->_options;
 
-        if (!isset($options['type'])) {
-            $options['type'] = 'sendmail';
-        }
+        $transportName = $options['transport']['class'];
 
-        $transportName = $options['transport'];
-
-        unset($options['transport']);
+        unset($options['transport']['class']);
 
         switch($transportName) {
             case 'Zend_Mail_Transport_Smtp':
-                if (!isset($options['host'])) {
+                if (!isset($options['transport']['host'])) {
                     throw new Zend_Application_Resource_Exception(
                         'A host is necessary for smtp transport,'
                         .' but none was given');
                 }
-
-                $transport = new $transportName($options['host'], $options);
+                $host = $options['transport']['host'];
+                unset($options['transport']['host']);
+                $transport = new Zend_Mail_Transport_Smtp($host, $options);
+                break;
+            case 'Zend_Mail_Transport_File':
+                $transport = new Zend_Mail_Transport_File($options['transport']);
                 break;
             case 'Zend_Mail_Transport_Sendmail':
             default:
-                $transport = new $transportName($options);
+                if (isset($options['transport']['params'])) {
+                    $transport = new Zend_Mail_Transport_Sendmail($options['transport']['params']);
+                } else {
+                    $transport = new Zend_Mail_Transport_Sendmail($options['transport']['params']);
+                }
+
                 break;
         }
         Zend_Mail::setDefaultTransport($transport);

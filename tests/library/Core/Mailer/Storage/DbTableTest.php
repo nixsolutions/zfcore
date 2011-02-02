@@ -22,7 +22,9 @@ class Core_Mailer_Storage_DbTableTest extends ControllerTestCase
                                )),
             'transport' => array('type'    => 'ZendMail',
                                  'options' => array(
-                                    'transport' => 'Zend_Mail_Transport_Sendmail'
+                                    'transport' => array(
+                                            'class'=>'Zend_Mail_Transport_Sendmail'
+                                        )
                                  )),
            );
 

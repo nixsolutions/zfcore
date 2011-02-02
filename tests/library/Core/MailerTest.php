@@ -18,11 +18,13 @@ class Core_MailerTest extends ControllerTestCase
         $this->_fixture = array(
             'storage'   => array('type'    => 'DbTable',
                                  'options' => array(
-                                    'table'  => Model_Mail_Table
+                                    'table'  => 'Model_Mail_Table'
                                  )),
             'transport' => array('type'    => 'ZendMail',
                                  'options' => array(
-                                    'transport' => Zend_Mail_Transport_Sendmail
+                                    'transport' => array(
+                                            'class'=>'Zend_Mail_Transport_Sendmail'
+                                        )
                                  )),
                                );
     }
