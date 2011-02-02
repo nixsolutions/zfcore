@@ -8,6 +8,14 @@
         <mkdir dir="${basedir}/build/docs"/>
         <mkdir dir="${basedir}/build/coverage"/>
         <mkdir dir="${basedir}/build/phpcb"/>
+
+        <!--Requirements-->
+        <mkdir dir="${basedir}/data/cache/"/>
+        <mkdir dir="${basedir}/data/logs/"/>
+        <mkdir dir="${basedir}/data/session/"/>
+        <mkdir dir="${basedir}/data/uploads/"/>
+        <mkdir dir="${basedir}/public/images/captcha/"/>
+        <mkdir dir="${basedir}/public/uploads/"/>
     </target>
     <target name="phpdoc">
         <exec dir="${basedir}" executable="phpdoc" failonerror="false">
