@@ -104,7 +104,7 @@ production:
           fromName: ZFCore Webmaster
           charset: UTF-8
   view:
-    title: ZFCore - $Rev: 222 $
+    title: "ZFCore"
     doctype: XHTML1_STRICT
     encoding: UTF-8
 
@@ -140,5 +140,5 @@ development:
     db:
       params:
         profiler:
-          enabled:true
-          class:Zend_Db_Profiler_Firebug
+          enabled: true
+          class: Zend_Db_Profiler_Firebug
