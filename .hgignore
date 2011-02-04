@@ -1,2 +1,4 @@
-glob:.idea/*
-glob:nbproject/*
+syntax: glob
+.idea/*
+nbproject/*
+data/cache/**
