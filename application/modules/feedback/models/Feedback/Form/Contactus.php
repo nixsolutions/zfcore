@@ -1,11 +1,11 @@
 <?php
 /**
  * Contact us, form
- * 
+ *
  * @category Application
  * @package Model
  * @subpackage Form
- * 
+ *
  * @version  $Id: Contactus.php 1561 2009-10-16 13:31:31Z dark $
  */
 class Feedback_Model_Feedback_Form_Contactus extends Zend_Form
@@ -33,13 +33,13 @@ class Feedback_Model_Feedback_Form_Contactus extends Zend_Form
                 $this->_button('Send', 'submit')
             )
         );
-        
+
         return $this;
     }
-    
+
     /**
 	 * Create contact us element "sender"
-	 * 
+	 *
 	 * @return object Zend_Form_Element_Text
 	 */
     protected function _sender()
@@ -51,13 +51,13 @@ class Feedback_Model_Feedback_Form_Contactus extends Zend_Form
                 ->addValidator('StringLength', true, array('max' => '255'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
-                
+
         return $element;
     }
-    
+
     /**
 	 * Create contact us element "email"
-	 * 
+	 *
 	 * @return object Zend_Form_Element_Text
 	 */
     protected function _email()
@@ -70,13 +70,13 @@ class Feedback_Model_Feedback_Form_Contactus extends Zend_Form
                 ->addValidator('StringLength', true, array('max' => '80'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
-              
+
         return $element;
     }
-    
+
     /**
 	 * Create contact us element "subject"
-	 * 
+	 *
 	 * @return object Zend_Form_Element_Text
 	 */
     protected function _subject()
@@ -88,13 +88,13 @@ class Feedback_Model_Feedback_Form_Contactus extends Zend_Form
                 ->addValidator('StringLength', true, array('max' => '255'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
-                
+
         return $element;
     }
-    
+
     /**
 	 * Create contact us element "message"
-	 * 
+	 *
 	 * @return object Zend_Form_Element_Textarea
 	 */
     protected function _message()
@@ -106,13 +106,13 @@ class Feedback_Model_Feedback_Form_Contactus extends Zend_Form
                 ->addValidator('StringLength', true, array('max' => '255'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
-                
+
         return $element;
     }
-    
+
     /**
 	 * Create contact us element "captcha"
-	 * 
+	 *
 	 * @return object Zend_Form_Element_Captcha
 	 */
     protected function _captcha()
@@ -133,13 +133,13 @@ class Feedback_Model_Feedback_Form_Contactus extends Zend_Form
         $element = new Zend_Form_Element_Captcha('captcha', array('captcha' => $options));
         $element->setLabel('Code on picture: ')
                 ->setIgnore(true);
-        
+
         return $element;
     }
-    
+
     /**
 	 * Create form element "button"
-	 * 
+	 *
 	 * @param string $label - label button
 	 * @param string $type  - type button
 	 * @param string $name  - name/id button
@@ -155,7 +155,7 @@ class Feedback_Model_Feedback_Form_Contactus extends Zend_Form
                 ->setRequired(false)
                 ->setIgnore(true)
                 ->setAttribs(array('type' => $type, 'id' => $name));
-             
+
         return $element;
     }
 }
