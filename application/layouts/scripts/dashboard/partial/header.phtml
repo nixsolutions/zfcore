@@ -19,14 +19,8 @@
                      ->enable()
                      ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
                      ->setCdnDojoPath(Zend_Dojo::CDN_DOJO_PATH_GOOGLE)
-                     ->registerModulePath('core', '/scripts/core')
-                     ->setCdnVersion('1.5.0');
-            }
-
-            /** add dojo biuld layer */
-            if (file_exists(realpath(APPLICATION_PATH . '/../public/scripts/dojo/scaffold.js'))){
-                $this->dojo()
-                     ->addLayer($this->baseUrl('/scripts/dojo/scaffold.js'));
+                     ->registerModulePath('core', $this->baseUrl('/scripts/core'))
+                     ->setCdnVersion('1.6.0');
             }
 
             $this->dojo()
