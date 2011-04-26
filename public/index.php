@@ -45,10 +45,55 @@ function errorHandler() {
 require_once 'Zend/Application.php';  
 
 try {
+
+    require_once 'Zend/Cache.php';
+    
+    $frontendOptions = array("lifetime" => 60*60*24,
+                             "automatic_serialization" => true,
+//                             "automatic_cleaning_factor" => 1,
+                             "ignore_user_abort" => true);
+
+    $backendOptions  = array("file_name_prefix" => APPLICATION_ENV . "_config",
+                             "cache_dir" =>  APPLICATION_PATH ."/../data/cache",
+                             "cache_file_umask" => 0644);
+
+    // getting a Zend_Cache_Core object
+    $cache = Zend_Cache::factory(
+        'Core',
+        'File',
+        $frontendOptions,
+        $backendOptions
+    );
+
+    if (!$result = $cache->load('application')) {
+        require_once 'Zend/Config/Yaml.php';
+        $config = new Zend_Config_Yaml(
+            APPLICATION_PATH . '/configs/application.yaml',
+            APPLICATION_ENV
+        );
+        $result = $config->toArray();
+        $cache->save($result, 'application');
+    }
+    /*
+        require_once 'Core/Config/Yaml.php';
+        $config = new Core_Config_Yaml(
+            APPLICATION_PATH . '/configs/application.yaml',
+            APPLICATION_ENV,
+            array(
+                'ignore_constants' => true,
+                'definitions' => array(
+                    'APPLICATION_PATH',
+                    'APPLICATION_ENV'
+                )
+            )
+        );
+        $result = $config->toArray();
+     */
+
     // Create application, bootstrap, and run
     $application = new Zend_Application(
         APPLICATION_ENV,
-        APPLICATION_PATH . '/configs/application.yaml'
+        $result
     );
 
     $application->bootstrap()
