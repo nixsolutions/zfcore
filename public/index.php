@@ -50,7 +50,7 @@ try {
     
     $frontendOptions = array("lifetime" => 60*60*24,
                              "automatic_serialization" => true,
-//                             "automatic_cleaning_factor" => 1,
+                             "automatic_cleaning_factor" => 1,
                              "ignore_user_abort" => true);
 
     $backendOptions  = array("file_name_prefix" => APPLICATION_ENV . "_config",
@@ -74,21 +74,6 @@ try {
         $result = $config->toArray();
         $cache->save($result, 'application');
     }
-    /*
-        require_once 'Core/Config/Yaml.php';
-        $config = new Core_Config_Yaml(
-            APPLICATION_PATH . '/configs/application.yaml',
-            APPLICATION_ENV,
-            array(
-                'ignore_constants' => true,
-                'definitions' => array(
-                    'APPLICATION_PATH',
-                    'APPLICATION_ENV'
-                )
-            )
-        );
-        $result = $config->toArray();
-     */
 
     // Create application, bootstrap, and run
     $application = new Zend_Application(
