@@ -5,10 +5,10 @@
  * @category   Application
  * @package    Dashboard
  * @subpackage Controller
- * 
+ *
  * @version  $Id: ErrorController.php 144 2010-07-05 13:50:23Z AntonShevchuk $
  */
-class Admin_ErrorController extends Core_Controller_Action
+class Mail_ErrorController extends Core_Controller_Action
 {
     /**
      * Flash Messenger
@@ -16,7 +16,7 @@ class Admin_ErrorController extends Core_Controller_Action
      * @var Zend_Controller_Action_Helper_FlashMessenger
      */
     protected $_flashMessenger;
-    
+
     /**
      * Init controller plugins
      *
@@ -25,10 +25,10 @@ class Admin_ErrorController extends Core_Controller_Action
     {
         /* Initialize */
         parent::init();
-        
+
         /* is Dashboard Controller */
         $this->_isDashboard();
-              
+
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
     }
 
@@ -73,7 +73,7 @@ class Admin_ErrorController extends Core_Controller_Action
         $this->getResponse()->setHttpResponseCode(500);
         $this->view->message = $this->_getParam('error');
     }
-    
+
     /**
      * deniedAction
      *
