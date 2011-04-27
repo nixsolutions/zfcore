@@ -4,5 +4,3 @@ mvc:
       allow: admin
     error:
       allow: admin
-    mail:
-      allow: admin
