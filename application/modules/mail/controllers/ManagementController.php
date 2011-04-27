@@ -47,7 +47,7 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function deleteAction()
     {
-        throw new Zend_Controller_Action_Exception('Page not found', 404);
+        return $this->_forward('notfound', 'error');
     }
 
     /**
@@ -55,7 +55,7 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function createAction()
     {
-        throw new Zend_Controller_Action_Exception('Page not found', 404);
+         return $this->_forward('notfound', 'error');
     }
 
     /**
