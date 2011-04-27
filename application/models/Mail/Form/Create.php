@@ -1,11 +1,11 @@
 <?php
 /**
  * Register user form
- * 
+ *
  * @category Application
  * @package Model
  * @subpackage Form
- * 
+ *
  * @version  $Id: Create.php 206 2010-10-20 10:55:55Z AntonShevchuk $
  */
 class Model_Mail_Form_Create extends Zend_Dojo_Form
@@ -19,7 +19,7 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
     {
         $this->setName('mailCreateForm')
              ->setMethod('post');
-        
+
         $this->addElements(
             array($this->_alias(),
                  $this->_description(),
@@ -34,7 +34,7 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
         );
         return $this;
     }
-    
+
     /**
      * Create mail alias element
      *
@@ -47,10 +47,10 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
               ->setIgnore(true)
               ->setDijitParam('disabled', 'on')
               ->setAttribs(array('style'=>'width:60%'));
-                 
+
         return $alias;
     }
-    
+
     /**
      * Create mail subject element
      *
@@ -67,7 +67,7 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
                 ->addFilter('StringTrim');
         return $subject;
     }
-    
+
     /**
      * Create mail body element
      *
@@ -82,7 +82,7 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
              ->addFilter('StringTrim');
         return $body;
     }
-    
+
     /**
      * Create mail body element (text)
      *
@@ -97,7 +97,7 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
              ->addFilter('StringTrim');
         return $body;
     }
-    
+
     /**
      * Create mail description element
      *
@@ -114,7 +114,7 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
              ->addFilter('StringTrim');
         return $desc;
     }
-    
+
     /**
      * Create fromName mail element
      *
@@ -129,10 +129,10 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
                  ->setTrim(true)
                  ->addFilter('StripTags')
                  ->addFilter('StringTrim');
-                                
+
         return $fromName;
     }
-    
+
     /**
      * Create fromEmail email element
      *
@@ -149,10 +149,10 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
                   ->setValue(null)
                   ->addValidator('StringLength', false, array(6))
                   ->addValidator('EmailAddress');
-              
+
         return $fromEmail;
     }
-    
+
     /**
      * Create toName mail element
      *
@@ -167,10 +167,10 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
                ->setTrim(true)
                ->addFilter('StripTags')
                ->addFilter('StringTrim');
-                                
+
         return $toName;
     }
-    
+
     /**
      * Create toEmail email element
      *
@@ -187,10 +187,10 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
                 ->setValue(null)
                 ->addValidator('StringLength', false, array(6))
                 ->addValidator('EmailAddress');
-              
+
         return $toEmail;
     }
-    
+
     /**
      * Create submit element
      *
@@ -200,10 +200,10 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
     {
         $submit = new Zend_Dojo_Form_Element_SubmitButton('submit');
         $submit->setLabel('Create');
-        
+
         return $submit;
     }
-    
+
     /**
      * Create element signature
      */

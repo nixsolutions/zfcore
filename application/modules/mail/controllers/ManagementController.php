@@ -43,31 +43,11 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
     }
 
     /**
-     * Edit Layout
-     *
-     */
-    public function layoutAction()
-    {
-        $mail = new Model_Mail_Form_Layout();
-
-        if ($this->_request->isPost() &&
-            $mail->isValid($this->_getAllParams())) {
-            Model_Mail::setLayout($mail->getValue('body'));
-            $this->_helper->getHelper('redirector')->direct('index');
-        } else {
-            if (!in_array(true, $mail->getValues())) {
-                $mail->setDefaults(array('body' => Model_Mail::getLayout()));
-            }
-            $this->view->editLayout = $mail;
-        }
-    }
-
-    /**
      * delete Action
      */
     public function deleteAction()
     {
-        return $this->_forward('notfound', 'error');
+        throw new Zend_Controller_Action_Exception('Page not found', 404);
     }
 
     /**
@@ -75,7 +55,7 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function createAction()
     {
-        return $this->_forward('notfound', 'error');
+        throw new Zend_Controller_Action_Exception('Page not found', 404);
     }
 
     /**
@@ -83,13 +63,17 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function sendAction()
     {
-        $mail = new Model_Mail_Form_Send();
+        $form = new Mail_Form_Template_Send();
 
-        if ($this->_request->isPost() &&
-            $mail->isValid($this->_getAllParams())) {
+        if ($this->_request->isPost()
+            && $form->isValid($this->_getAllParams())) {
 
             try {
-                Model_Mail::send($mail->getValues());
+                $model = new Mail_Model_Templates_Model($form->getValues());
+                $model->send();
+
+                $this->_flashMessenger->addMessage('Mail Send');
+                $this->_helper->getHelper('redirector')->direct('index');
             } catch (Exception $e) {
                 return $this->_forward(
                     'internal',
@@ -98,25 +82,19 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
                     array('error' => $e->getMessage())
                 );
             }
-            $this->_flashMessenger->addMessage('Mail Send');
-            $this->_helper->getHelper('redirector')->direct('index');
-        } else {
-            if (!in_array(true, $mail->getValues())
-                && ($alias = $this->_getParam('alias'))
-            ) {
-                if (!$defaults = $this->_getTable()->getByAlias($alias)) {
-                    $message = $this->__('Not found such mail alias ') . "'$alias'";
-                    return $this->_forward(
-                        'internal',
-                        'error',
-                        'admin',
-                        array('error' => $message)
-                    );
-                }
-                $mail->setDefaults($defaults->toArray());
-            }
-            $this->view->mailForm = $mail;
         }
+        if ($alias = $this->_getParam('alias')) {
+            if (!$defaults = $this->_getTable()->getByAlias($alias)) {
+                return $this->_forward(
+                    'internal',
+                    'error',
+                    'admin',
+                    array('error' => "Not found such mail alias '{$alias}'")
+                );
+            }
+            $form->setDefaults($defaults->toArray());
+        }
+        $this->view->mailForm = $form;
     }
 
     /**
@@ -146,7 +124,7 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
      */
     protected function _getEditForm()
     {
-        return new Model_Mail_Form_Edit();
+        return new Mail_Form_Template_Edit();
     }
 }
 

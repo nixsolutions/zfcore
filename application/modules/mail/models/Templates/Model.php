@@ -11,11 +11,6 @@
 class Mail_Model_Templates_Model
 {
     /**
-     * @var string
-     */
-    protected static $_layout;
-
-    /**
      * Default values for mail template
      *
      * @var array
@@ -23,10 +18,11 @@ class Mail_Model_Templates_Model
     protected $_data = array(
         'toEmail'      => null,
         'toName'       => null,
+        'formEmail'    => null,
+        'formName'     => null,
         'subject'      => null,
         'bodyHtml'     => null,
-        'bodyText'     => null,
-        'enableLayout' => null
+        'bodyText'     => null
     );
 
     /**
@@ -50,14 +46,6 @@ class Mail_Model_Templates_Model
     {
         $this->_data = array_merge($this->_data, $data);
         return $this;
-    }
-
-    /**
-     * Set layout
-     */
-    public static function setLayout($layout)
-    {
-        self::$_layout = (string) $layout;
     }
 
     /**
@@ -129,15 +117,14 @@ class Mail_Model_Templates_Model
         if ($this->fromEmail || $this->fromName) {
             $mail->setFrom($this->fromEmail, $this->fromName);
         }
+        if ($this->toEmail || $this->toName) {
+            $mail->addTo($this->toEmail, $this->toName);
+        }
         if ($this->subject) {
             $mail->setSubject($this->subject);
         }
         if ($this->bodyHtml) {
-            $html = $this->bodyHtml;
-            if ($this->enableLayout && self::$_layout) {
-                $html = str_replace('%body%', $html, self::$_layout);
-            }
-            $mail->setBodyHtml($html);
+            $mail->setBodyHtml($this->bodyHtml);
         }
         if ($this->bodyText) {
             $mail->setBodyText($this->bodyText);
