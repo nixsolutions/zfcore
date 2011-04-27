@@ -5,10 +5,10 @@
  * @category   Application
  * @package    Dashboard
  * @subpackage Controller
- * 
+ *
  * @version  $Id: MailController.php 206 2010-10-20 10:55:55Z AntonShevchuk $
  */
-class Admin_MailController extends Core_Controller_Action_Scaffold
+class Mail_ManagementController extends Core_Controller_Action_Scaffold
 {
     /**
      * init environment
@@ -17,7 +17,7 @@ class Admin_MailController extends Core_Controller_Action_Scaffold
     {
         /* Initialize */
         parent::init();
-        
+
         /* is Dashboard Controller */
         $this->_isDashboard();
     }
@@ -33,7 +33,7 @@ class Admin_MailController extends Core_Controller_Action_Scaffold
     {
         $this->view->aOptions = array('maxLength' => 140);
     }
-    
+
     /**
      * Edit action
      */
@@ -41,7 +41,7 @@ class Admin_MailController extends Core_Controller_Action_Scaffold
     {
         parent::editAction();
     }
-    
+
     /**
      * Edit Layout
      *
@@ -49,19 +49,19 @@ class Admin_MailController extends Core_Controller_Action_Scaffold
     public function layoutAction()
     {
         $mail = new Model_Mail_Form_Layout();
-        
-        if ($this->_request->isPost() && 
+
+        if ($this->_request->isPost() &&
             $mail->isValid($this->_getAllParams())) {
-            Model_Mail::setLayout($mail->getValue('body')); 
+            Model_Mail::setLayout($mail->getValue('body'));
             $this->_helper->getHelper('redirector')->direct('index');
         } else {
-            if (!in_array(true, $mail->getValues())) { 
+            if (!in_array(true, $mail->getValues())) {
                 $mail->setDefaults(array('body' => Model_Mail::getLayout()));
             }
             $this->view->editLayout = $mail;
         }
     }
-    
+
     /**
      * delete Action
      */
@@ -69,7 +69,7 @@ class Admin_MailController extends Core_Controller_Action_Scaffold
     {
         return $this->_forward('notfound', 'error');
     }
-    
+
     /**
      * create action
      */
@@ -77,17 +77,17 @@ class Admin_MailController extends Core_Controller_Action_Scaffold
     {
         return $this->_forward('notfound', 'error');
     }
-    
+
     /**
      * send action
      */
     public function sendAction()
     {
         $mail = new Model_Mail_Form_Send();
-        
-        if ($this->_request->isPost() && 
+
+        if ($this->_request->isPost() &&
             $mail->isValid($this->_getAllParams())) {
-            
+
             try {
                 Model_Mail::send($mail->getValues());
             } catch (Exception $e) {
@@ -103,7 +103,7 @@ class Admin_MailController extends Core_Controller_Action_Scaffold
         } else {
             if (!in_array(true, $mail->getValues())
                 && ($alias = $this->_getParam('alias'))
-            ) { 
+            ) {
                 if (!$defaults = $this->_getTable()->getByAlias($alias)) {
                     $message = $this->__('Not found such mail alias ') . "'$alias'";
                     return $this->_forward(
@@ -128,9 +128,9 @@ class Admin_MailController extends Core_Controller_Action_Scaffold
      */
     protected function _getTable()
     {
-        return new Model_Mail_Table();
+        return new Mail_Model_Templates_Table();
     }
-    
+
     /**
      * disable create from
      */
@@ -138,7 +138,7 @@ class Admin_MailController extends Core_Controller_Action_Scaffold
     {
         return;
     }
-    
+
     /**
      * Get mail edit form
      *

@@ -1,0 +1,6 @@
+mvc:
+  mail:
+    management:
+      allow: admin
+    error:
+      allow: admin

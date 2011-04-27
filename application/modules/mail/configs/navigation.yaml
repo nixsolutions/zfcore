@@ -1,0 +1,22 @@
+mailmanagment:
+  label: Mail
+  uri:
+  pages:
+    edit:
+      label: Edit Templates
+      module: mail
+      controller: management
+      action: index
+      route: default
+    editlayout:
+      label: Edit Layout
+      module: mail
+      controller: management
+      action: layout
+      route: default
+    send:
+      label: Send Mail
+      module: mail
+      controller: management
+      action: send
+      route: default
