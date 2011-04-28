@@ -1,6 +1,6 @@
 <?php
 /**
- * Register user form
+ * Mail_Form_Template_Create
  *
  * @category Application
  * @package Model
@@ -8,7 +8,7 @@
  *
  * @version  $Id: Create.php 206 2010-10-20 10:55:55Z AntonShevchuk $
  */
-class Model_Mail_Form_Create extends Zend_Dojo_Form
+class Mail_Form_Template_Create extends Zend_Dojo_Form
 {
     /**
      * Form initialization
@@ -28,7 +28,6 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
                  $this->_altBody(),
                  $this->_fromName(),
                  $this->_fromEmail(),
-                 $this->_signature(),
                  $this->_submit()
             )
         );
@@ -75,7 +74,7 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
      */
     protected function _body()
     {
-        $body = new Zend_Dojo_Form_Element_Editor('body');
+        $body = new Zend_Dojo_Form_Element_Editor('bodyHtml');
         $body->setLabel('Body')
              ->setRequired(true)
              ->setAttribs(array('style'=>'width:60%'))
@@ -90,9 +89,9 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
      */
     protected function _altBody()
     {
-        $body = new Zend_Dojo_Form_Element_Textarea('altBody');
+        $body = new Zend_Dojo_Form_Element_Textarea('bodyText');
         $body->setLabel('Body (text)')
-             ->setRequired(true)
+             //->setRequired(true)
              ->setAttribs(array('style'=>'width:60%'))
              ->addFilter('StringTrim');
         return $body;
@@ -202,15 +201,5 @@ class Model_Mail_Form_Create extends Zend_Dojo_Form
         $submit->setLabel('Create');
 
         return $submit;
-    }
-
-    /**
-     * Create element signature
-     */
-    protected function _signature()
-    {
-        $signature = new Zend_Dojo_Form_Element_CheckBox('signature');
-        $signature->setLabel('Enable Layout with signature');
-        return $signature;
     }
 }

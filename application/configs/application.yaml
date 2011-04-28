@@ -76,7 +76,7 @@ production:
     db:
       adapter: pdo_mysql
       params:
-        host: localhost
+        host: elephant
         username: p_zfc
         password: zfc
         dbname: p_zfc

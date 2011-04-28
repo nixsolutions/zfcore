@@ -2,3 +2,6 @@ syntax: glob
 .idea/*
 nbproject/*
 data/cache/**
+.buildpath
+.project
+.settings
