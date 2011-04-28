@@ -24,31 +24,31 @@ class Core_Form_MultipageTest extends ControllerTestCase
         $multiform = new Core_Form_Multipage();
         $multiform->setNamespace('Core_Form_Multipage');
 
-        $field1 = new Zend_Form_Element_Text('field1');
-        $field1->setLabel('Field #1')
+        $filedOne = new Zend_Form_Element_Text('field1');
+        $filedOne->setLabel('Field #1')
                ->setRequired(true);
 
-        $field2 = new Zend_Form_Element_Text('field2');
-        $field2->setLabel('Field #2')
+        $filedTwo = new Zend_Form_Element_Text('field2');
+        $filedTwo->setLabel('Field #2')
                ->setRequired(true)
                ->addValidator('Alnum');
 
-        $field3 = new Zend_Form_Element_Text('field3');
-        $field3->setLabel('Field #3')
+        $filedThree = new Zend_Form_Element_Text('field3');
+        $filedThree->setLabel('Field #3')
                ->setRequired(true);
 
-        $subForm1 = new Zend_Form_SubForm();
-        $subForm1->addElements(array($field1));
+        $subFormOne = new Zend_Form_SubForm();
+        $subFormOne->addElements(array($filedOne));
 
-        $subForm2 = new Zend_Form_SubForm();
-        $subForm2->addElements(array($field2));
+        $subFormTwo = new Zend_Form_SubForm();
+        $subFormTwo->addElements(array($filedTwo));
 
-        $subForm3 = new Zend_Form_SubForm();
-        $subForm3->addElements(array($field3));
+        $subFormThree = new Zend_Form_SubForm();
+        $subFormThree->addElements(array($filedThree));
 
-        $multiform->addSubForm($subForm1, 'step1', 1);
-        $multiform->addSubForm($subForm2, 'step2', 2);
-        $multiform->addSubForm($subForm3, 'step3', 3);
+        $multiform->addSubForm($subFormOne, 'step1', 1);
+        $multiform->addSubForm($subFormTwo, 'step2', 2);
+        $multiform->addSubForm($subFormThree, 'step3', 3);
 
         return $multiform;
     }

@@ -3,6 +3,7 @@
 <head>
     <?php echo $this->headMeta() ?>
     <?php echo $this->headTitle() ?>
+    <base href="<?php echo $this->baseUrl();?>" />
     <?php $this->headLink() 
                ->prependStylesheet($this->baseUrl('layouts/default/css/style.css'))
                ->headLink(array('rel' => 'shortcut icon', 'href' => $this->baseUrl('/favicon.ico'), 'type' => 'image/x-icon'), 'PREPEND')?>

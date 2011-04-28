@@ -173,6 +173,12 @@ class Debug_CrontabController extends Core_Controller_Action
      */
     public function deleteAction()
     {
+        $start  = $this->_getParam('start');
+        $count  = $this->_getParam('count');
+        $sort   = $this->_getParam('sort');
+        $field  = $this->_getParam('field');
+        $filter = $this->_getParam('filter');
+        
         $manager = new Debug_Model_Crontab_Manager();
         $manager->deleteCrontabLine($this->_getParam('id'));
         $crontabs = $manager->createGritArray(
