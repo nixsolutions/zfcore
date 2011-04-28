@@ -19,8 +19,8 @@
     </target>
     <target name="phpdoc">
         <exec dir="${basedir}" executable="phpdoc" failonerror="false">
-            <arg line="-t build/docs/
-    			  --directory application,migrations,tests,library/Core
+            <arg line="-t build/docs
+    			  --directory application, library/Core
     			  -ti 'ZFCore Docs'
     			  --parseprivate on
     			  --undocumentedelements on
