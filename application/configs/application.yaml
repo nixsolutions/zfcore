@@ -88,21 +88,14 @@ production:
     session:
       save_path: APPLICATION_PATH/../data/session
     auth: true
-    mailer:
-      storage:
-        type: DbTable
-        options:
-          table: Model_Mail_Table
+    mail:
       transport:
-        type: ZendMail
-        options:
-          transport:
-            class: Zend_Mail_Transport_Smtp
-            host: stubmail.nixsolutions.com
-            port: 2500
-          fromEmail: zfc@nixsolutions.com
-          fromName: ZFCore Webmaster
-          charset: UTF-8
+        type: Zend_Mail_Transport_Smtp
+        host: stubmail.nixsolutions.com
+        port: 2500
+      defaultFrom:
+        email: zfc@nixsolutions.com
+        name: ZFCore Webmaster
   view:
     title: "ZFCore"
     doctype: XHTML1_STRICT
