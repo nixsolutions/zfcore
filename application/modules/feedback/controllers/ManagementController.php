@@ -5,7 +5,7 @@
  * @category   Application
  * @package    Dashboard
  * @subpackage Controller
- * 
+ *
  * @version  $Id: MessageController.php 1564 2009-10-30 09:09:03Z secunda $
  */
 class Feedback_ManagementController extends Core_Controller_Action_Scaffold
@@ -14,13 +14,13 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
     {
        /* Initialize */
         parent::init();
-        
+
         /* is Dashboard Controller */
         $this->_isDashboard();
-        
+
         $this->_helper->getHelper('AjaxContext')
                       ->addActionContext('get-mail-template', 'html')
-                      ->initContext();          
+                      ->initContext();
     }
 
     public function indexAction()
@@ -28,7 +28,7 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
         // see view script
         // use dojox.grid.DataGrid
     }
-    
+
     /**
      * Read action
      */
@@ -36,7 +36,7 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
     {
         $request = $this->getRequest();
         $id = intval($request->getParam('id', 0));
-        if ($request->isPost() && $id) {            
+        if ($request->isPost() && $id) {
             $table = new Feedback_Model_Feedback_Table();
             $model = $table->getById($id);
             if ($model) {
@@ -45,18 +45,18 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
                 $form->setAction($this->view->url(array('action'=>'reply')));
 
                 // get template for reply
-                $mail = new Model_Mail_Table();
-                $template = $mail->getByAlias('reply');
+                $mail = new Mail_Model_Templates_Table();
+                $template = $mail->getModel('reply');
 
                 $replyMail = $template->toArray();
                 $replyMail['id'] = $model->id;
                 $replyMail['sender'] = $model->sender;
                 $replyMail['email'] = $model->email;
-                $replyMail['message'] = $replyMail['body'];
+                $replyMail['message'] = $replyMail['bodyHtml'];
                 unset($replyMail['body']);
 
                 $form->setDefaults($replyMail);
-                
+
                 $this->view->form = $form;
                 $this->view->mail = $model;
                 // change feedback status
@@ -74,7 +74,7 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
             $this->_helper->getHelper('redirector')->direct('index');
         }
     }
-    
+
     /**
      * Reply action
      */
@@ -99,6 +99,8 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
                 if ($model && $form->isValid($request->getPost())) {
                     $data = $form->getValues();
                     $message = $model->toArray();
+
+                    $mail = new Zend_Mail();
                     // Формирование MIME данных
                     $mime = null;
                     if ($form->inputFile->isUploaded()) {
@@ -110,36 +112,34 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
                                 'description' => 'Attachment Image'
                             )
                         );
+                        $mail->setMime($mime);
                         // Удалить загруженный файл
                         unlink($file['tmp_name']);
                     }
                     // Формирование шаблона собщения
-                    $subject = $data['subject'] ? 
+                    $subject = $data['subject'] ?
                         $data['subject'] :
                         ('To reply on "' . $message['subject'] . '"');
 
-                    $template = new Core_Mailer_Template(
-                        array(
-                            'toName'   => $data['sender'],
-                            'toEmail'  => $data['email'],
-                            'fromName' => $data['fromName'],
-                            'fromEmail'=> $data['fromEmail'],
-                            'subject'  => $subject,
-                            'body'     => $data['message'],
-                            'mime'     => $mime
-                        )
-                    );
+                    $template = new Mail_Model_Templates_Model();
+                    $template->toName    = $data['sender'];
+                    $template->toEmail   = $data['email'];
+                    $template->fromName  = $data['fromName'];
+                    $template->fromEmail = $data['fromEmail'];
+                    $template->subject   = $subject;
+                    $template->bodyHtml  = $data['message'];
+
                     // if message with file, change %image% in template to link
                     if ($form->inputFile->isUploaded()) {
                         $image = '<img src="cid:' .
                                  $mime->id .
                                  '" title="' .
                                  $mime->description . '"/>';
-                        
+
                         $template->assign('image', $image);
                     }
                     // Посылка собщения
-                    Model_Mail::sendArbitraryMessage($template);
+                    $template->send($mail);
                     // Если надо сохранить копию сообщения
                     if ($data['saveCopy']) {
                         $login = Zend_Auth::getInstance()->getIdentity()->login;
@@ -244,7 +244,7 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
 //        }
 //        $this->_redirect($this->view->url(array('action' => 'index')));
 //    }
-    
+
     /**
      * getMailTemplate action
      */
@@ -257,13 +257,13 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
                 $request->getParam('description', 0)
             );
             if ($description) {
-                $mail = new Model_Mail_Table();
-                $template = $mail->getByDescription($description);
-                $this->view->template = $template->body;
+                $table = new Mail_Model_Templates_Table();
+                $template = $table->getByDescription($description);
+                $this->view->template = $template->bodyHtml;
             }
         }
     }
-    
+
     /**
      * _getTable
      *
@@ -275,7 +275,7 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
     {
         return new Feedback_Model_Feedback_Table();
     }
- 
+
     /**
      * _getCreateForm
      *
@@ -285,9 +285,9 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function _getCreateForm()
     {
-        
+
     }
- 
+
     /**
      * _getEditForm
      *
@@ -297,6 +297,6 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function _getEditForm()
     {
-        
+
     }
 }

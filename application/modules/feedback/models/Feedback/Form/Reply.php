@@ -1,11 +1,11 @@
 <?php
 /**
  * Replying to a message, the form
- * 
+ *
  * @category Application
  * @package Model
  * @subpackage Form
- * 
+ *
  * @version  $Id: Reply.php 1561 2009-10-16 13:31:31Z dark $
  */
 class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
@@ -20,7 +20,7 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
         $this->setName('feedbackForm')
              ->setMethod(Zend_Dojo_Form::METHOD_POST)
              ->setAttrib('enctype', Zend_Dojo_Form::ENCTYPE_MULTIPART);
-        
+
         $this->addElements(
             array(
                 $this->_subject(),
@@ -37,10 +37,10 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                 $this->_hidden('id')
             )
         );
-        
+
         return $this;
     }
-    
+
     /**
      * Create feedback sender element
      *
@@ -56,10 +56,10 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                 ->addValidator('StringLength', false, array('max' => '255'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
-              
+
         return $element;
     }
-    
+
     /**
      * Create feedback email element
      *
@@ -77,10 +77,10 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                 ->addValidator('EmailAddress')
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
-              
+
         return $element;
     }
-    
+
     /**
      * Create feedback subject element
      *
@@ -96,10 +96,10 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                 ->addValidator('StringLength', false, array('max' => '255'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
-              
+
         return $element;
     }
-    
+
     /**
      * Create feedback template element
      *
@@ -107,10 +107,9 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
      */
     protected function _template()
     {
-        $mailTemplates = new Model_Mail_Table();
-        $templates = $mailTemplates->fetchAll();
+        $table = new Mail_Model_Templates_Table();
         $options = array();
-        foreach ($templates as $template) {
+        foreach ($table->fetchAll() as $template) {
             $options[$template->id] = $template->description;
         }
         $element = new Zend_Dojo_Form_Element_ComboBox('template');
@@ -120,7 +119,7 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                 ->setMultiOptions($options);
         return $element;
     }
-    
+
     /**
      * Create feedback body element
      *
@@ -144,7 +143,7 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                                          'ImageManager',
                                          'FullScreen', '|',
                                          'Preview', '|',
-                                         'ViewSource')        
+                                         'ViewSource')
             )
         );
 
@@ -154,10 +153,10 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                 ->setRequired(true)
                 ->setAttribs(array('style' => 'width:60%;height:300px'))
                 ->addFilter('StringTrim');
-                
+
         return $element;
     }
-    
+
     /**
      * Create feedback file element
      *
@@ -175,13 +174,13 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                 ->addFilter('Rename', APPLICATION_PATH . '/../data/uploads')
                 ->addValidator('Extension', false, 'jpg,jpeg,png,gif')
                 //->addValidator('Count', false, 1)
-                ->addValidator('Size', false, 2097152) 
+                ->addValidator('Size', false, 2097152)
                 ->setMaxFileSize(2097152) // limits the filesize on the client side
                 ->addFilter('BaseName');
-           
+
         return $element;
     }
-    
+
     /**
      * Create feedback copy element
      *
@@ -201,11 +200,11 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                         new Zend_Form_Decorator_HtmlTag(array('tag' => 'dd')),
                     )
                 );
-                
+
         return $element;
     }
 
-    
+
     /**
      * Create fromName mail element
      *
@@ -224,7 +223,7 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
         return $fromName;
     }
 
-    
+
     /**
      * Create fromEmail email element
      *
@@ -245,7 +244,7 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
         return $fromEmail;
     }
 
-    
+
     /**
      * Create feedback button element
      *
@@ -264,10 +263,10 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                 ->setRequired(false)
                 ->setAttribs(array('type' => $type))
                 ->setDecorators(array(new Zend_Dojo_Form_Decorator_DijitElement()));
-             
+
         return $element;
     }
-    
+
     /**
      * Create feedback hidden element
      *
@@ -281,7 +280,7 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
                 ->setValue($value)
                 ->addFilter('StripTags')
                 ->setDecorators(array(new Zend_Dojo_Form_Decorator_DijitElement()));
-             
+
         return $element;
     }
 }

@@ -49,6 +49,16 @@ class Mail_Model_Templates_Model
     }
 
     /**
+     * Get array
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return $this->_data;
+    }
+
+    /**
      * Assign data to template
      *
      * @param string $name
