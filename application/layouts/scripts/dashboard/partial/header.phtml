@@ -3,6 +3,7 @@
     <head>
         <?php echo $this->headMeta() ?>
         <?php echo $this->headTitle($this->__(' Admin Panel')) ?>
+        <base href="<?php echo $this->baseUrl();?>" />
         <?php echo $this->headLink()->prependStylesheet($this->baseUrl('/layouts/dashboard/css/style.css'))
                         ->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'), 'PREPEND')?>
 

@@ -62,7 +62,7 @@ production:
           stackindex: 40
           options:
             config: routes
-            cache: off
+            cache: on
 
         navigation:
           class: Core_Controller_Plugin_Navigation
@@ -70,7 +70,7 @@ production:
           options:
             config: navigation
             section: dashboard
-            cache: off
+            cache: on
             
     modules:
     db:
