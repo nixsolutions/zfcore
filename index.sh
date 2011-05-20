@@ -13,8 +13,8 @@ mkdir ./data/session/ -m 0777
 mkdir ./data/uploads/ -m 0777
 
 # Public data
-mkdir ./public/images/captcha/ -m 0777
-mkdir ./public/uploads/ -m 0777
+mkdir -p ./public/images/captcha/ -m 0777
+mkdir -p ./public/uploads/ -m 0777
 
 # Binary
 chmod a+x ./bin/zf.sh

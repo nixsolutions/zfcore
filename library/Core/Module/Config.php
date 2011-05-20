@@ -3,7 +3,12 @@
  * Load configuration from every module, merge it, save to cache
  * 
  * <code>
- * Core_Module_Config::getXmlConfig(String $config, String $section, Bool $cache);
+ * Core_Module_Config::getConfig(
+ *     String $config,
+ *     String $section,
+ *     Integer Core_Module_Config::MAIN_ORDER_FIRST,
+ *     Bool $cache
+ * );
  * </code>
  * 
  * @category   Core
@@ -171,7 +176,7 @@ class Core_Module_Config
 
             if (is_dir($dirPath) && file_exists($confFile)) {
                 try {
-                    $config = new Zend_Config_Yaml($confFile, $section);
+                    $config = new Zend_Config_Yaml($confFile, $section, array('ignore_constants' => true));
                     if ($config = $config->toArray()) {
                         $result = array_merge_recursive($result, $config);
                     }
