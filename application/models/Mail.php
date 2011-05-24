@@ -68,7 +68,6 @@ class Model_Mail
         if ($template->signature) {
             self::assignLayout($template);
         }
-
         return $template->send();
     }
 

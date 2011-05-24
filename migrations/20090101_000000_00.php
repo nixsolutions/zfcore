@@ -102,12 +102,12 @@ class Migration_20090101_000000_00 extends Core_Migration_Abstract
                             Core_Migration_Abstract::TYPE_TEXT);
 
         $this->createColumn('mail_templates',
-                            'body',
+                            'bodyHtml',
                             Core_Migration_Abstract::TYPE_TEXT,
                             null, null, true);
 
         $this->createColumn('mail_templates',
-                            'altBody',
+                            'bodyText',
                             Core_Migration_Abstract::TYPE_TEXT,
                             null, null, true);
 

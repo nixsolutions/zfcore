@@ -306,7 +306,7 @@ class Core_Migration_Manager
         $path = $this->getMigrationsDirectoryPath($module);
 
         list($sec, $msec) = explode(".", microtime(true));
-        $_migrationName = date('Ymd_His_') . sprintf("%02d", $msec);
+        $_migrationName = date('Ymd_His_') . substr($msec, 0, 2);
         
         // Configuring after instantiation
         $methodUp = new Zend_CodeGenerator_Php_Method();
