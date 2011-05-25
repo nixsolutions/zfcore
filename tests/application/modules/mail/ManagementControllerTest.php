@@ -25,7 +25,7 @@ class Mail_ManagementControllerTest extends ControllerTestCase
 
         $this->_layout = 'Custom Layout '.time();
 
-        $this->_table = new Model_Mail_Table();
+        $this->_table = new Mail_Model_Templates_Table();
     }
 
     /**
@@ -83,20 +83,19 @@ class Mail_ManagementControllerTest extends ControllerTestCase
      */
     public function testEditAction()
     {
-        $mail = $this->_table->getByAlias($this->_fixture['alias']);
+        $mail = $this->_table->getModel($this->_fixture['alias']);
         $registration = array_merge($mail->toArray(), $this->_fixture);
 
-//        $this->dispatch('/admin/mail/edit/id/' . $mail->id);
         $this->request
              ->setMethod('POST')
-             ->setPost($registration);
+             ->setPost(array_filter($registration));
 
         $this->dispatch('/mail/management/edit/id/' . $mail->id);
 
         //$this->assertQuery('form#mailEditForm');
         $this->assertRedirectTo('/mail/management');
 
-        $mail = $this->_table->getByAlias($this->_fixture['alias']);
+        $mail = $this->_table->getModel($this->_fixture['alias']);
 
         $this->assertEquals($registration, $mail->toArray());
     }

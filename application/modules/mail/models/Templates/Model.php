@@ -18,8 +18,8 @@ class Mail_Model_Templates_Model
     protected $_data = array(
         'toEmail'      => null,
         'toName'       => null,
-        'formEmail'    => null,
-        'formName'     => null,
+        'fromEmail'    => null,
+        'fromName'     => null,
         'subject'      => null,
         'bodyHtml'     => null,
         'bodyText'     => null
