@@ -76,7 +76,7 @@ production:
     db:
       adapter: pdo_mysql
       params:
-        host: elephant
+        host: elephant.nixsolutions.com
         username: p_zfc
         password: zfc
         dbname: p_zfc
@@ -97,8 +97,8 @@ production:
         email: zfc@nixsolutions.com
         name: ZFCore Webmaster
   view:
-    title: "ZFCore"
-    doctype: XHTML1_STRICT
+    title: ZFCore
+    doctype: HTML5
     encoding: UTF-8
 
 testing:

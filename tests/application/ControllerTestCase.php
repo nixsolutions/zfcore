@@ -77,7 +77,20 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
             
         }
     }
-    
+
+    /**
+     * debug
+     *
+     * @return string
+     */
+    public function debug()
+    {
+        if ($this->getResponse()->isException()) {
+            echo "Exceptions: \n";
+            print_r($this->getResponse()->getException());
+        }
+    }
+
     /**
      * Migrations
      */
