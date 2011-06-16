@@ -1,6 +1,7 @@
 syntax: glob
 .idea/*
 nbproject/*
+build/
 data/cache/**
 .buildpath
 .project
