@@ -8,6 +8,7 @@
         <mkdir dir="${basedir}/build/docs"/>
         <mkdir dir="${basedir}/build/coverage"/>
         <mkdir dir="${basedir}/build/phpcb"/>
+        <mkdir dir="${basedir}/build/pdepend"/>
 
         <!--Requirements-->
         <mkdir dir="${basedir}/data/cache/"/>
@@ -47,11 +48,16 @@
             <arg line=". xml codesize,unusedcode,naming --reportfile '${basedir}/build/logs/pmd.xml' --exclude 'bin,migrations,public'"/>
         </exec>
     </target>
-    <target name="pdepend">
+    <target name="pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
         <exec dir="${basedir}" executable="pdepend" failonerror="true">
-            <arg line="--ignore=bin,migrations,public --jdepend-xml=build/logs/jdepend.xml ."/>
+	    <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
+	    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
+            <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
+            <arg line="--ignore=bin,migrations,public"/>
+            <arg line="."/>
         </exec>
     </target>
+
     <target name="phpcs">
         <exec dir="${basedir}" executable="phpcs" output="${basedir}/build/logs/checkstyle.xml" failonerror="false">
             <arg line="--report=checkstyle --extensions=php --ignore=bin,migrations,public --standard=Zend ."/>
