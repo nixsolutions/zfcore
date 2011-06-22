@@ -1,24 +1,16 @@
 <?php
+
 /**
- * Mode Page
- * @deprecated
- * @category Application
- * @package Model
+ * Mail model
+ *
+ * @category   Application
+ * @package    Model
+ * @subpackage Mail
  *
  * @version  $Id: Mail.php 146 2010-07-05 14:22:20Z AntonShevchuk $
  */
-class Model_Mail
+class Mail_Model_Mail
 {
-    
-    /**
-     * @author abyr
-     */
-    function __construct()
-    {
-        throw new Core_Exception("Deprecated model Model_Mail usage was "
-            . "detected. Use Mail_Model_Mail instead.");
-    }
-    
     /**
      * Send registration email
      *
@@ -92,7 +84,9 @@ class Model_Mail
         if (is_array($data)) {
             $mime = new Zend_Mime_Part(file_get_contents($data['file']));
             // Указываем тип содержимого файла
-            $mime->type = isset($data['type']) ? $data['type'] : 'application/octet-stream';
+            $mime->type = (isset($data['type']))
+                    ? $data['type'] 
+                    : 'application/octet-stream';
             $mime->disposition = Zend_Mime::DISPOSITION_INLINE;
             // Каким способом закодировать файл в письме
             $mime->encoding = Zend_Mime::ENCODING_BASE64;

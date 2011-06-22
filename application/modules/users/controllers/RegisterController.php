@@ -35,7 +35,7 @@ class Users_RegisterController extends Core_Controller_Action
             if ($form->isValid($this->_getAllParams()) ) {
                 if ($user = $this->_manager->register($form->getValues())) {
                     // confirm email sends to user
-                    Model_Mail::register($user);
+                    Mail_Model_Mail::register($user);
                     
                     $message = $this->__(
                         'Now you\'re registered! Please ' .
@@ -111,7 +111,7 @@ class Users_RegisterController extends Core_Controller_Action
                              ->forgetPassword($form->getValue('email'));
                 if ($user) {
                     // send email
-                    Model_Mail::forgetPassword($user);
+                    Mail_Model_Mail::forgetPassword($user);
                     
                     $message = $this->__(
                         'The confirmation email to reset your ' .
@@ -152,7 +152,7 @@ class Users_RegisterController extends Core_Controller_Action
                     $this->_redirect('/login');
                 } elseif ($result) {
                     // confirm email sends to user
-                    Model_Mail::newPassword($result, $password);
+                    Mail_Model_Mail::newPassword($result, $password);
 
                     $message = $this->__('You got new password. Please check your email');
                     $this->_flashMessenger->addMessage($message);

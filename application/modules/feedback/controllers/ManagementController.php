@@ -105,7 +105,7 @@ class Feedback_ManagementController extends Core_Controller_Action_Scaffold
                     $mime = null;
                     if ($form->inputFile->isUploaded()) {
                         $file = $form->inputFile->getFileInfo();
-                        $mime = Model_Mail::getMimePart(
+                        $mime = Mail_Model_Mail::getMimePart(
                             array(
                                 'file' => $file['inputFile']['tmp_name'],
                                 'name' => $file['inputFile']['name'],
