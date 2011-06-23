@@ -57,7 +57,7 @@ class Users_RegisterController extends Core_Controller_Action
                 );
             }
         }
-        $this->view->messages = $message;
+        $this->view->messages = (isset($message)) ? $message : false;
         $this->view->form = $form;
     }
 

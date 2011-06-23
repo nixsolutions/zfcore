@@ -18,8 +18,8 @@ class Users_Model_Users_Form_Forget extends Zend_Form
     public function init()
     {
         $this->addElementPrefixPath(
-            'Model_User_Form_Validate',
-            APPLICATION_PATH . "/models/User/Form/Validate",
+            'Users_Model_Users_Form_Validate',
+            APPLICATION_PATH . "/modules/users/models/Users/Form/Validate",
             'validate'
         );
 
