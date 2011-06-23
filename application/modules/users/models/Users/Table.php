@@ -1,6 +1,6 @@
 <?php
 /**
- * This is the DbTable class for the pages table.
+ * This is the DbTable class for the users table.
  *
  * @category Application
  * @package Model

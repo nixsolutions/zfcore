@@ -1,6 +1,6 @@
 <?php
 /**
- * Register user form
+ * Edit user form
  * 
  * @category Application
  * @package Model

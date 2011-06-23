@@ -2,7 +2,7 @@
 /**
  * Class Options_Model_Options_Manager
  *
- * for options table
+ * for options table management
  *
  * @category Application
  * @package  Model

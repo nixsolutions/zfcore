@@ -1,6 +1,6 @@
 <?php
 /**
- * PagesController for default module
+ * LoginController for users module
  *
  * @category   Application
  * @package    Users

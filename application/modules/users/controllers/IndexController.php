@@ -1,6 +1,6 @@
 <?php
 /**
- * UsersController for default module
+ * UsersController for гыукы module
  *
  * @category   Application
  * @package    Users
