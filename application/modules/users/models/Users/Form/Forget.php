@@ -8,7 +8,7 @@
  * 
  * @version  $Id: Forget.php 160 2010-07-12 10:47:54Z AntonShevchuk $
  */
-class Model_User_Form_Forget extends Zend_Form
+class Users_Model_Users_Form_Forget extends Zend_Form
 {
     /**
      * Form initialization
@@ -17,8 +17,6 @@ class Model_User_Form_Forget extends Zend_Form
      */
     public function init()
     {
-        throw new Core_Exception("Deprecated model usage was detected.");
-        
         $this->addElementPrefixPath(
             'Model_User_Form_Validate',
             APPLICATION_PATH . "/models/User/Form/Validate",
