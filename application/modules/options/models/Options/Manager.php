@@ -1,6 +1,6 @@
 <?php
 /**
- * Class Model_Option
+ * Class Options_Model_Options_Manager
  *
  * for options table
  *
@@ -12,7 +12,7 @@
  * 
  * @version  $Id: Option.php 207 2010-10-20 15:37:18Z AntonShevchuk $
  */
-class Model_Option extends Core_Model_Manager
+class Options_Model_Options_Manager extends Core_Model_Manager
 {
     const TYPE_INT    = 'int';
     const TYPE_FLOAT  = 'float';
@@ -22,27 +22,19 @@ class Model_Option extends Core_Model_Manager
     
     static protected $_instance = null;
     
-    protected $_modelName = 'Model_Option';
+    protected $_modelName = 'Options_Model_Options_Manager';
     protected $_cache   = array();
     
-    /**
-     * @author abyr
-     */
-    function __construct()
-    {
-        throw new Core_Exception("Deprecated model Model_Option usage was "
-            . "detected. Use Options_Model_Option_Manager instead.");
-    }
     
     /**
      * getInstance
      *
-     * @return  Model_Option
+     * @return  Options_Model_Options_Manager
      */
     static public function getInstance() 
     {
         if (self::$_instance === null) {
-            self::$_instance = new Model_Option();
+            self::$_instance = new Options_Model_Options_Manager();
         }
         return self::$_instance;
     }
@@ -54,7 +46,7 @@ class Model_Option extends Core_Model_Manager
      */
     static public function clearCache($key = null, $namespace = 'default')
     {
-        $self = Model_Option::getInstance();
+        $self = Options_Model_Options_Manager::getInstance();
         
         if (null !== $key && isset($self->_cache[$namespace][$key])) {
             unset($self->_cache[$namespace][$key]);
@@ -75,7 +67,7 @@ class Model_Option extends Core_Model_Manager
      */
     static public function get($key, $namespace = 'default') 
     {
-        $self = Model_Option::getInstance();
+        $self = Options_Model_Options_Manager::getInstance();
         if (!isset($self->_cache[$namespace][$key])) {
             $select = $self->getDbTable()->select();
             $select->where('name = ?', $key)
@@ -99,11 +91,11 @@ class Model_Option extends Core_Model_Manager
      * @param   string $key  
      * @param   mixed  $value  
      * @param   string $type
-     * @return  Model_Option
+     * @return  Options_Model_Options_Manager
      */
     static public function set($key, $value, $namespace = 'default', $type = null) 
     {
-        $self = Model_Option::getInstance();
+        $self = Options_Model_Options_Manager::getInstance();
         $select = $self->getDbTable()->select();
         $select->where('name = ?', $key)
                ->where('namespace = ?', $namespace);
@@ -133,11 +125,11 @@ class Model_Option extends Core_Model_Manager
      * delete option from DBTable
      *
      * @param   string $key  
-     * @return  Model_Option
+     * @return  Options_Model_Options_Manager
      */
     static public function delete($key, $namespace = 'default') 
     {
-        $self = Model_Option::getInstance();
+        $self = Options_Model_Options_Manager::getInstance();
         
 //        $where = $self->getDbTable()
 //                      ->getAdapter()
@@ -173,7 +165,7 @@ class Model_Option extends Core_Model_Manager
      */
     static public function getNamespace($namespace) 
     {
-        $self = Model_Option::getInstance();
+        $self = Options_Model_Options_Manager::getInstance();
         
         if (!isset($self->_cache[$namespace])) {
             $select = $self->getDbTable()->select();
@@ -197,15 +189,15 @@ class Model_Option extends Core_Model_Manager
      *
      * @param   string $namespace
      * @param   array  $options  pairs key=>value
-     * @return  Model_Option
+     * @return  Options_Model_Options_Manager
      */
     static public function setNamespace($namespace, array $options) 
     {
         // foreach loop for $options array
         foreach ($options as $key => $value) {
-            Model_Option::set($key, $value, $namespace);
+            Options_Model_Options_Manager::set($key, $value, $namespace);
         }
-        return Model_Option::getInstance();
+        return Options_Model_Options_Manager::getInstance();
     }
     
     /**
@@ -214,11 +206,11 @@ class Model_Option extends Core_Model_Manager
      * delete all data from namespace
      *
      * @param   string     $namespace
-     * @return  Model_Option
+     * @return  Options_Model_Options_Manager
      */
     static public function deleteNamespace($namespace) 
     {
-        $self = Model_Option::getInstance();
+        $self = Options_Model_Options_Manager::getInstance();
         
         $where = $self->getDbTable()->getAdapter()
                                     ->quoteInto('namespace = ?', $namespace);
@@ -241,17 +233,17 @@ class Model_Option extends Core_Model_Manager
     {
         // switch statement for $row->type
         switch ($row->type) {
-            case Model_Option::TYPE_INT:
+            case Options_Model_Options_Manager::TYPE_INT:
                 return (int)$row->value;
                 break;
-            case Model_Option::TYPE_FLOAT:
+            case Options_Model_Options_Manager::TYPE_FLOAT:
                 return floatval($row->value);
                 break;
-            case Model_Option::TYPE_STRING:
+            case Options_Model_Options_Manager::TYPE_STRING:
                 return $row->value;
                 break;
-            case Model_Option::TYPE_ARRAY:
-            case Model_Option::TYPE_OBJECT:
+            case Options_Model_Options_Manager::TYPE_ARRAY:
+            case Options_Model_Options_Manager::TYPE_OBJECT:
                 return unserialize($row->value);
                 break;
             default:
@@ -270,15 +262,15 @@ class Model_Option extends Core_Model_Manager
     {
         // switch statement for $row->type
         switch ($type) {
-            case Model_Option::TYPE_INT:
-            case Model_Option::TYPE_FLOAT:
+            case Options_Model_Options_Manager::TYPE_INT:
+            case Options_Model_Options_Manager::TYPE_FLOAT:
                 return "$value";
                 break;
-            case Model_Option::TYPE_STRING:
+            case Options_Model_Options_Manager::TYPE_STRING:
                 return "$value";
                 break;
-            case Model_Option::TYPE_ARRAY:
-            case Model_Option::TYPE_OBJECT:
+            case Options_Model_Options_Manager::TYPE_ARRAY:
+            case Options_Model_Options_Manager::TYPE_OBJECT:
                 return serialize($value);
                 break;
             default:
@@ -299,20 +291,20 @@ class Model_Option extends Core_Model_Manager
         switch (true) {
             case is_bool($value):  
             case is_integer($value):
-                return Model_Option::TYPE_INT;
+                return Options_Model_Options_Manager::TYPE_INT;
                 break;
             case is_float($value):
-                return Model_Option::TYPE_FLOAT;
+                return Options_Model_Options_Manager::TYPE_FLOAT;
                 break;
             case is_string($value):
-                return Model_Option::TYPE_STRING;
+                return Options_Model_Options_Manager::TYPE_STRING;
                 break;
             case is_array($value):
-                return Model_Option::TYPE_ARRAY;
+                return Options_Model_Options_Manager::TYPE_ARRAY;
                 break;
             case is_object($value):
             default:
-                return Model_Option::TYPE_OBJECT;
+                return Options_Model_Options_Manager::TYPE_OBJECT;
                 break;
         }
     }

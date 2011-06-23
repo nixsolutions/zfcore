@@ -102,10 +102,10 @@ class Debug_Model_Options_Form_Create extends Zend_Dojo_Form
         $request = Zend_Controller_Front::getInstance()->getRequest();
         $type = $request->getParam('type');
         if (!empty($type)) {
-            if ($type == Model_Option::TYPE_INT) {
+            if ($type == Options_Model_Options_Manager::TYPE_INT) {
                 $value->addValidator('int', false);
             }
-            if ($type == Model_Option::TYPE_FLOAT) {
+            if ($type == Options_Model_Options_Manager::TYPE_FLOAT) {
                 $value->addValidator('float', false);
             }
         }
@@ -129,11 +129,16 @@ class Debug_Model_Options_Form_Create extends Zend_Dojo_Form
                   ->setAutoComplete(true)
                   ->setMultiOptions(
                       array(
-                          Model_Option::TYPE_ARRAY => Model_Option::TYPE_ARRAY,
-                          Model_Option::TYPE_FLOAT => Model_Option::TYPE_FLOAT,
-                          Model_Option::TYPE_INT   => Model_Option::TYPE_INT,
-                          Model_Option::TYPE_OBJECT => Model_Option::TYPE_OBJECT,
-                          Model_Option::TYPE_STRING => Model_Option::TYPE_STRING
+                          Options_Model_Options_Manager::TYPE_ARRAY => 
+                              Options_Model_Options_Manager::TYPE_ARRAY,
+                          Options_Model_Options_Manager::TYPE_FLOAT => 
+                              Options_Model_Options_Manager::TYPE_FLOAT,
+                          Options_Model_Options_Manager::TYPE_INT   => 
+                              Options_Model_Options_Manager::TYPE_INT,
+                          Options_Model_Options_Manager::TYPE_OBJECT => 
+                              Options_Model_Options_Manager::TYPE_OBJECT,
+                          Options_Model_Options_Manager::TYPE_STRING => 
+                              Options_Model_Options_Manager::TYPE_STRING
                       )
                   );
         return $value;

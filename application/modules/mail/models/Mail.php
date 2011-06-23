@@ -109,18 +109,18 @@ class Mail_Model_Mail
      */
     public static function getLayout()
     {
-        return Model_Option::get('signature');
+        return Options_Model_Options_Manager::get('signature');
     }
 
     /**
      * Set Layout
      *
      * @param string $value
-     * @return object Model_Option
+     * @return object Options_Model_Options_Manager
      */
     public static function setLayout($value)
     {
-        return Model_Option::set('signature', $value);
+        return Options_Model_Options_Manager::set('signature', $value);
     }
 
     /**
