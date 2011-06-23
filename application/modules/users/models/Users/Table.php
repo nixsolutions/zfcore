@@ -8,7 +8,7 @@
  * 
  * @version  $Id: Manager.php 47 2010-02-12 13:17:34Z AntonShevchuk $
  */
-class Model_User_Table extends Core_Db_Table_Abstract
+class Users_Model_Users_Table extends Core_Db_Table_Abstract
 {
     /** Table name */
     protected $_name    = 'users';
@@ -18,10 +18,4 @@ class Model_User_Table extends Core_Db_Table_Abstract
     
     /** Row Class */
     protected $_rowClass = 'Users_Model_User';
-    
-    function __construct()
-    {
-        throw new Core_Exception("Deprecated model Model_User_Table usage was "
-                . "detected. Use Users_Model_Users_Table instead.");
-    }
 }

@@ -69,7 +69,7 @@ class Users_ManagementController extends Core_Controller_Action_Scaffold
      */
     protected function _getTable()
     {
-        return new Model_User_Table();
+        return new Users_Model_Users_Table();
     }
 }
 
