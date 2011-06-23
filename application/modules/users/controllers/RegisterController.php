@@ -28,7 +28,7 @@ class Users_RegisterController extends Core_Controller_Action
      */
     public function indexAction()
     {
-        $form = new Model_User_Form_Register();
+        $form = new Users_Model_Users_Form_Register();
        
         if ($this->_request->isPost()) {
 
