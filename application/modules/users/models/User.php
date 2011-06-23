@@ -5,6 +5,7 @@
  * @todo http://www.zimuel.it/blog/?p=86
  * @category Application
  * @package Model
+ * @subpackage Entity
  * 
  * @version  $Id: User.php 146 2010-07-05 14:22:20Z AntonShevchuk $
  */
