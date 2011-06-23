@@ -120,7 +120,7 @@ class Debug_Model_Options_Form_Create extends Zend_Dojo_Form
      */
     protected function _type()
     {
-        $optionsTable = new Model_Option_Table();
+        $optionsTable = new Options_Model_Options_Table();
 
         $value = new Zend_Dojo_Form_Element_FilteringSelect('type');
         $value    ->setLabel('Type')

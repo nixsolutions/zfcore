@@ -68,7 +68,7 @@ class Debug_OptionController extends Core_Controller_Action_Scaffold
      */
     protected function _getTable()
     {
-        return new Model_Option_Table();
+        return new Options_Model_Options_Table();
     }
 }
 

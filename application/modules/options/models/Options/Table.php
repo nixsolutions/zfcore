@@ -11,20 +11,11 @@
  * 
  * @version  $Id: Manager.php 47 2010-02-12 13:17:34Z AntonShevchuk $
  */
-class Model_Option_Table extends Core_Db_Table_Abstract
+class Options_Model_Options_Table extends Core_Db_Table_Abstract
 {
     /** Table name */
     protected $_name    = 'options';
 
     /** Primary Key */
     protected $_primary = 'id';
-    
-    /**
-     * @author abyr
-     */
-    function __construct($config = array())
-    {
-        throw new Core_Exception("Deprecated model Model_Option usage was "
-            . "detected. Use Options_Model_Option_Manager instead.");
-    }
 }
