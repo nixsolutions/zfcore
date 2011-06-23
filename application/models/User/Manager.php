@@ -26,7 +26,7 @@ class Model_User_Manager extends Core_Model_Manager
             'login',
             'password',
             'MD5(CONCAT(salt, ?)) AND ' .
-            'status = "'.Model_User::STATUS_ACTIVE.'"'
+            'status = "'.Users_Model_User::STATUS_ACTIVE.'"'
         );
             
         $auth = Zend_Auth::getInstance();
@@ -86,15 +86,15 @@ class Model_User_Manager extends Core_Model_Manager
      * Register new user
      *
      * @param array $data
-     * @return bool|Model_User
+     * @return bool|Users_Model_User
      */
     public function register($data)
     {
         $data = array_merge(
             $data,
             array(
-                'role'     => Model_User::ROLE_USER,
-                'status'   => Model_User::STATUS_REGISTER,
+                'role'     => Users_Model_User::ROLE_USER,
+                'status'   => Users_Model_User::STATUS_REGISTER,
                 'hashCode' => md5($data['login'] . uniqid()),
                 'ip'       => $_SERVER['REMOTE_ADDR']
             )
@@ -116,12 +116,12 @@ class Model_User_Manager extends Core_Model_Manager
     {
         $user = $this->getDbTable()->getByHashcodeAndStatus(
             $aHash,
-            Model_User::STATUS_REGISTER
+            Users_Model_User::STATUS_REGISTER
         );
 
         if ($user->id) {
             $user->hashCode = null;
-            $user->status   = Model_User::STATUS_ACTIVE;
+            $user->status   = Users_Model_User::STATUS_ACTIVE;
             $user->save();
             
             return true;
@@ -178,7 +178,7 @@ class Model_User_Manager extends Core_Model_Manager
     {
         $randStr = '';
         $feed = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-        for ($i = 0; $i < Model_User::MIN_PASSWORD_LENGTH; $i++) {
+        for ($i = 0; $i < Users_Model_User::MIN_PASSWORD_LENGTH; $i++) {
             $randStr .= substr($feed, rand(0, strlen($feed) - 1), 1);
         }
         return $randStr;
@@ -198,10 +198,10 @@ class Model_User_Manager extends Core_Model_Manager
                 $filter = '1';
                 break;
             case 'to all active':
-                $filter = 'status = "'.Model_User::STATUS_ACTIVE.'"';
+                $filter = 'status = "'.Users_Model_User::STATUS_ACTIVE.'"';
                 break;
             case 'to all disabled':
-                $filter = 'status = "'.Model_User::STATUS_BLOCKED.'"';
+                $filter = 'status = "'.Users_Model_User::STATUS_BLOCKED.'"';
                 break;
             case 'to all not active last month':
                 $filter = 'logined < DATE_SUB(NOW(), INTERVAL 1 MONTH)';

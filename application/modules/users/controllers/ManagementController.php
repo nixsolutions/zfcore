@@ -30,10 +30,10 @@ class Users_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function indexAction()
     {
-        $this->view->aStatus = array(Model_User::STATUS_ACTIVE, 
-                                     Model_User::STATUS_BLOCKED, 
-                                     Model_User::STATUS_REGISTER, 
-                                     Model_User::STATUS_REMOVED);
+        $this->view->aStatus = array(Users_Model_User::STATUS_ACTIVE, 
+                                     Users_Model_User::STATUS_BLOCKED, 
+                                     Users_Model_User::STATUS_REGISTER, 
+                                     Users_Model_User::STATUS_REMOVED);
     }
 
     /**

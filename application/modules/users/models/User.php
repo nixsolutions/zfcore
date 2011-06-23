@@ -8,7 +8,7 @@
  * 
  * @version  $Id: User.php 146 2010-07-05 14:22:20Z AntonShevchuk $
  */
-class Model_User extends Core_Db_Table_Row_Abstract
+class Users_Model_User extends Core_Db_Table_Row_Abstract
 {
     const STATUS_REGISTER = 'registered';
     const STATUS_ACTIVE   = 'active';
@@ -47,12 +47,6 @@ class Model_User extends Core_Db_Table_Row_Abstract
      * @var integer
      */
     const MAX_LASTNAME_LENGTH = 255;
-    
-    public function __construct(array $config = array())
-    {
-        throw new Core_Exception("Deprecated model Model_User usage was "
-            . "detected. Use Users_Model_User instead.");
-    }
     
     /**
      * Set row field value

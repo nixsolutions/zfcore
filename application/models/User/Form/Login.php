@@ -27,8 +27,8 @@ class Model_User_Form_Login extends Zend_Form
                  ->addValidator('Alnum')
                  ->addValidator(
                      'StringLength', false,
-                     array(Model_User::MIN_USERNAME_LENGTH,
-                           Model_User::MAX_USERNAME_LENGTH)
+                     array(Users_Model_User::MIN_USERNAME_LENGTH,
+                           Users_Model_User::MAX_USERNAME_LENGTH)
                  );
 
         $password = new Zend_Form_Element_Password('password');
@@ -37,7 +37,7 @@ class Model_User_Form_Login extends Zend_Form
                  ->setValue(null)
                  ->addValidator(
                      'StringLength', false,
-                     array(Model_User::MIN_PASSWORD_LENGTH)
+                     array(Users_Model_User::MIN_PASSWORD_LENGTH)
                  );
 
         $rememberMe = new Zend_Form_Element_Checkbox('rememberMe');

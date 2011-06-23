@@ -38,8 +38,8 @@ class Model_User_Form_Register extends Zend_Form
                  ->addValidator('Alnum')
                  ->addValidator(
                      'StringLength', false,
-                     array(Model_User::MIN_USERNAME_LENGTH,
-                           Model_User::MAX_USERNAME_LENGTH)
+                     array(Users_Model_User::MIN_USERNAME_LENGTH,
+                           Users_Model_User::MAX_USERNAME_LENGTH)
                  )
                  ->addValidator(
                      'Db_NoRecordExists', false,
@@ -56,7 +56,7 @@ class Model_User_Form_Register extends Zend_Form
                  ->setValue(null)
                  ->addValidator(
                      'StringLength', false,
-                     array(Model_User::MIN_PASSWORD_LENGTH)
+                     array(Users_Model_User::MIN_PASSWORD_LENGTH)
                  )
                  ->addValidator('PasswordConfirmation');
 
@@ -67,7 +67,7 @@ class Model_User_Form_Register extends Zend_Form
                   ->setValue(null)
                   ->addValidator(
                       'StringLength', false,
-                      array(Model_User::MIN_PASSWORD_LENGTH)
+                      array(Users_Model_User::MIN_PASSWORD_LENGTH)
                   );
 
         $email = new Zend_Form_Element_Text('email');

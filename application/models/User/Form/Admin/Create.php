@@ -50,15 +50,15 @@ class Model_User_Form_Admin_Create extends Zend_Dojo_Form
                  ->setLowercase(true)
                  ->setTrim(true)
                  ->setAttribs(array('style'=>'width:60%'))
-                 ->setMaxLength(Model_User::MAX_USERNAME_LENGTH)
+                 ->setMaxLength(Users_Model_User::MAX_USERNAME_LENGTH)
                  ->setRegExp('[a-z0-9]+')
                  ->addFilter('StripTags')
                  ->addFilter('StringTrim')
                  ->addValidator('Alnum')
                  ->addValidator(
                      'StringLength', false,
-                     array(Model_User::MIN_USERNAME_LENGTH,
-                           Model_User::MAX_USERNAME_LENGTH)
+                     array(Users_Model_User::MIN_USERNAME_LENGTH,
+                           Users_Model_User::MAX_USERNAME_LENGTH)
                  )
                  ->addValidator(
                      'Db_NoRecordExists', false,
@@ -82,14 +82,14 @@ class Model_User_Form_Admin_Create extends Zend_Dojo_Form
                   ->setRequired(false)
                   ->setTrim(true)
                   ->setAttribs(array('style'=>'width:60%'))
-                  ->setMaxLength(Model_User::MAX_FIRSTNAME_LENGTH)
+                  ->setMaxLength(Users_Model_User::MAX_FIRSTNAME_LENGTH)
                   ->setRegExp('([a-zA-Z0-9 _-])+')
                   ->addFilter('StripTags')
                   ->addFilter('StringTrim')
                   ->addValidator('Alnum')
                   ->addValidator(
                       'StringLength', false,
-                      array(0, Model_User::MAX_FIRSTNAME_LENGTH)
+                      array(0, Users_Model_User::MAX_FIRSTNAME_LENGTH)
                   );
         return $firstname;
     }
@@ -105,7 +105,7 @@ class Model_User_Form_Admin_Create extends Zend_Dojo_Form
         $lastname->setLabel('Last name')
                  ->setRequired(false)
                  ->setTrim(true)
-                 ->setMaxLength(Model_User::MAX_LASTNAME_LENGTH)
+                 ->setMaxLength(Users_Model_User::MAX_LASTNAME_LENGTH)
                   ->setRegExp('([a-zA-Z0-9 _-])+')
                  ->setAttribs(array('style'=>'width:60%'))
                  ->addFilter('StripTags')
@@ -113,7 +113,7 @@ class Model_User_Form_Admin_Create extends Zend_Dojo_Form
                  ->addValidator('Alnum')
                  ->addValidator(
                      'StringLength', false,
-                     array(0, Model_User::MAX_LASTNAME_LENGTH)
+                     array(0, Users_Model_User::MAX_LASTNAME_LENGTH)
                  );
          return $lastname;
     }
@@ -131,9 +131,12 @@ class Model_User_Form_Admin_Create extends Zend_Dojo_Form
              ->setRequired(true)
              ->setMultiOptions(
                  array(
-                     Model_User::ROLE_GUEST => Model_User::ROLE_GUEST,
-                     Model_User::ROLE_USER  => Model_User::ROLE_USER,
-                     Model_User::ROLE_ADMIN => Model_User::ROLE_ADMIN
+                     Users_Model_User::ROLE_GUEST => 
+                        Users_Model_User::ROLE_GUEST,
+                     Users_Model_User::ROLE_USER  => 
+                        Users_Model_User::ROLE_USER,
+                     Users_Model_User::ROLE_ADMIN => 
+                        Users_Model_User::ROLE_ADMIN
                  )
              );
         return $role;
@@ -152,10 +155,14 @@ class Model_User_Form_Admin_Create extends Zend_Dojo_Form
                ->setAttribs(array('style' => 'width:60%'))
                ->setMultiOptions(
                    array(
-                       Model_User::STATUS_ACTIVE   => Model_User::STATUS_ACTIVE,
-                       Model_User::STATUS_BLOCKED  => Model_User::STATUS_BLOCKED,
-                       Model_User::STATUS_REGISTER => Model_User::STATUS_REGISTER,
-                       Model_User::STATUS_REMOVED  => Model_User::STATUS_REMOVED
+                       Users_Model_User::STATUS_ACTIVE   => 
+                           Users_Model_User::STATUS_ACTIVE,
+                       Users_Model_User::STATUS_BLOCKED  => 
+                           Users_Model_User::STATUS_BLOCKED,
+                       Users_Model_User::STATUS_REGISTER => 
+                           Users_Model_User::STATUS_REGISTER,
+                       Users_Model_User::STATUS_REMOVED  => 
+                           Users_Model_User::STATUS_REMOVED
                    )
                );
                     
@@ -177,7 +184,7 @@ class Model_User_Form_Admin_Create extends Zend_Dojo_Form
                  ->setValue(null)
                  ->addValidator(
                      'StringLength', false,
-                     array(Model_User::MIN_PASSWORD_LENGTH)
+                     array(Users_Model_User::MIN_PASSWORD_LENGTH)
                  );
                                 
         return $password;

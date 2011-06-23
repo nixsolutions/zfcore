@@ -17,5 +17,5 @@ class Model_User_Table extends Core_Db_Table_Abstract
     protected $_primary = 'id';
     
     /** Row Class */
-    protected $_rowClass = 'Model_User';
+    protected $_rowClass = 'Users_Model_User';
 }
