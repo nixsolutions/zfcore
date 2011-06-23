@@ -42,7 +42,9 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 
         parent::setUp();
 
-        $this->getFrontController()->setParam('bootstrap', $this->bootstrap->getBootstrap());
+        $bootstrap = $this->bootstrap->getBootstrap();
+        
+        $this->getFrontController()->setParam('bootstrap', $bootstrap);
 
     }
 
@@ -94,12 +96,14 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
     /**
      * Migrations
      */
-    static public function migration($up = true, $module = null, $migration = null)
+    static public function migration($up = true, $module = null, 
+        $migration = null)
     {
         require_once 'Core/Migration/Manager.php';
         
-        if ((null === $migration) && Core_Migration_Manager::isMigration($module)) {
-            list($migration, $module) = array($module, null);
+        if ((null === $migration) && 
+            Core_Migration_Manager::isMigration($module)) {
+                list($migration, $module) = array($module, null);
         }
         
         $manager = new Core_Migration_Manager(array(
@@ -145,7 +149,8 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
      * @param string $status
      * @return void
      */
-    protected static function _doLogin($role = Model_User::ROLE_USER, $status = Model_User::STATUS_ACTIVE )
+    protected static function _doLogin($role = Users_Model_User::ROLE_USER, 
+        $status = Users_Model_User::STATUS_ACTIVE )
     {
         Zend_Auth::getInstance()->getStorage()
                                 ->write(
@@ -161,7 +166,9 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
      * @param string $status
      * @return StdClass an identity
      */
-    protected static function _generateFakeIdentity($role = Model_User::ROLE_USER, $status = Model_User::STATUS_ACTIVE)
+    protected static function _generateFakeIdentity(
+        $role = Users_Model_User::ROLE_USER, 
+        $status = Users_Model_User::STATUS_ACTIVE)
     {
         $account = new stdClass();
         

@@ -25,9 +25,9 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->_fixture['guest'] = array(
             'login'    => 'testguest'.time(),
             'email'    => 'testguest@domain.com'.time(),
-            'role'     => Model_User::ROLE_GUEST,
+            'role'     => Users_Model_User::ROLE_GUEST,
             'hashCode' => 123456,
-            'status'   => Model_User::STATUS_REGISTER,
+            'status'   => Users_Model_User::STATUS_REGISTER,
             'password' => 123456
         );
         
@@ -37,8 +37,8 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->_fixture['blocked'] = array(
             'login' => 'testblocked'.time(),
             'email' => 'testblocked@domain.com'.time(),
-            'role'  => Model_User::ROLE_USER,
-            'status' => Model_User::STATUS_BLOCKED,
+            'role'  => Users_Model_User::ROLE_USER,
+            'status' => Users_Model_User::STATUS_BLOCKED,
             'password' => 123456
         );
                 
@@ -48,8 +48,8 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->_fixture['removed'] = array(
             'login' => 'testremoved'.time(),
             'email' => 'testremoved@domain.com'.time(),
-            'role'  => Model_User::ROLE_USER,
-            'status' => Model_User::STATUS_REMOVED,
+            'role'  => Users_Model_User::ROLE_USER,
+            'status' => Users_Model_User::STATUS_REMOVED,
             'password' => 123456
         );
                 
@@ -60,8 +60,8 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->_fixture['admin'] = array(
             'login' => 'testadmin'.time(),
             'email' => 'testadmin@domain.com'.time(),
-            'role'  => Model_User::ROLE_ADMIN,
-            'status' => Model_User::STATUS_ACTIVE,
+            'role'  => Users_Model_User::ROLE_ADMIN,
+            'status' => Users_Model_User::STATUS_ACTIVE,
             'password' => 123456
         );
                 
@@ -77,14 +77,14 @@ class Model_Users_ManagerTest extends ControllerTestCase
     function testAuthenticate()
     {
         // guest user login/password (non activated)
-        $result = Model_User_Manager::authenticate(
+        $result = Users_Model_Users_Manager::authenticate(
             $this->_fixture['guest']['login'],
             $this->_fixture['guest']['password']
         );
         $this->assertFalse($result);
         
         // blocked user login/password
-        $result = Model_User_Manager::authenticate(
+        $result = Users_Model_Users_Manager::authenticate(
             $this->_fixture['blocked']['login'],
             $this->_fixture['blocked']['password']
         );
@@ -92,7 +92,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->assertFalse($result);
         
         // removed login/password
-        $result = Model_User_Manager::authenticate(
+        $result = Users_Model_Users_Manager::authenticate(
             $this->_fixture['removed']['login'],
             $this->_fixture['removed']['password']
         );
@@ -100,7 +100,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->assertFalse($result);
         
         // wrong login/password
-        $result = Model_User_Manager::authenticate(
+        $result = Users_Model_Users_Manager::authenticate(
             $this->_fixture['admin']['login'],
             $this->_fixture['admin']['password'].'d'
         );
@@ -108,7 +108,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->assertFalse($result);
         
         // right login/password
-        $result = Model_User_Manager::authenticate(
+        $result = Users_Model_Users_Manager::authenticate(
             $this->_fixture['admin']['login'],
             $this->_fixture['admin']['password']
         );
@@ -117,7 +117,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
         
         // chech Zend_Auth
         $this->assertEquals(
-            Model_User::ROLE_ADMIN,
+            Users_Model_User::ROLE_ADMIN,
             Zend_Auth::getInstance()->getIdentity()->role
         );
     }
@@ -256,7 +256,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
     public function testGeneratePassword()
     {
         $password = $this->_userManager->generatePassword();
-        $this->assertEquals(Model_User::MIN_PASSWORD_LENGTH, strlen($password));
+        $this->assertEquals(Users_Model_User::MIN_PASSWORD_LENGTH, strlen($password));
     }
     
     /**
@@ -379,8 +379,6 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->_userTable
              ->getByLogin($this->_fixture['admin']['login'])
              ->delete();
-        
-         
              
         parent::tearDown();
     }

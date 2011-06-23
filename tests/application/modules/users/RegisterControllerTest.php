@@ -12,7 +12,7 @@ class Users_RegisterControllerTest extends ControllerTestCase
     /**
      * User Model
      *
-     * @var Model_User
+     * @var Users_Model_User
      */
     protected $_user;
 
@@ -23,12 +23,12 @@ class Users_RegisterControllerTest extends ControllerTestCase
     {
         parent::setUp();
         
-        $this->_userManager = new Model_User_Manager();
-        $this->_userTable = new Model_User_Table();
+        $this->_userManager = new Users_Model_Users_Manager();
+        $this->_userTable = new Users_Model_Users_Table();
 
         $this->_fixture = array('login'     => 'testadmin'.time(),
                                 'email'     => 'test'.time().'@nixsolutions.com',
-                                'status'    => Model_User::STATUS_ACTIVE,
+                                'status'    => Users_Model_User::STATUS_ACTIVE,
                                 'password'  => 'qwerty',
                                 'password2' => 'qwerty');
 
@@ -101,16 +101,16 @@ class Users_RegisterControllerTest extends ControllerTestCase
 
         $this->assertNotNull($user->id);
         
-        $user->status = Model_User::STATUS_ACTIVE;
+        $user->status = Users_Model_User::STATUS_ACTIVE;
         $user->save();
         
-        $auth = Model_User_Manager::authenticate(
+        $auth = Users_Model_Users_Manager::authenticate(
             $this->_fixture['login'],
             $this->_fixture['password']
         );
         $this->assertTrue($auth);
             
-        Model_User_Manager::logout();
+        Users_Model_Users_Manager::logout();
                             
         $this->request
              ->setMethod('POST')
@@ -127,7 +127,7 @@ class Users_RegisterControllerTest extends ControllerTestCase
     public function testConfirmRegistrationAction()
     {
         $user = $this->_userTable->create($this->_fixture);
-        $user->status = Model_User::STATUS_REGISTER;
+        $user->status = Users_Model_Users::STATUS_REGISTER;
         $user->hashCode = md5(uniqid());
         $user->save();
 
@@ -143,7 +143,7 @@ class Users_RegisterControllerTest extends ControllerTestCase
         $this->assertAction('confirm-registration');
         
         $user->refresh();
-        $this->assertEquals($user->status, Model_User::STATUS_ACTIVE);
+        $this->assertEquals($user->status, Users_Model_Users::STATUS_ACTIVE);
         
 //        $this->request
 //             ->setQuery(array('hash' => 134468431))
@@ -163,7 +163,7 @@ class Users_RegisterControllerTest extends ControllerTestCase
      */
     public function testForgetPasswordAction()
     {
-        Model_User_Manager::logout();
+        Users_Model_Users_Manager::logout();
         
         $user = $this->_userTable->create($this->_fixture);
         $user->save();

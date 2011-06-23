@@ -15,7 +15,7 @@ class Users_IndexControllerTest extends ControllerTestCase
      */
     public function testGuestIndexAction()
     {
-        $this->_doLogin(Model_User::ROLE_GUEST);
+        $this->_doLogin(Users_Model_User::ROLE_GUEST);
         $this->dispatch('/users/');
         $this->assertModule('default');
         $this->assertController('error');
@@ -29,7 +29,7 @@ class Users_IndexControllerTest extends ControllerTestCase
      */
     public function testUserIndexAction()
     {
-        $this->_doLogin(Model_User::ROLE_USER);
+        $this->_doLogin(Users_Model_User::ROLE_USER);
         
         $this->dispatch('/users/');
         

@@ -37,7 +37,7 @@ class Admin_ErrorControllerTest extends ControllerTestCase
      */
     public function testAdminInvalidAction()
     {
-        $this->_doLogin(Model_User::ROLE_ADMIN);
+        $this->_doLogin(Users_Model_User::ROLE_ADMIN);
         
         $this->dispatch('/admin/foo');
 
@@ -53,7 +53,7 @@ class Admin_ErrorControllerTest extends ControllerTestCase
      */
     public function testAdminErrorErrorAction()
     {
-        $this->_doLogin(Model_User::ROLE_ADMIN);
+        $this->_doLogin(Users_Model_User::ROLE_ADMIN);
         
         $this->dispatch('/admin/error/error');
         
@@ -69,7 +69,7 @@ class Admin_ErrorControllerTest extends ControllerTestCase
      */
     public function testAdminErrorNotfoundAction()
     {
-        $this->_doLogin(Model_User::ROLE_ADMIN);
+        $this->_doLogin(Users_Model_User::ROLE_ADMIN);
         
         $this->dispatch('/admin/error/notfound');
         

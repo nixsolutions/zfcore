@@ -23,7 +23,7 @@ class Feedback_ManagementControllerTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        parent::_doLogin(Model_User::ROLE_ADMIN);
+        parent::_doLogin(Users_Model_User::ROLE_ADMIN);
         
         $this->_modelFeedback = new Feedback_Model_Feedback();
         $this->_tableFeedback = new Feedback_Model_Feedback_Table();

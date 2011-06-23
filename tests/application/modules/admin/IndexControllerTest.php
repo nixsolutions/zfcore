@@ -14,7 +14,7 @@ class Admin_IndexControllerTest extends ControllerTestCase
      */
     public function testAdminIndexAction()
     {
-        $this->_doLogin(Model_User::ROLE_ADMIN);
+        $this->_doLogin(Users_Model_User::ROLE_ADMIN);
         
         $this->dispatch('/admin/');
         

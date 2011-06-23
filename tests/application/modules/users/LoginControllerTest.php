@@ -10,7 +10,7 @@ class Users_LoginControllerTest extends ControllerTestCase
     /**
      * User Model
      *
-     * @var Model_User
+     * @var Users_Model_User
      */
     protected $_user;
     
@@ -23,11 +23,11 @@ class Users_LoginControllerTest extends ControllerTestCase
         
         $this->_fixture = array('login'     => 'admin'.time(),
                                 'email'     => 'testadmin@domain.com',
-                                'role'      => Model_User::ROLE_ADMIN,
-                                'status'    => Model_User::STATUS_ACTIVE,
+                                'role'      => Users_Model_User::ROLE_ADMIN,
+                                'status'    => Users_Model_User::STATUS_ACTIVE,
                                 'password'  => '123456');
         
-        $manager = new Model_User_Table();
+        $manager = new Users_Model_Users_Table();
         
         $this->_user = $manager->create($this->_fixture);
         $this->_user->save();
