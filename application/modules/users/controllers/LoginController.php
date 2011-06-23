@@ -21,7 +21,7 @@ class Users_LoginController extends Core_Controller_Action
         /* Initialize action controller here */
         parent::init();
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
-        $this->_manager = new Model_User_Manager();
+        $this->_manager = new Users_Model_Users_Manager();
     }
     
     /**

@@ -85,7 +85,7 @@ class Sync_IndexController extends Core_Controller_Action
             && !empty($security['username'])
             && isset($security['password'])
         ) {
-            return Model_User_Manager::authenticate(
+            return Users_Model_Users_Manager::authenticate(
                 $security['username'],
                 $security['password']
             );

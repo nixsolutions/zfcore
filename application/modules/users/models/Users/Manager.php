@@ -8,15 +8,8 @@
  * 
  * @version  $Id: Manager.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
-class Model_User_Manager extends Core_Model_Manager
+class Users_Model_Users_Manager extends Core_Model_Manager
 {
-    
-    function __construct()
-    {
-        throw new Core_Exception("Deprecated model Model_User_Manager usage was"
-                . " detected. Use Users_Model_Users_Manager instead.");
-    }
-
     /**
      * Zend_Auth_Result
      * 
