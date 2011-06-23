@@ -8,7 +8,7 @@
  * 
  * @version  $Id: Edit.php 47 2010-02-12 13:17:34Z AntonShevchuk $
  */
-class Model_User_Form_Admin_Edit extends Model_User_Form_Admin_Create
+class Model_User_Form_Admin_Edit extends Users_Model_Users_Form_Admin_Create
 {
     /**
      * Form initialization

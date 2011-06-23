@@ -45,7 +45,7 @@ class Users_ManagementController extends Core_Controller_Action_Scaffold
      */
     protected function _getCreateForm()
     {
-        return new Model_User_Form_Admin_Create();
+        return new Users_Model_Users_Form_Admin_Create();
     }
     
     /**

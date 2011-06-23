@@ -22,6 +22,6 @@ class Model_User_Table extends Core_Db_Table_Abstract
     function __construct($config = array())
     {
         throw new Core_Exception("Deprecated model Model_User_Table usage was "
-                . "detected. Use Users_Model_Users_Table instead.");
+            . "detected. Use Users_Model_Users_Table instead.");
     }
 }

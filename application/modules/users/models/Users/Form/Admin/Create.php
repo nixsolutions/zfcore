@@ -8,7 +8,7 @@
  * 
  * @version  $Id: Create.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
-class Model_User_Form_Admin_Create extends Zend_Dojo_Form
+class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
 {
     /**
      * Form initialization
@@ -17,10 +17,6 @@ class Model_User_Form_Admin_Create extends Zend_Dojo_Form
      */
     public function init()
     {
-        throw new Core_Exception("Deprecated model "
-            . "Model_User_Form_Admin_Create usage was detected. "
-            . "Use Users_Model_Users_Form_Admin_Create instead.");
-        
         $this->setName('userCreateForm')
              ->setMethod('post');
         
