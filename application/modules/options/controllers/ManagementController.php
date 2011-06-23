@@ -44,7 +44,7 @@ class Options_ManagementController extends Core_Controller_Action_Scaffold
      */
     protected function _getCreateForm()
     {
-        return new Debug_Model_Options_Form_Create();
+        return new Options_Model_Options_Form_Create();
     }
 
     /**
@@ -56,7 +56,7 @@ class Options_ManagementController extends Core_Controller_Action_Scaffold
      */
     protected function _getEditForm()
     {
-        return new Debug_Model_Options_Form_Edit();
+        return new Options_Model_Options_Form_Edit();
     }
 
     /**
