@@ -29,7 +29,7 @@ class Users_LoginController extends Core_Controller_Action
      */
     public function indexAction()
     {
-        $form = new Model_User_Form_Login();
+        $form = new Users_Model_Users_Form_Login();
         
         if ($this->_request->isPost()) {
             if ($form->isValid($this->_getAllParams())) {
