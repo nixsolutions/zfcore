@@ -47,10 +47,10 @@ class Model_OptionTest extends ControllerTestCase
      */
     function testOptionSetObject()
     {
-       Model_Option::set($this->_key, $this->_object);
-       Model_Option::clearCache($this->_key);
+       Options_Model_Options_Manager::set($this->_key, $this->_object);
+       Options_Model_Options_Manager::clearCache($this->_key);
        
-       $result = Model_Option::get($this->_key);
+       $result = Options_Model_Options_Manager::get($this->_key);
        
        $this->assertTrue(is_object($result));
        $this->assertEquals($result, $this->_object);
@@ -58,10 +58,10 @@ class Model_OptionTest extends ControllerTestCase
     
     function testOptionSetArray()
     {
-       Model_Option::set($this->_key, $this->_array);
-       Model_Option::clearCache($this->_key);
+       Options_Model_Options_Manager::set($this->_key, $this->_array);
+       Options_Model_Options_Manager::clearCache($this->_key);
        
-       $result = Model_Option::get($this->_key);
+       $result = Options_Model_Options_Manager::get($this->_key);
        
        $this->assertTrue(is_array($result));
        $this->assertEquals($result, $this->_array);
@@ -69,10 +69,10 @@ class Model_OptionTest extends ControllerTestCase
 
     function testOptionSetString()
     {
-       Model_Option::set($this->_key, $this->_string);
-       Model_Option::clearCache($this->_key);
+       Options_Model_Options_Manager::set($this->_key, $this->_string);
+       Options_Model_Options_Manager::clearCache($this->_key);
        
-       $result = Model_Option::get($this->_key);
+       $result = Options_Model_Options_Manager::get($this->_key);
        
        $this->assertTrue(is_string($result));
        $this->assertEquals($result, $this->_string);
@@ -80,10 +80,10 @@ class Model_OptionTest extends ControllerTestCase
     
     function testOptionSetInteger()
     {
-       Model_Option::set($this->_key, $this->_integer);
-       Model_Option::clearCache($this->_key);
+       Options_Model_Options_Manager::set($this->_key, $this->_integer);
+       Options_Model_Options_Manager::clearCache($this->_key);
        
-       $result = Model_Option::get($this->_key);
+       $result = Options_Model_Options_Manager::get($this->_key);
        
        $this->assertTrue(is_integer($result));
        $this->assertEquals($result, $this->_integer);
@@ -91,10 +91,10 @@ class Model_OptionTest extends ControllerTestCase
     
     function testOptionSetFloat()
     {
-       Model_Option::set($this->_key, $this->_float);
-       Model_Option::clearCache($this->_key);
+       Options_Model_Options_Manager::set($this->_key, $this->_float);
+       Options_Model_Options_Manager::clearCache($this->_key);
        
-       $result = Model_Option::get($this->_key);
+       $result = Options_Model_Options_Manager::get($this->_key);
        
        $this->assertTrue(is_float($result));
        $this->assertEquals($result, $this->_float);
@@ -102,7 +102,7 @@ class Model_OptionTest extends ControllerTestCase
     
     function testOptionGetNotExists()
     {
-       $result = Model_Option::get('test'.date('Y-m-d').'-'.rand(1, 10));
+       $result = Options_Model_Options_Manager::get('test'.date('Y-m-d').'-'.rand(1, 10));
        
        $this->assertTrue(is_null($result));
     }
@@ -110,8 +110,8 @@ class Model_OptionTest extends ControllerTestCase
     
     function testOptionDelete()
     {
-       Model_Option::delete($this->_key);
-       $result = Model_Option::get($this->_key);
+       Options_Model_Options_Manager::delete($this->_key);
+       $result = Options_Model_Options_Manager::get($this->_key);
        $this->assertEquals($result, null);
     }
 
@@ -120,25 +120,25 @@ class Model_OptionTest extends ControllerTestCase
      */
     function testNamespaceSet()
     {
-        Model_Option::setNamespace(__CLASS__, array($this->_key => $this->_object));
-        Model_Option::clearCache(null, __CLASS__);
+        Options_Model_Options_Manager::setNamespace(__CLASS__, array($this->_key => $this->_object));
+        Options_Model_Options_Manager::clearCache(null, __CLASS__);
         
-        $result = Model_Option::getNamespace(__CLASS__);
+        $result = Options_Model_Options_Manager::getNamespace(__CLASS__);
         $this->assertEquals($result, array($this->_key => $this->_object));
     }
     
     function testNamespaceGetNotExists()
     {
-        $result = Model_Option::getNamespace(__METHOD__);
+        $result = Options_Model_Options_Manager::getNamespace(__METHOD__);
         $this->assertEquals($result, array());
     }
     
     
     function testNamespaceDelete()
     {
-       Model_Option::deleteNamespace(__CLASS__);
+       Options_Model_Options_Manager::deleteNamespace(__CLASS__);
        
-       $result = Model_Option::get($this->_key, __CLASS__);
+       $result = Options_Model_Options_Manager::get($this->_key, __CLASS__);
        $this->assertEquals($result, null);
     }
 }

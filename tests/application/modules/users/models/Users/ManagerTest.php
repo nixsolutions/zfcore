@@ -5,7 +5,7 @@
  * @category Tests
  * @package  Model
  */
-class Model_User_ManagerTest extends ControllerTestCase
+class Model_Users_ManagerTest extends ControllerTestCase
 {
     /**
      * Setup TestCase
@@ -15,8 +15,8 @@ class Model_User_ManagerTest extends ControllerTestCase
     {
         parent::setUp();
         
-        $this->_userTable = new Model_User_Table();
-        $this->_userManager = new Model_User_Manager();
+        $this->_userTable = new Users_Model_Users_Table();
+        $this->_userManager = new Users_Model_Users_Manager();
         
         $this->_password = 123456;
         

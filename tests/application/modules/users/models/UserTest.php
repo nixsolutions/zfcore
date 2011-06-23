@@ -23,7 +23,7 @@ class Model_UserTest extends ControllerTestCase
                                 'status'   => Model_User::STATUS_ACTIVE,
                                 'password' => 123456);
         
-        $this->_userTable = new Model_User_Table();
+        $this->_userTable = new Users_Model_Users_Table();
         
         $this->_user = $this->_userTable->create($this->_fixture);
         $this->_user->save();
