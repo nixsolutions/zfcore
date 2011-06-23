@@ -57,7 +57,7 @@ class Users_ManagementController extends Core_Controller_Action_Scaffold
      */
     protected function _getEditForm()
     {
-        return new Model_User_Form_Admin_Edit();
+        return new Users_Model_Users_Form_Admin_Edit();
     }
 
     /**
