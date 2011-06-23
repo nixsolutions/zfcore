@@ -10,7 +10,7 @@
  * 
  * @version  $Id: PasswordConfirmation.php 47 2010-02-12 13:17:34Z AntonShevchuk $
  */
-class Model_User_Form_Validate_PasswordConfirmation 
+class Users_Model_Users_Form_Validate_PasswordConfirmation 
     extends Zend_Validate_Abstract
 {
     const NOT_MATCH = 'notMatch';
@@ -21,13 +21,6 @@ class Model_User_Form_Validate_PasswordConfirmation
     protected $_messageTemplates = array(
         self::NOT_MATCH => 'Password confirmation does not match'
     );
-    
-    public function __construct()
-    {
-        throw new Core_Exception("Deprecated model usage was detected. "
-            . "Use Users_Model_Users_Form_Validate_PasswordConfirmation "
-            . "instead.");
-    }
 
     /**
      * USAGE: see LoginNotExists validator documentation
