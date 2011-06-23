@@ -1,16 +1,14 @@
 mvc:
   debug:
     session:
-      allow:admin
+      allow: admin
     file:
-      allow:admin
+      allow: admin
     logs:
-      allow:admin
-    option:
-      allow:admin
+      allow: admin    
     crontab:
-      allow:admin
+      allow: admin
     index:
-      allow:admin
+      allow: admin
     error:
-      allow:admin
+      allow: admin
