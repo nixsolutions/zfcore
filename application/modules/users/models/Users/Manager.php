@@ -62,11 +62,11 @@ class Users_Model_Users_Manager extends Core_Model_Manager
             $user = $this->getDbTable()->getByLogin($data['login']);
 
             $user->logined = date('Y-m-d H:i:s');
-            $user->ip      = $_SERVER['REMOTE_ADDR'];
+            $user->ip      = $this->_getIpFromRequest();
             $user->count++;
             $user->save();
             
-            if ($data['remember']) {
+            if (!empty($data['remember'])) {
                 Zend_Session::rememberMe(60*60*24*14);
             }
             return true;
@@ -96,7 +96,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
                 'role'     => Users_Model_User::ROLE_USER,
                 'status'   => Users_Model_User::STATUS_REGISTER,
                 'hashCode' => md5($data['login'] . uniqid()),
-                'ip'       => $_SERVER['REMOTE_ADDR']
+                'ip'       => $this->_getIpFromRequest()
             )
         );
         $user = $this->getDbTable()->create($data);
@@ -118,13 +118,14 @@ class Users_Model_Users_Manager extends Core_Model_Manager
             $aHash,
             Users_Model_User::STATUS_REGISTER
         );
+        if ($user) {
+            if ($user->id) {
+                $user->hashCode = null;
+                $user->status   = Users_Model_User::STATUS_ACTIVE;
+                $user->save();
 
-        if ($user->id) {
-            $user->hashCode = null;
-            $user->status   = Users_Model_User::STATUS_ACTIVE;
-            $user->save();
-            
-            return true;
+                return true;
+            }
         }
         return false;
     }
@@ -138,10 +139,12 @@ class Users_Model_Users_Manager extends Core_Model_Manager
     public function forgetPassword($aEmail)
     {
         $user = $this->getDbTable()->getByEmail($aEmail);
-        if ($user->id) {
-            $user->hashCode = md5($user->login . uniqid());
-            $user->save();
-            return $user;
+        if ($user) {
+            if ($user->id) {
+                $user->hashCode = md5($user->login . uniqid());
+                $user->save();
+                return $user;
+            }
         }
         return false;
     }
@@ -154,16 +157,18 @@ class Users_Model_Users_Manager extends Core_Model_Manager
     public function forgetPasswordConfirm($aHash, $aPassword = null)
     {
         $user = $this->getDbTable()->getByHashcode($aHash);
-        if ($user->id) {
-            if ($aPassword) { //confirm to change password
-                 $user->password = $aPassword;
-                 $user->hashCode = null;
-                 $user->save();
-                 return $user;
-            } else { //else don't want to change the password
-                $user->hashCode = null;
-                $user->save();
-                return true;
+        if ($user) {
+            if ($user->id) {
+                if ($aPassword) { //confirm to change password
+                     $user->password = $aPassword;
+                     $user->hashCode = null;
+                     $user->save();
+                     return $user;
+                } else { //else don't want to change the password
+                    $user->hashCode = null;
+                    $user->save();
+                    return true;
+                }
             }
         }
         return false;
@@ -207,9 +212,11 @@ class Users_Model_Users_Manager extends Core_Model_Manager
                 $filter = 'logined < DATE_SUB(NOW(), INTERVAL 1 MONTH)';
                 break;
             case 'custom email':
+                $filterInput = (isset($aParams['filterInput'])) 
+                    ? $aParams['filterInput'] : "";
                 preg_match_all(
                     '/[\S]+\@[\S]+\.\w+/',
-                    $aParams['filterInput'],
+                    $filterInput,
                     $matches
                 );
                 $filter = 'email in ("'.join('","', $matches['0']).'")';
@@ -229,5 +236,12 @@ class Users_Model_Users_Manager extends Core_Model_Manager
         }
         
         return $this->getDbTable()->fetchAll($select)->toArray();
+    }
+    
+    private function _getIpFromRequest()
+    {
+        return (!empty($_SERVER["REMOTE_ADDR"]))
+            ? $_SERVER["REMOTE_ADDR"]
+            : "0.0.0.0";
     }
 }

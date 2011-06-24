@@ -28,10 +28,10 @@ class Model_OptionTest extends ControllerTestCase
         $this->_object -> zxc = date('Y-m-d');
         
         $this->_array = array(
-                       "qwe" => date('Y-m-d'),
-                       "asd" => date('Y-m-d'),
-                       "zxc" => date('Y-m-d'),        
-                        );
+           "qwe" => date('Y-m-d'),
+           "asd" => date('Y-m-d'),
+           "zxc" => date('Y-m-d'),        
+        );
         
         $this->_string  = 'Lorem Ipsum...';
         
