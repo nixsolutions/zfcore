@@ -63,7 +63,10 @@ class Core_Db_Table_Abstract extends Zend_Db_Table_Abstract
      */
     public function deleteById($id)
     {
-        return $this->getById($id)->delete();
+        if ($row = $this->getById($id)) {
+            return $row->delete();
+        }
+        return null;
     }
 
     /**
