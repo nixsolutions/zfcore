@@ -25,7 +25,7 @@ class Categories_Model_Categories_Row extends Zend_Db_Table_Row_Abstract
      * load all children until $down
      *
      * @param integer|null $down
-     * @return Zend_Db_Table_Rowset_Abstract
+     * @return self
      */
     public function loadTree($down = null)
     {

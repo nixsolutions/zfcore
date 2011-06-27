@@ -10,7 +10,7 @@ class Categories_Model_Categories_Rowset extends Zend_Db_Table_Rowset_Abstract
      * Add row
      *
      * @param Categories_Model_Categories_Row $row
-     * @return Categories_Model_Categories_Rowset
+     * @return self
      */
     public function addRow(Categories_Model_Categories_Row $row)
     {
