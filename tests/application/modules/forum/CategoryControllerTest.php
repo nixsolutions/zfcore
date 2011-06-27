@@ -44,7 +44,7 @@ class Forum_CategoryControllerTest extends ControllerTestCase
         }
     }
 
-
+    //FIXME:
     public function testBlogAction()
     {
         $this->dispatch('/forum/category/blog');

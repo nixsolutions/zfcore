@@ -19,16 +19,10 @@ debugmanagment:
       module: debug
       controller: logs
       action: index
-      route: default
-    option:
-      label: Options Table
-      module: debug
-      controller: option
-      action: index
-      route: default
+      route: default    
     contrab:
       label: Crontab
       module: debug
       controller: crontab
-      action:index
-      route:default
+      action: index
+      route: default

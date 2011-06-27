@@ -56,7 +56,7 @@ class Forum_CategoryController extends Core_Controller_Action
         $post = new Forum_Model_Post_Manager();
         $ctg = new Forum_Model_Category_Manager();
         $cats = $ctg->getTreeCategories();
-
+        
         $source = $post->getLastPostsSourse($catId);
         $paginator = Zend_Paginator::factory($source);
 

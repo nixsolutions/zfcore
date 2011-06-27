@@ -1,0 +1,10 @@
+optionsmanagment:
+  label: Options
+  uri:
+  pages:
+    edit:
+      label:Edit Options
+      module:options
+      controller:management
+      action:index
+      route:default

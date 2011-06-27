@@ -11,7 +11,8 @@ class Mail_ManagementControllerTest extends ControllerTestCase
     {
         parent::setUp();
 
-        $this->_doLogin(Model_User::ROLE_ADMIN, Model_User::STATUS_ACTIVE);
+        $this->_doLogin(Users_Model_User::ROLE_ADMIN, 
+                        Users_Model_User::STATUS_ACTIVE);
 
         $this->_fixture = array(
             'alias'       => 'registration',

@@ -5,7 +5,7 @@
  * @category Tests
  * @package  Model
  */
-class Model_User_ManagerTest extends ControllerTestCase
+class Model_Users_ManagerTest extends ControllerTestCase
 {
     /**
      * Setup TestCase
@@ -15,8 +15,8 @@ class Model_User_ManagerTest extends ControllerTestCase
     {
         parent::setUp();
         
-        $this->_userTable = new Model_User_Table();
-        $this->_userManager = new Model_User_Manager();
+        $this->_userTable = new Users_Model_Users_Table();
+        $this->_userManager = new Users_Model_Users_Manager();
         
         $this->_password = 123456;
         
@@ -25,9 +25,9 @@ class Model_User_ManagerTest extends ControllerTestCase
         $this->_fixture['guest'] = array(
             'login'    => 'testguest'.time(),
             'email'    => 'testguest@domain.com'.time(),
-            'role'     => Model_User::ROLE_GUEST,
+            'role'     => Users_Model_User::ROLE_GUEST,
             'hashCode' => 123456,
-            'status'   => Model_User::STATUS_REGISTER,
+            'status'   => Users_Model_User::STATUS_REGISTER,
             'password' => 123456
         );
         
@@ -37,8 +37,8 @@ class Model_User_ManagerTest extends ControllerTestCase
         $this->_fixture['blocked'] = array(
             'login' => 'testblocked'.time(),
             'email' => 'testblocked@domain.com'.time(),
-            'role'  => Model_User::ROLE_USER,
-            'status' => Model_User::STATUS_BLOCKED,
+            'role'  => Users_Model_User::ROLE_USER,
+            'status' => Users_Model_User::STATUS_BLOCKED,
             'password' => 123456
         );
                 
@@ -48,8 +48,8 @@ class Model_User_ManagerTest extends ControllerTestCase
         $this->_fixture['removed'] = array(
             'login' => 'testremoved'.time(),
             'email' => 'testremoved@domain.com'.time(),
-            'role'  => Model_User::ROLE_USER,
-            'status' => Model_User::STATUS_REMOVED,
+            'role'  => Users_Model_User::ROLE_USER,
+            'status' => Users_Model_User::STATUS_REMOVED,
             'password' => 123456
         );
                 
@@ -60,8 +60,8 @@ class Model_User_ManagerTest extends ControllerTestCase
         $this->_fixture['admin'] = array(
             'login' => 'testadmin'.time(),
             'email' => 'testadmin@domain.com'.time(),
-            'role'  => Model_User::ROLE_ADMIN,
-            'status' => Model_User::STATUS_ACTIVE,
+            'role'  => Users_Model_User::ROLE_ADMIN,
+            'status' => Users_Model_User::STATUS_ACTIVE,
             'password' => 123456
         );
                 
@@ -77,14 +77,14 @@ class Model_User_ManagerTest extends ControllerTestCase
     function testAuthenticate()
     {
         // guest user login/password (non activated)
-        $result = Model_User_Manager::authenticate(
+        $result = Users_Model_Users_Manager::authenticate(
             $this->_fixture['guest']['login'],
             $this->_fixture['guest']['password']
         );
         $this->assertFalse($result);
         
         // blocked user login/password
-        $result = Model_User_Manager::authenticate(
+        $result = Users_Model_Users_Manager::authenticate(
             $this->_fixture['blocked']['login'],
             $this->_fixture['blocked']['password']
         );
@@ -92,7 +92,7 @@ class Model_User_ManagerTest extends ControllerTestCase
         $this->assertFalse($result);
         
         // removed login/password
-        $result = Model_User_Manager::authenticate(
+        $result = Users_Model_Users_Manager::authenticate(
             $this->_fixture['removed']['login'],
             $this->_fixture['removed']['password']
         );
@@ -100,7 +100,7 @@ class Model_User_ManagerTest extends ControllerTestCase
         $this->assertFalse($result);
         
         // wrong login/password
-        $result = Model_User_Manager::authenticate(
+        $result = Users_Model_Users_Manager::authenticate(
             $this->_fixture['admin']['login'],
             $this->_fixture['admin']['password'].'d'
         );
@@ -108,7 +108,7 @@ class Model_User_ManagerTest extends ControllerTestCase
         $this->assertFalse($result);
         
         // right login/password
-        $result = Model_User_Manager::authenticate(
+        $result = Users_Model_Users_Manager::authenticate(
             $this->_fixture['admin']['login'],
             $this->_fixture['admin']['password']
         );
@@ -117,14 +117,13 @@ class Model_User_ManagerTest extends ControllerTestCase
         
         // chech Zend_Auth
         $this->assertEquals(
-            Model_User::ROLE_ADMIN,
+            Users_Model_User::ROLE_ADMIN,
             Zend_Auth::getInstance()->getIdentity()->role
         );
     }
     
     /**
      * Test Login
-     *
      */
     public function testLogin()
     {
@@ -149,7 +148,7 @@ class Model_User_ManagerTest extends ControllerTestCase
     
     /**
      * Test logout
-     *
+     * 
      */
     public function testLogout()
     {
@@ -157,7 +156,6 @@ class Model_User_ManagerTest extends ControllerTestCase
             'login'    => $this->_fixture['admin']['login'],
             'password' => $this->_fixture['admin']['password']);
         $this->_userManager->login($credential);
-            
                                      
         $identity = Zend_Auth::getInstance()->getIdentity();
         
@@ -256,7 +254,7 @@ class Model_User_ManagerTest extends ControllerTestCase
     public function testGeneratePassword()
     {
         $password = $this->_userManager->generatePassword();
-        $this->assertEquals(Model_User::MIN_PASSWORD_LENGTH, strlen($password));
+        $this->assertEquals(Users_Model_User::MIN_PASSWORD_LENGTH, strlen($password));
     }
     
     /**
@@ -268,10 +266,11 @@ class Model_User_ManagerTest extends ControllerTestCase
         $filter = array('filter' => 'to all', 'ignore' => 1);
         
         $result = $this->_userManager->getFilter($filter);
-                                                       
-        $this->assertType('array', $result);
         
-        $this->markTestIncomplete('todo try to find dependency');
+        //$this->assertType('array', $result);
+        $this->assertInternalType('array', $result);
+        
+        //$this->markTestIncomplete('todo try to find dependency');
 //        $this->assertEquals(4, sizeof($result));
     }
     
@@ -284,9 +283,10 @@ class Model_User_ManagerTest extends ControllerTestCase
               
         $result = $this->_userManager->getFilter($filter);
                                                        
-        $this->assertType('array', $result);
+        //$this->assertType('array', $result);
+        $this->assertInternalType('array', $result);
         
-        $this->markTestIncomplete('todo try to find dependency');
+        //$this->markTestIncomplete('todo try to find dependency');
 //        $this->assertEquals(1, sizeof($result));
     }
     
@@ -299,9 +299,10 @@ class Model_User_ManagerTest extends ControllerTestCase
                         
         $result = $this->_userManager->getFilter($filter);
                                                        
-        $this->assertType('array', $result);
+        //$this->assertType('array', $result);
+        $this->assertInternalType('array', $result);
         
-        $this->markTestIncomplete('todo try to find dependency');
+        //$this->markTestIncomplete('todo try to find dependency');
 //        $this->assertEquals(1, sizeof($result));
     }
     
@@ -315,9 +316,10 @@ class Model_User_ManagerTest extends ControllerTestCase
         
         $result = $this->_userManager->getFilter($filter);
                                                        
-        $this->assertType('array', $result);
+        //$this->assertType('array', $result);
+        $this->assertInternalType('array', $result);
         
-        $this->markTestIncomplete('todo try to find dependency');
+        //$this->markTestIncomplete('todo try to find dependency');
 //        $this->assertEquals(count($this->_fixture), sizeof($result));
         
         $user = $this->_userTable
@@ -327,9 +329,10 @@ class Model_User_ManagerTest extends ControllerTestCase
         
         $result = $this->_userManager->getFilter($filter);
                                                        
-        $this->assertType('array', $result);
+        //$this->assertType('array', $result);
+        $this->assertInternalType('array', $result);
         
-        $this->markTestIncomplete('todo try to find dependency');
+        //$this->markTestIncomplete('todo try to find dependency');
 //        $this->assertEquals(count($this->_fixture)-1, sizeof($result));
     }
     
@@ -342,7 +345,8 @@ class Model_User_ManagerTest extends ControllerTestCase
         
         $result = $this->_userManager->getFilter($filter);
                                                        
-        $this->assertType('array', $result);
+        //$this->assertType('array', $result);
+        $this->assertInternalType('array', $result);
     }
     
     /**
@@ -355,7 +359,8 @@ class Model_User_ManagerTest extends ControllerTestCase
             $result = $this->_userManager->getFilter($filter);
             $this->fail('you should not see this message');
        } catch (Exception $e) {
-            $this->assertType('string', $e->getMessage());
+            //$this->assertType('string', $e->getMessage());
+            $this->assertInternalType('string', $e->getMessage());
        }
     }
     
@@ -379,8 +384,6 @@ class Model_User_ManagerTest extends ControllerTestCase
         $this->_userTable
              ->getByLogin($this->_fixture['admin']['login'])
              ->delete();
-        
-         
              
         parent::tearDown();
     }

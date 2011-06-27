@@ -78,6 +78,7 @@ class Forum_PostController extends Core_Controller_Action
                     'post_status'=> $values['status']
                 )
             );
+            
             $post->save();
 
             $lastId = $post->getTable()->getAdapter()->lastInsertId();
@@ -93,6 +94,7 @@ class Forum_PostController extends Core_Controller_Action
     
     public function editAction()
     {
+        
         $auth = Zend_Auth::getInstance();
         if (!$auth->hasIdentity()) {
             $this->_flashMessenger->addMessage('You are not authorizated');

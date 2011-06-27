@@ -10,7 +10,7 @@
  *
  * @version  $Id$
  */
-class Debug_Model_Options_Form_Create extends Zend_Dojo_Form
+class Options_Model_Options_Form_Create extends Zend_Dojo_Form
 {
    /**
      * Maximum of name length

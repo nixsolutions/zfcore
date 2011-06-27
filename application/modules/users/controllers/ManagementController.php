@@ -1,6 +1,6 @@
 <?php
 /**
- * UsersController for admin module
+ * ManagementController for users module
  *
  * @category   Application
  * @package    Users

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * UserTest
  *
@@ -18,11 +19,11 @@ class Model_UserTest extends ControllerTestCase
         $this->_fixture = array('login'    => 'testguest'.uniqid(),
                                 'email'    => 'testguest@domain.com',
                                 'ip'       => '10.10.10.10',
-                                'role'     => Model_User::ROLE_GUEST,
-                                'status'   => Model_User::STATUS_ACTIVE,
+                                'role'     => Users_Model_User::ROLE_GUEST,
+                                'status'   => Users_Model_User::STATUS_ACTIVE,
                                 'password' => 123456);
         
-        $this->_userTable = new Model_User_Table();
+        $this->_userTable = new Users_Model_Users_Table();
         
         $this->_user = $this->_userTable->create($this->_fixture);
         $this->_user->save();
@@ -49,7 +50,7 @@ class Model_UserTest extends ControllerTestCase
         $this->_user->save();
         
         $this->assertTrue(
-            Model_User_Manager::authenticate($this->_user->login, $password)
+            Users_Model_Users_Manager::authenticate($this->_user->login, $password)
         );
     }
     

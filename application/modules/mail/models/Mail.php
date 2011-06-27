@@ -4,8 +4,8 @@
  * Mail model
  *
  * @category   Application
- * @package    Model
- * @subpackage Mail
+ * @package    Mail
+ * @subpackage Model
  *
  * @version  $Id: Mail.php 146 2010-07-05 14:22:20Z AntonShevchuk $
  */

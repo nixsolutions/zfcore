@@ -2,7 +2,7 @@
 /**
  * Class Options_Model_Options_Manager
  *
- * for options table
+ * for options table management
  *
  * @category Application
  * @package  Model
@@ -22,9 +22,7 @@ class Options_Model_Options_Manager extends Core_Model_Manager
     
     static protected $_instance = null;
     
-    protected $_modelName = 'Options_Model_Options_Manager';
     protected $_cache   = array();
-    
     
     /**
      * getInstance
@@ -137,7 +135,6 @@ class Options_Model_Options_Manager extends Core_Model_Manager
 //                                  array($key, $namespace));
 //        
 //        $self->getDbTable()->delete($where);
-        
         
         $select = $self->getDbTable()->select();
         $select->where('name = ?', $key)

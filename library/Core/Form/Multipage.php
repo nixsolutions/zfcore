@@ -124,14 +124,13 @@ class Core_Form_Multipage extends Zend_Form
         if (sizeof($this->getSubForms()) < 1) {
             throw new Core_Exception('Multipage form don\'t have any subforms');
         }
-
+        
         $this->_sort();
 
         $step = $this->_current;
-
+        
         if ((null !== $step)
-            && (!empty($this->getSessionNamespace()->$step))
-        ) {
+            && (!empty($this->getSessionNamespace()->$step))) {
             $subForm = $this->getSubForm($step);
             $subForm->populate($this->getSessionNamespace()->$step);
         } else {
@@ -142,13 +141,17 @@ class Core_Form_Multipage extends Zend_Form
                 }
             }
         }
-
-        if (is_null($subForm)) {
-            end($this->_order);
-            $subForm = $this->getSubForm(key($this->_order));
+        
+        //FIXME: Undefined variable: subForm
+        if (isset($subForm)) {
+            if (is_null($subForm)) {
+                end($this->_order);
+                $subForm = $this->getSubForm(key($this->_order));
+            }
+            return $this->_prepareSubForm($subForm);
         }
-
-        return $this->_prepareSubForm($subForm);
+        
+        return false;
     }
 
     /**

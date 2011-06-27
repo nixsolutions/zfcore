@@ -10,7 +10,7 @@
  *
  * @version  $Id$
  */
-class Debug_Model_Options_Form_Edit extends Debug_Model_Options_Form_Create
+class Options_Model_Options_Form_Edit extends Options_Model_Options_Form_Create
 {
     /**
      * Form initialization

@@ -78,6 +78,7 @@ class Core_Model_Manager
             $modelName = substr($modelName, 0, strpos($modelName, '_Manager'));
             $this->setModelName($modelName);
         }
+        
         return $this->_modelName;
     }
 }

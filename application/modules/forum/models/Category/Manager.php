@@ -98,19 +98,22 @@ class Forum_Model_Category_Manager extends Core_Model_Manager
      */
     private function createTree($arr, $parrent = 0) 
     {
-        if (count($arr[$parrent]) == 0) return '';
-        $result = $this->_template['start'];
-        foreach ($arr[$parrent] as $cat) {
-            $result .= $this->_template['catStart']
-                     . '<a href="' . Zend_View_Helper_Url::url(array('id' => $cat['id'])) . '">'
-                     . $cat['ctg_title'] . '</a>'
-                     . $this->_template['catEnd'];
-            $subArr = $arr;
-            unset($subArr[$parrent]);
-            $result .= $this->createTree($subArr, $cat['id']);
+        if (isset($arr[$parrent])) {
+            if (count($arr[$parrent]) == 0) return '';
+            $result = $this->_template['start'];
+            foreach ($arr[$parrent] as $cat) {
+                $result .= $this->_template['catStart']
+                         . '<a href="' . Zend_View_Helper_Url::url(array('id' => $cat['id'])) . '">'
+                         . $cat['ctg_title'] . '</a>'
+                         . $this->_template['catEnd'];
+                $subArr = $arr;
+                unset($subArr[$parrent]);
+                $result .= $this->createTree($subArr, $cat['id']);
+            }
+            $result .= $this->_template['end'];
+            return $result;
         }
-        $result .= $this->_template['end'];
-        return $result;
+        return false;
     }
     
     /**
