@@ -1,0 +1,4 @@
+mvc:
+  categories:
+    management:
+     allow: admin
