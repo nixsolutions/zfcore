@@ -29,18 +29,7 @@ class Categories_Model_Categories_Row extends Zend_Db_Table_Row_Abstract
      */
     public function loadTree($down = null)
     {
-        $select = $this->select();
-        $select->where('path LIKE ?', '%' . $this->alias . self::PATH_SEPARATOR .'%')
-               ->where('level > ?', $this->level)
-               ->order('level DESC');
-
-        if ($down) {
-            $select->where('level <= ?', $this->level + $down);
-        }
-
-        $rowset = $this->getTable()->fetchAll($select);
-
-        $count = $rowset->count();
+        $rowset = $this->getAllChildren($down, 'level DESC');
 
         $children = array();
         foreach ($rowset as $i => $row) {
@@ -59,6 +48,34 @@ class Categories_Model_Categories_Row extends Zend_Db_Table_Row_Abstract
             $this->addChild($child);
         }
         return $this;
+    }
+
+    /**
+     * load all children until $down
+     *
+     * @param integer $down
+     * @param string  $order
+     * @param integer $limit
+     * @param integer $offset
+     * @return Zend_Db_Table_Rowset_Abstract
+     */
+    public function getAllChildren($down = null, $order = null, $limit = null,
+        $offset = null)
+    {
+        $select = $this->select();
+        $select->where('path LIKE ?', '%' . $this->alias . self::PATH_SEPARATOR .'%')
+               ->where('level > ?', $this->level);
+
+        if ($order) {
+            $select->order($order);
+        }
+        if ($limit || $offset) {
+            $select->limit($limit, $offset);
+        }
+        if ($down) {
+            $select->where('level <= ?', $this->level + $down);
+        }
+        return $this->getTable()->fetchAll($select);
     }
 
 
