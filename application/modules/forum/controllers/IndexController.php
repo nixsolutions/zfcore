@@ -10,15 +10,29 @@
  */
 class Forum_IndexController extends Core_Controller_Action
 {
-    public function init()
-    {
-        /* Initialize action controller here */
-        parent::init();
-    }
-
+    /**
+     * Index
+     */
     public function indexAction()
     {
-        $this->_forward('index', 'category');
+        $ctg = new Forum_Model_Category_Manager();
+        $post = new Forum_Model_Post_Manager();
+
+        $source = $post->getPostsSourse($this->_getParam('id', 0));
+        $paginator = Zend_Paginator::factory($source);
+
+        $paginator->setItemCountPerPage(10);
+        $paginator->setCurrentPageNumber($this->_getParam('page'));
+
+        $this->view->cats = $ctg->getChildren();
+
+        $ids = array();
+        foreach ($ctg->getChildren()as $cat) {
+            $ids[] = $cat->id;
+        }
+
+        $this->view->catsInfo = $post->getInfoByCategories($ids);
+        $this->view->paginator = $paginator;
     }
 
 }

@@ -1,11 +1,11 @@
 <?php
 /**
  * Login form
- * 
+ *
  * @category Application
  * @package Model
  * @subpackage Form
- * 
+ *
  * @version  $Id: Login.php 1561 2009-10-16 13:31:31Z dark $
  */
 class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
@@ -19,7 +19,7 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
     {
         $this->setName('postForm');
         $this->setMethod('post');
-        
+
         $this->addElement(
             'ValidationTextBox', 'post_title',
             array(
@@ -39,7 +39,7 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
                 )
             )
         );
-        
+
         $this->addElement(
             'Editor', 'post_text',
             array(
@@ -59,21 +59,21 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
                                       'ViewSource')
             )
         );
-        
-        $this->addElement($this->_category()); 
-        
+
+        $this->addElement($this->_category());
+
         $this->addElement($this->_status());
 
         $this->addElement(
-            'SubmitButton', 
+            'SubmitButton',
             'submit',
             array(
                 'label' => 'Save'
             )
         );
-        
+
         $this->addElement(new Zend_Form_Element_Hidden('pid'));
-        
+
         Zend_Dojo::enableForm($this);
     }
 
@@ -84,16 +84,18 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
      */
     protected function _category()
     {
-        $cats = new Forum_Model_Category_Manager();
-        $categories = $cats->getAllCategories();
+        $categories = new Forum_Model_Category_Manager();
 
-        $category = new Zend_Dojo_Form_Element_ComboBox('ctg_id');
-        $category->setLabel('Category')
-                 ->setRequired(true)
-                 ->setAttribs(array('style'=>'width:60%'))
-                 ->setMultiOptions($categories);
+        $element = new Zend_Dojo_Form_Element_FilteringSelect('ctg_id');
+        $element->setLabel('Category')
+                ->setRequired(true)
+                ->setAttribs(array('style'=>'width:60%'));
 
-        return $category;
+        foreach ($categories->getAll() as $category) {
+             $element->addMultiOption($category->id, $category->title);
+        }
+
+        return $element;
     }
 
     /**

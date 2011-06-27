@@ -1,11 +1,11 @@
 <?php
 /**
  * Login form
- * 
+ *
  * @category Application
  * @package Model
  * @subpackage Form
- * 
+ *
  * @version  $Id: Create.php 162 2010-07-12 14:58:58Z AntonShevchuk $
  */
 class Forum_Model_Post_Form_Create extends Zend_Form
@@ -28,7 +28,7 @@ class Forum_Model_Post_Form_Create extends Zend_Form
                 'filters' => array('StringTrim'),
             )
         );
-        
+
         $text = new Core_Form_Element_TinyMCE(
             'text', array(
                 'label' => 'text',
@@ -43,9 +43,9 @@ class Forum_Model_Post_Form_Create extends Zend_Form
             )
         );
         $this->addElement($text);
-        
+
         $this->addElement($this->_category());
-        
+
         $this->addElement(
             'select', 'status',
             array(
@@ -60,26 +60,27 @@ class Forum_Model_Post_Form_Create extends Zend_Form
         );
 
         $this->addElement($this->_submit());
-        
+
         return $this;
     }
-    
+
     protected function _submit()
     {
         $sudmit = new Zend_Form_Element_Submit('submit');
         $sudmit->setLabel('create');
         return $sudmit;
     }
-    
+
     protected function _category()
     {
-        $cats = new Forum_Model_Category_Manager();
-        $categories = $cats->getAllCategories();
-
         $category = new Zend_Form_Element_Select('category');
         $category->setLabel('category');
         $category->setRequired(true);
-        $category->setMultiOptions($categories);
+
+        $cats = new Forum_Model_Category_Manager();
+        foreach ($cats->getAllCategories() as $cat) {
+            $category->addMultiOption($cat->id, $cat->title);
+        }
 
         return $category;
     }

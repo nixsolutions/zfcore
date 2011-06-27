@@ -5,137 +5,69 @@
  * @category Application
  * @package Model
  * @subpackage Category
- * 
+ *
  * @author Ivan Nosov aka rewolf <i.k.nosov@gmail.com>
  *
  * @version  $Id: Manager.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
 class Forum_Model_Category_Manager extends Core_Model_Manager
 {
-    /** template for tree */
-    protected $_template = array(
-        'start' => "<ul>",
-        'end' => "</ul>",
-        'catStart' => "<li>",
-        'catEnd' => "</li>"
-    );
+    const CATEGORY_ALIAS = 'forum';
 
     /**
-     * get categories
-     *
-     * @return array
+     * @var Categories_Model_Categories_Row
      */
-    public function getCategories($idParentCategory = 0)
-    {
-        $select = $this->getDbTable()->select()
-                ->from(
-                    array('c' => 'bf_category'),
-                    array(
-                        '*',
-                        'count_posts' => new Zend_Db_Expr('COUNT(DISTINCT(p.id))'),
-                        'count_comments' => new Zend_Db_Expr('COUNT(com.id)'),
-                    )
-                )
-                ->joinLeft(
-                    array('p' => 'bf_post'),
-                    'p.ctg_id = c.id', array()
-                )
-                ->joinLeft(
-                    array('com' => 'bf_comment'),
-                    'p.id = com.post_id', array()
-                )
-                ->where('ctg_parent_id = ?', $idParentCategory)
-                ->group('c.id');
-        return $this->getDbTable()->fetchAll($select)->toArray();
-    }
-    
+    protected $_category;
+
     /**
-     * get tree of categories
-     *
-     * @return string
+     * Constructor
      */
-    public function getTreeCategories() 
+    public function __construct()
     {
-        $result = $this->getDbTable()->fetchAll($this->getDbTable()->select())->toArray();
-        $result = $this->prepareCategories($result);
-        return $this->createTree($result);
-    }
-    
-    /**
-     * get all categories
-     */
-    public function getAllCategories()
-    {
-        $result = $this->getDbTable()->fetchAll($this->getDbTable()->select())->toArray();
-        $categories = array();
-        foreach ($result as $cat) {
-            $categories[$cat['id']] = $cat['ctg_title'];
-        }
-        return $categories;
+        $categories = new Categories_Model_Categories_Table();
+        $this->setDbTable($categories);
+
+        $this->_category = $categories->getByAlias(self::CATEGORY_ALIAS);
     }
 
     /**
-     * prepare categories for future manipulation
+     * Get all categories
      *
-     * @param array $arr
-     * @return array
+     * @param integer $down
+     * @param string  $order
+     * @param integer $limit
+     * @param integer $offset
+     * @return Zend_Db_Table_Rowset_Abstract
      */
-    private function prepareCategories($arr)
+    public function getAll($down = null, $order = null, $limit = null,
+    $offset = null)
     {
-        $res = array();
-        foreach ($arr as $v) {
-            $res[$v['ctg_parent_id']][$v['id']] = $v;
-        }
-        return $res;
+        return $this->_category->getAllChildren($down, $order, $limit, $offset);
     }
 
     /**
-     * create tree of categories
+     * Get children categories
      *
-     * @param array $arr
-     * @param integer $parrent
-     * @return string
+     * @return Zend_Db_Table_Rowset_Abstract
      */
-    private function createTree($arr, $parrent = 0) 
+    public function getChildren()
     {
-        if (isset($arr[$parrent])) {
-            if (count($arr[$parrent]) == 0) return '';
-            $result = $this->_template['start'];
-            foreach ($arr[$parrent] as $cat) {
-                $result .= $this->_template['catStart']
-                         . '<a href="' . Zend_View_Helper_Url::url(array('id' => $cat['id'])) . '">'
-                         . $cat['ctg_title'] . '</a>'
-                         . $this->_template['catEnd'];
-                $subArr = $arr;
-                unset($subArr[$parrent]);
-                $result .= $this->createTree($subArr, $cat['id']);
-            }
-            $result .= $this->_template['end'];
-            return $result;
-        }
-        return false;
-    }
-    
-    /**
-     * set template for tree
-     *
-     * @param array $arr
-     * @return Model_Category
-     */
-    public function setTemplate(array $arr)
-    {
-        $this->_template = $arr;
-        return $this;
-    }
-    
-    /**
-     * get template for tree
-     *
-     * @return array
-     */
-    private function getTemplate()
-    {
-        return $this->_template;
+        return $this->_category->getChildren();
     }
 
+    /**
+     * Get by id
+     *
+     * @param integer $id
+     * @return Zend_Db_Table_Row_Abstract
+     */
+    public function getById($id)
+    {
+        $separator = Categories_Model_Categories_Row::PATH_SEPARATOR;
+
+        $select = $this->getDbTable()->select();
+        $select->where('id=?', $id)
+               ->where('alias LIKE ?', self::CATEGORY_ALIAS . $separator . '%');
+        return $this->getDbTable()->fetchRow($select);
+    }
 }

@@ -29,7 +29,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                     array(
                         '*',
                         'u.login',
-                        'c.ctg_title',
+                        'c.title',
                         'c.id',
                     )
                 )
@@ -39,7 +39,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                     array()
                 )
                 ->joinLeft(
-                    array('c' => 'bf_category'),
+                    array('c' => 'categories'),
                     'c.id = p.ctg_id',
                     array()
                 )
@@ -47,7 +47,33 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
         $result = $this->getDbTable()->fetchRow($select);
         return $result;
     }
-    
+
+    /**
+     * Get catgories info
+     *
+     * @param array|integer $ids
+     * @return array
+     */
+    public function getInfoByCategories($ids)
+    {
+        $select = $this->getDbTable()->select()->setIntegrityCheck(false);
+        $select->from(
+            array('p' => 'bf_post'),
+            array('posts' => new Zend_Db_Expr('COUNT(DISTINCT(p.id))'),
+                  'ctg_id')
+        )->joinLeft(
+            array('com' => 'bf_comment'),
+            'p.id = com.post_id',
+            array('comments' => new Zend_Db_Expr('COUNT(com.id)'))
+        )->where('ctg_id IN (?)', (array) $ids);
+
+        $result = array();
+        foreach ($this->getDbTable()->fetchAll($select) as $info) {
+            $result[$info->ctg_id] = $info;
+        }
+        return $result;
+    }
+
     private function prepareDataFromForm($data)
     {
         return array(
@@ -57,14 +83,14 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
             'post_status' => $data['status'],
         );
     }
-    
+
     public function updatePost($postId, $data)
     {
         $data = $this->prepareDataFromForm($data);
         $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $postId);
         $this->getDbTable()->update($data, $where);
     }
-    
+
     public function incrementCountView($postId)
     {
         $data = array(
@@ -73,7 +99,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
         $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $postId);
         $this->getDbTable()->update($data, $where);
     }
-    
+
     /**
      * get posts with category and user login
      *
@@ -89,7 +115,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                     array(
                         '*',
                         'u.login',
-                        'c.ctg_title',
+                        'c.title',
                         'count_comments' => new Zend_Db_Expr('COUNT(com.id)'),
                     )
                 )
@@ -98,7 +124,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                     'p.user_id = u.id', array()
                 )
                 ->joinLeft(
-                    array('c' => 'bf_category'),
+                    array('c' => 'categories'),
                     'c.id = p.ctg_id', array()
                 )
                 ->joinLeft(
@@ -111,7 +137,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
         }
         return $this->getDbTable()->fetchAll($select)->toArray();
     }
-    
+
     public function getPostsSourse($idCat = null)
     {
         $select = $this->getDbTable()->select()->setIntegrityCheck(false)
@@ -121,7 +147,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                 ), array(
                     '*',
                     'u.login',
-                    'c.ctg_title',
+                    'c.title',
                     'count_comments' => new Zend_Db_Expr('COUNT(com.id)'),
                 )
             )
@@ -130,7 +156,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                 'p.user_id = u.id', array()
             )
             ->joinLeft(
-                array('c' => 'bf_category'),
+                array('c' => 'categories'),
                 'c.id = p.ctg_id', array()
             )
             ->joinLeft(
@@ -143,7 +169,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
         }
         return $select;
     }
-    
+
     public function getLastPostsSourse($idCat = null)
     {
         $select = $this->getDbTable()->select()->setIntegrityCheck(false)
@@ -153,7 +179,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                     ), array(
                         '*',
                         'u.login',
-                        'c.ctg_title',
+                        'c.title',
                         'count_comments' => new Zend_Db_Expr('COUNT(com.id)'),
                     )
                 )
@@ -162,7 +188,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                     'p.user_id = u.id', array()
                 )
                 ->joinLeft(
-                    array('c' => 'bf_category'),
+                    array('c' => 'categories'),
                     'c.id = p.ctg_id', array()
                 )
                 ->joinLeft(

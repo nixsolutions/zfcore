@@ -1,12 +1,12 @@
-<?php 
+<?php
     $this->headScript()->prependFile($this->baseUrl('scripts/tiny_mce/tiny_mce.js'));
-    $this->stylesheet()->module(); 
+    $this->stylesheet()->module();
 ?>
 <h2>Post: <?php echo $this->post->post_title; ?></h2>
 <div>author: <?php echo $this->post->login; ?></div>
 <div>
-  category: 
-  <a href="<?php echo $this->url(array('controller'=>'category', 'action'=>'index', 'id'=>$this->post->ctg_id)) ?>"><?php echo $this->post->ctg_title; ?></a>
+  category:
+  <a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'index', 'id'=>$this->post->ctg_id)) ?>"><?php echo $this->post->ctg_title; ?></a>
 </div>
 <hr />
 <div><pre style="font-size: 1.5em;"><?php echo $this->post->post_text; ?></pre></div>
@@ -18,8 +18,8 @@
   <div>comment: <?php echo $comment['cmt_text'] ?></div>
   <hr width="50%" align="left" />
 <div>
-<?php 
+<?php
     endforeach; endif;
-    $auth = Zend_Auth::getInstance(); 
+    $auth = Zend_Auth::getInstance();
     if ($auth->hasIdentity()) echo $this->form;
 ?>

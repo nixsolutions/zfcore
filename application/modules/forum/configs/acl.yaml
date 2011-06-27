@@ -2,11 +2,7 @@ mvc:
   forum:
     index:
       allow: guest
-    category:
-      allow: guest
     post:
       allow: guest
     management:
-      allow: admin
-    category-management:
       allow: admin
