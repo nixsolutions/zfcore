@@ -11,11 +11,11 @@
 class Forum_Model_Post_Table extends Core_Db_Table_Abstract
 {
     /** Table name */
-    protected $_name = 'bf_post';
+    protected $_name = 'forum_post';
 
     /** Primary Key */
     protected $_primary = 'id';
 
     /** Row Class */
-    protected $_rowClass = 'Forum_Model_Post';    
+    protected $_rowClass = 'Forum_Model_Post';
 }

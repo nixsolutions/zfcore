@@ -24,7 +24,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                 ->setIntegrityCheck(false)
                 ->from(
                     array(
-                        'p' => 'bf_post'
+                        'p' => 'forum_post'
                     ),
                     array(
                         '*',
@@ -58,11 +58,11 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
     {
         $select = $this->getDbTable()->select()->setIntegrityCheck(false);
         $select->from(
-            array('p' => 'bf_post'),
+            array('p' => 'forum_post'),
             array('posts' => new Zend_Db_Expr('COUNT(DISTINCT(p.id))'),
                   'ctg_id')
         )->joinLeft(
-            array('com' => 'bf_comment'),
+            array('com' => 'forum_comment'),
             'p.id = com.post_id',
             array('comments' => new Zend_Db_Expr('COUNT(com.id)'))
         )->where('ctg_id IN (?)', (array) $ids);
@@ -110,7 +110,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
         $select = $this->getDbTable()->select()->setIntegrityCheck(false)
                 ->from(
                     array(
-                        'p' => 'bf_post'
+                        'p' => 'forum_post'
                     ),
                     array(
                         '*',
@@ -128,7 +128,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                     'c.id = p.ctg_id', array()
                 )
                 ->joinLeft(
-                    array('com' => 'bf_comment'),
+                    array('com' => 'forum_comment'),
                     'p.id = com.post_id', array()
                 )
                 ->group('p.id');
@@ -143,7 +143,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
         $select = $this->getDbTable()->select()->setIntegrityCheck(false)
             ->from(
                 array(
-                    'p' => 'bf_post'
+                    'p' => 'forum_post'
                 ), array(
                     '*',
                     'u.login',
@@ -160,7 +160,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                 'c.id = p.ctg_id', array()
             )
             ->joinLeft(
-                array('com' => 'bf_comment'),
+                array('com' => 'forum_comment'),
                 'p.id = com.post_id', array()
             )
             ->group('p.id');
@@ -175,7 +175,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
         $select = $this->getDbTable()->select()->setIntegrityCheck(false)
                 ->from(
                     array(
-                        'p' => 'bf_post'
+                        'p' => 'forum_post'
                     ), array(
                         '*',
                         'u.login',
@@ -192,7 +192,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                     'c.id = p.ctg_id', array()
                 )
                 ->joinLeft(
-                    array('com' => 'bf_comment'),
+                    array('com' => 'forum_comment'),
                     'p.id = com.post_id', array()
                 )
                 ->group('p.id')
