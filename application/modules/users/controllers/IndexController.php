@@ -1,6 +1,6 @@
 <?php
 /**
- * UsersController for гыукы module
+ * UsersController for users module
  *
  * @category   Application
  * @package    Users
@@ -19,7 +19,6 @@ class Users_IndexController extends Core_Controller_Action
     public function indexAction()
     {
         // action body
-        
     }
 
     /**
@@ -29,6 +28,7 @@ class Users_IndexController extends Core_Controller_Action
     {
         // action body
     }
+
 }
 
 

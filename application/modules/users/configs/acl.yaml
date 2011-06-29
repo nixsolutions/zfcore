@@ -1,5 +1,7 @@
 mvc:
   users:
+    api:
+      allow: guest
     index:
       allow: user
     login:
