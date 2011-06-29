@@ -1,22 +1,22 @@
 <?php
 /**
- * IndexController for forum module
+ * IndexController for Blog module
  *
  * @category   Application
- * @package    Forum
+ * @package    Blog
  * @subpackage Controller
  *
  * @version  $Id: IndexController.php 146 2010-07-05 14:22:20Z AntonShevchuk $
  */
-class Forum_IndexController extends Core_Controller_Action
+class Blog_IndexController extends Core_Controller_Action
 {
     /**
      * Index
      */
     public function indexAction()
     {
-        $ctg = new Forum_Model_Category_Manager();
-        $post = new Forum_Model_Post_Manager();
+        $ctg = new Blog_Model_Categories();
+        $post = new Blog_Model_Post_Manager();
 
         $source = $post->getPostsSourse($this->_getParam('id', 0));
         $paginator = Zend_Paginator::factory($source);

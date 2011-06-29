@@ -1,0 +1,10 @@
+<div class="pagination">
+    <!-- Numbered page links -->
+    <?php foreach ($this->pagesInRange as $page): ?>
+        <?php if ($page != $this->current): ?>
+            <a href="<?php $this->url(array('page' => $page)); ?>">[<?php echo $page; ?>]</a>
+        <?php else: ?>
+            -<?php echo $page; ?>-
+        <?php endif; ?>
+    <?php endforeach; ?>
+</div>
