@@ -58,13 +58,6 @@ class Forum_Migration_00000000_000000_00 extends Core_Migration_Abstract
                             Core_Migration_Abstract::TYPE_TIMESTAMP,
                             null, null);
 
-        $this->insert('forum_post', array(
-            'post_title'    =>  'title',
-            'post_text'   =>  'text',
-            'ctg_id'=> '1',
-            'user_id'=> '207',
-            'post_status'=> 'active'
-        ));
 
         // comment table
         $this->createTable('forum_comment');
