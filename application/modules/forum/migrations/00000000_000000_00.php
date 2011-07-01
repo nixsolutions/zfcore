@@ -5,15 +5,6 @@ class Forum_Migration_00000000_000000_00 extends Core_Migration_Abstract
 
     public function up()
     {
-        // category table
-        $this->insert('categories', array(
-            'id'              =>  '1',
-            'title'       =>  'forum',
-            'description' =>  'forum',
-            'alias'   =>  'forum',
-            'path'   =>  'forum',
-        ));
-
         // post table
         $this->createTable('forum_post');
 

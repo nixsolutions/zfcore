@@ -12,10 +12,10 @@ class Pages_ImagesControllerTest extends ControllerTestCase
      */
     public function setUp()
     {
-        parent::setUp();        
+        parent::setUp();
         parent::_doLogin(Users_Model_User::ROLE_ADMIN);
     }
-    
+
     /**
      * Admin/Images/Index
      */
@@ -26,7 +26,7 @@ class Pages_ImagesControllerTest extends ControllerTestCase
         $this->assertController('images');
         $this->assertAction('index');
     }
-    
+
     /**
      * Admin/Images/Manager
      */
@@ -37,7 +37,7 @@ class Pages_ImagesControllerTest extends ControllerTestCase
         $this->assertController('images');
         $this->assertAction('manager');
     }
-    
+
     /**
      * Admin/Images/Browser
      */
@@ -48,7 +48,7 @@ class Pages_ImagesControllerTest extends ControllerTestCase
         $this->assertController('images');
         $this->assertAction('browser');
     }
-    
+
     /**
      * Admin/Images/Delete
      */
@@ -59,7 +59,7 @@ class Pages_ImagesControllerTest extends ControllerTestCase
         $this->assertController('error');
         $this->assertAction('internal');
     }
-    
+
     /**
      * Admin/Images/Upload
      */
@@ -70,7 +70,7 @@ class Pages_ImagesControllerTest extends ControllerTestCase
         $this->assertController('error');
         $this->assertAction('internal');
     }
-    
+
     /**
      * Admin/Images/Thumb
      */
