@@ -64,7 +64,6 @@ class Users_LoginControllerTest extends ControllerTestCase
             $this->_fixture['login'],
             $this->_fixture['password']
         );
-        var_dump($this->getResponse()->outputBody());
         $this->assertRedirectTo('/');
     }
 

@@ -4,22 +4,12 @@
  *
  * @version $Id$
  */
-class Categories_Model_Categories_Row extends Zend_Db_Table_Row_Abstract
+class Categories_Model_Categories_Row extends Core_Categories_Row
 {
     /**
      * @var string
      */
     const PATH_SEPARATOR = '/';
-
-    /**
-     * @var Zend_Db_Table_Row_Abstract
-     */
-    protected $_parent;
-
-    /**
-     * @var Zend_Db_Table_Rowset_Abstract
-     */
-    protected $_children;
 
     /**
      * load all children until $down
@@ -51,6 +41,51 @@ class Categories_Model_Categories_Row extends Zend_Db_Table_Row_Abstract
     }
 
     /**
+     * Add child
+     *
+     * @param self $row
+     * @throws Zend_Db_Table_Row_Exception
+     * @return self
+     */
+    public function addChild(self $row)
+    {
+        if (empty($this->_cleanData)) {
+            throw new Zend_Db_Table_Row_Exception('Parent category is not created yet');
+        }
+        if ($row->getParentNodeId() != $this->getNodeId()) {
+            $row->setParentNode($this->getNodeId());
+        }
+
+        if (!$this->_children) {
+            $this->_initChildren();
+        }
+        $this->getChildren()->addRow($row);
+
+        return $this;
+    }
+
+    /**
+     * Init children
+     *
+     * @return self
+     */
+    protected function _initChildren()
+    {
+        $data = array(
+                    'table'    => $this->getTable(),
+                    'data'     => array(),
+                    'readOnly' => false,
+                    'rowClass' => __CLASS__,
+                    'stored'   => true
+        );
+
+        $rowsetClass = $this->getTable()->getRowsetClass();
+        $this->_children = new $rowsetClass($data);
+
+        return $this;
+    }
+
+    /**
      * load all children until $down
      *
      * @param integer $down
@@ -77,86 +112,6 @@ class Categories_Model_Categories_Row extends Zend_Db_Table_Row_Abstract
         }
         return $this->getTable()->fetchAll($select);
     }
-
-
-    /**
-     * Add child
-     *
-     * @param self $row
-     * @throws Zend_Db_Table_Row_Exception
-     * @return self
-     */
-    public function addChild(self $row)
-    {
-        if (empty($this->_cleanData)) {
-            throw new Zend_Db_Table_Row_Exception('Parent category is not created yet');
-        }
-        if ($row->parentId != $this->id) {
-            $row->parentId = $this->id;
-            $row->save();
-        }
-        if (!$this->_children) {
-            $this->_initChildren();
-        }
-
-        $this->_children->addRow($row);
-
-        return $this;
-    }
-
-    /**
-     * Get Parent
-     *
-     * @return Zend_Db_Table_Row_Abstract|null
-     */
-    public function getParent()
-    {
-        if (!$this->_parent && $this->parentId) {
-            $this->_parent = $this->getTable()->find($this->parentId)->current();
-        }
-        return $this->_parent;
-    }
-
-    /**
-     * Add child
-     *
-     * @param self $row
-     * @throws Zend_Db_Table_Row_Exception
-     */
-    public function getChildren()
-    {
-        if (!$this->_children) {
-            if (empty($this->_cleanData)) {
-                throw new Zend_Db_Table_Row_Exception('Parent category is not created yet');
-            }
-
-            $select = $this->select()->where('parentId=?', $this->id);
-            $this->_children = $this->getTable()->fetchAll($select);
-        }
-        return $this->_children;
-    }
-
-    /**
-     * Init children
-     *
-     * @return self
-     */
-    protected function _initChildren()
-    {
-        $data = array(
-            'table'    => $this->getTable(),
-            'data'     => array(),
-            'readOnly' => false,
-            'rowClass' => __CLASS__,
-            'stored'   => true
-        );
-
-        $rowsetClass = $this->getTable()->getRowsetClass();
-        $this->_children = new $rowsetClass($data);
-
-        return $this;
-    }
-
 
     /**
      * @see Zend_Db_Table_Row_Abstract::_insert()

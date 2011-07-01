@@ -1,18 +1,18 @@
 <?php
 /**
- * Categories_Model_Categories_Rowset
+ * Core_Categories_Rowset
  *
  * @version $Id$
  */
-class Categories_Model_Categories_Rowset extends Zend_Db_Table_Rowset_Abstract
+class Core_Categories_Rowset extends Zend_Db_Table_Rowset_Abstract
 {
     /**
      * Add row
      *
-     * @param Categories_Model_Categories_Row $row
+     * @param Core_Categories_Row $row
      * @return self
      */
-    public function addRow(Categories_Model_Categories_Row $row)
+    public function addRow(Core_Categories_Row $row)
     {
         $this->_data[] = $row->toArray();
         if ($this->_count == count($this->_rows)) {

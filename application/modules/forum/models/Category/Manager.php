@@ -10,14 +10,14 @@
  *
  * @version  $Id: Manager.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
-class Forum_Model_Category_Manager extends Core_Model_Manager
+class Forum_Model_Category_Manager extends Core_Categories_Manager
 {
     const CATEGORY_ALIAS = 'forum';
 
     /**
      * @var Categories_Model_Categories_Row
      */
-    protected $_category;
+    protected $_root;
 
     /**
      * Constructor
@@ -28,41 +28,16 @@ class Forum_Model_Category_Manager extends Core_Model_Manager
     }
 
     /**
-     * Get all categories
-     *
-     * @param integer $down
-     * @param string  $order
-     * @param integer $limit
-     * @param integer $offset
-     * @return Zend_Db_Table_Rowset_Abstract
-     */
-    public function getAll($down = null, $order = null, $limit = null,
-    $offset = null)
-    {
-        return $this->getRoot()->getAllChildren($down, $order, $limit, $offset);
-    }
-
-    /**
-     * Get children categories
-     *
-     * @return Zend_Db_Table_Rowset_Abstract
-     */
-    public function getChildren()
-    {
-        return $this->getRoot()->getChildren();
-    }
-
-    /**
      * Get Forum root category
      *
      * @return Categories_Model_Categories_Row
      */
     public function getRoot()
     {
-        if (!$this->_category) {
-            $this->_category = $this->getDbTable()->getByAlias(self::CATEGORY_ALIAS);
+        if (!$this->_root) {
+            $this->_root = $this->getDbTable()->getByAlias(self::CATEGORY_ALIAS);
         }
-        return $this->_category;
+        return $this->_root;
     }
 
     /**

@@ -1,11 +1,10 @@
 <?php
 /**
- * Categories_Model_Categories_Table
+ * Core_Categories_Table
  *
  *
- * @example $categories = new Categories_Model_Categories_Table();
+ * @example $categories = new Core_Categories_Table();
  *          $category = $categories->getById(1);
- *          $category->loadTree(); //load all child categories
  *
  *         $result = array();
  *         foreach ($category->getChildren() as $row) {
@@ -24,7 +23,7 @@
  *
  * @version $Id$
  */
-class Categories_Model_Categories_Table extends Core_Categories_Table
+class Core_Categories_Table extends Core_Db_Table_Abstract
 {
     /**
      * @var string
@@ -34,5 +33,10 @@ class Categories_Model_Categories_Table extends Core_Categories_Table
     /**
      * @var string
      */
-    protected $_rowClass = 'Categories_Model_Categories_Row';
+    protected $_rowClass = 'Core_Categories_Row';
+
+    /**
+     * @var string
+     */
+    protected $_rowsetClass = 'Core_Categories_Rowset';
 }
