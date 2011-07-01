@@ -17,8 +17,8 @@ class Forum_IndexControllerTest extends ControllerTestCase
     {
         $this->dispatch('/forum');
         $this->assertModule('forum');
-        $this->assertController('category');
-        //$this->assertAction('index');
+        $this->assertController('index');
+        $this->assertAction('index');
     }
 
     public static function tearDownAfterClass()

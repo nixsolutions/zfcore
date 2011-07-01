@@ -41,7 +41,7 @@ class Forum_Model_Post_Manager extends Core_Model_Manager
                 ->joinLeft(
                     array('c' => 'categories'),
                     'c.id = p.ctg_id',
-                    array()
+                    array('ctg_title' => 'title')
                 )
                 ->where('p.id = ?', $id);
         $result = $this->getDbTable()->fetchRow($select);

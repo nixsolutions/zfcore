@@ -78,7 +78,7 @@ class Forum_Model_Post_Form_Create extends Zend_Form
         $category->setRequired(true);
 
         $cats = new Forum_Model_Category_Manager();
-        foreach ($cats->getAllCategories() as $cat) {
+        foreach ($cats->getAll() as $cat) {
             $category->addMultiOption($cat->id, $cat->title);
         }
 

@@ -24,10 +24,7 @@ class Forum_Model_Category_Manager extends Core_Model_Manager
      */
     public function __construct()
     {
-        $categories = new Categories_Model_Categories_Table();
-        $this->setDbTable($categories);
-
-        $this->_category = $categories->getByAlias(self::CATEGORY_ALIAS);
+        $this->setDbTable(new Categories_Model_Categories_Table());
     }
 
     /**
@@ -42,7 +39,7 @@ class Forum_Model_Category_Manager extends Core_Model_Manager
     public function getAll($down = null, $order = null, $limit = null,
     $offset = null)
     {
-        return $this->_category->getAllChildren($down, $order, $limit, $offset);
+        return $this->getRoot()->getAllChildren($down, $order, $limit, $offset);
     }
 
     /**
@@ -52,7 +49,20 @@ class Forum_Model_Category_Manager extends Core_Model_Manager
      */
     public function getChildren()
     {
-        return $this->_category->getChildren();
+        return $this->getRoot()->getChildren();
+    }
+
+    /**
+     * Get Forum root category
+     *
+     * @return Categories_Model_Categories_Row
+     */
+    public function getRoot()
+    {
+        if (!$this->_category) {
+            $this->_category = $this->getDbTable()->getByAlias(self::CATEGORY_ALIAS);
+        }
+        return $this->_category;
     }
 
     /**
