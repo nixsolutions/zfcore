@@ -74,12 +74,14 @@ class Blog_Model_Post_Form_Create extends Zend_Form
     protected function _category()
     {
         $cats = new Blog_Model_Category_Manager();
-        $categories = $cats->getAllCategories();
+        $categories = $cats->getAll();
 
         $category = new Zend_Form_Element_Select('category');
         $category->setLabel('category');
         $category->setRequired(true);
-        $category->setMultiOptions($categories);
+        foreach ($categories as $cat) {
+            $category->addMultiOption($cat->id, $cat->title);
+        }
 
         return $category;
     }

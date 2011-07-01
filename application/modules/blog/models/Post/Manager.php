@@ -29,7 +29,6 @@ class Blog_Model_Post_Manager extends Core_Model_Manager
                     array(
                         '*',
                         'u.login',
-                        'c.ctg_title',
                         'c.id',
                     )
                 )
@@ -39,9 +38,8 @@ class Blog_Model_Post_Manager extends Core_Model_Manager
                     array()
                 )
                 ->joinLeft(
-                    array('c' => 'blog_category'),
-                    'c.id = p.ctg_id',
-                    array()
+                    array('c' => 'categories'),
+                    'c.id = p.ctg_id',  array('ctg_title' => 'title')
                 )
                 ->where('p.id = ?', $id);
         $result = $this->getDbTable()->fetchRow($select);
@@ -115,7 +113,6 @@ class Blog_Model_Post_Manager extends Core_Model_Manager
                     array(
                         '*',
                         'u.login',
-                        'c.ctg_title',
                         'count_comments' => new Zend_Db_Expr('COUNT(com.id)'),
                     )
                 )
@@ -124,8 +121,8 @@ class Blog_Model_Post_Manager extends Core_Model_Manager
                     'p.user_id = u.id', array()
                 )
                 ->joinLeft(
-                    array('c' => 'blog_category'),
-                    'c.id = p.ctg_id', array()
+                    array('c' => 'categories'),
+                    'c.id = p.ctg_id', array('ctg_title' => 'title')
                 )
                 ->joinLeft(
                     array('com' => 'blog_comment'),
@@ -147,7 +144,6 @@ class Blog_Model_Post_Manager extends Core_Model_Manager
                 ), array(
                     '*',
                     'u.login',
-                    'c.ctg_title',
                     'count_comments' => new Zend_Db_Expr('COUNT(com.id)'),
                 )
             )
@@ -156,8 +152,8 @@ class Blog_Model_Post_Manager extends Core_Model_Manager
                 'p.user_id = u.id', array()
             )
             ->joinLeft(
-                array('c' => 'blog_category'),
-                'c.id = p.ctg_id', array()
+                array('c' => 'categories'),
+                'c.id = p.ctg_id',  array('ctg_title' => 'title')
             )
             ->joinLeft(
                 array('com' => 'blog_comment'),
@@ -179,7 +175,6 @@ class Blog_Model_Post_Manager extends Core_Model_Manager
                     ), array(
                         '*',
                         'u.login',
-                        'c.ctg_title',
                         'count_comments' => new Zend_Db_Expr('COUNT(com.id)'),
                     )
                 )
@@ -188,8 +183,8 @@ class Blog_Model_Post_Manager extends Core_Model_Manager
                     'p.user_id = u.id', array()
                 )
                 ->joinLeft(
-                    array('c' => 'blog_category'),
-                    'c.id = p.ctg_id', array()
+                    array('c' => 'categories'),
+                    'c.id = p.ctg_id', array('ctg_title' => 'title')
                 )
                 ->joinLeft(
                     array('com' => 'blog_comment'),
