@@ -25,7 +25,7 @@ class Categories_Model_Categories_Row extends Core_Categories_Row
         foreach ($rowset as $i => $row) {
             if (isset($children[$row->id])) {
                 foreach ($children[$row->id] as $child) {
-                    $row->addChild($child);
+                    $row->addChild($child, false);
                 }
                 unset($children[$row->id]);
             }
@@ -35,7 +35,7 @@ class Categories_Model_Categories_Row extends Core_Categories_Row
             $children[$row->parentId][] = $row;
         }
         foreach ($children[$this->id] as $child) {
-            $this->addChild($child);
+            $this->addChild($child, false);
         }
         return $this;
     }
@@ -43,44 +43,25 @@ class Categories_Model_Categories_Row extends Core_Categories_Row
     /**
      * Add child
      *
+     * @param bool $loadChildren default true
      * @param self $row
      * @throws Zend_Db_Table_Row_Exception
      * @return self
      */
-    public function addChild(self $row)
+    public function addChild(self $row, $loadChildren = true)
     {
-        if (empty($this->_cleanData)) {
-            throw new Zend_Db_Table_Row_Exception('Parent category is not created yet');
+        if (!$loadChildren && !$this->_children) {
+            $data = array(
+                'table'    => $this->getTable(),
+                'data'     => array(),
+                'readOnly' => false,
+                'rowClass' => __CLASS__,
+                'stored'   => true
+            );
+            $rowsetClass = $this->getTable()->getRowsetClass();
+            $this->_children = new $rowsetClass($data);
         }
-        if ($row->getParentNodeId() != $this->getNodeId()) {
-            $row->setParentNode($this->getNodeId());
-        }
-
-        if (!$this->_children) {
-            $this->_initChildren();
-        }
-        $this->getChildren()->addRow($row);
-
-        return $this;
-    }
-
-    /**
-     * Init children
-     *
-     * @return self
-     */
-    protected function _initChildren()
-    {
-        $data = array(
-                    'table'    => $this->getTable(),
-                    'data'     => array(),
-                    'readOnly' => false,
-                    'rowClass' => __CLASS__,
-                    'stored'   => true
-        );
-
-        $rowsetClass = $this->getTable()->getRowsetClass();
-        $this->_children = new $rowsetClass($data);
+        parent::addChild($row);
 
         return $this;
     }
