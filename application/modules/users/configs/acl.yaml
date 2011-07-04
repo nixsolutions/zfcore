@@ -5,6 +5,7 @@ mvc:
     index:
       allow: user
     login:
+      allow: guest
       index:
         allow: guest
         deny: user

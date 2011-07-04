@@ -77,6 +77,65 @@ class Users_LoginController extends Core_Controller_Action
     }
 
     /**
+     * Cancel recovery password
+     */
+    public function cancelRecoveryPasswordAction()
+    {
+        $hash = $this->_getParam('hash');
+        if (!$this->_getParam('hash') || !$this->_manager->isSetUserHash($hash)) {
+            $message = $this->__('Incorect request recover password');
+            $this->_flashMessenger->addMessage($message);
+            $this->_redirect('/login');
+        }
+
+        $password = null;
+        $reset = $this->_manager->forgetPasswordConfirm($hash, $password);
+        if ($reset) {
+            $message = $this->__('Your password reset request was cancelled');
+        } else {
+            $message = $this->__('Incorect request recover password');
+        }
+        $this->_flashMessenger->addMessage($message);
+        $this->_redirect('/login');
+    }
+
+    /**
+     * Change password
+     */
+    public function recoverPasswordAction()
+    {
+        $hash = $this->_getParam('hash');
+        $form = new Users_Model_Users_Form_NewPassword();
+
+        if ($this->_request->isPost()) {
+            if ($form->isValid($this->_getAllParams())) {
+                $password = $this->_getParam('passw');
+                $result = $this->_manager->forgetPasswordConfirm($hash, $password);
+                if ($result === true) {
+                    $message = $this->__('Incorect request recover password');
+                } elseif ($result) {//new password ok
+                    $message = $this->__('You have changed password');
+                } else {
+                    $message = $this->__(
+                        "The user with specified data not found! " .
+                        "Possibly you're already confirmed your" .
+                        "reset password data"
+                    );
+                }
+                $this->_flashMessenger->addMessage($message);
+                $this->_redirect('/login');
+            } else {
+                $message = array_merge(
+                    $form->getMessages('passw'),
+                    $form->getMessages('passw_again')
+                );
+                $this->view->messages = $message;
+            }
+        }
+        $this->view->form = $form;
+    }
+
+    /**
      * this action destroys all elements stored in the user's session
      * and redirects back to homepage
      */

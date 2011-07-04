@@ -5,20 +5,20 @@
  * @category Application
  * @package Model
  * @subpackage DbTable
- * 
+ *
  * @version  $Id: Manager.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
 class Users_Model_Users_Manager extends Core_Model_Manager
 {
     /**
      * Zend_Auth_Result
-     * 
+     *
      * @param string $login
      * @param string $password
-     * 
+     *
      * @return  bool
      */
-    public static function authenticate($login, $password) 
+    public static function authenticate($login, $password)
     {
         $authAdapter = new Zend_Auth_Adapter_DbTable(
             Zend_Db_Table::getDefaultAdapter(),
@@ -28,13 +28,13 @@ class Users_Model_Users_Manager extends Core_Model_Manager
             'MD5(CONCAT(salt, ?)) AND ' .
             'status = "'.Users_Model_User::STATUS_ACTIVE.'"'
         );
-            
+
         $auth = Zend_Auth::getInstance();
-        
+
         // set the input credential values to authenticate against
         $authAdapter->setIdentity($login);
         $authAdapter->setCredential($password);
-        
+
         // do the authentication
         $result =  $auth->authenticate($authAdapter);
 
@@ -65,7 +65,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
             $user->ip      = $this->_getIpFromRequest();
             $user->count++;
             $user->save();
-            
+
             if (!empty($data['remember'])) {
                 Zend_Session::rememberMe(60*60*24*14);
             }
@@ -73,7 +73,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
         }
         return false;
     }
-    
+
     /**
      * Logout user
      */
@@ -81,7 +81,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
     {
         Zend_Auth::getInstance()->clearIdentity();
     }
-    
+
     /**
      * Register new user
      *
@@ -105,7 +105,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
         }
         return false;
     }
-        
+
     /**
      * Confirm registration
      *
@@ -129,7 +129,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
         }
         return false;
     }
-    
+
     /**
      * Forget password
      *
@@ -148,7 +148,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
         }
         return false;
     }
-    
+
     /**
      * Forget password confirmation
      *
@@ -173,10 +173,10 @@ class Users_Model_Users_Manager extends Core_Model_Manager
         }
         return false;
     }
-    
+
     /**
      * Generate random password
-     * 
+     *
      * @return string
      */
     public function generatePassword()
@@ -188,11 +188,21 @@ class Users_Model_Users_Manager extends Core_Model_Manager
         }
         return $randStr;
     }
-    
-    
+
+   /**
+     * is set hash
+     *
+     * @return bool
+     */
+    public function isSetUserHash($aHash)
+    {
+        return $this->getDbTable()->getByHashcode($aHash);
+    }
+
+
     /**
      * Get filter
-     * 
+     *
      * @param array $aParams
      * @return array
      */
@@ -212,7 +222,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
                 $filter = 'logined < DATE_SUB(NOW(), INTERVAL 1 MONTH)';
                 break;
             case 'custom email':
-                $filterInput = (isset($aParams['filterInput'])) 
+                $filterInput = (isset($aParams['filterInput']))
                     ? $aParams['filterInput'] : "";
                 preg_match_all(
                     '/[\S]+\@[\S]+\.\w+/',
@@ -224,20 +234,20 @@ class Users_Model_Users_Manager extends Core_Model_Manager
             default:
                 throw new Exception('no such filter ' . $aParams['filter']);
                 break;
-            
+
         }
-        
+
         $select = $this->getDbTable()->select()
                        ->from(array('users'), array('email', 'login'))
                        ->where($filter);
-                       
+
         if (!$aParams['ignore']) {
             $select->where('inform=?', 'true');
         }
-        
+
         return $this->getDbTable()->fetchAll($select)->toArray();
     }
-    
+
     private function _getIpFromRequest()
     {
         return (!empty($_SERVER["REMOTE_ADDR"]))
