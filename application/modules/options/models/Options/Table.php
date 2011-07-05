@@ -19,7 +19,7 @@ class Options_Model_Options_Table extends Core_Db_Table_Abstract
     /** Primary Key */
     protected $_primary = 'id';
 
-    protected $_rowClass = 'Options_Model_Options_Row';
+    protected $_rowClass = 'Options_Model_Options';
 
     /**
      * Delete namaspace

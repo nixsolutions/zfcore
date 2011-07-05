@@ -15,7 +15,7 @@ class Forum_Model_Category_Manager extends Core_Categories_Manager
     const CATEGORY_ALIAS = 'forum';
 
     /**
-     * @var Categories_Model_Categories_Row
+     * @var Categories_Model_Categories
      */
     protected $_root;
 
@@ -30,7 +30,7 @@ class Forum_Model_Category_Manager extends Core_Categories_Manager
     /**
      * Get Forum root category
      *
-     * @return Categories_Model_Categories_Row
+     * @return Categories_Model_Categories
      */
     public function getRoot()
     {
@@ -48,7 +48,7 @@ class Forum_Model_Category_Manager extends Core_Categories_Manager
      */
     public function getById($id)
     {
-        $separator = Categories_Model_Categories_Row::PATH_SEPARATOR;
+        $separator = Categories_Model_Categories::PATH_SEPARATOR;
 
         $select = $this->getDbTable()->select();
         $select->where('id=?', $id)

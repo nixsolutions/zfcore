@@ -9,7 +9,7 @@ class Blog_Model_Categories
     const CATEGORY_ALIAS = 'blog';
 
     /**
-     * @var Categories_Model_Categories_Row
+     * @var Categories_Model_Categories
      */
     protected $_category;
 
@@ -57,7 +57,7 @@ class Blog_Model_Categories
     {
         $categories = new Categories_Model_Categories_Table();
 
-        $separator = Categories_Model_Categories_Row::PATH_SEPARATOR;
+        $separator = Categories_Model_Categories::PATH_SEPARATOR;
 
         $select = $categories->select();
         $select->where('id=?', $id)

@@ -24,6 +24,9 @@ production:
       params:
         prefixdefaultmodule: true
         displayExceptions: false
+        
+      actionhelperpaths:
+        Helper: APPLICATION_PATH/helpers
 
       plugins:
         translate:

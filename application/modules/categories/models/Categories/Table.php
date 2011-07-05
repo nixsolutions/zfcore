@@ -34,5 +34,5 @@ class Categories_Model_Categories_Table extends Core_Categories_Table
     /**
      * @var string
      */
-    protected $_rowClass = 'Categories_Model_Categories_Row';
+    protected $_rowClass = 'Categories_Model_Categories';
 }
