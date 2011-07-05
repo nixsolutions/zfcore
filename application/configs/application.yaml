@@ -55,14 +55,14 @@ production:
               controller: error
               action: denied
             role: guest
-            cache: off
+            cache: on
             
         routes:
           class: Core_Controller_Plugin_Routes
           stackindex: 40
           options:
             config: routes
-            cache: off
+            cache: on
 
         navigation:
           class: Core_Controller_Plugin_Navigation

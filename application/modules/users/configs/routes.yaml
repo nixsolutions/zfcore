@@ -21,15 +21,14 @@ recoverPassword:
     action: recover-password
   map:
     hash: 1
-cancelRecoveryPassword:
-  type: Zend_Controller_Router_Route_Regex
-  route: cancel-recovery-password/([\w]{32})
+cancelPasswordRecoveryAction:
+  type: Zend_Controller_Router_Route
+  route: cancel-password-recovery/:hash
   defaults:
     module: users
     controller: login
-    action: cancel-recovery-password
-  map:
-    hash: 1
+    action: cancel-password-recovery
+    
 forgetPassword:
   type: Zend_Controller_Router_Route_Static
   route: forget-password

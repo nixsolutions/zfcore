@@ -129,47 +129,4 @@ class Users_RegisterController extends Core_Controller_Action
         $this->view->form = $form;
     }
 
-
-    /**
-     * Checks the password confirmation
-     */
-    public function forgetPasswordConfirmAction()
-    {
-        if ($this->_request->isGet()) {
-            if ($hash = $this->_getParam('hash')) {
-
-                $password = null;
-                if ($this->_getParam('confirmReset') == 'yes') {
-                    $password = $this->_manager->generatePassword();
-                }
-
-                $result = $this->_manager
-                               ->forgetPasswordConfirm($hash, $password);
-
-                if ($result === true) {
-                    $message = $this->__('Your password reset request was cancelled');
-                    $this->_flashMessenger->addMessage($message);
-                    $this->_redirect('/login');
-                } elseif ($result) {
-                    // confirm email sends to user
-                    Mail_Model_Mail::newPassword($result, $password);
-
-                    $message = $this->__('You got new password. Please check your email');
-                    $this->_flashMessenger->addMessage($message);
-                    $this->_redirect('/login');
-                } else {
-                    //$user is found
-                    $message = $this->__(
-                        'The user with specified data not found! ' .
-                        'Possibly you\'re already confirmed your reset '  .
-                        'password data'
-                    );
-                    $this->_flashMessenger->addMessage($message);
-                    $this->_redirect('/');
-                }
-            }
-        }
-        $this->_redirect('/');
-    }
-
 }

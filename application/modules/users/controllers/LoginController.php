@@ -79,7 +79,7 @@ class Users_LoginController extends Core_Controller_Action
     /**
      * Cancel recovery password
      */
-    public function cancelRecoveryPasswordAction()
+    public function cancelPasswordRecoveryAction()
     {
         $hash = $this->_getParam('hash');
         if (!$this->_getParam('hash') || !$this->_manager->isSetUserHash($hash)) {
@@ -88,12 +88,11 @@ class Users_LoginController extends Core_Controller_Action
             $this->_redirect('/login');
         }
 
-        $password = null;
-        $reset = $this->_manager->forgetPasswordConfirm($hash, $password);
+        $reset = $this->_manager->clearHash($hash);
         if ($reset) {
-            $message = $this->__('Your password reset request was cancelled');
+            $message = $this->__('Your password recovery request was cancelled.');
         } else {
-            $message = $this->__('Incorect request recover password');
+            $message = $this->__('Incorrect password recovery request.');
         }
         $this->_flashMessenger->addMessage($message);
         $this->_redirect('/login');
@@ -110,17 +109,11 @@ class Users_LoginController extends Core_Controller_Action
         if ($this->_request->isPost()) {
             if ($form->isValid($this->_getAllParams())) {
                 $password = $this->_getParam('passw');
-                $result = $this->_manager->forgetPasswordConfirm($hash, $password);
-                if ($result === true) {
-                    $message = $this->__('Incorect request recover password');
-                } elseif ($result) {//new password ok
-                    $message = $this->__('You have changed password');
+                $result = $this->_manager->setPassword($hash, $password);
+                if ($result) {
+                    $message = $this->__('You have changed your password.');
                 } else {
-                    $message = $this->__(
-                        "The user with specified data not found! " .
-                        "Possibly you're already confirmed your" .
-                        "reset password data"
-                    );
+                    $message = $this->__('Incorrect password recovery request.');
                 }
                 $this->_flashMessenger->addMessage($message);
                 $this->_redirect('/login');
