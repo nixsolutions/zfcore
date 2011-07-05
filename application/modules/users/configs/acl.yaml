@@ -5,12 +5,13 @@ mvc:
     index:
       allow: user
     login:
-      allow: guest
       index:
         allow: guest
         deny: user
       logout:
         allow: user
+      recoverpassword:
+        allow: guest
     register:
       allow: guest
       deny: user
