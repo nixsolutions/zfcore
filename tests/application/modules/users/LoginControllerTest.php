@@ -135,10 +135,10 @@ class Users_LoginControllerTest extends ControllerTestCase
      */
     public function testCancelRecoveryPasswordAction()
     {
-        $this->dispatch('/recover-password/0101010101');
+        $this->dispatch('/recoverpassword/0101010101');
         $this->assertModule('users');
         $this->assertController('login');
-        $this->assertAction('recover-password');
+        $this->assertAction('recoverpassword');
         $this->assertRedirectTo('/login');
     }
 
