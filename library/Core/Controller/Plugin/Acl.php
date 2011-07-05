@@ -105,7 +105,6 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
      * - action
      *
      * @param  Array $options
-     * @return void
      */
     public function __construct(Array $options = array())
     {

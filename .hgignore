@@ -3,6 +3,7 @@ syntax: glob
 nbproject/*
 build/
 data/cache/**
+library/Zend/
 .buildpath
 .project
 .settings

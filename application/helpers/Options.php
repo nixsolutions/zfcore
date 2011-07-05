@@ -34,10 +34,11 @@ class Helper_Options extends Zend_Controller_Action_Helper_Abstract
      *
      * @param string $namespace
      * @param array $options
+     * @return void
      */
     public function setNamespace($namespace, array $options)
     {
-        return Options_Model_Options_Manager::getNamespace($namespace, $options);
+        Options_Model_Options_Manager::getNamespace($namespace, $options);
     }
 
     /**
@@ -57,11 +58,13 @@ class Helper_Options extends Zend_Controller_Action_Helper_Abstract
      *
      * @param  string $key
      * @param  mixed  $value
+     * @param  string $namespace
      * @param  string $type
+     * @return void
      */
     public function set($key, $value, $namespace = 'default', $type = null)
     {
-        return Options_Model_Options_Manager::set($key, $value, $namespace, $type);
+        Options_Model_Options_Manager::set($key, $value, $namespace, $type);
     }
 
 }

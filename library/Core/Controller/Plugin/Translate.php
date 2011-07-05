@@ -54,7 +54,7 @@ class Core_Controller_Plugin_Translate extends Zend_Controller_Plugin_Abstract
     protected $_redirectCode = 302;
 
     /**
-     * Contructor
+     * Constructor
      * Verify options
      *
      * @param array $options

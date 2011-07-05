@@ -62,7 +62,6 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
      * - config
      *
      * @param  Array $options
-     * @return void
      */
     public function __construct(Array $options = array())
     {
@@ -166,7 +165,7 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
     /**
      * get config
      *
-     * @param  string
+     * @param  string $section
      * @return array
      */
     protected function _getConfig($section = null)

@@ -68,7 +68,7 @@ class Options_Model_Options_Table extends Core_Db_Table_Abstract
      * @param mixed  $value
      * @param string $namespace
      * @param string $type
-     * @return Zend_Db_Table_Row_Abstract
+     * @return Options_Model_Options_Row
      */
     public function setOption($key, $value, $namespace = 'default', $type = null)
     {
@@ -95,7 +95,7 @@ class Options_Model_Options_Table extends Core_Db_Table_Abstract
     *
     * @param string $key
     * @param string $namespace
-    * @return Zend_Db_Table_Row_Abstract|null
+    * @return Options_Model_Options_Row|null
     */
     public function getOption($key, $namespace)
     {

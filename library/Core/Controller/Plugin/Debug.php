@@ -19,7 +19,6 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      * - config
      *
      * @param  Array $options
-     * @return void
      */
     public function __construct(Array $options = array())
     {

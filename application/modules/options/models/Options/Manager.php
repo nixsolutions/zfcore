@@ -40,7 +40,9 @@ class Options_Model_Options_Manager extends Core_Model_Manager
     /**
      * Clear cache
      *
-     * @return Core_Model_Table
+     * @param string $key
+     * @param string $namespace
+     * @return void
      */
     static public function clearCache($key = null, $namespace = 'default')
     {
@@ -78,14 +80,15 @@ class Options_Model_Options_Manager extends Core_Model_Manager
      *
      * @param  string $key
      * @param  mixed  $value
+     * @param  string $namespace
      * @param  string $type
+     * @return void
      */
     static public function set($key, $value, $namespace = 'default', $type = null)
     {
-        $self = Options_Model_Options_Manager::getInstance();
-        $option = $self->getDbTable()->setOption($key, $value, $namespace, $type);
-
         self::$_cache[$namespace][$key] = $value;
+        $self = Options_Model_Options_Manager::getInstance();
+        $self->getDbTable()->setOption($key, $value, $namespace, $type);
     }
 
     /**
@@ -132,7 +135,7 @@ class Options_Model_Options_Manager extends Core_Model_Manager
      * Get Options
      *
      * @param string $namespace
-     * @return mixed
+     * @return array
      */
     public function getOptions($namespace)
     {
@@ -152,6 +155,7 @@ class Options_Model_Options_Manager extends Core_Model_Manager
      *
      * @param array $options
      * @param string $namespace
+     * @return void
      */
     public function setOptions(array $options, $namespace = 'default')
     {
@@ -165,6 +169,7 @@ class Options_Model_Options_Manager extends Core_Model_Manager
      * Delete all options by namespace
      *
      * @param string $namespace
+     * @return void
      */
     static public function deleteNamespace($namespace)
     {
