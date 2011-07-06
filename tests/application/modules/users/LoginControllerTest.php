@@ -148,7 +148,6 @@ class Users_LoginControllerTest extends ControllerTestCase
         $userManager = new Users_Model_Users_Manager();
         $user = $userManager->forgetPassword($this->_user['email']);
         $hash = $user->hashCode;
-        //Users_Model_Users_Manager::logout();
 
         $this->dispatch('/recover-password/'.$hash);
         $this->assertModule('users');
