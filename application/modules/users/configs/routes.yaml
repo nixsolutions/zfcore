@@ -12,13 +12,14 @@ logout:
     module: users
     controller: login
     action: logout
-recoverpassword:
+
+recoverPassword:
   type: Zend_Controller_Router_Route
-  route: recoverpassword/:hash
+  route: recover-password/:hash
   defaults:
     module: users
     controller: login
-    action: recoverpassword
+    action: recover-password
 
 cancelPasswordRecoveryAction:
   type: Zend_Controller_Router_Route

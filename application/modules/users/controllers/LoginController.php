@@ -101,7 +101,7 @@ class Users_LoginController extends Core_Controller_Action
     /**
      * Change password
      */
-    public function recoverpasswordAction()
+    public function recoverPasswordAction()
     {
         $hash = $this->_getParam('hash');
         $form = new Users_Model_Users_Form_NewPassword();

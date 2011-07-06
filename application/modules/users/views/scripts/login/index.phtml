@@ -7,7 +7,10 @@
                                          'controller'=>'register',
                                          'action'=>'index'),
                                    'default'); ?>">Register now</a> |
-    <a href="/forget-password">Forget Password</a>
+    <a href="<?php echo $this->url(array('module' => 'users',
+                                         'controller'=>'register',
+                                         'action'=>'forget-password'),
+                                   'forgetPassword'); ?>">Forget Password</a>
 </p>
 </div>
 

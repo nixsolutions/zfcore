@@ -25,7 +25,6 @@ class Users_LoginControllerTest extends ControllerTestCase
                                 'email'    => 'testadmin@domain.com',
                                 'role'     => Users_Model_User::ROLE_ADMIN,
                                 'status'   => Users_Model_User::STATUS_ACTIVE,
-                                'hash'     => 'baca9b97bab330ccd9eec4531cb61225',
                                 'password' => '123456');
 
         $manager = new Users_Model_Users_Table();
@@ -133,12 +132,11 @@ class Users_LoginControllerTest extends ControllerTestCase
     /**
      * Cancel recovery password
      */
-    public function testCancelRecoveryPasswordAction()
+    public function testCancelPasswordRecoveryAction()
     {
-        $this->dispatch('/recoverpassword/0101010101');
+        $this->dispatch('/cancel-password-recovery/0101010101');
         $this->assertModule('users');
         $this->assertController('login');
-        $this->assertAction('recoverpassword');
         $this->assertRedirectTo('/login');
     }
 
@@ -147,11 +145,15 @@ class Users_LoginControllerTest extends ControllerTestCase
      */
     public function testRecoverPasswordAction()
     {
-        Users_Model_Users_Manager::logout();
-        $this->dispatch('/cancel-recovery-password/'.$this->_fixture['hash']);
+        $userManager = new Users_Model_Users_Manager();
+        $user = $userManager->forgetPassword($this->_user['email']);
+        $hash = $user->hashCode;
+        //Users_Model_Users_Manager::logout();
+
+        $this->dispatch('/recover-password/'.$hash);
         $this->assertModule('users');
         $this->assertController('login');
-        $this->assertAction('cancel-recovery-password');
+        $this->assertAction('recover-password');
         $this->assertQueryCount('form#userNewPasswordForm', 1);
         $this->assertNotRedirect();
     }
