@@ -5,11 +5,17 @@ mvc:
     index:
       allow: user
     login:
+      allow: guest
       index:
         allow: guest
         deny: user
       logout:
         allow: user
+        deny: guest
+      recover-password:
+        allow: guest
+        deny: user
+      
     register:
       allow: guest
       deny: user

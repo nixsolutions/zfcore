@@ -21,11 +21,11 @@ class Users_LoginControllerTest extends ControllerTestCase
     {
         parent::setUp();
 
-        $this->_fixture = array('login'     => 'admin'.time(),
-                                'email'     => 'testadmin@domain.com',
-                                'role'      => Users_Model_User::ROLE_ADMIN,
-                                'status'    => Users_Model_User::STATUS_ACTIVE,
-                                'password'  => '123456');
+        $this->_fixture = array('login'    => 'admin'.time(),
+                                'email'    => 'testadmin@domain.com',
+                                'role'     => Users_Model_User::ROLE_ADMIN,
+                                'status'   => Users_Model_User::STATUS_ACTIVE,
+                                'password' => '123456');
 
         $manager = new Users_Model_Users_Table();
 
@@ -127,6 +127,34 @@ class Users_LoginControllerTest extends ControllerTestCase
                           )
                       );
         $this->dispatch('/login');
+    }
+
+    /**
+     * Cancel recovery password
+     */
+    public function testCancelPasswordRecoveryAction()
+    {
+        $this->dispatch('/cancel-password-recovery/0101010101');
+        $this->assertModule('users');
+        $this->assertController('login');
+        $this->assertRedirectTo('/login');
+    }
+
+    /**
+     * Change password
+     */
+    public function testRecoverPasswordAction()
+    {
+        $userManager = new Users_Model_Users_Manager();
+        $user = $userManager->forgetPassword($this->_user['email']);
+        $hash = $user->hashCode;
+
+        $this->dispatch('/recover-password/'.$hash);
+        $this->assertModule('users');
+        $this->assertController('login');
+        $this->assertAction('recover-password');
+        $this->assertQueryCount('form#userNewPasswordForm', 1);
+        $this->assertNotRedirect();
     }
 
 

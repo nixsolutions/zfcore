@@ -77,6 +77,58 @@ class Users_LoginController extends Core_Controller_Action
     }
 
     /**
+     * Cancel recovery password
+     */
+    public function cancelPasswordRecoveryAction()
+    {
+        $hash = $this->_getParam('hash');
+        if (!$this->_getParam('hash') || !$this->_manager->isSetUserHash($hash)) {
+            $message = $this->__('Incorect request recover password');
+            $this->_flashMessenger->addMessage($message);
+            $this->_redirect('/login');
+        }
+
+        $reset = $this->_manager->clearHash($hash);
+        if ($reset) {
+            $message = $this->__('Your password recovery request was cancelled.');
+        } else {
+            $message = $this->__('Incorrect password recovery request.');
+        }
+        $this->_flashMessenger->addMessage($message);
+        $this->_redirect('/login');
+    }
+
+    /**
+     * Change password
+     */
+    public function recoverPasswordAction()
+    {
+        $hash = $this->_getParam('hash');
+        $form = new Users_Model_Users_Form_NewPassword();
+
+        if ($this->_request->isPost()) {
+            if ($form->isValid($this->_getAllParams())) {
+                $password = $this->_getParam('passw');
+                $result = $this->_manager->setPassword($hash, $password);
+                if ($result) {
+                    $message = $this->__('You have changed your password.');
+                } else {
+                    $message = $this->__('Incorrect password recovery request.');
+                }
+                $this->_flashMessenger->addMessage($message);
+                $this->_redirect('/login');
+            } else {
+                $message = array_merge(
+                    $form->getMessages('passw'),
+                    $form->getMessages('passw_again')
+                );
+                $this->view->messages = $message;
+            }
+        }
+        $this->view->form = $form;
+    }
+
+    /**
      * this action destroys all elements stored in the user's session
      * and redirects back to homepage
      */
