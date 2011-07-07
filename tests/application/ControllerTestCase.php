@@ -35,9 +35,22 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
      */
     public function setUp()
     {
+        require_once 'Core/Config/Yaml.php';
+        $config = new Core_Config_Yaml(
+            APPLICATION_PATH . '/configs/application.yaml',
+            APPLICATION_ENV,
+            array(
+                'definitions' => array(
+                    'APPLICATION_ENV',
+                    'APPLICATION_PATH'
+                )
+            )
+        );
+        $result = $config->toArray();
+
         $this->bootstrap = new Zend_Application(
             APPLICATION_ENV,
-            APPLICATION_PATH . '/configs/application.yaml'
+            $result
         );
 
         parent::setUp();
@@ -53,9 +66,23 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
      */
     static public function appInit()
     {
+
+        require_once 'Core/Config/Yaml.php';
+        $config = new Core_Config_Yaml(
+            APPLICATION_PATH . '/configs/application.yaml',
+            APPLICATION_ENV,
+            array(
+                'definitions' => array(
+                    'APPLICATION_ENV',
+                    'APPLICATION_PATH'
+                )
+            )
+        );
+        $result = $config->toArray();
+
         $application = new Zend_Application(
             APPLICATION_ENV,
-            APPLICATION_PATH . '/configs/application.yaml'
+            $result
         );
         
 //        $application->bootstrap();

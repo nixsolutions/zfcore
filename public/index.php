@@ -45,7 +45,6 @@ function errorHandler() {
 require_once 'Zend/Application.php';  
 
 try {
-
     require_once 'Zend/Cache.php';
     
     $frontendOptions = array("lifetime" => 60*60*24,
@@ -66,10 +65,16 @@ try {
     );
 
     if (!$result = $cache->load('application')) {
-        require_once 'Zend/Config/Yaml.php';
-        $config = new Zend_Config_Yaml(
+        require_once 'Core/Config/Yaml.php';
+        $config = new Core_Config_Yaml(
             APPLICATION_PATH . '/configs/application.yaml',
-            APPLICATION_ENV
+            APPLICATION_ENV,
+            array(
+                'definitions' => array(
+                    'APPLICATION_ENV',
+                    'APPLICATION_PATH'
+                )
+            )
         );
         $result = $config->toArray();
         $cache->save($result, 'application');

@@ -121,6 +121,12 @@ testing:
         acl:
           options:
             allowAll: off
+            cache: on
+        routes:
+          options:
+            cache: on
+        navigation:
+            cache: on
 
 development:
   _extends: production
@@ -133,6 +139,14 @@ development:
       plugins:
         debug:
           class:Core_Controller_Plugin_Debug
+        acl:
+          options:
+            cache: off
+        routes:
+          options:
+            cache: off
+        navigation:
+            cache: off
     db:
       params:
         profiler:

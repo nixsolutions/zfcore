@@ -157,26 +157,25 @@ class Core_Module_Config
      * @param   string $order     Order of load main config
      * @return  array  $result
      */
-    public static function _getYamlConfig($filename,
+    protected function _getYamlConfig($filename,
                                          $section = null,
                                          $order = Core_Module_Config::MAIN_ORDER_FIRST)
     {
-        $moduleConfig = Core_Module_Config::getInstance();
-
-
         $result = array();
 
         // load modules configuration
-        foreach ($moduleConfig->_modules as $module) {
+        foreach ($this->_modules as $module) {
 
-            $dirPath = $moduleConfig->_modulesDir . DIRECTORY_SEPARATOR .
+            $dirPath = $this->_modulesDir . DIRECTORY_SEPARATOR .
                        $module . DIRECTORY_SEPARATOR . 'configs';
 
             $confFile = $dirPath . DIRECTORY_SEPARATOR . $filename .'.yaml';
 
             if (is_dir($dirPath) && file_exists($confFile)) {
                 try {
-                    $config = new Zend_Config_Yaml($confFile, $section, array('ignore_constants' => true));
+                    $config = new Core_Config_Yaml($confFile, $section, array('ignore_definitions' => true,
+                                                                              'ignore_constants' => true,
+                                                                              'skip_extends' => true));
                     if ($config = $config->toArray()) {
                         $result = array_merge_recursive($result, $config);
                     }
@@ -189,11 +188,13 @@ class Core_Module_Config
         }
 
         // load main configuration
-        $mainConfig = $moduleConfig->_configsDir . DIRECTORY_SEPARATOR . $filename .'.yaml';
+        $mainConfig = $this->_configsDir . DIRECTORY_SEPARATOR . $filename .'.yaml';
 
-        if (is_dir($moduleConfig->_configsDir)
+        if (is_dir($this->_configsDir)
             && file_exists($mainConfig)) {
-            $config = new Zend_Config_Yaml($mainConfig, $section);
+            $config = new Core_Config_Yaml($mainConfig, $section, array('ignore_definitions' => true,
+                                                                        'ignore_constants' => true,
+                                                                        'skip_extends' => true));
             if ($config = $config->toArray()) {
                 if ($order === Core_Module_Config::MAIN_ORDER_FIRST ) {
                     $result = array_merge_recursive($config, $result);
