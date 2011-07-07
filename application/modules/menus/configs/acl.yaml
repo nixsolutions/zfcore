@@ -1,6 +1,8 @@
 mvc:
-  admin:
+  menus:
     index:
+      allow: admin
+    menu:
       allow: admin
     error:
       allow: admin

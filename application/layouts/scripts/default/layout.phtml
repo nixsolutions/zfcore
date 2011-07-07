@@ -4,7 +4,7 @@
     <?php echo $this->headMeta() ?>
     <?php echo $this->headTitle() ?>
     <base href="<?php echo $this->baseUrl();?>" />
-    <?php $this->headLink() 
+    <?php $this->headLink()
                ->prependStylesheet($this->baseUrl('layouts/default/css/style.css'))
                ->headLink(array('rel' => 'shortcut icon', 'href' => $this->baseUrl('/favicon.ico'), 'type' => 'image/x-icon'), 'PREPEND')?>
     <?php $this->headScript()->prependFile($this->baseUrl('scripts/jquery/jquery.js?ver=1.4.2'));?>
@@ -17,7 +17,7 @@
     <?php if (0 != $this->FlashMessenger()->count() or $this->messages) :?>
         <div id="messages" class="opacity shadow" style="display: none;">
             <ul>
-            <?php 
+            <?php
                 foreach ($this->FlashMessenger()->getMessages() as $message) :
                       echo "<li>".$this->__($message)."</li>";
                 endforeach;
@@ -38,12 +38,17 @@
                     <h2>Content Management Framework</h2>
                 </div>
                 <div class="menu small">
-                    <?php echo $this->navigation()->menu()->setMinDepth(0)->setMaxDepth(0); ?>
+                    <?php //echo $this->navigation()->menu()->setMinDepth(0)->setMaxDepth(0); ?>
+
                 </div>
                 <div class="menu clearright">
-                    <?php echo $this->navigation()->menu()->setMinDepth(1)->setMaxDepth(1); ?>
-                    <?php //var_dump($this->navigation()->menu()->setMinDepth(1));?>
+                <?php echo $this->getMenu(13)->setMinDepth(0)->setMaxDepth(1); ?>
+                    <?php //echo $this->navigation()->menu()->setMinDepth(1)->setMaxDepth(1); ?>
                     <br class="clear"/>
+               <?php
+
+          // echo $this->getMenu(13)->setMinDepth(0)->setMaxDepth(0); ?>
+                       <?php //echo $this->getMenu(12)->setMinDepth(1)->setMaxDepth(1); ?>
                 </div>
             </div>
             <div class="topgreen clear">
@@ -68,16 +73,25 @@
             </div>
             <div class="tophelp">
                 <div class="cont_width">
+	                <div class="simpleMenu">
+	                <?php //echo $this->navigation()->menu($this->getMenu()->byMark('usermenu'))->setPartial('default/partial/breadcrumbs.phtml'); ?>
+	                    <br class="clear"/>
+	                </div>
                     Here goes help text
                 </div>
             </div>
-        </div>           
-        <?php //echo $this->navigation()->breadcrumbs()->setPartial('default/partial/breadcrumbs.phtml'); ?>
-        
+        </div>
+        <!--<?php //echo $this->navigation()->getMenu('usermenu'); ?>-->
+
+
+
+        <?php //echo $this->navigation($this->getMenu('usermenu'))->menu()->findOneByLabel('Registration'); ?>
+              <?php //echo $this->navigation($this->getMenu('adminmenu'))->menu(); ?>
+
         <div class="content cont_width">
             <?php echo $this->layout()->content ?>
         </div>
-        
+
         <div class="footer">
             <div class="cont_width">
                 <div class="footer_logo">

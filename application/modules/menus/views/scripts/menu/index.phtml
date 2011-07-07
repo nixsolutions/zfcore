@@ -1,0 +1,73 @@
+<?php
+
+$this->dojo()->addStyleSheet($this->dojo()->getCdnBase() . $this->dojo()->getCdnVersion() . '/dojox/grid/resources/tundraGrid.css')
+             ->requireModule('core.grid.Scaffold')
+             ->onLoadCaptureStart();
+?>
+function(){
+    var cells = [
+    {
+        name: "<?php $this->_e('Id')?>",
+        field: "id",
+        width:'30px',
+        canSort: false
+    },
+    {
+        name: "<?php $this->_e('Parent Id')?>",
+        field: "uri",
+        width:'30px',
+        canSort: false
+    },
+    {
+        name: "<?php $this->_e('Label')?>",
+        field: "label",
+        width:'180px',
+        canSort: false
+    },
+    {
+        name: "<?php $this->_e('Module')?>",
+        field: "module",
+        width:'auto',
+        canSort: false
+    },
+    {
+        name: "<?php $this->_e('Controller')?>",
+        field: "controller",
+        width:'auto',
+        canSort: false
+    },
+    {
+        name: "<?php $this->_e('Action')?>",
+        field: "action",
+        width:'auto',
+        canSort: false
+    },
+    {
+        name: "<?php $this->_e('Route')?>",
+        field: "route",
+        width:'auto',
+        canSort: false
+    },
+    {
+        name: "<?php $this->_e('URI')?>",
+        field: "uri",
+        width:'200px',
+        canSort: false
+    }
+    ];
+
+    var datagrid = new core.grid.Scaffold(cells, 'gridContainer', '<?php echo $this->url();?>', true, true);
+}
+<?php $this->dojo()->onLoadCaptureEnd(); ?>
+<div class="gridContainer" id="gridContainer" style="height:300px;"></div>
+<?php
+    echo $this->button('grid-new',
+                       $this->__('Create New'),
+                       array('jsid'      => 'grid-new',
+                             'baseClass' => 'gridButton'));
+    echo $this->button('grid-del',
+                       $this->__('Delete Selected'),
+                       array('jsid'      => 'grid-del',
+                             'baseClass' => 'gridButton'));
+?>
+</div>
