@@ -20,7 +20,7 @@ class Blog_Model_Comment_Form_Create extends Zend_Form
         $this->setMethod('post');
 
         $this->addElement(
-            'textarea', 'comment',
+            'textarea', 'body',
             array(
                 'label'      => 'Your comment:',
                 'cols'       => '50',

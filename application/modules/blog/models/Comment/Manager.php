@@ -21,20 +21,13 @@ class Blog_Model_Comment_Manager extends Core_Model_Manager
     public function getComments($postId)
     {
         $select = $this->getDbTable()->select()->setIntegrityCheck(false)
-                ->from(
-                    array(
-                        'c' => 'blog_comment'
-                    ),
-                    array(
-                        '*',
-                        'u.login',
-                    )
-                )
+                ->from(array('c' => 'blog_comment'), array('*'))
                 ->joinLeft(
                     array('u' => 'users'),
-                    'c.user_id = u.id', array()
+                    'c.userId = u.id',
+                    array('login')
                 )
-                ->where('c.post_id = ?', $postId);
-        return $this->getDbTable()->fetchAll($select)->toArray();
+                ->where('c.postId = ?', $postId);
+        return $this->getDbTable()->fetchAll($select);
     }
 }

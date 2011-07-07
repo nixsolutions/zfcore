@@ -52,7 +52,7 @@ class Forum_Model_Category_Manager extends Core_Categories_Manager
 
         $select = $this->getDbTable()->select();
         $select->where('id=?', $id)
-               ->where('alias LIKE ?', self::CATEGORY_ALIAS . $separator . '%');
+               ->where('path LIKE ?', self::CATEGORY_ALIAS . $separator . '%');
         return $this->getDbTable()->fetchRow($select);
     }
 }

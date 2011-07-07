@@ -21,7 +21,7 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
         $this->setMethod('post');
 
         $this->addElement(
-            'ValidationTextBox', 'post_title',
+            'ValidationTextBox', 'title',
             array(
                 'label'      => 'Title',
                 'required'   => true,
@@ -41,7 +41,27 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
         );
 
         $this->addElement(
-            'Editor', 'post_text',
+            'Editor', 'teaser',
+            array(
+                'label'      => 'Teaser',
+                'required'   => true,
+                'attribs'    => array('style' => 'width:100%;height:100px'),
+                'plugins'    => array('undo', 'redo', 'cut', 'copy', 'paste', '|',
+                                      'bold', 'italic', 'underline', 'strikethrough', '|',
+                                      'subscript', 'superscript', 'removeFormat', '|',
+                                      //'fontName', 'fontSize', 'formatBlock', 'foreColor', 'hiliteColor','|',
+                                      'indent', 'outdent', 'justifyCenter', 'justifyFull',
+                                      'justifyLeft', 'justifyRight', 'delete', '|',
+                                      'insertOrderedList', 'insertUnorderedList', 'insertHorizontalRule', '|',
+                                      //'LinkDialog', 'UploadImage', '|',
+                                      //'ImageManager',
+                                      'FullScreen', '|',
+                                      'ViewSource')
+            )
+        );
+
+        $this->addElement(
+            'Editor', 'body',
             array(
                 'label'      => 'Text',
                 'required'   => true,
@@ -59,10 +79,19 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
                                       'ViewSource')
             )
         );
+        $this->addElement(
+            'DateTextBox', 'published',
+            array(
+                'label'      => 'Published Date',
+                'required'   => true
+            )
+        );
 
         $this->addElement($this->_category());
 
         $this->addElement($this->_status());
+
+        $this->addElement($this->_user());
 
         $this->addElement(
             'SubmitButton',
@@ -84,9 +113,9 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
      */
     protected function _category()
     {
-        $categories = new Blog_Model_Categories();
+        $categories = new Blog_Model_Category_Manager();
 
-        $element = new Zend_Dojo_Form_Element_FilteringSelect('ctg_id');
+        $element = new Zend_Dojo_Form_Element_FilteringSelect('categoryId');
         $element->setLabel('Category')
                 ->setRequired(true)
                 ->setAttribs(array('style'=>'width:60%'));
@@ -99,24 +128,39 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
     }
 
     /**
-     * Status combobox
+     * Status Combobox
      *
      * @return Zend_Dojo_Form_Element_ComboBox
      */
     protected function _status()
     {
-        $status = new Zend_Dojo_Form_Element_ComboBox('post_status');
-        $status->setLabel('Status')
-               ->setRequired(true)
-               ->setAttribs(array('style'=>'width:60%'))
-               ->setMultiOptions(
-                   array(
-                       Blog_Model_Post::STATUS_ACTIVE  => Blog_Model_Post::STATUS_ACTIVE,
-                       Blog_Model_Post::STATUS_CLOSED  => Blog_Model_Post::STATUS_CLOSED,
-                       Blog_Model_Post::STATUS_DELETED => Blog_Model_Post::STATUS_DELETED,
-                   )
-               );
+        $element = new Zend_Dojo_Form_Element_FilteringSelect('status');
+        $element->setLabel('Status')->setRequired(true)
+                ->setAttribs(array('style'=>'width:60%'));
 
-        return $status;
+        $element->addMultiOption(Blog_Model_Post::STATUS_DRAFT, 'Draft');
+        $element->addMultiOption(Blog_Model_Post::STATUS_PUBLISHED, 'Published');
+        $element->addMultiOption(Blog_Model_Post::STATUS_DELETED,'Deleted');
+
+        return $element;
+    }
+
+    /**
+     * User Combobox
+     *
+     * @return Zend_Dojo_Form_Element_ComboBox
+     */
+    protected function _user()
+    {
+        $element = new Zend_Dojo_Form_Element_FilteringSelect('userId');
+        $element->setLabel('Author')->setRequired(true)
+        ->setAttribs(array('style'=>'width:60%'));
+
+        $users = new Users_Model_Users_Table();
+        foreach ($users->fetchAll() as $row) {
+            $element->addMultiOption($row->id, $row->login);
+        }
+
+        return $element;
     }
 }

@@ -4,5 +4,7 @@ mvc:
       allow: guest
     post:
       allow: guest
+    comment:
+      allow: guest
     management:
       allow: admin

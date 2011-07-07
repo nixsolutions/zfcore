@@ -55,11 +55,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         /**  
          * set Include File Cache 
          */   
-        $classFileIncCache = APPLICATION_PATH . '/../data/cache/'.APPLICATION_ENV.'_loader.php';
-
-        if (file_exists($classFileIncCache)) include_once $classFileIncCache;
-
-        Zend_Loader_PluginLoader::setIncludeFileCache($classFileIncCache);
+//        $classFileIncCache = APPLICATION_PATH . '/../data/cache/loader.php';
+//        
+//        if (file_exists($classFileIncCache)) include_once $classFileIncCache;
+//  
+//        Zend_Loader_PluginLoader::setIncludeFileCache($classFileIncCache);
         return $this;
     }
 

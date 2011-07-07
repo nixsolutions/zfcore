@@ -1,0 +1,30 @@
+blog:
+ route: blog
+ defaults:
+   module: blog
+   controller: index
+   action: index
+blogcategory:
+ route: blog/category/:alias/*
+ defaults:
+   module: blog
+   controller: index
+   action: category
+blogpost:
+ route: blog/post/:alias
+ defaults:
+   module: blog
+   controller: post
+   action: index
+blogpostcreate:
+ route: blog/post/create
+ defaults:
+   module: blog
+   controller: post
+   action: create
+blogpostedit:
+ route: blog/post/edit/:alias
+ defaults:
+   module: blog
+   controller: post
+   action: edit

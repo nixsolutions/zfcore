@@ -20,6 +20,15 @@ class Blog_Model_Comment extends Core_Db_Table_Row_Abstract
     public function _insert()
     {
         $this->created = date("Y-m-d h:i:s");
+
+        if (!$this->userId) {
+            $identity = Zend_Auth::getInstance()->getIdentity();
+            $this->userId = $identity->id;
+        }
+        if (!$this->alias) {
+            $this->alias = $this->title;
+        }
+        $this->_update();
     }
 
     /**
@@ -31,5 +40,10 @@ class Blog_Model_Comment extends Core_Db_Table_Row_Abstract
     public function _update()
     {
         $this->updated = date("Y-m-d h:i:s");
+
+        if (!empty($this->_modifiedFields['alias'])) {
+            $this->alias = preg_replace('|(\W+)|uim ', '-', $this->alias);
+            $this->alias = strtolower($this->alias);
+        }
     }
 }
