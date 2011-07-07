@@ -16,3 +16,15 @@ blogpost:
    module: blog
    controller: post
    action: index
+blogpostcreate:
+ route: blog/post/create
+ defaults:
+   module: blog
+   controller: post
+   action: create
+blogpostedit:
+ route: blog/post/edit/:alias
+ defaults:
+   module: blog
+   controller: post
+   action: edit
