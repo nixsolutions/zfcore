@@ -1,0 +1,23 @@
+.clear {clear:both}
+.pagination {margin: 15px}
+
+.commentlist > li.comment {
+    background: none repeat scroll 0 0 #F6F6F6;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px 3px 3px 3px;
+    margin: 0 0 1.625em;
+    padding: 1.625em;
+    position: relative;
+}
+.commentlist {
+    list-style: none outside none;
+    margin: 0 auto;
+    width: 68.9%;
+}
+#comments {
+    margin-top:20px;
+}
+article {
+    margin-top:10px;
+    margin-bottom:10px;
+}

@@ -20,6 +20,8 @@ class Blog_Model_Post_Form_Create extends Zend_Form
         $this->setName('postForm');
         $this->setMethod('post');
 
+        $this->addElement($this->_category());
+
         $this->addElement(
             'text', 'title',
             array(
@@ -29,8 +31,23 @@ class Blog_Model_Post_Form_Create extends Zend_Form
             )
         );
 
+        $teaser = new Core_Form_Element_TinyMCE(
+            'teaser', array(
+                'label' => 'teaser',
+                'cols'  => '75',
+                'rows'  => '5',
+                'required' => true,
+                'filters'  => array('StringTrim'),
+                'tinyMCE' => array(
+                    'mode' => "textareas",
+                    'theme' => "simple",
+                ),
+            )
+        );
+        $this->addElement($teaser);
+
         $text = new Core_Form_Element_TinyMCE(
-            'text', array(
+            'body', array(
                 'label' => 'text',
                 'cols'  => '75',
                 'rows'  => '20',
@@ -44,20 +61,7 @@ class Blog_Model_Post_Form_Create extends Zend_Form
         );
         $this->addElement($text);
 
-        $this->addElement($this->_category());
-
-        $this->addElement(
-            'select', 'status',
-            array(
-                'label' => 'status',
-                'required' => true,
-                'multiOptions' => array(
-                    Blog_Model_Post::STATUS_ACTIVE  => Blog_Model_Post::STATUS_ACTIVE,
-                    Blog_Model_Post::STATUS_CLOSED  => Blog_Model_Post::STATUS_CLOSED,
-                    Blog_Model_Post::STATUS_DELETED => Blog_Model_Post::STATUS_DELETED,
-                ),
-            )
-        );
+        $this->addElement($this->_status());
 
         $this->addElement($this->_submit());
 
@@ -73,16 +77,32 @@ class Blog_Model_Post_Form_Create extends Zend_Form
 
     protected function _category()
     {
-        $cats = new Blog_Model_Category_Manager();
-        $categories = $cats->getAll();
+        $category = new Zend_Form_Element_Select('categoryId');
+        $category->setLabel('categoryId');
+        $category->setRequired(true)->setAttrib('style', 'width:100%');
 
-        $category = new Zend_Form_Element_Select('category');
-        $category->setLabel('category');
-        $category->setRequired(true);
-        foreach ($categories as $cat) {
+        $cats = new Blog_Model_Category_Manager();
+        foreach ($cats->getAll() as $cat) {
             $category->addMultiOption($cat->id, $cat->title);
         }
 
         return $category;
+    }
+
+    /**
+     * Status Combobox
+     *
+     * @return Zend_Dojo_Form_Element_ComboBox
+     */
+    protected function _status()
+    {
+        $element = new Zend_Form_Element_Select('status');
+        $element->setLabel('Status')->setRequired(true);
+
+        $element->addMultiOption(Blog_Model_Post::STATUS_DRAFT, 'Draft');
+        $element->addMultiOption(Blog_Model_Post::STATUS_PUBLISHED, 'Published');
+        $element->addMultiOption(Blog_Model_Post::STATUS_DELETED,'Deleted');
+
+        return $element;
     }
 }

@@ -20,73 +20,33 @@ class Blog_PostController extends Core_Controller_Action
 
     public function indexAction()
     {
-        $postId = $this->_getParam('id', null);
-        $post = new Blog_Model_Post_Manager();
-        $postContent = $post->getPost($postId);
-        if ($postContent) {
-            $form = new Blog_Model_Comment_Form_Create();
-            $auth = Zend_Auth::getInstance();
-            /** update count view */
-            $post->incrementCountView($postId);
-            /** add comment */
-            if ($this->getRequest()->isPost()
-                && $form->isValid($this->getRequest()->getPost())
-                && $auth->hasIdentity()
-            ) {
-                $comment  = new Blog_Model_Comment();
-                $identity = $auth->getIdentity();
-                $values   = $form->getValues();
-                $comment->setFromArray(
-                    array(
-                        'cmt_text' => $values['comment'],
-                        'post_id'  => $postId,
-                        'user_id'  => $identity->id
-                    )
-                );
-                $comment->save();
-                $form = new Blog_Model_Comment_Form_Create();
-            }
-            $coManager = new Blog_Model_Comment_Manager();
-            $this->view->comments = $coManager->getComments($postId);
-            $this->view->form = $form;
-            $this->view->post = $postContent;
-        } else {
-            $this->_redirect('/' . $this->_module);
+        if (!$alias = $this->_getParam('alias')) {
+            throw new Zend_Controller_Action_Exception('Page not found');
         }
+        $post = new Blog_Model_Post_Manager();
+        if (!$postContent = $post->getPost($alias)) {
+            throw new Zend_Controller_Action_Exception('Post not found');
+        }
+
+        /** update count view */
+        $post->incrementCountView($postContent->id);
+        $this->view->row = $postContent;
     }
 
     public function createAction()
     {
-        $auth = Zend_Auth::getInstance();
-        if (!$auth->hasIdentity()) {
-            $this->_redirect('/' . $this->_module);
-        }
         $form = new Blog_Model_Post_Form_Create();
-        $identity = $auth->getIdentity();
-        if ($this->getRequest()->isPost()
-            && $form->isValid($this->getRequest()->getPost())
-        ) {
-            $values = $form->getValues();
-
+        if ($this->getRequest()->isPost() && $form->isValid($this->_getAllParams())) {
             $post = new Blog_Model_Post();
-            $post->setFromArray(
-                array(
-                    'post_title' => $values['title'],
-                    'post_text'  => $values['text'],
-                    'ctg_id'     => $values['category'],
-                    'user_id'    => $identity->id,
-                    'post_status'=> $values['status']
-                )
-            );
-
+            $post->setFromArray($this->_getAllParams());
             $post->save();
 
-            $lastId = $post->getTable()->getAdapter()->lastInsertId();
             $this->_flashMessenger->addMessage('Post created');
-            $this->_redirect(
-                Zend_View_Helper_Url::url(
-                    array('action' => 'index', 'id' => $lastId)
-                )
+            $this->_helper->redirector(
+                'index',
+                null,
+                null,
+                array('alias' => $post->alias)
             );
         }
         $this->view->form = $form;
@@ -94,35 +54,32 @@ class Blog_PostController extends Core_Controller_Action
 
     public function editAction()
     {
-
-        $auth = Zend_Auth::getInstance();
-        if (!$auth->hasIdentity()) {
-            $this->_flashMessenger->addMessage('You are not authorizated');
-            $this->_redirect('/' . $this->_module);
+        if (!$alias = $this->_getParam('alias')) {
+            throw new Zend_Controller_Action_Exception('Page not found');
+        }
+        $post = new Blog_Model_Post_Manager();
+        if (!$postContent = $post->getPost($alias)) {
+            throw new Zend_Controller_Action_Exception('Post not found');
         }
 
-        $identity = $auth->getIdentity();
-        $postId = $this->_getParam('id', null, 'integer');
-        $post = new Blog_Model_Post_Manager();
-        $postContent = $post->getPost($postId);
-
-        if ($postContent->user_id != $identity->id) {
-            $this->_flashMessenger->addMessage('You are not creator of this post');
-            $this->_redirect('/' . $this->_module);
+        if (!$postContent->isOwner()) {
+            throw new Zend_Controller_Action_Exception('Page is forbidden');
         }
 
         $form = new Blog_Model_Post_Form_Edit();
-        $form->setValues($postContent->toArray());
+        $form->setDefaults($postContent->toArray());
+
         if ($this->getRequest()->isPost()
-            && $form->isValid($this->getRequest()->getPost())
-        ) {
-            $values = $form->getValues();
-            $post->updatePost($postId, $values);
+            && $form->isValid($this->_getAllParams())) {
+
+            $post->updatePost($postId, $form->getValues());
+
             $this->_flashMessenger->addMessage('Post saved');
-            $this->_redirect(
-                Zend_View_Helper_Url::url(
-                    array('controller' => 'post', 'action' => 'index', 'id' => $postId)
-                )
+            $this->_helper->redirector(
+                'index',
+                null,
+                null,
+                array('alias' => $post->alias)
             );
         }
         $this->view->form = $form;

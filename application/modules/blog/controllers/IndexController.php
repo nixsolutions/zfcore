@@ -15,25 +15,41 @@ class Blog_IndexController extends Core_Controller_Action
      */
     public function indexAction()
     {
-        $ctg = new Blog_Model_Categories();
-        $post = new Blog_Model_Post_Manager();
+        $post = new Blog_Model_Post_Table();
 
-        $source = $post->getPostsSourse($this->_getParam('id', 0));
+        $source = $post->getPostsSourse();
         $paginator = Zend_Paginator::factory($source);
 
         $paginator->setItemCountPerPage(10);
         $paginator->setCurrentPageNumber($this->_getParam('page'));
 
-        $this->view->cats = $ctg->getChildren();
-
-        if ($ctg->getChildren()->count()) {
-            $ids = array();
-            foreach ($ctg->getChildren()as $cat) {
-                $ids[] = $cat->id;
-            }
-            $this->view->catsInfo = $post->getInfoByCategories($ids);
-        }
         $this->view->paginator = $paginator;
+    }
+
+    /**
+    * Index
+    */
+    public function categoryAction()
+    {
+        if (!$alias = $this->_getParam('alias')) {
+            throw new Zend_Controller_Action_Exception('Page not found');
+        }
+
+        $category = new Blog_Model_Category_Manager();
+        if (!$ctg = $category->getByAlias($alias)) {
+            throw new Zend_Controller_Action_Exception('Blog not found');
+        }
+
+        $post = new Blog_Model_Post_Table();
+
+        $source = $post->getPostsSourse($ctg->alias);
+        $paginator = Zend_Paginator::factory($source);
+
+        $paginator->setItemCountPerPage(10);
+        $paginator->setCurrentPageNumber($this->_getParam('page'));
+
+        $this->view->paginator = $paginator;
+        $this->view->category = $ctg;
     }
 
 }

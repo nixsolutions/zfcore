@@ -1,0 +1,18 @@
+blog:
+ route: blog
+ defaults:
+   module: blog
+   controller: index
+   action: index
+blogcategory:
+ route: blog/category/:alias/*
+ defaults:
+   module: blog
+   controller: index
+   action: category
+blogpost:
+ route: blog/post/:alias
+ defaults:
+   module: blog
+   controller: post
+   action: index

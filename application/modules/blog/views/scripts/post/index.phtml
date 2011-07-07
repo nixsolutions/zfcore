@@ -1,25 +1,19 @@
-<?php 
+<?php
     $this->headScript()->prependFile($this->baseUrl('scripts/tiny_mce/tiny_mce.js'));
-    $this->stylesheet()->module(); 
+    $this->stylesheet()->module();
 ?>
-<h2>Post: <?php echo $this->post->post_title; ?></h2>
-<div>author: <?php echo $this->post->login; ?></div>
-<div>
-  category: 
-  <a href="<?php echo $this->url(array('controller'=>'category', 'action'=>'index', 'id'=>$this->post->ctg_id)) ?>"><?php echo $this->post->ctg_title; ?></a>
-</div>
-<hr />
-<div><pre style="font-size: 1.5em;"><?php echo $this->post->post_text; ?></pre></div>
-<?php if (count($this->comments)>0): ?>
-<hr />
-<?php foreach($this->comments as $comment): ?>
-<div>
-  <div>author: <?php echo $comment['login'] ?></div>
-  <div>comment: <?php echo $comment['cmt_text'] ?></div>
-  <hr width="50%" align="left" />
-<div>
-<?php 
-    endforeach; endif;
-    $auth = Zend_Auth::getInstance(); 
-    if ($auth->hasIdentity()) echo $this->form;
-?>
+<article>
+    <header>
+        <h3><?php echo $this->row->title?></h3>
+        <div><?php echo $this->__('Posted on')?> <?php echo $this->date($this->row->published)?></div>
+    </header>
+  <div>
+    <?php echo $this->row->body?>
+  </div>
+  <footer>
+      <?php echo $this->__('Posted by')?> <?php echo ucfirst($this->row->login)?><?php echo $this->row->login?> <?php echo $this->__('in')?>
+      <a href="<?php echo $this->url(array('alias' => $this->row->categoryAlias), 'blogcategory') ?>"><?php echo $this->row->categoryTitle?></a>
+  </footer>
+</article>
+
+<?php echo $this->action('index', 'comment', 'blog', array('postId' => $this->row->id));?>
