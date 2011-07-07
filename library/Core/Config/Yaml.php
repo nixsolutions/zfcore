@@ -175,6 +175,8 @@ class Core_Config_Yaml extends Zend_Config
         }
 
         $ignoreConstants    = $staticIgnoreConstants = self::ignoreConstants();
+        $ignoreDefinitions  = self::ignoreDefinitions();
+
         $allowModifications = false;
         if (is_bool($options)) {
             $allowModifications = $options;
@@ -198,7 +200,7 @@ class Core_Config_Yaml extends Zend_Config
                         $ignoreDefinitions = (bool) $value;
                         break;
                     case 'definitions':
-                        $definitions = (array) $value;
+                        self::setDefinitions((array) $value);
                         break;
                     case 'yaml_decoder':
                     case 'yamldecoder':
@@ -226,9 +228,6 @@ class Core_Config_Yaml extends Zend_Config
 
         // Override static value for ignore_definitions if provided in $options
         self::setIgnoreDefinitions($ignoreDefinitions);
-
-        // Override static value for definitions if provided in $options
-        self::setDefinitions($definitions);
 
         // Parse YAML
         $config = call_user_func($this->getYamlDecoder(), $yaml);
