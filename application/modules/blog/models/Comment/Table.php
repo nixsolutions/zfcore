@@ -20,4 +20,29 @@ class Blog_Model_Comment_Table extends Core_Db_Table_Abstract
 
     /** Row Class */
     protected $_rowClass = 'Blog_Model_Comment';
+
+    /**
+     * Get comments for some post
+     *
+     * @param integer|object $post
+     * @return array
+     */
+    public function getByPost($post)
+    {
+        if ($post instanceof Zend_Db_Table_Row_Abstract) {
+            $post = $post->id;
+        }
+
+        $users = new Users_Model_Users_Table();
+
+        $select = $this->select(true);
+        $select->setIntegrityCheck(false)
+               ->joinLeft(
+                   array('u' => $users->info('name')),
+                   'userId = u.id',
+                   array('login')
+                )
+                ->where('postId = ?', $post);
+        return $this->fetchAll($select);
+    }
 }

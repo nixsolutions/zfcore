@@ -3,7 +3,7 @@
     $this->stylesheet()->action();
 ?>
 
-<h1>Blog</h1>
+<h1>Blog [<a href="<?php echo $this->url(array(), 'blogrss')?>">rss</a>]</h1>
 
 <hr />
 <div id="posts">
@@ -12,7 +12,8 @@
         <article>
             <header>
                 <h3>
-                    <a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategory')?>"><?php echo $row->categoryTitle?></a> /
+                    <a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategory')?>"><?php echo $row->categoryTitle?></a>
+                    [<a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategoryrss')?>">rss</a>] /
                     <a href="<?php echo $url?>"><?php echo $row->title?></a>
                 </h3>
                 <div><?php echo $this->__('Posted on')?> <?php echo $this->date($row->published)?></div>
@@ -21,7 +22,9 @@
             <?php echo $row->teaser?>
           </div>
           <div>
-              <?php echo $this->__('Posted by')?> <?php echo ucfirst($row->login)?><?php echo $row->login?> <?php echo $this->__('in')?>
+              <?php echo $this->__('Posted by')?>
+              <a href="<?php echo $this->url(array('login' => $row->login), 'blogauthor') ?>"><?php echo ucfirst($row->login)?></a>
+              <?php echo $this->__('in')?>
               <a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategory') ?>"><?php echo $row->categoryTitle?></a>
               |
               <a href="<?php echo $url?>"><?php echo $this->__('Comments')?> (<?php echo $row->comments ?>)</a>

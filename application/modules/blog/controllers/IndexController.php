@@ -17,7 +17,7 @@ class Blog_IndexController extends Core_Controller_Action
     {
         $post = new Blog_Model_Post_Table();
 
-        $source = $post->getPostsSourse();
+        $source = $post->getSelect();
         $paginator = Zend_Paginator::factory($source);
 
         $paginator->setItemCountPerPage(10);
@@ -27,8 +27,8 @@ class Blog_IndexController extends Core_Controller_Action
     }
 
     /**
-    * Index
-    */
+     * View blog category
+     */
     public function categoryAction()
     {
         if (!$alias = $this->_getParam('alias')) {
@@ -36,20 +36,45 @@ class Blog_IndexController extends Core_Controller_Action
         }
 
         $category = new Blog_Model_Category_Manager();
-        if (!$ctg = $category->getByAlias($alias)) {
+        if (!$row = $category->getByAlias($alias)) {
             throw new Zend_Controller_Action_Exception('Blog not found');
         }
 
         $post = new Blog_Model_Post_Table();
 
-        $source = $post->getPostsSourse($ctg->alias);
+        $source = $post->getSelect($row);
         $paginator = Zend_Paginator::factory($source);
 
         $paginator->setItemCountPerPage(10);
         $paginator->setCurrentPageNumber($this->_getParam('page'));
 
         $this->view->paginator = $paginator;
-        $this->view->category = $ctg;
+        $this->view->category = $row;
     }
 
+    /**
+     * View blog author
+     */
+    public function authorAction()
+    {
+        if (!$login = $this->_getParam('login')) {
+            throw new Zend_Controller_Action_Exception('Page not found');
+        }
+
+        $users = new Users_Model_Users_Table();
+        if (!$row = $users->getByLogin($login)) {
+            throw new Zend_Controller_Action_Exception('Blog not found');
+        }
+
+        $post = new Blog_Model_Post_Table();
+
+        $source = $post->getSelect(null, $row->id);
+        $paginator = Zend_Paginator::factory($source);
+
+        $paginator->setItemCountPerPage(10);
+        $paginator->setCurrentPageNumber($this->_getParam('page'));
+
+        $this->view->paginator = $paginator;
+        $this->view->author = $row;
+    }
 }

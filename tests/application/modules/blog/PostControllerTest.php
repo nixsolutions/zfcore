@@ -47,19 +47,27 @@ class Blog_PostControllerTest extends ControllerTestCase
         $manager = new Blog_Model_Category_Manager();
         $rootCat = $manager->getRoot();
 
+        $this->_doLogin();
+
         $cat = $manager->getDbTable()->createRow($this->_fixture['category']);
         $rootCat->addChild($cat);
 
-        $post = $table->create($this->_fixture['post']);
+        $post = $table->createRow($this->_fixture['post']);
         $post->save();
 
+        $users= new Users_Model_Users_Table();
+        $user = $users->createRow(array('id' => 75, 'login' => 'asdasd'));
+        $user->save();
+
         $this->dispatch('/blog/post/' . $post->alias);
+
         $this->assertModule('blog');
         $this->assertController('post');
         $this->assertAction('index');
 
         $post->delete();
         $cat->delete();
+        $user->delete();
     }
 
     public function testCreateCommentIndexAction()
@@ -71,10 +79,14 @@ class Blog_PostControllerTest extends ControllerTestCase
         $cat = $manager->getDbTable()->createRow($this->_fixture['category']);
         $rootCat->addChild($cat);
 
-        $post = $table->create($this->_fixture['post']);
+        $post = $table->createRow($this->_fixture['post']);
         $post->save();
 
         $this->_doLogin();
+
+        $users= new Users_Model_Users_Table();
+        $user = $users->createRow(array('id' => 75, 'login' => 'asdasd'));
+        $user->save();
 
         $this->request->setMethod('POST')
                       ->setPost(array('comment' => 'comment'));
@@ -86,6 +98,7 @@ class Blog_PostControllerTest extends ControllerTestCase
 
         $post->delete();
         $cat->delete();
+        $user->delete();
     }
 
     public function testCreateAction()
@@ -140,7 +153,7 @@ class Blog_PostControllerTest extends ControllerTestCase
         $cat = $manager->getDbTable()->createRow($this->_fixture['category']);
         $rootCat->addChild($cat);
 
-        $post = $table->create($this->_fixture['post']);
+        $post = $table->createRow($this->_fixture['post']);
         $post->save();
 
         $this->_doLogin();

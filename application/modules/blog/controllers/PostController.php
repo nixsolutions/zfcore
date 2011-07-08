@@ -15,33 +15,49 @@ class Blog_PostController extends Core_Controller_Action
         /* Initialize action controller here */
         parent::init();
         $this->_module = $this->getRequest()->getModuleName();
-        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
     }
 
+    /**
+     * View post
+     *
+     * @throws Zend_Controller_Action_Exception
+     */
     public function indexAction()
     {
         if (!$alias = $this->_getParam('alias')) {
             throw new Zend_Controller_Action_Exception('Page not found');
         }
-        $post = new Blog_Model_Post_Manager();
-        if (!$postContent = $post->getPost($alias)) {
+        $posts = new Blog_Model_Post_Table();
+        if (!$row = $posts->getByAlias($alias)) {
             throw new Zend_Controller_Action_Exception('Post not found');
         }
+        $users = new Users_Model_Users_Table();
+        $this->view->user = $users->getById($row->userId);
+
+        $categories = new Categories_Model_Categories_Table();
+        $this->view->category = $categories->getById($row->categoryId);
+
 
         /** update count view */
-        $post->incrementCountView($postContent->id);
-        $this->view->row = $postContent;
+        $row->incViews();
+        $this->view->row = $row;
     }
 
+    /**
+     * Create new post
+     */
     public function createAction()
     {
         $form = new Blog_Model_Post_Form_Create();
-        if ($this->getRequest()->isPost() && $form->isValid($this->_getAllParams())) {
-            $post = new Blog_Model_Post();
-            $post->setFromArray($this->_getAllParams());
+        if ($this->getRequest()->isPost()
+            && $form->isValid($this->_getAllParams())) {
+
+            $posts = new Blog_Model_Post_Table();
+            $post = $posts->createRow();
+            $post->setFromArray($form->getValues());
             $post->save();
 
-            $this->_flashMessenger->addMessage('Post created');
+            $this->_helper->flashMessenger->addMessage('Post created');
             $this->_helper->redirector(
                 'index',
                 null,
@@ -52,29 +68,34 @@ class Blog_PostController extends Core_Controller_Action
         $this->view->form = $form;
     }
 
+    /**
+     * Edit my post
+     *
+     * @throws Zend_Controller_Action_Exception
+     */
     public function editAction()
     {
         if (!$alias = $this->_getParam('alias')) {
             throw new Zend_Controller_Action_Exception('Page not found');
         }
-        $post = new Blog_Model_Post_Manager();
-        if (!$postContent = $post->getPost($alias)) {
+        $posts = new Blog_Model_Post_Table();
+        if (!$row = $posts->getByAlias($alias)) {
             throw new Zend_Controller_Action_Exception('Post not found');
         }
 
-        if (!$postContent->isOwner()) {
+        if (!$row->isOwner()) {
             throw new Zend_Controller_Action_Exception('Page is forbidden');
         }
 
         $form = new Blog_Model_Post_Form_Edit();
-        $form->setDefaults($postContent->toArray());
+        $form->setDefaults($row->toArray());
 
         if ($this->getRequest()->isPost()
             && $form->isValid($this->_getAllParams())) {
 
-            $post->updatePost($postId, $form->getValues());
+            $row->setFromArray($form->getValues());
 
-            $this->_flashMessenger->addMessage('Post saved');
+            $this->_helper->flashMessenger->addMessage('Post saved');
             $this->_helper->redirector(
                 'index',
                 null,

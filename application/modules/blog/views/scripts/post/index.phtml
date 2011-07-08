@@ -11,8 +11,10 @@
     <?php echo $this->row->body?>
   </div>
   <footer>
-      <?php echo $this->__('Posted by')?> <?php echo ucfirst($this->row->login)?><?php echo $this->row->login?> <?php echo $this->__('in')?>
-      <a href="<?php echo $this->url(array('alias' => $this->row->categoryAlias), 'blogcategory') ?>"><?php echo $this->row->categoryTitle?></a>
+      <?php echo $this->__('Posted by')?>
+      <a href="<?php echo $this->url(array('login' => $this->user->login), 'blogauthor') ?>"><?php echo $this->user->login?></a>
+      <?php echo $this->__('in')?>
+      <a href="<?php echo $this->url(array('alias' => $this->category->alias), 'blogcategory') ?>"><?php echo $this->category->title?></a>
   </footer>
 </article>
 

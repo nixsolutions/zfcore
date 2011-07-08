@@ -12,22 +12,4 @@
  */
 class Blog_Model_Comment_Manager extends Core_Model_Manager
 {
-    /**
-     * get comments for some post
-     *
-     * @param integer $postId
-     * @return array
-     */
-    public function getComments($postId)
-    {
-        $select = $this->getDbTable()->select()->setIntegrityCheck(false)
-                ->from(array('c' => 'blog_comment'), array('*'))
-                ->joinLeft(
-                    array('u' => 'users'),
-                    'c.userId = u.id',
-                    array('login')
-                )
-                ->where('c.postId = ?', $postId);
-        return $this->getDbTable()->fetchAll($select);
-    }
 }

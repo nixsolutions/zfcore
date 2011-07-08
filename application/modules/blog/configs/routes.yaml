@@ -10,6 +10,12 @@ blogcategory:
    module: blog
    controller: index
    action: category
+blogauthor:
+ route: blog/author/:login
+ defaults:
+   module: blog
+   controller: index
+   action: author
 blogpost:
  route: blog/post/:alias
  defaults:
@@ -28,3 +34,21 @@ blogpostedit:
    module: blog
    controller: post
    action: edit
+blogrss:
+ route: blog/rss
+ defaults:
+   module: blog
+   controller: rss
+   action: index
+blogauthorrss:
+ route: blog/rss/author/:login
+ defaults:
+   module: blog
+   controller: rss
+   action: author
+blogcategoryrss:
+ route: blog/rss/category/:alias
+ defaults:
+   module: blog
+   controller: rss
+   action: category

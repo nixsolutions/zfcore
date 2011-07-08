@@ -26,6 +26,10 @@ class Blog_Model_Post extends Core_Db_Table_Row_Abstract
             $this->userId = $identity->id;
         }
 
+        if (!$this->alias) {
+            $this->alias = $this->title;
+        }
+
         $this->_update();
     }
 
@@ -38,6 +42,11 @@ class Blog_Model_Post extends Core_Db_Table_Row_Abstract
 
         if (!$this->published) {
             $this->published = $this->updated;
+        }
+
+        if (!empty($this->_modifiedFields['alias'])) {
+            $this->alias = preg_replace('|(\W+)|uim ', '-', $this->alias);
+            $this->alias = strtolower($this->alias);
         }
     }
 
@@ -56,5 +65,24 @@ class Blog_Model_Post extends Core_Db_Table_Row_Abstract
             return $this->userId == $identity->id;
         }
         return false;
+    }
+
+    /**
+     * Inc views
+     *
+     * @param integer $count
+     * @return Blog_Model_Post
+     */
+    public function incViews($count = 1)
+    {
+        if ($this->isReadOnly()) {
+            $row = $this->getTable()->find($this->_getPrimaryKey());
+        } else {
+            $row = $this;
+        }
+        $row->views += $count;
+        $row->save();
+
+        return $this;
     }
 }
