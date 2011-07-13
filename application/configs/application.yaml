@@ -79,7 +79,7 @@ production:
     db:
       adapter: pdo_mysql
       params:
-        host: elephant.nixsolutions.com
+        host: hippo.nixsolutions.com
         username: p_zfc
         password: zfc
         dbname: p_zfc
@@ -113,8 +113,9 @@ testing:
     db:
       params:
         host: hippo.nixsolutions.com
-        username: p_zfc2
-        dbname: p_zfc2
+        username: d_unittest
+        password: unittet
+        dbname: p_zfc_test
         persistent: true
     frontController:
       plugins:
