@@ -112,7 +112,7 @@ testing:
   resources:
     db:
       params:
-        host: elephant.nixsolutions.com
+        host: hippo.nixsolutions.com
         username: p_zfc2
         dbname: p_zfc2
         persistent: true
