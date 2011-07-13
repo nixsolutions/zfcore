@@ -66,7 +66,12 @@ class Blog_Model_Category_Manager extends Core_Categories_Manager
         return $this->getDbTable()->fetchRow($select);
     }
 
-
+    /**
+     * Get categories list
+     *
+     * @param boolen $fetch
+     * @return Zend_Db_Table_Select|Zend_Db_Table_Rowset
+     */
     public function getList($fetch = false)
     {
         $separator = Categories_Model_Categories::PATH_SEPARATOR;
