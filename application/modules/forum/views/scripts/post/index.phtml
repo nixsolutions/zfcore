@@ -1,25 +1,42 @@
 <?php
-    $this->headScript()->prependFile($this->baseUrl('scripts/tiny_mce/tiny_mce.js'));
     $this->stylesheet()->module();
 ?>
-<h2>Post: <?php echo $this->post->post_title; ?></h2>
-<div>author: <?php echo $this->post->login; ?></div>
-<div>
-  category:
-  <a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'index', 'id'=>$this->post->ctg_id)) ?>"><?php echo $this->post->ctg_title; ?></a>
-</div>
-<hr />
-<div><pre style="font-size: 1.5em;"><?php echo $this->post->post_text; ?></pre></div>
-<?php if (count($this->comments)>0): ?>
-<hr />
-<?php foreach($this->comments as $comment): ?>
-<div>
-  <div>author: <?php echo $comment['login'] ?></div>
-  <div>comment: <?php echo $comment['cmt_text'] ?></div>
-  <hr width="50%" align="left" />
-<div>
-<?php
-    endforeach; endif;
-    $auth = Zend_Auth::getInstance();
-    if ($auth->hasIdentity()) echo $this->form;
-?>
+<h3>
+	<a href="<?php echo $this->url(array('alias'=> $this->category->alias), 'forumcategory') ?>"><?php echo $this->category->title; ?></a>
+	[<a href="<?php echo $this->url(array('alias'=> $this->category->alias), 'forumcategoryrss') ?>"><?php echo $this->__('rss'); ?></a>]
+</h3>
+<article class="comment">
+    <header>
+        <h4>
+            <?php echo $this->post->title; ?>
+            [<a href="<?php echo $this->url(array('id'=> $this->post->id), 'forumpostrss') ?>"><?php echo $this->__('rss'); ?></a>]
+        </h4>
+        <?php echo $this->author->login; ?>
+        <?php echo $this->__('at')?>
+        <?php echo $this->date($this->post->created); ?>
+    </header>
+    <br />
+    <div style="position:relative;"><?php echo $this->post->body; ?></div>
+</article>
+
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+
+<?php foreach($this->paginator as $i => $row): ?>
+	<br />
+    <article id="comment-<?php echo ++$i?>" class="comment">
+       <header>
+           <h5><?php echo $row->title; ?></h5>
+           <?php echo $this->author->login; ?>
+           <?php echo $this->__('at')?>
+           <?php echo $this->date($row->created); ?>
+           <div class="right">#<a href="#comment-<?php echo $i?>"><?php echo $i?></a></div>
+       </header>
+       <br />
+       <div style="position:relative;"><?php echo $row->body; ?></div>
+    </article>
+
+<?php endforeach;?>
+
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+
+<?php echo $this->action('comment', 'post', 'forum', array('postId' => $this->post->id));?>

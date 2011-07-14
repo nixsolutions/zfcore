@@ -12,29 +12,4 @@
  */
 class Forum_Model_Comment_Manager extends Core_Model_Manager
 {
-    /**
-     * get comments for some post
-     *
-     * @param integer $postId
-     * @return array
-     */
-    public function getComments($postId)
-    {
-        $select = $this->getDbTable()->select()->setIntegrityCheck(false)
-                ->from(
-                    array(
-                        'c' => 'forum_comment'
-                    ),
-                    array(
-                        '*',
-                        'u.login',
-                    )
-                )
-                ->joinLeft(
-                    array('u' => 'users'),
-                    'c.user_id = u.id', array()
-                )
-                ->where('c.post_id = ?', $postId);
-        return $this->getDbTable()->fetchAll($select)->toArray();
-    }
 }

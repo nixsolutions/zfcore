@@ -54,7 +54,7 @@ class Core_Categories_Row extends Zend_Db_Table_Row_Abstract
      */
     public function getParent()
     {
-        if (!$this->_parent && $this->getParentNode()) {
+        if (!$this->_parent && $this->getParentNodeId()) {
             $this->_parent = $this->getTable()->find($this->getParentNodeId())
                                               ->current();
         }

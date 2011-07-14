@@ -55,4 +55,20 @@ class Forum_Model_Category_Manager extends Core_Categories_Manager
                ->where('path LIKE ?', self::CATEGORY_ALIAS . $separator . '%');
         return $this->getDbTable()->fetchRow($select);
     }
+
+    /**
+     * Get by alias
+     *
+     * @param string $alias
+     * @return Zend_Db_Table_Row_Abstract
+     */
+    public function getByAlias($alias)
+    {
+        $separator = Categories_Model_Categories::PATH_SEPARATOR;
+
+        $select = $this->getDbTable()->select();
+        $select->where('alias=?', $alias)
+               ->where('path LIKE ?', self::CATEGORY_ALIAS . $separator . '%');
+        return $this->getDbTable()->fetchRow($select);
+    }
 }

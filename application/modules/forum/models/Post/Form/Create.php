@@ -30,7 +30,7 @@ class Forum_Model_Post_Form_Create extends Zend_Form
         );
 
         $text = new Core_Form_Element_TinyMCE(
-            'text', array(
+            'body', array(
                 'label' => 'text',
                 'cols'  => '75',
                 'rows'  => '20',
@@ -73,8 +73,8 @@ class Forum_Model_Post_Form_Create extends Zend_Form
 
     protected function _category()
     {
-        $category = new Zend_Form_Element_Select('category');
-        $category->setLabel('category');
+        $category = new Zend_Form_Element_Select('categoryId');
+        $category->setLabel('categoryId');
         $category->setRequired(true);
 
         $cats = new Forum_Model_Category_Manager();

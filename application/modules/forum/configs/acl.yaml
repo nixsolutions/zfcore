@@ -2,6 +2,8 @@ mvc:
   forum:
     index:
       allow: guest
+    rss:
+      allow: guest
     post:
       allow: guest
     management:

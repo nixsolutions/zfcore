@@ -1,2 +1,51 @@
 .clear {clear:both}
 .pagination {margin: 15px}
+
+article {
+	margin-top:10px;
+	margin-bottom:10px;
+}
+.comment {
+    background: none repeat scroll 0 0 #F6F6F6;
+    border: 1px solid #DDDDDD;
+    border-radius: 3px 3px 3px 3px;
+    margin: 0 0 1.625em;
+    padding: 1.625em;
+    position: relative;
+}
+table {
+	background: none repeat scroll 0 0 #EEEEEE;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px 4px 4px 4px;
+    
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+td, th {
+    border: 1px solid #DDDDDD;
+    color: #333333;
+    font-size: 90%;
+    font-weight: normal;
+    vertical-align: middle;
+}
+th {
+    text-align: center;
+    height: 30px;
+}
+td {
+    padding:5px;
+    height: 60px;
+}
+.category-level-2 td:first-child {
+    padding-left:20px;
+}
+.category-level-3 td:first-child{
+    padding-left:40px;
+}
+.category-level-4 td:first-child {
+    padding-left:60px;
+}
+.category-level-5 td:first-child {
+    padding-left:80px;
+}

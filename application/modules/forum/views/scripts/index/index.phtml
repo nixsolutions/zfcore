@@ -3,61 +3,58 @@
     $this->stylesheet()->action();
 ?>
 
-<h2>Categories</h2>
+<h2>
+    <?php echo $this->__('Forum')?>
+    [<a href="<?php echo $this->url(array(), 'forumrss') ?>"><?php echo $this->__('rss'); ?></a>]
+</h2>
 <table>
   <thead>
     <tr>
-      <th>&nbsp;</th>
-      <th>Category</th>
-      <th>Topics</th>
-      <th>Comments</th>
-      <th>Last post</th>
+      <th><?php echo $this->__('Category')?></th>
+      <th><?php echo $this->__('Last post')?></th>
+      <th><?php echo $this->__('Posts')?></th>
+      <th><?php echo $this->__('Comments')?></th>
+      <th><?php echo $this->__('Views')?></th>
     </tr>
   </thead>
   <tbody>
-    <?php if ($this->cats->count()): ?>
-        <?php foreach($this->cats as $cat): ?>
-        <tr>
-          <td>&nbsp;</td>
-          <td width="50%">
-            <a href="<?php echo $this->url(array('controller'=>'index', 'action'=>'index', 'id'=>$cat['id'])) ?>"><?php echo $cat['title'] ?></a><br />
-            <?php echo $cat['description'] ?>
-          </td>
-          <td><?php echo (isset($catsInfo[$cat->id]))?$catsInfo[$cat->id]->posts:0 ?></td>
-          <td><?php echo (isset($catsInfo[$cat->id]))?$catsInfo[$cat->id]->comments:0 ?></td>
-          <td width="25%">last post</td>
-        </tr>
-    <?php endforeach; endif; ?>
-  </tbody>
-</table>
+    <?php if ($this->categories->count()): ?>
+        <?php foreach($this->categories as $row): ?>
+            <tr class="category category-level-<?php echo $row->level?>">
+              <td width="50%">
+                <h4>
+                    <a href="<?php echo $this->url(array('alias'=> $row->alias), 'forumcategory')?>"><?php echo $row->title?></a>
+                    [<a href="<?php echo $this->url(array('alias'=> $row->alias), 'forumcategoryrss') ?>"><?php echo $this->__('rss'); ?></a>]
+                </h4>
+                <div><?php echo $row->description?></div>
+              </td>
+              <td>
+                  <?php $post = isset($this->posts[$row->id])?$this->posts[$row->id]:null;?>
 
-<?php if (count($this->paginator)>0): ?>
-<h2>Posts</h2>
-<table>
-  <thead>
-    <tr>
-      <th>&nbsp;</th>
-      <th>Post</th>
-      <th>Author</th>
-      <th>Viewed</th>
-      <th>Commented</th>
-      <th>Last comment</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach($this->paginator as $post): ?>
-    <tr>
-      <td>&nbsp;</td>
-      <td width="50%">
-        <a href="<?php echo $this->url(array('controller'=>'post', 'action'=>'index', 'id'=>$post['id'])) ?>"><?php echo $post['post_title'] ?></a>
-      </td>
-      <td><?php echo $post['login'] ?></td>
-      <td><?php echo $post['post_view_count'] ?></td>
-      <td><?php echo $post['count_comments'] ?></td>
-      <td>Last comment</td>
-    </tr>
-    <?php endforeach; ?>
+                  <?php if ($post):?>
+                      <h5>
+                        <a href="<?php echo $this->url(array('id'=> $post->id), 'forumpost')?>" title="<?php echo $post->getTeaser()?>">
+                          <?php echo $post->title?>
+                        </a>
+                        [<a href="<?php echo $this->url(array('id'=> $post->id), 'forumpostrss') ?>"><?php echo $this->__('rss'); ?></a>]
+                      </h5>
+                      <div class="right">
+                          <?php echo $this->__('by')?> <?php echo $post->login?>
+                          <?php echo $this->__('at')?> <span><?php echo $this->date($post->created)?></span>
+                      </div>
+                  <?php else:?>
+                    <?php echo $this->__('No Posts Yet')?>
+                  <?php endif;?>
+              </td>
+              <th><?php echo ($post) ? $post->postsCount : 0?></th>
+              <th><?php echo ($post) ? $post->commentsCount : 0?></th>
+              <th><?php echo ($post) ? $post->viewsCount : 0?></th>
+            </tr>
+        <?php endforeach;?>
+    <?php else: ?>
+        <tr>
+            <td colspan="5" align="center"><h1><?php echo $this->__('No Categories Yet')?></h1></td>
+        </tr>
+    <?php endif; ?>
   </tbody>
 </table>
-<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
-<?php endif; ?>

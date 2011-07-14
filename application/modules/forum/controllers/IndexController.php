@@ -15,25 +15,44 @@ class Forum_IndexController extends Core_Controller_Action
      */
     public function indexAction()
     {
-        $ctg = new Forum_Model_Category_Manager();
-        $post = new Forum_Model_Post_Manager();
+        $manager = new Forum_Model_Category_Manager();
 
-        $source = $post->getPostsSourse($this->_getParam('id', 0));
-        $paginator = Zend_Paginator::factory($source);
+        $this->view->categories = $manager->getRoot()
+                                          ->getAllChildren(null, 'path');
 
-        $paginator->setItemCountPerPage(10);
-        $paginator->setCurrentPageNumber($this->_getParam('page'));
+        $posts = new Forum_Model_Post_Table();
 
-        $this->view->cats = $ctg->getChildren();
-
-        if ($ctg->getChildren()->count()) {
-            $ids = array();
-            foreach ($ctg->getChildren()as $cat) {
-                $ids[] = $cat->id;
-            }
-            $this->view->catsInfo = $post->getInfoByCategories($ids);
-        }
-        $this->view->paginator = $paginator;
+        $this->view->posts = $posts->getLastPosts();
     }
 
+    /**
+     * Category
+     */
+    public function categoryAction()
+    {
+        if (!$alias = $this->_getParam('alias')) {
+            throw new Zend_Controller_Action_Exception('Page not found');
+        }
+
+        $manager = new Forum_Model_Category_Manager();
+        if (!$category = $manager->getByAlias($alias)) {
+            throw new Zend_Controller_Action_Exception('Category not found');
+        }
+
+        $this->view->category = $category;
+
+        $this->view->categories = $category->getAllChildren();
+
+        $posts = new Forum_Model_Post_Table();
+
+        $this->view->posts = $posts->getLastPosts();
+
+        $select = $posts->getPostsSelect($category->id);
+        $paginator = Zend_Paginator::factory($select);
+
+        $paginator->setItemCountPerPage(20);
+        $paginator->setCurrentPageNumber($this->_getParam('page'));
+
+        $this->view->paginator = $paginator;
+    }
 }

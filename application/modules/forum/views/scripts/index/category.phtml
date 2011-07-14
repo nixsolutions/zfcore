@@ -1,0 +1,112 @@
+<?php
+    $this->stylesheet()->module();
+    $this->stylesheet()->action();
+?>
+
+<h2>
+    <a href="<?php echo $this->url(array(), 'forum')?>"><?php echo $this->__('Forum')?></a>
+    [<a href="<?php echo $this->url(array(), 'forumrss') ?>"><?php echo $this->__('rss'); ?></a>]
+    <?php $category = $this->category?>
+
+    <?php for ($i = $category->level; $i > 1; $i--):?>
+        <?php if (!$category = $category->getParent()) break;?>
+        / <a href="<?php echo $this->url(array('alias' => $category->alias), 'forumcategory')?>"><?php echo $category->title;?></a>
+        [<a href="<?php echo $this->url(array('alias'=> $category->alias), 'forumcategoryrss') ?>"><?php echo $this->__('rss'); ?></a>]
+    <?php endfor;?>
+
+     / <?php echo $this->category->title?>
+     [<a href="<?php echo $this->url(array('alias'=> $this->category->alias), 'forumcategoryrss') ?>"><?php echo $this->__('rss'); ?></a>]
+</h2>
+<?php if ($this->categories->count()): ?>
+    <table>
+      <thead>
+        <tr>
+          <th><?php echo $this->__('Category')?></th>
+          <th><?php echo $this->__('Last post')?></th>
+          <th><?php echo $this->__('Posts')?></th>
+          <th><?php echo $this->__('Comments')?></th>
+          <th><?php echo $this->__('Views')?></th>
+        </tr>
+      </thead>
+      <tbody>
+            <?php $startLevel = $this->categories->current()->level - 1?>
+            <?php foreach($this->categories as $row): ?>
+                <tr class="category category-level-<?php echo $row->level - $startLevel?>">
+                  <td width="50%">
+                    <h4>
+                        <a href="<?php echo $this->url(array('alias'=> $row->alias), 'forumcategory')?>"><?php echo $row->title?></a>
+                        [<a href="<?php echo $this->url(array('alias'=> $row->alias), 'forumcategoryrss') ?>"><?php echo $this->__('rss'); ?></a>]
+                    </h4>
+                    <?php echo $row->description?>
+                  </td>
+                  <td>
+                      <?php $post = isset($this->posts[$row->id])?$this->posts[$row->id]:null;?>
+
+                      <?php if ($post):?>
+                          <h5>
+                            <a href="<?php echo $this->url(array('id'=> $post->id), 'forumpost')?>" title="<?php echo $post->getTeaser()?>">
+                              <?php echo $post->title?>
+                            </a>
+                            [<a href="<?php echo $this->url(array('id'=> $post->id), 'forumpostrss') ?>"><?php echo $this->__('rss'); ?></a>]
+                          </h5>
+                          <div class="right">
+                            <?php echo $this->__('by')?> <?php echo $post->login?>
+                            <?php echo $this->__('at')?> <span><?php echo $this->date($post->created)?></span>
+                          </div>
+                      <?php else:?>
+                        <?php echo $this->__('No Posts Yet')?>
+                      <?php endif;?>
+                  </td>
+                  <th><?php echo ($post) ? $post->postsCount : 0?></th>
+                  <th><?php echo ($post) ? $post->commentsCount : 0?></th>
+                  <th><?php echo ($post) ? $post->viewsCount : 0?></th>
+                </tr>
+            <?php endforeach;?>
+      </tbody>
+    </table>
+<?php endif; ?>
+
+<h2>
+    <?php echo $this->__('Posts');?>
+</h2>
+
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th><?php echo $this->__('Post Title')?></th>
+          <th><?php echo $this->__('Last Comment')?></th>
+          <th><?php echo $this->__('Comments')?></th>
+          <th><?php echo $this->__('Views')?></th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php if ($this->paginator->count()): ?>
+            <?php foreach($this->paginator as $row): ?>
+                <tr>
+                  <td width="70%">
+                    <h4>
+                        <a href="<?php echo $this->url(array('id'=> $row->id), 'forumpost')?>" title="<?php echo $row->getTeaser()?>"><?php echo $row->title?></a>
+                        [<a href="<?php echo $this->url(array('id'=> $row->id), 'forumpostrss') ?>"><?php echo $this->__('rss'); ?></a>]
+                    </h4>
+                    <?php echo $this->__('by')?> <?php echo $row->author;?>
+                  </td>
+                  <td align="center">
+                      <?php echo $this->date($row->commentCreated?$row->commentCreated:$row->created)?>
+                      <?php echo $this->__('by')?>
+                      <?php echo $row->commentAuthor?$row->commentAuthor:$row->author?>
+                  </td>
+                  <td align="center"><?php echo $row->comments?></td>
+                  <td align="center"><?php echo $row->views?></td>
+                </tr>
+            <?php endforeach;?>
+        <?php else: ?>
+            <tr>
+                <td colspan="5" align="center"><h1><?php echo $this->__('No Posts Yet')?></h1></td>
+            </tr>
+        <?php endif; ?>
+      </tbody>
+    </table>
+
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>

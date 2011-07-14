@@ -20,4 +20,27 @@ class Forum_Model_Comment_Table extends Core_Db_Table_Abstract
 
     /** Row Class */
     protected $_rowClass = 'Forum_Model_Comment';
+
+    /**
+     * Get comments for some post
+     *
+     * @param integer $postId
+     * @return array
+     */
+    public function getCommentsSelect($postId)
+    {
+        $users = new Users_Model_Users_Table();
+
+        $select = $this->select(true);
+        $select->setIntegrityCheck(false)
+               ->joinLeft(
+            array('u' => $users->info('name')),
+            'userId = u.id',
+            array('login')
+        )
+        ->order('created')
+        ->where('postId=?', $postId);
+
+        return $select;
+    }
 }

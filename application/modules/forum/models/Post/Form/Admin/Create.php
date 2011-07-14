@@ -21,7 +21,7 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
         $this->setMethod('post');
 
         $this->addElement(
-            'ValidationTextBox', 'post_title',
+            'ValidationTextBox', 'title',
             array(
                 'label'      => 'Title',
                 'required'   => true,
@@ -41,9 +41,9 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
         );
 
         $this->addElement(
-            'Editor', 'post_text',
+            'Editor', 'body',
             array(
-                'label'      => 'Text',
+                'label'      => 'Post',
                 'required'   => true,
                 'attribs'    => array('style' => 'width:100%;height:340px'),
                 'plugins'    => array('undo', 'redo', 'cut', 'copy', 'paste', '|',
@@ -86,7 +86,7 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
     {
         $categories = new Forum_Model_Category_Manager();
 
-        $element = new Zend_Dojo_Form_Element_FilteringSelect('ctg_id');
+        $element = new Zend_Dojo_Form_Element_FilteringSelect('categoryId');
         $element->setLabel('Category')
                 ->setRequired(true)
                 ->setAttribs(array('style'=>'width:60%'));
@@ -105,7 +105,7 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
      */
     protected function _status()
     {
-        $status = new Zend_Dojo_Form_Element_ComboBox('post_status');
+        $status = new Zend_Dojo_Form_Element_ComboBox('status');
         $status->setLabel('Status')
                ->setRequired(true)
                ->setAttribs(array('style'=>'width:60%'))
