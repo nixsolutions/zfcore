@@ -10,16 +10,6 @@
  */
 class Blog_Model_Post_Form_Edit extends Blog_Model_Post_Form_Create
 {
-    /**
-     * Form initialization
-     *
-     * @return void
-     */
-    public function init()
-    {
-        return parent::init();
-    }
-
     protected function _submit()
     {
         return parent::_submit()->setLabel('Save');

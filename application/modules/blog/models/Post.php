@@ -75,14 +75,21 @@ class Blog_Model_Post extends Core_Db_Table_Row_Abstract
      */
     public function incViews($count = 1)
     {
-        if ($this->isReadOnly()) {
-            $row = $this->getTable()->find($this->_getPrimaryKey());
-        } else {
-            $row = $this;
-        }
-        $row->views += $count;
-        $row->save();
+        $session = new Zend_Session_Namespace("Blog_Posts");
+        if (!isset($session->views[$this->id])) {
+            if ($this->isReadOnly()) {
+                $row = $this->getTable()->find($this->_getPrimaryKey());
+            } else {
+                $row = $this;
+            }
+            $row->views += $count;
+            $row->save();
 
+            if (!is_array($session->views)) {
+                $session->views = array();
+            }
+            $session->views[$this->id] = true;
+        }
         return $this;
     }
 }
