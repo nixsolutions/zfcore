@@ -1,4 +1,4 @@
-<?php if (count($this->comments)>0): ?>
+<?php if ($this->rowset ->count()): ?>
     <div id="comments">
         <?php foreach($this->rowset as $row): ?>
             <ol class="commentlist">

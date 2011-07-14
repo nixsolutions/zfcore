@@ -7,9 +7,11 @@
         <h3><?php echo $this->row->title?></h3>
         <div><?php echo $this->__('Posted on')?> <?php echo $this->date($this->row->published)?></div>
     </header>
+    <br />
   <div>
     <?php echo $this->row->body?>
   </div>
+  <br />
   <footer>
       <?php echo $this->__('Posted by')?>
       <a href="<?php echo $this->url(array('login' => $this->user->login), 'blogauthor') ?>"><?php echo $this->user->login?></a>
