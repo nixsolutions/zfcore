@@ -11,17 +11,17 @@
   <thead>
     <tr>
       <th><?php echo $this->__('Category')?></th>
-      <th><?php echo $this->__('Last post')?></th>
-      <th><?php echo $this->__('Posts')?></th>
-      <th><?php echo $this->__('Comments')?></th>
-      <th><?php echo $this->__('Views')?></th>
+      <th width="170"><?php echo $this->__('Last post')?></th>
+      <th width="60"><?php echo $this->__('Posts')?></th>
+      <th width="60"><?php echo $this->__('Comments')?></th>
+      <th width="60"><?php echo $this->__('Views')?></th>
     </tr>
   </thead>
   <tbody>
     <?php if ($this->categories->count()): ?>
         <?php foreach($this->categories as $row): ?>
             <tr class="category category-level-<?php echo $row->level?>">
-              <td width="50%">
+              <td>
                 <h4>
                     <a href="<?php echo $this->url(array('alias'=> $row->alias), 'forumcategory')?>"><?php echo $row->title?></a>
                     [<a href="<?php echo $this->url(array('alias'=> $row->alias), 'forumcategoryrss') ?>"><?php echo $this->__('rss'); ?></a>]
@@ -36,24 +36,23 @@
                         <a href="<?php echo $this->url(array('id'=> $post->id), 'forumpost')?>" title="<?php echo $post->getTeaser()?>">
                           <?php echo $post->title?>
                         </a>
-                        [<a href="<?php echo $this->url(array('id'=> $post->id), 'forumpostrss') ?>"><?php echo $this->__('rss'); ?></a>]
                       </h5>
                       <div class="right">
                           <?php echo $this->__('by')?> <?php echo $post->login?>
                           <?php echo $this->__('at')?> <span><?php echo $this->date($post->created)?></span>
                       </div>
                   <?php else:?>
-                    <?php echo $this->__('No Posts Yet')?>
+                    <center><?php echo $this->__('No Posts Yet')?></center>
                   <?php endif;?>
               </td>
-              <th><?php echo ($post) ? $post->postsCount : 0?></th>
-              <th><?php echo ($post) ? $post->commentsCount : 0?></th>
-              <th><?php echo ($post) ? $post->viewsCount : 0?></th>
+              <td align="center"><?php echo ($post) ? $post->postsCount : 0?></td>
+              <td align="center"><?php echo ($post) ? $post->commentsCount : 0?></td>
+              <td align="center"><?php echo ($post) ? $post->viewsCount : 0?></td>
             </tr>
         <?php endforeach;?>
     <?php else: ?>
         <tr>
-            <td colspan="5" align="center"><h1><?php echo $this->__('No Categories Yet')?></h1></td>
+            <th colspan="5"><h1><?php echo $this->__('No Categories Yet')?></h1></th>
         </tr>
     <?php endif; ?>
   </tbody>

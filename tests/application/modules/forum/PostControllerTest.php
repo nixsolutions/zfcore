@@ -19,11 +19,11 @@ class Forum_PostControllerTest extends ControllerTestCase
         parent::setUp();
 
         $this->_fixture['post'] = array('id' => 45,
-                                   'post_title' => 'title',
-                                   'post_text' => 'text',
-                                   'ctg_id' => 33,
-                                   'user_id' => 75,
-                                   'post_status' => 'active');
+                                   'title' => 'title',
+                                   'body' => 'text',
+                                   'categoryId' => 33,
+                                   'userId' => 75,
+                                   'status' => 'active');
 
         $this->_fixture['category'] = array('id' => 33,
                                    'title' => 'title',
@@ -131,14 +131,15 @@ class Forum_PostControllerTest extends ControllerTestCase
         $cat->delete();
     }
 
-    //FIXME: user ID is not set after creation
-    /*public function testEditAction()
+    public function testEditAction()
     {
         $table = new Forum_Model_Post_Table();
-        $tableCat = new Forum_Model_Category_Table();
 
-        $cat = $tableCat->create($this->_fixture['category']);
-        $cat->save();
+        $manager = new Forum_Model_Category_Manager();
+
+        $rootCat = $manager->getRoot();
+        $cat = $manager->getDbTable()->createRow($this->_fixture['category']);
+        $rootCat->addChild($cat);
 
         $post = $table->create($this->_fixture['post']);
         $post->save();
@@ -152,7 +153,7 @@ class Forum_PostControllerTest extends ControllerTestCase
 
         $post->delete();
         $cat->delete();
-    }*/
+    }
 
     public function testEditWithDataAction()
     {

@@ -22,17 +22,17 @@
       <thead>
         <tr>
           <th><?php echo $this->__('Category')?></th>
-          <th><?php echo $this->__('Last post')?></th>
-          <th><?php echo $this->__('Posts')?></th>
-          <th><?php echo $this->__('Comments')?></th>
-          <th><?php echo $this->__('Views')?></th>
+          <th width="170"><?php echo $this->__('Last post')?></th>
+          <th width="60"><?php echo $this->__('Posts')?></th>
+          <th width="60"><?php echo $this->__('Comments')?></th>
+          <th width="60"><?php echo $this->__('Views')?></th>
         </tr>
       </thead>
       <tbody>
             <?php $startLevel = $this->categories->current()->level - 1?>
             <?php foreach($this->categories as $row): ?>
                 <tr class="category category-level-<?php echo $row->level - $startLevel?>">
-                  <td width="50%">
+                  <td>
                     <h4>
                         <a href="<?php echo $this->url(array('alias'=> $row->alias), 'forumcategory')?>"><?php echo $row->title?></a>
                         [<a href="<?php echo $this->url(array('alias'=> $row->alias), 'forumcategoryrss') ?>"><?php echo $this->__('rss'); ?></a>]
@@ -47,7 +47,6 @@
                             <a href="<?php echo $this->url(array('id'=> $post->id), 'forumpost')?>" title="<?php echo $post->getTeaser()?>">
                               <?php echo $post->title?>
                             </a>
-                            [<a href="<?php echo $this->url(array('id'=> $post->id), 'forumpostrss') ?>"><?php echo $this->__('rss'); ?></a>]
                           </h5>
                           <div class="right">
                             <?php echo $this->__('by')?> <?php echo $post->login?>
@@ -76,16 +75,16 @@
       <thead>
         <tr>
           <th><?php echo $this->__('Post Title')?></th>
-          <th><?php echo $this->__('Last Comment')?></th>
-          <th><?php echo $this->__('Comments')?></th>
-          <th><?php echo $this->__('Views')?></th>
+          <th width="170"><?php echo $this->__('Last Comment')?></th>
+          <th width="60"><?php echo $this->__('Comments')?></th>
+          <th width="60"><?php echo $this->__('Views')?></th>
         </tr>
       </thead>
       <tbody>
         <?php if ($this->paginator->count()): ?>
             <?php foreach($this->paginator as $row): ?>
                 <tr>
-                  <td width="70%">
+                  <td>
                     <h4>
                         <a href="<?php echo $this->url(array('id'=> $row->id), 'forumpost')?>" title="<?php echo $row->getTeaser()?>"><?php echo $row->title?></a>
                         [<a href="<?php echo $this->url(array('id'=> $row->id), 'forumpostrss') ?>"><?php echo $this->__('rss'); ?></a>]

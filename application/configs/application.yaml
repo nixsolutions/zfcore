@@ -114,7 +114,7 @@ testing:
       params:
         host: hippo.nixsolutions.com
         username: d_unittest
-        password: unittet
+        password: unittest
         dbname: p_zfc_test
         persistent: true
     frontController:
