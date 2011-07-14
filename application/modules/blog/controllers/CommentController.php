@@ -25,23 +25,25 @@ class Blog_CommentController extends Core_Controller_Action
 
         $form = new Blog_Model_Comment_Form_Create();
 
-        if ($this->getRequest()->isPost()
-            && $form->isValid($this->_getAllParams())) {
+        if (Zend_Auth::getInstance()->hasIdentity()) {
+            if ($this->getRequest()->isPost()
+                && $form->isValid($this->_getAllParams())) {
 
-            $row = $table->createRow($form->getValues());
-            $row->postId = $postId;
-            $row->save();
+                $row = $table->createRow($form->getValues());
+                $row->postId = $postId;
+                $row->save();
 
-            $this->_helper->flashMessenger->addMessage(
-                'Comment added successfully'
-            );
-            $this->_helper->redirector(
-                'index',
-                'post',
-                'blog',
-                array('id' => $postId)
-            );
+                $this->_helper->flashMessenger->addMessage(
+                    'Comment added successfully'
+                );
+                $this->_helper->redirector(
+                    'index',
+                    'post',
+                    'blog',
+                    array('alias' => $post->alias)
+                );
+            }
+            $this->view->form = $form;
         }
-        $this->view->form = $form;
     }
 }
