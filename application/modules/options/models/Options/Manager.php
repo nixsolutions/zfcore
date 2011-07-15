@@ -173,9 +173,9 @@ class Options_Model_Options_Manager extends Core_Model_Manager
      */
     static public function deleteNamespace($namespace)
     {
+        $self = Options_Model_Options_Manager::getInstance();
+        $self->getDbTable()->deleteNamespace($namespace);
         if (isset(self::$_cache[$namespace])) {
-            $self = Options_Model_Options_Manager::getInstance();
-            $self->getDbTable()->deleteNamespace($namespace);
             unset(self::$_cache[$namespace]);
         }
     }

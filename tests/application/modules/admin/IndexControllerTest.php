@@ -17,7 +17,6 @@ class Admin_IndexControllerTest extends ControllerTestCase
         $this->_doLogin(Users_Model_User::ROLE_ADMIN);
 
         $this->dispatch('/admin/');
-        var_dump($this->getResponse()->outputBody());
         $this->assertModule('admin');
         $this->assertController('index');
         $this->assertAction('index');
