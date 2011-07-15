@@ -9,15 +9,15 @@ class Admin_IndexControllerTest extends ControllerTestCase
 {
     /**
      * Admin/Index/Index
-     * 
+     *
      * allow access for admin
      */
     public function testAdminIndexAction()
     {
         $this->_doLogin(Users_Model_User::ROLE_ADMIN);
-        
+
         $this->dispatch('/admin/');
-        
+        var_dump($this->getResponse()->outputBody());
         $this->assertModule('admin');
         $this->assertController('index');
         $this->assertAction('index');

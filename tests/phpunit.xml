@@ -5,7 +5,8 @@
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
     stopOnFailure="false"
-    syntaxCheck="true">
+    syntaxCheck="true"
+    processIsolation="true">
         
     <testsuite name="Main Test Suite">
         <directory>./</directory>

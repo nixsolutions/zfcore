@@ -6,10 +6,10 @@ class Users_ManagementControllerTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        
-        $this->_doLogin(Users_Model_User::ROLE_ADMIN, 
+
+        $this->_doLogin(Users_Model_User::ROLE_ADMIN,
                         Users_Model_User::STATUS_ACTIVE);
-        
+
         $this->_fixture['0'] = array(
             'login'         => 'test'.time(),
             'password'      => '123456789',
@@ -19,7 +19,7 @@ class Users_ManagementControllerTest extends ControllerTestCase
             'role'          => Users_Model_User::ROLE_USER,
             'status'        => Users_Model_User::STATUS_BLOCKED,
             'ip'            => '10.10.10.10');
-                                
+
         $this->_fixture['1'] = array(
             'login'        => 'test3'.time(),
             'password'      => '123456',
@@ -31,7 +31,7 @@ class Users_ManagementControllerTest extends ControllerTestCase
             'status'        => Users_Model_User::STATUS_REGISTER,
             'ip'            => '10.10.10.10',
             'count'         => '5');
-            
+
         $this->_userManager = new Users_Model_Users_Manager();
         $this->_userTable   = new Users_Model_Users_Table();
     }
@@ -49,23 +49,23 @@ class Users_ManagementControllerTest extends ControllerTestCase
 
         $this->dispatch('/users/management/create');
         $this->assertQuery('form#userCreateForm');
-        
+
         $this->assertRedirectTo('/users/management');
         $user = $this->_userTable->getByLogin($this->_fixture['0']['login']);
-        
+
         unset($this->_fixture['0']['password']);
-        
+
         $this->assertTrue(is_numeric($user->id));
-        
+
         $this->assertEquals(
             array_merge($user->toArray(true), $this->_fixture['0']),
             $user->toArray(true)
         );
         $user->delete();
-        
-        
+
+
     }
-    
+
     /**
      * Test /users/management/edit
      *
@@ -75,34 +75,34 @@ class Users_ManagementControllerTest extends ControllerTestCase
         $user = $this->_userTable->create();
         $user->setFromArray($this->_fixture['1']);
         $user->save();
-        
+
         $this->_fixture['1'] = array_merge(
             $user->toArray(true),
             array('email' => 'test'.__LINE__.time().'@nixsolutions.com',  'password' => '123456')
         );
         $this->_fixture['1'] = array_filter($this->_fixture['1']);
-        
+
         $this->dispatch('/users/management/edit/id/' . $user->id);
         $this->request
              ->setMethod('POST')
              ->setPost($this->_fixture['1']);
-             
+
         $this->dispatch('/users/management/edit/id/' . $user->id);
         $this->assertQuery('form#userEditForm');
         $this->assertRedirectTo('/users/management');
 
         $this->_fixture['1']['password'] = '';
         $user->refresh();
-        
+
         unset($this->_fixture['1']['updated']);
-        
+
         $this->assertEquals(
             array_merge($user->toArray(true), $this->_fixture['1']),
             $user->toArray(true)
         );
         $user->delete();
     }
-    
+
     /**
      * Test /users/management/delete
      * FIXME: Trying to get property of non-object
@@ -111,15 +111,15 @@ class Users_ManagementControllerTest extends ControllerTestCase
     {
         $user = $this->_userTable->create($this->_fixture['0']);
         $user->save();
-     
+
         $this->dispatch('/users/management/delete/id/' . $user->id);
         $this->assertEquals('1', $this->response->getBody());
-        
+
         $user = $this->_userTable->getByLogin($this->_fixture['0']['login']);
-        
+
         $this->assertNull($user->id);
     }*/
-    
+
     /**
      * Test /users/management/
      *
@@ -132,7 +132,7 @@ class Users_ManagementControllerTest extends ControllerTestCase
         $this->assertAction('index');
         $this->assertQuery('div#gridContainer');
     }
-    
+
     /**
      * Test /users/management/store
      *
@@ -156,28 +156,29 @@ class Users_ManagementControllerTest extends ControllerTestCase
         $this->dispatch('/users/management/store');
         $result = json_decode($this->response->getBody(), true);
         $this->assertEquals($countOfItemsResultBegin+1, count($result['items']));
-        
+
         $userSecond = $this->_userTable->create($this->_fixture['1']);
         $userSecond->save();
         $this->dispatch('/users/management/store');
         $result = json_decode($this->response->getBody(), true);
         $this->assertEquals($countOfItemsResultBegin+2, count($result['items']));
-        
+
         $this->request->setQuery(array('count' => 1));
         $this->dispatch('/users/management/store/');
         $result = json_decode($this->response->getBody(), true);
         $this->assertEquals(1, count($result['items']));
-        
+
         $userFirst->delete();
         $userSecond->delete();
     }
-    
+
     /**
      * tearDown
      *
      */
     public function tearDown()
     {
+        $this->_userTable->delete('1');
         parent::tearDown();
     }
 }
