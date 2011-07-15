@@ -7,12 +7,12 @@
  */
 class Faq_IndexControllerTest extends ControllerTestCase
 {
-    public static function setUpBeforeClass()
+    public function setUp()
     {
-        parent::setUpBeforeClass();
+        parent::setUp();
         parent::migrationUp('faq');
     }
-    
+
     public function testIndexAction()
     {
         $this->dispatch('/faq');
@@ -20,10 +20,10 @@ class Faq_IndexControllerTest extends ControllerTestCase
         $this->assertController('index');
         $this->assertAction('index');
     }
-    
-    public static function tearDownAfterClass()
+
+    public function tearDown()
     {
         parent::migrationDown('faq');
-        parent::tearDownAfterClass();
+        parent::tearDown();
     }
 }

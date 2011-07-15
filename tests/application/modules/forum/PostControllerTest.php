@@ -7,16 +7,11 @@
  */
 class Forum_PostControllerTest extends ControllerTestCase
 {
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        parent::migrationUp('forum');
-    }
-
     public function setUp()
     {
         parent::setUp();
+
+        parent::migrationUp('forum');
 
         $this->_fixture['post'] = array('id' => 45,
                                    'title' => 'title',
@@ -30,15 +25,18 @@ class Forum_PostControllerTest extends ControllerTestCase
                                    'description' => 'descr',
                                    'parentId' => 0,
                                    'alias' => 'title');
+
+        $users= new Users_Model_Users_Table();
+        $user = $users->createRow(array('id' => 75, 'login' => 'asdasd'));
+        $user->save();
     }
 
     public function testEmptyPostAction()
     {
         $this->dispatch('/forum/post/');
-        $this->assertModule('forum');
-        $this->assertController('post');
-        $this->assertAction('index');
-        $this->assertRedirect('/');
+        $this->assertModule('default');
+        $this->assertController('error');
+        $this->assertAction('error');
     }
 
     public function testIndexAction()
@@ -53,7 +51,7 @@ class Forum_PostControllerTest extends ControllerTestCase
         $post = $table->create($this->_fixture['post']);
         $post->save();
 
-        $this->dispatch('/forum/post/index/id/45');
+        $this->dispatch('/forum/post/45');
         $this->assertModule('forum');
         $this->assertController('post');
         $this->assertAction('index');
@@ -79,7 +77,7 @@ class Forum_PostControllerTest extends ControllerTestCase
         $this->request->setMethod('POST')
                       ->setPost(array('comment' => 'comment'));
 
-        $this->dispatch('/forum/post/index/id/45');
+        $this->dispatch('/forum/post/45');
         $this->assertModule('forum');
         $this->assertController('post');
         $this->assertAction('index');
@@ -117,8 +115,8 @@ class Forum_PostControllerTest extends ControllerTestCase
                       ->setPost(
                           array(
                               'title' => 'title',
-                              'text' => 'text',
-                              'category' => 33,
+                              'body' => 'text',
+                              'categoryId' => 33,
                               'status' => 'active'
                           )
                       );
@@ -144,9 +142,9 @@ class Forum_PostControllerTest extends ControllerTestCase
         $post = $table->create($this->_fixture['post']);
         $post->save();
 
-        //Test don't work becouse user is not author and is forwarded
-        //TODO: check creation
-        $this->dispatch('/forum/post/edit/id/45');
+        $this->_doLogin();
+
+        $this->dispatch('/forum/post/edit/45');
         $this->assertModule('forum');
         $this->assertController('post');
         $this->assertAction('edit');
@@ -173,13 +171,13 @@ class Forum_PostControllerTest extends ControllerTestCase
                       ->setPost(
                           array(
                               'title'    => 'tttttttt',
-                              'text'     => 'tttttttt',
-                              'category' => 33,
+                              'body'     => 'tttttttt',
+                              'categoryId' => 33,
                               'status'   => 'active'
                           )
                       );
 
-        $this->dispatch('/forum/post/edit/id/45');
+        $this->dispatch('/forum/post/edit/45');
         $this->assertModule('forum');
         $this->assertController('post');
         $this->assertAction('edit');
@@ -189,9 +187,22 @@ class Forum_PostControllerTest extends ControllerTestCase
         $cat->delete();
     }
 
-    public static function tearDownAfterClass()
+    public function tearDown()
     {
+        $table= new Users_Model_Users_Table();
+        $table->delete('1');
+
+        $table = new Forum_Model_Post_Table();
+        $table->delete('1');
+
+        $table = new Forum_Model_Comment_Table();
+        $table->delete('1');
+
+        $table = new Categories_Model_Categories_Table();
+        $table->delete('id = 33');
+
+
         parent::migrationDown('forum');
-        parent::tearDownAfterClass();
+        parent::tearDown();
     }
 }

@@ -7,9 +7,9 @@
  */
 class Forum_IndexControllerTest extends ControllerTestCase
 {
-    public static function setUpBeforeClass()
+    public function setUp()
     {
-        parent::setUpBeforeClass();
+        parent::setUp();
         parent::migrationUp('forum');
     }
 
@@ -21,9 +21,9 @@ class Forum_IndexControllerTest extends ControllerTestCase
         $this->assertAction('index');
     }
 
-    public static function tearDownAfterClass()
+    public function tearDown()
     {
         parent::migrationDown('forum');
-        parent::tearDownAfterClass();
+        parent::tearDown();
     }
 }

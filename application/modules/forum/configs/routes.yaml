@@ -22,6 +22,12 @@ forumpostcreate:
    module: forum
    controller: post
    action: create
+forumpostedit:
+ route: forum/post/edit/:id/*
+ defaults:
+   module: forum
+   controller: post
+   action: edit
 forumcomment:
  route: forum/post/comment/*
  defaults:
