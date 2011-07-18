@@ -38,12 +38,13 @@
                     <h2>Content Management Framework</h2>
                 </div>
                 <div class="menu small">
-                    <?php //echo $this->navigation()->menu()->setMinDepth(0)->setMaxDepth(0); ?>
-
                 </div>
                 <div class="menu clearright">
-                <?php echo $this->getMenu(13)->setMinDepth(0)->setMaxDepth(1); ?>
-                    <?php //echo $this->navigation()->menu()->setMinDepth(1)->setMaxDepth(1); ?>
+                <?php
+                $this->coreMenu()->setPartial(array('/default/partial/mainMenu.phtml', 'default'));
+                //echo $this->navigation()->coreMenu()->byId(0);
+                //echo $this->navigation()->coreMenu()->byLabel('Home');
+                echo $this->navigation()->coreMenu()->byLabel('Home')->setMinDepth(0)->setMaxDepth(50); ?>
                     <br class="clear"/>
                <?php
 
@@ -54,40 +55,33 @@
             <div class="topgreen clear">
                 <div class="cont_width">
                 <?php
-                    $titleArr = $this->headTitle()->getIterator();
+
+                    /*$titleArr = $this->headTitle()->getIterator();
                     $title = reset($titleArr);
                     if (sizeof($titleArr) != 1) {
                         echo $title;
-                    } else {
-                        $nav = $this->navigation()->menu()->setMinDepth(1)->setMaxDepth(1)->findByActive('true');
+                    } else {*/
+                        $nav = $this->navigation()->coreMenu()->setMinDepth(1)->setMaxDepth(1)->findByActive('true');
                         if ($nav) {
                         //showing page title or smthn another from navigation
                         //done only for 1st lev navigation
                             echo $nav->getLabel();
                         } else {
-                            echo '&nbsp;';
+                            echo 'home';
                         }
-                    }
+                    //}
                     ?>
                 </div>
             </div>
             <div class="tophelp">
                 <div class="cont_width">
-	                <div class="simpleMenu">
-	                <?php //echo $this->navigation()->menu($this->getMenu()->byMark('usermenu'))->setPartial('default/partial/breadcrumbs.phtml'); ?>
-	                    <br class="clear"/>
-	                </div>
+                    <div class="simpleMenu">
+                        <br class="clear"/>
+                    </div>
                     Here goes help text
                 </div>
             </div>
         </div>
-        <!--<?php //echo $this->navigation()->getMenu('usermenu'); ?>-->
-
-
-
-        <?php //echo $this->navigation($this->getMenu('usermenu'))->menu()->findOneByLabel('Registration'); ?>
-              <?php //echo $this->navigation($this->getMenu('adminmenu'))->menu(); ?>
-
         <div class="content cont_width">
             <?php echo $this->layout()->content ?>
         </div>
@@ -100,10 +94,13 @@
                 <div>
                     <ul>
                         <li>
-                            <h4>Home </h4>
+                        <h4>Home </h4>
                         </li>
                         <li>
-                            <?php echo ($this->navigation()->menu()->setMinDepth(1)->setMaxDepth(1)); ?>
+                        <?php
+                            //$this->navigation()->coreMenu()->setPartial(array('/default/partial/bottomMenu.phtml', 'default'));
+                            echo $this->coreMenu()->byId(1)->setMinDepth(0)->setMaxDepth(2);
+                            ?>
                         </li>
                     </ul>
                     <ul>

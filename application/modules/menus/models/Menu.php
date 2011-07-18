@@ -15,7 +15,7 @@ require_once 'Core/Db/Table/Row/Abstract.php';
  */
 class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
 {
-    const TYPE_DEFAULT = 'uri';
+    const TYPE_DEFAULT = 'mvc';
     const TYPE_MVC = 'mvc';
     const TYPE_URI = 'uri';
 
@@ -24,6 +24,12 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
     const TARGET_PARENT = '_parent';
     const TARGET_SELF = '_self';
     const TARGET_TOP = '_top';
+
+    const ROUTE_TYPE_STATIC = 'static';
+    const ROUTE_TYPE_MODULE = 'module';
+    const ROUTE_TYPE_REGEX  = 'regex';
+    const ROUTE_TYPE_ROUTE  = 'route';
+
 
     public function getLabel()
     {
@@ -47,22 +53,7 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
 
     public function getParent()
     {
-        return (integer) $this->_data['parent'];
-    }
-
-    public function getModule()
-    {
-        return (string) $this->_data['module'];
-    }
-
-    public function getController()
-    {
-        return (string) $this->_data['controller'];
-    }
-
-    public function getAction()
-    {
-        return (string) $this->_data['action'];
+        return (integer) $this->_data['parent_id'];
     }
 
     public function getRoute()
@@ -117,8 +108,8 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
      */
      public function setType($type)
      {
-         if ($target != TYPE_MVC &&
-             $target != TYPE_URI
+         if ($type != TYPE_MVC &&
+             $type != TYPE_URI
                  ) {
              $this->type = self::TYPE_DEFAULT;
          }

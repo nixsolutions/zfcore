@@ -5,13 +5,13 @@ menumanagment:
     create:
       label: Create Menu Item
       module: menus
-      controller: menu
+      controller: index
       action: create
       route: default
     manage:
       label: Manage Menu
       module: menus
-      controller: menu
+      controller: index
       action: index
       route: default
       

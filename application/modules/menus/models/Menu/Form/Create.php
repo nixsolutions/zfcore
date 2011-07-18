@@ -31,10 +31,17 @@ class Menus_Model_Menu_Form_Create extends Zend_Dojo_Form
                     ->setRequired(true)
                     ->addFilter('StripTags')
                     ->addFilter('StringTrim')
-                     ->setAttribs(array('style'=>'width:30%;margin-bottom:10px;'));
+                    ->setAttribs(array('style'=>'width:30%;margin-bottom:10px;'));
 
+		$type = new Zend_Dojo_Form_Element_FilteringSelect('linkType');
+		$type->setLabel('Type')
+                    ->setRequired(true)
+                    ->addFilter('StripTags')
+                    ->addFilter('StringTrim')
+                    ->setAttribs(array('style'=>'margin-bottom:5px;', 'onChange' => "changedLinkType(document.getElementById('linkType'));"));
+		$type->addMultiOptions(array(0 => 'Link', 1 => 'Route'));
 
-		$parent = new Zend_Dojo_Form_Element_ComboBox('parent');
+		$parent = new Zend_Dojo_Form_Element_FilteringSelect('parent');
 		$parent->setLabel('Parent Menu Item')
                     ->setRequired(true)
                     ->addFilter('StripTags')
@@ -43,106 +50,48 @@ class Menus_Model_Menu_Form_Create extends Zend_Dojo_Form
 		$parent->addMultiOptions($this->_menuManager->getMenuItemsForEditForm());
 
 
-                $title = new Zend_Dojo_Form_Element_TextBox('title');
+        $title = new Zend_Dojo_Form_Element_TextBox('title');
 		$title->setLabel('Title')
                     ->addFilter('StripTags')
                     ->addFilter('StringTrim')
                     ->setAttribs(array('style'=>'width:30%;margin-bottom:5px;'));
 
-                $class = new Zend_Dojo_Form_Element_TextBox('class');
+        $class = new Zend_Dojo_Form_Element_TextBox('class');
 		$class->setLabel('Class')
                     ->addFilter('StripTags')
                     ->addFilter('StringTrim')
                     ->setAttribs(array('style'=>'width:30%;margin-bottom:5px;'));
 
-                $rel = new Zend_Dojo_Form_Element_TextBox('rel');
-		$rel->setLabel('Rel')
-                    ->addFilter('StripTags')
-                    ->addFilter('StringTrim')
-                    ->setAttribs(array('style'=>'width:30%;margin-bottom:5px;'));
-
-                $rev = new Zend_Dojo_Form_Element_TextBox('rev');
-		$rev->setLabel('Rev')
-                    ->addFilter('StripTags')
-                    ->addFilter('StringTrim')
-                    ->setAttribs(array('style'=>'width:30%;margin-bottom:5px;'));
-
-                $active = new Zend_Dojo_Form_Element_ComboBox('active');
+        $active = new Zend_Dojo_Form_Element_FilteringSelect('active');
 		$active->setLabel('Active')
                     ->addFilter('StripTags')
                     ->addFilter('StringTrim')
                     ->setAttribs(array('style'=>'margin-bottom:5px;'));
-               $active->addMultiOptions(array(1 => 'Yes', 0 => 'No'));
+        $active->addMultiOptions(array(0 => 'No', 1 => 'Yes'));
 
-                $visible = new Zend_Dojo_Form_Element_ComboBox('visible');
+        $visible = new Zend_Dojo_Form_Element_FilteringSelect('visible');
 		$visible->setLabel('Visibility')
                     ->addFilter('StripTags')
                     ->addFilter('StringTrim')
                     ->setAttribs(array('style'=>'margin-bottom:5px;'));
-                $visible->addMultiOptions(array(1 => 'Visible', 0 => 'Hidden'));
+        $visible->addMultiOptions(array(1 => 'Visible', 0 => 'Hidden'));
 
-                $target = new Zend_Dojo_Form_Element_ComboBox('target');
+        $target = new Zend_Dojo_Form_Element_FilteringSelect('target');
 		$target->setLabel('Target')
                     ->setRequired(true)
                     ->addFilter('StripTags')
                     ->addFilter('StringTrim')
                      ->setAttribs(array('style'=>'margin-bottom:5px;'));
-                 $target->addMultiOptions($this->_menuManager->getTargetOptionsForEditForm());
+        $target->addMultiOptions($this->_menuManager->getTargetOptionsForEditForm());
 
-                $module = new Zend_Dojo_Form_Element_ComboBox('module');
-		$module->setLabel('MVC Module')
+        $route = new Zend_Dojo_Form_Element_ComboBox('route');
+		$route->setLabel('Route')
                     ->addFilter('StripTags')
                     ->addFilter('StringTrim')
-                    ->setAttribs(
-                            array(
-                                'style'=>'width:30%;margin-bottom:5px;',
-                                'onChange' => '(function(name){
-                                    if (name == "default") {name = "default"}
-dijit.byId("controller").store = new dojo.data.ItemFileReadStore(
-   {url: "/admin/menu/controllers/name/"+name});}(this.value))'
-                             )
-                   );
+                    ->setAttribs(array('style'=>'margin-bottom:5px;', 'onChange' => "changedRoute(document.getElementById('route'));"));
+        $route->addMultiOptions($this->_menuManager->getRoutes(true));
 
-                $module->addMultiOptions($this->_menuManager->getModules());
-
-
-
-                $controller = new Zend_Dojo_Form_Element_ComboBox('controller');
-		$controller->setLabel('MVC Controller')
-                    ->addFilter('StripTags')
-                    ->addFilter('StringTrim')
-                    ->setAttribs(
-                            array(
-                                'style'=>'width:30%;margin-bottom:5px;',
-                                'onChange' => '(function(name){
-if (name == "default") {name = "default"}
-dijit.byId("action").store = new dojo.data.ItemFileReadStore(
-   {url: "/admin/menu/actions/name/"+name});}(this.value))'
-                                )
-                    );
-
-                //$controller->addMultiOptions($this->_menuManager->getControllersByModuleName());
-
-                $action = new Zend_Dojo_Form_Element_ComboBox('action');
-		$action->setLabel('MVC Action')
-                    ->addFilter('StripTags')
-                    ->addFilter('StringTrim')
-                    ->setAttribs(array('style'=>'width:30%;margin-bottom:5px;'));
-               // $action->addMultiOptions($this->_menuManager->getActionsByControllerName());
-
-                $route = new Zend_Dojo_Form_Element_TextBox('route');
-		$route->setLabel('MVC Route')
-                    ->addFilter('StripTags')
-                    ->addFilter('StringTrim')
-                    ->setAttribs(array('style'=>'width:50%;margin-bottom:5px;'));
-
-                $params = new Zend_Dojo_Form_Element_TextBox('rev');
-		$rev->setLabel('Rev')
-                    ->addFilter('StripTags')
-                    ->addFilter('StringTrim')
-                    ->setAttribs(array('style'=>'width:30%;margin-bottom:5px;'));
-
-                $uri = new Zend_Dojo_Form_Element_TextBox('uri');
+        $uri = new Zend_Dojo_Form_Element_TextBox('uri');
 		$uri->setLabel('URI')
                     ->addFilter('StripTags')
                     ->addFilter('StringTrim')
@@ -166,7 +115,7 @@ dijit.byId("action").store = new dojo.data.ItemFileReadStore(
                         $route->setValue($menuRow->getRoute());
                         $uri->setValue($menuRow->getUri());
                         $visible->setValue($menuRow->getVisible());
-                        $submit->setLabel('Save');
+                        //$submit->setLabel('Save');
 
 
                         $this->setLegend($menuRow->getTitle() . ' - Menu Edit Form');
@@ -176,6 +125,7 @@ dijit.byId("action").store = new dojo.data.ItemFileReadStore(
 
 		}
 
+
 		$this->addElements(array(
 
                     $label,
@@ -183,12 +133,9 @@ dijit.byId("action").store = new dojo.data.ItemFileReadStore(
                     $title,
                     $class,
                     $target,
-                    $rel,
-                    $rev,
 
-                    $module,
-                    $controller,
-                    $action,
+                    $type,
+
                     $route,
 
                     $uri,
@@ -197,6 +144,9 @@ dijit.byId("action").store = new dojo.data.ItemFileReadStore(
                     $active,
                     $this->_submit()
                     ));
+
+        $this->addElement($this->_submit());
+
                 return $this;
         }
 

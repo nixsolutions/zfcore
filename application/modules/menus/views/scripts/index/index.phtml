@@ -9,54 +9,49 @@ function(){
     {
         name: "<?php $this->_e('Id')?>",
         field: "id",
-        width:'30px',
-        canSort: false
-    },
-    {
-        name: "<?php $this->_e('Parent Id')?>",
-        field: "uri",
-        width:'30px',
+        width: '30px',
         canSort: false
     },
     {
         name: "<?php $this->_e('Label')?>",
         field: "label",
-        width:'180px',
+        width: '200px',
         canSort: false
     },
     {
-        name: "<?php $this->_e('Module')?>",
-        field: "module",
-        width:'auto',
+        name: "<?php $this->_e('Parent Id')?>",
+        field: "parent_id",
+        width: '50px',
         canSort: false
     },
     {
-        name: "<?php $this->_e('Controller')?>",
-        field: "controller",
-        width:'auto',
+        name: "<?php $this->_e('Parent name')?>",
+        field: "parent",
+        width: '100px',
         canSort: false
     },
+
     {
-        name: "<?php $this->_e('Action')?>",
-        field: "action",
-        width:'auto',
+        name: "<?php $this->_e('type')?>",
+        field: "type",
+        width: '50px',
         canSort: false
     },
     {
         name: "<?php $this->_e('Route')?>",
         field: "route",
-        width:'auto',
+        width: 'auto',
         canSort: false
     },
     {
         name: "<?php $this->_e('URI')?>",
         field: "uri",
-        width:'200px',
+        width: '200px',
         canSort: false
     }
     ];
 
-    var datagrid = new core.grid.Scaffold(cells, 'gridContainer', '<?php echo $this->url();?>', true, true);
+    var datagrid = new core.grid.Scaffold(cells, 'gridContainer', '/menus/index', true, true);
 }
 <?php $this->dojo()->onLoadCaptureEnd(); ?>
 <div class="gridContainer" id="gridContainer" style="height:300px;"></div>

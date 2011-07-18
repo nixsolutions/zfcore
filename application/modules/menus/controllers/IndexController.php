@@ -5,15 +5,15 @@
 require_once 'Core/Controller/Action.php';
 
 /**
- * Menus_MenuController
+ * Menus_IndexController
  *
  * @category    Application
- * @package     Menus_MenuController
+ * @package     Menus_IndexController
  *
  * @author      Valeriu Baleyko <baleyko.v.v@gmail.com>
  * @copyright   Copyright (c) 2010 NIX Solutions (http://www.nixsolutions.com)
  */
-class Menus_MenuController extends Core_Controller_Action
+class Menus_IndexController extends Core_Controller_Action
 {
     public function init()
     {
@@ -38,8 +38,8 @@ class Menus_MenuController extends Core_Controller_Action
      */
     public function indexAction()
     {
-//        $_menuTable = new Model_Menu_Manager();
-//        $_menuArray = $_menuTable->getRawMenuArray();
+        //$_menuTable = new Model_Menu_Manager();
+        //$_menuArray = $_menuTable->getRawMenuArray();
     }
 
     /**
@@ -51,42 +51,51 @@ class Menus_MenuController extends Core_Controller_Action
      */
     public function storeAction()
     {
-        $_menuTable = new Menus_Model_Menu_Manager();
-        $_menuArray = $_menuTable->getRawMenuArray();
-        $this->view->assign('items', $_menuArray);
+        $menuTable = new Menus_Model_Menu_Manager();
+        $menuArray = $menuTable->getRawMenuArray();
+        $this->view->items = $menuArray;
     }
 
+
     public function createAction()
-    { var_dump(Core_Module_Config::getConfig('acl', null, Core_Module_Config::MAIN_ORDER_FIRST, false));
+    {
         $menuTable = new Menus_Model_Menu_Manager();
-        $this->menuEditForm = new Menus_Model_Menu_Form_Create();
+        $menuEditForm = new Menus_Model_Menu_Form_Create();
 
         if ($this->_request->isPost()
-                && $this->menuEditForm->isValid($this->_getAllParams())) {
+                && $menuEditForm->isValid($this->_getAllParams())) {
             try {
-                $menuTable->addMenuItem($this->menuEditForm->getValues());
+                $menuTable->addMenuItem($this->_request->getParams());
             } catch (Exception $e) {
                 return $this->_forward('internal', 'error', 'admin', array('error' => $e->getMessage()));
             }
             $this->_helper->getHelper('redirector')->direct('index');
         }
 
-        $this->view->menuEditForm = $this->menuEditForm;
+        $routes = $menuTable->getRoutes();
+        $this->view->routes = $routes;
+        $this->view->menuEditForm = $menuEditForm;
+        $this->view
+                 ->headScript()
+                 ->appendFile($this->view->baseUrl('scripts/jquery/jquery.js?ver=1.4.2'));
+        $this->view
+                 ->javascript()
+                 ->action();
     }
 
     public function editAction()
     {
          $id = $this->_getParam('id', 0);
-         $this->menuEditForm = new Menus_Model_Menu_Form_Edit();
+         $menuEditForm = new Menus_Model_Menu_Form_Edit();
     }
 
     public function deleteAction()
     {
         $id = $this->_getParam('id', 0);
-        $_menuTable = new Menus_Model_Menu_Manager();
+        $menuTable = new Menus_Model_Menu_Manager();
         $isAjax = $this->getRequest()->isXmlHttpRequest();
 
-        if (empty($id) || empty($_menuTable)) {
+        if (empty($id) || empty($menuTable)) {
                 if ($isAjax) {
                     $this->_helper->json(0);
                 }
@@ -95,7 +104,7 @@ class Menus_MenuController extends Core_Controller_Action
 
         $deleted = false;
         if (!empty($id)) {
-                $deleted = $_menuTable->removeById($id);
+            $deleted = $menuTable->removeById($id);
         }
 
         if ($isAjax) {
@@ -107,22 +116,15 @@ class Menus_MenuController extends Core_Controller_Action
     public function controllersAction()
     {
 
-        $_menuTable = new Menus_Model_Menu_Manager();
+        /*$_menuTable = new Menus_Model_Menu_Manager();
         $_controllers = $_menuTable->getControllersByModuleName($this->_getParam('name', 'default'));
-
-        $this->view->assign('items', $_controllers);
+        $this->view->assign('items', $_controllers);*/
     }
 
     public function actionsAction()
     {
-        $_menuTable = new Menus_Model_Menu_Manager();
+        /*$_menuTable = new Menus_Model_Menu_Manager();
         $_actions = $_menuTable->getActionsByControllerName($this->_getParam('name', 'index'));
-        $this->view->assign('items', $_actions);
-    }
-
-    public function getAllRooutes()
-    {
-
-
+        $this->view->assign('items', $_actions);*/
     }
 }
