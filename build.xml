@@ -21,11 +21,13 @@
     <target name="phpdoc">
         <exec dir="${basedir}" executable="phpdoc" failonerror="false">
             <arg line="-t build/docs
-    			  --directory application, library/Core
+    			  --directory '${basedir}/application,${basedir}/library/Core'
     			  -ti 'ZFCore Docs'
     			  --parseprivate on
     			  --undocumentedelements on
-    			  --output HTML:Smarty:PHP"/>
+    			  --output HTML:Smarty:PHP
+    			  --ignore '*.phtml'
+    			  --sourcecode on"/>
         </exec>
     </target>
     <target name="phploc">
