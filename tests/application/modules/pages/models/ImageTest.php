@@ -13,20 +13,22 @@ class Model_ImageTest extends ControllerTestCase
      * @var array
      */
     protected $_data;
-    
+
     /**
      * model instance
      *
      * @var object
      */
     private $_model;
-    
-    public function setUp() 
+
+    public function setUp()
     {
+        parent::setUp();
+
         $this->_clean($this->_data['basePath'], $this->_data['uploadDir']);
-        
+
         $uid = date('YmdHis');
-        
+
         $this->_data = array(
             'basePath'         => realpath('.') . '/',
             'uploadDir'        => 'temp'.$uid,
@@ -39,7 +41,7 @@ class Model_ImageTest extends ControllerTestCase
                                          2 => array('width'  => 64,
                                                     'height' => 64)),
                                                     );
-                                                                    
+
         $this->_uploadFile = array(
             'correct'   => array('size'     => 12346,
                                 'name'     => 'testfile.jpg',
@@ -52,18 +54,16 @@ class Model_ImageTest extends ControllerTestCase
                                  'name3'    => 'temp.png',
                                  'error'    => 5,
                                  'type'     => 'application'));
-                                                        
-                             
+
+
         mkdir($this->_data['basePath'] . $this->_data['uploadDir']);
         mkdir($this->_data['basePath'] . $this->_data['targetDir']);
         mkdir($this->_data['basePath'] . $this->_data['targetHidden']);
         touch($this->_data['basePath'] . $this->_data['targetFileFull']);
-        
-        $this->_model = new Pages_Model_Image($this->_data);
 
-        parent::setUp();        
+        $this->_model = new Pages_Model_Image($this->_data);
     }
-    
+
     /**
      * clean directory
      *
@@ -95,7 +95,7 @@ class Model_ImageTest extends ControllerTestCase
             $this->_model->getDefaultDir()
         );
     }
-    
+
     /**
      * Test get absolute "safe" path
      *
@@ -108,14 +108,14 @@ class Model_ImageTest extends ControllerTestCase
             '/',
             $this->_model->getPath('../tests/'.$this->_data['uploadDir'])
         );
-                            
+
         $this->assertFalse(
             $this->_model->getPath($this->_data['targetHidden'])
         );
-        
+
         $this->assertFalse($this->_model->getPath('.'));
     }
-    
+
     /**
      * Test delete file
      *
@@ -126,23 +126,23 @@ class Model_ImageTest extends ControllerTestCase
              $this->assertTrue(
                  $this->_model->delete($this->_data['uploadDir'], $this->_data['targetFile'])
              );
-             
+
              $this->assertFalse(
                  $this->_model->delete($this->_data['uploadDir'], null)
              );
-             
+
              $this->assertFalse(
                  $this->_model->delete(null, $this->_data['targetFile'])
              );
         } catch (Exception $e) {
              $this->fail($e->getMessage());
         }
-        
+
         $this->assertFalse(
             is_file($this->_data['basePath'] . $this->_data['targetFileFull'])
         );
     }
-    
+
     /**
      * Test create thumb
      *
@@ -156,11 +156,11 @@ class Model_ImageTest extends ControllerTestCase
         } catch (Exception $e) {
             $this->fail($e->getMessage());
         }
-        
+
         $this->assertTrue($true);
         $this->assertFalse($false);
     }
-    
+
     /**
      * Test get Directory entries
      *
@@ -173,15 +173,15 @@ class Model_ImageTest extends ControllerTestCase
         } catch (Exception $e) {
             $this->fail($e->getMessage());
         }
-        
+
         $this->assertEquals(
             $this->_data['targetFile'],
             $result['1'][$this->_data['targetFile']]['basename']
         );
-        
+
         $this->assertEquals($result, $default);
     }
-    
+
     /**
      * Test upload
      *
@@ -190,9 +190,9 @@ class Model_ImageTest extends ControllerTestCase
     {return;
         $_FILES['0'] = $this->_uploadFile['correct'];
         $this->_uploadSucceed();
-        
+
         $options = $this->_model->getOptions();
-        
+
         $this->_uploadFail(null, $options['errors']['directory']);
 
         $_FILES['0']['size'] = $this->_uploadFile['incorrect']['size'];
@@ -201,23 +201,23 @@ class Model_ImageTest extends ControllerTestCase
         $_FILES['0'] = $this->_uploadFile['correct'];
         $_FILES['0']['name'] = $this->_uploadFile['incorrect']['name'];
         $this->_uploadFail($this->_data['uploadDir'], $options['errors']['default']);
-        
+
         $_FILES['0'] = $this->_uploadFile['correct'];
         $_FILES['0']['error'] = $this->_uploadFile['incorrect']['error'];
         $this->_uploadFail($this->_data['uploadDir'], $options['errors']['default'], 'asdfas');
-     
+
         $_FILES['0'] = $this->_uploadFile['correct'];
         $_FILES['0']['type'] = $this->_uploadFile['incorrect']['type'];
         $this->_uploadFail($this->_data['uploadDir'], $options['errors']['filetype']);
-        
+
         $_FILES['0'] = $this->_uploadFile['correct'];
         $_FILES['0']['name'] = $this->_uploadFile['incorrect']['name2'];
         $this->_uploadFail($this->_data['uploadDir'], $options['errors']['filetype']);
-        
-        
+
+
         //TODO test if is file upload with rename
     }
-    
+
     /**
      * This must fail
      *
@@ -230,7 +230,7 @@ class Model_ImageTest extends ControllerTestCase
             $this->assertEquals($message, $e->getMessage());
         }
     }
-    
+
     /**
      * This must succeed
      *
@@ -244,7 +244,7 @@ class Model_ImageTest extends ControllerTestCase
             $this->fail($e->getMessage());
         }
     }
-    
+
     /**
      * tear Down
      *

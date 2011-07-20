@@ -116,18 +116,18 @@ testing:
         username: d_unittest
         password: unittest
         dbname: p_zfc_test
-        persistent: true
+        persistent: false
     frontController:
       plugins:
         acl:
           options:
             allowAll: off
-            cache: on
+            cache: off
         routes:
           options:
-            cache: on
+            cache: off
         navigation:
-            cache: on
+            cache: off
 
 development:
   _extends: production
