@@ -44,7 +44,7 @@
                 $this->coreMenu()->setPartial(array('/default/partial/mainMenu.phtml', 'default'));
                 //echo $this->navigation()->coreMenu()->byId(0);
                 //echo $this->navigation()->coreMenu()->byLabel('Home');
-                echo $this->navigation()->coreMenu()->byLabel('Home')->setMinDepth(0)->setMaxDepth(50); ?>
+                echo $this->navigation()->coreMenu()/*->byId(0)*/->byLabel('Home')->setMinDepth(0)->setMaxDepth(50); ?>
                     <br class="clear"/>
                <?php
 

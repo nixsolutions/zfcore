@@ -26,24 +26,25 @@ class Menus_Model_Menu_Table extends Core_Db_Table_Abstract
     protected $_rowClass = 'Menus_Model_Menu';
 
 
-	/**
+    /**
      * Get country by ip
      *
      * @param string|int $ip
      * @return array
      */
-    public function getMenuItems()
+    /*public function getMenuItems()
     {
         $select = $this->select()->setIntegrityCheck(false);
-		$select->from(array('m' => 'menu'),
-					array('m.*'))
+        $select->from(array('m' => 'menu'),
+                    array('m.*'))
                ->joinleft(array('m2' => 'menu'),
                    'm.parent_id = m2.id',
                    array('m2.label AS parent')
                )
                ->order(array('m.id ASC'))
-		       /*->limit($limit, $offset)*/;
+               //->limit($limit, $offset)
+                ;
         $result = $this->fetchAll($select);
         return $result;
-    }
+    }*/
 }

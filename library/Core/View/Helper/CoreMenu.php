@@ -30,7 +30,7 @@ class Core_View_Helper_CoreMenu
         } else {
             $menuArray = $menuManager->getMenuById(0);
         }
-         $test1 = array(
+         $testOne = array(
              'label' => 'jjjj',
               'id' => 1,
               'type' => 'mvc',
@@ -41,7 +41,7 @@ class Core_View_Helper_CoreMenu
              'params' => array(
                  "alias" => "about")
          );
-  $test2 = array(
+  $testTwo = array(
   'label' => 'hhh',
   'id' => 2,
   'type' => 'mvc',
@@ -96,31 +96,30 @@ class Core_View_Helper_CoreMenu
             if (!empty($page->module)) {
                 $resourceName .= $page->module . '/';
 
-                 if (!empty($page->controller)) {
+                if (!empty($page->controller)) {
                     $resourceName .= $page->controller;
-                 } else {
-                     $resourceName .= 'index';
-                 }
+                } else {
+                    $resourceName .= 'index';
+                }
 
-                 if (!empty($page->action)) {
-                    $action = $page->action;
+                if (!empty($page->action)) {
+                   $action = $page->action;
 
-                 } else {
-                     $action = 'index';
-                 }
+                } else {
+                    $action = 'index';
+                }
 
-                 try {
+                try {
+                    if (!$this->getAcl()->isAllowed(
+                        $role,
+                        $resourceName,
+                        $action
+                    )) {
+                        $page->visible = 0;
+                    }
 
-                        if (!$this->getAcl()->isAllowed(
-                            $role,
-                            $resourceName,
-                            $action
-                            )){
-                                $page->visible = 0;
-                            }
-
-                }  catch (Exception $e) {
-                           // $page->visible = 0;
+                } catch (Exception $e) {
+                    // $page->visible = 0;
                 }
             }
         }

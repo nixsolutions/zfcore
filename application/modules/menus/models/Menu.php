@@ -15,15 +15,15 @@ require_once 'Core/Db/Table/Row/Abstract.php';
  */
 class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
 {
-    const TYPE_DEFAULT = 'mvc';
-    const TYPE_MVC = 'mvc';
-    const TYPE_URI = 'uri';
+    const TYPE_DEFAULT      = 'mvc';
+    const TYPE_MVC          = 'mvc';
+    const TYPE_URI          = 'uri';
 
-    const TARGET_NULL = '';
-    const TARGET_BLANK = '_blank';
-    const TARGET_PARENT = '_parent';
-    const TARGET_SELF = '_self';
-    const TARGET_TOP = '_top';
+    const TARGET_NULL       = '';
+    const TARGET_BLANK      = '_blank';
+    const TARGET_PARENT     = '_parent';
+    const TARGET_SELF       = '_self';
+    const TARGET_TOP        = '_top';
 
     const ROUTE_TYPE_STATIC = 'static';
     const ROUTE_TYPE_MODULE = 'module';
@@ -46,9 +46,13 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
         return (string) $this->_data['title'];
     }
 
-    public function getType()
+    public function getLinkType()
     {
-        return (string) $this->_data['type'];
+        if ($this->_data['type'] == self::TYPE_MVC) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public function getParent()
@@ -70,6 +74,12 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
     {
         return (integer) $this->_data['visible'];
     }
+
+    public function getActive()
+    {
+        return (integer) $this->_data['active'];
+    }
+
     /**
      * get target
      *
@@ -86,7 +96,7 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
      * @param string $target
      * @return boolean true|false
      */
-     public function setTarget($target)
+     /*public function setTarget($target)
      {
          if ($target != TARGET_BLANK &&
              $target != TARGET_PARENT &&
@@ -98,7 +108,7 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
 
          $this->target = (string) $target;
          return true;
-     }
+     }*/
 
     /**
      * set type
@@ -106,7 +116,7 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
      * @param string $type
      * @return string
      */
-     public function setType($type)
+     /*public function setType($type)
      {
          if ($type != TYPE_MVC &&
              $type != TYPE_URI
@@ -116,17 +126,17 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
 
          $this->type = (string) $type;
          return true;
-     }
+     }*/
 
     /**
      * get params
      *
      * @return array
      */
-    public function getParams()
+    /*public function getParams()
     {
         return json_decode($this->params);
-    }
+    }*/
 
     /**
      * get params
@@ -134,8 +144,8 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
      * @param array $params
      * @return boolean true|false
      */
-    public function setParams(array $params = null)
+    /*public function setParams(array $params = null)
     {
         $this->params = (string) json_encode($params);
-    }
+    }*/
 }

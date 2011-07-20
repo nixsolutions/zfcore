@@ -27,9 +27,9 @@ class Menus_Model_Menu_Form_Edit extends Menus_Model_Menu_Form_Create
             return $this;
         }
 
-	public function _submit()
-	{
-            $this->setLegend('Menu Item Edit Form');
+    public function _submit()
+    {
+            //$this->setLegend('Menu Item Edit Form');
             return parent::_submit()->setLabel('Save');
-	}
+    }
 }

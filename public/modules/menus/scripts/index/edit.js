@@ -4,6 +4,7 @@
 var mvc = "Route";
 var uri = "Link";
 var idSelectedRoute = null;
+
 function changedLinkType(el){
     var result = dojo.attr(el, 'value');
     var typeRoute = dojo.byId('type-route');
@@ -24,8 +25,8 @@ function changedLinkType(el){
         dojo.style(typeRoute, "display", "block");
         changedRoute(dojo.byId('route'));
     }
-
 }
+
 function changedRoute(el){
     var result = dojo.attr(el, 'value');
     if (idSelectedRoute) {
@@ -46,7 +47,9 @@ function changedRoute(el){
 }
 
 function addParam() {
+
     var nameNewParam = dojo.query(".routes #" + idSelectedRoute + " .newparam input").attr("value");
+
     dojo.query(".routes #" + idSelectedRoute + " .newparam input").attr("value", '');
     var html = "";
     if (nameNewParam[0].length > 0) {
@@ -59,6 +62,7 @@ function addParam() {
         });
     }
 }
+
 dojo.ready(function(){
     changedLinkType(document.getElementById('linkType'));
 });

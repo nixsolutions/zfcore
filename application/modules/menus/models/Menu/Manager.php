@@ -74,14 +74,24 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
      *
      * @return mixed
      */
-    public function getMenuItemsForEditForm() {
-
+    public function getMenuItemsForEditForm()
+    {
         $this->setMenuRowset();
-         $cats = array();
+        $array = array();
         foreach ($this->_menuTableRowset as $data) {
             $array[$data['parent_id']][] =  $data;
         }
-        $this->buildTree($array, 0, 0, 3);
+        $this->buildTreeGt($array, 0);
+        //$this->buildTree($array, 0, 0, 1);
+        return $this->_parentArray;
+    }
+
+    /**
+     * get parent array
+     * @return array
+     */
+    public function getParentArray()
+    {
         return $this->_parentArray;
     }
 
@@ -89,18 +99,18 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     /**
      * Build hierarchical tree for menu of parents
      *
-     * @var $array array
-     * @var $parent_id int
-     * @var $level int
-     * @var $shift int
+     * @param $array array
+     * @param $parentId int
+     * @param $level int
+     * @param $shift int
      */
-    public function buildTree($array, $parent_id, $level, $shift)
+    public function buildTree($array, $parentId, $level, $shift)
     {
-        if ($parent_id == 0) {
+        if ($parentId == 0) {
             $this->_parentArray = array(0 => 'No parent');
         }
-        if (is_array($array) && isset($array[$parent_id]) && count($array[$parent_id]) > 0) {
-            foreach ($array[$parent_id] as $cat) {
+        if (is_array($array) && isset($array[$parentId]) && count($array[$parentId]) > 0) {
+            foreach ($array[$parentId] as $cat) {
                 $level = $level + $shift;
                 $this->_parentArray[$cat['id']] = str_pad('', $level - $shift, "-", STR_PAD_RIGHT).$cat['label'];
                 $this->buildTree($array, $cat['id'], $level, $shift);
@@ -109,7 +119,35 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         }
     }
 
-    public function getTargetOptionsForEditForm() {
+    /**
+     * build tree Gt
+     * Insert menu tree with ">" to $this->_parentArray
+     * @param array $array
+     * @param int $parentId
+     */
+    public function buildTreeGt($array, $parentId)
+    {
+        if ($parentId == 0) {
+            $this->_parentArray = array();
+        }
+        if (is_array($array) && isset($array[$parentId]) && count($array[$parentId]) > 0) {
+            foreach ($array[$parentId] as $cat) {
+                if (isset($this->_parentArray[$parentId])) {
+                    $this->_parentArray[$cat['id']] = $this->_parentArray[$parentId].' > '.$cat['label'];
+                } else {
+                    $this->_parentArray[$cat['id']] = $cat['label'];
+                }
+                $this->buildTreeGt($array, $cat['id']);
+            }
+        }
+    }
+
+    /**
+     * getTargetOptionsForEditForm
+     * @return array
+     */
+    public function getTargetOptionsForEditForm()
+    {
         return $targetMenus = array(
             0 => 'Don\'t set',
             Menus_Model_Menu::TARGET_BLANK  => "New window",
@@ -119,13 +157,23 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         );
     }
 
-    public function getTypeOptionsForEditForm() {
+    /**
+     * getTypeOptionsForEditForm
+     * @return array
+     */
+    public function getTypeOptionsForEditForm()
+    {
         return $parentMenus = array(
             Menus_Model_Menu::TYPE_URI => 'URI',
             Menus_Model_Menu::TYPE_MVC => 'MVC'
         );
     }
 
+    /**
+     * get menu by id
+     * @param int $id
+     * @return array
+     */
     public function getMenuById($id)
     {
         $menuArray = $this->getMenuArray();
@@ -133,6 +181,11 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         return $arr;
     }
 
+    /**
+     * get menu by label
+     * @param string $label
+     * @return array
+     */
     public function getMenuByLabel($label = null)
     {
         $menuArray = $this->getMenuArray();
@@ -140,16 +193,24 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         return $arr;
     }
 
+    /**
+     * get array item by key
+     * @param array $arr
+     * @param string $name
+     * @param string $value
+     * @return array
+     */
     public function getArrayItemByKey ($arr, $name, $value)
     {
         if (!is_array($arr)) {
             return null;
         }
 
+        $results = false;
         foreach ($arr as $key => $val) {
 
             if (is_array($val)) {
-                $results = $this->getArrayItemByKey ($val, $name, $value);
+                $results = $this->getArrayItemByKey($val, $name, $value);
 
             } else {
 
@@ -166,6 +227,11 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         return $results;
     }
 
+    /**
+     * make parent child relations
+     * @param array $inputArray
+     * @return array
+     */
     protected function makeParentChildRelations($inputArray)
     {
 
@@ -181,6 +247,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
 
             if (isset($entry['params']) && is_string($entry['params'])) {
                 $entry['params'] = (array)json_decode($entry['params']);
+                $entry['order']  = $entry['position'];
             }
             if ($entry['parent_id'] == 0) {
                 $all[$id] = $entry;
@@ -192,7 +259,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         }
         $i = 0;
         while (count($dangling) > 0) {
-            foreach($dangling as $entry) {
+            foreach ($dangling as $entry) {
                 $id = $entry['id'];
                 $pid = $entry['parent_id'];
 
@@ -206,7 +273,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
             }
             $i++;
             if ($i > 50) {
-                var_dump($dangling);
+                //var_dump($dangling);
                 exit('Error in while() '.count($dangling));
                 break;
             }
@@ -215,7 +282,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     }
 
     /**
-     * @return void
+     * set menu array
      */
     protected function setMenuArray()
     {
@@ -231,8 +298,8 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     }
 
     /**
+     * get menu array
      * Return _menuArray
-     *
      * @return array
      */
     public function getMenuArray()
@@ -244,15 +311,16 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     }
 
     /**
+     * getRawMenuArray
      * Return _menuArray->toArray()
      *
      * @return array
      */
-    public function getRawMenuArray()
+    /*public function getRawMenuArray()
     {
         $result = $this->getDbTable()->getMenuItems();
         return $result->toArray();
-    }
+    }*/
 
     /**
      * @return void
@@ -282,29 +350,8 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         return $this->getDbTable()->fetchAll()->toArray();
     }
 
-    public function getMenus()
-    {
 
-        $this->getDbTable()->fetchAll();
-        $select = $this->select()->from($this->getDbTable(), array('parent_id'))->distinct();
-        $result = $this->fetchAll($select);
-
-        if ($result) {
-            foreach ($result as $row) {
-                $ids[] = $row->parent_id;
-            }
-            return $this->find($ids);
-        }
-
-        return $this->getTable()->fetchAll();
-    }
-
-    public function getModules()
-    {
-        return array('default', 'admin');
-    }
-
-    public function getControllersByModuleName($moduleName = 'default')
+    /*public function getControllersByModuleName($moduleName = 'default')
     {
         return array(
             array(array('controller' => 'index',"label" => "index", 'name' => 'index'),
@@ -318,8 +365,14 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
             array(array('controller' => 'index',"label" => "index", 'name' => 'index'),
             array('controller' => 'index2',"label" => "index2", 'name' => 'index3'))
         );
-    }
+    }*/
 
+    /**
+     * get row by id
+     *
+     * @param $id int
+     * @return db row
+     */
     public function getRowById($id)
     {
         $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $id);
@@ -327,7 +380,14 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         return $row;
     }
 
-    public function removeById($id) {
+    /**
+     * remove by id
+     *
+     * @param int $id
+     * @return bool
+     */
+    public function removeById($id)
+    {
         $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $id);
         $this->getDbTable()->delete($where);
         //update child if deleted paren
@@ -337,21 +397,121 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     }
 
     /**
+     * moveToById
      *
-     * getRoutes
+     * @param int $id
+     * @param string $to
+     * @return bool
+     */
+
+    public function moveToById($id, $to)
+    {
+        $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $id);
+        $row = $this->getDbTable()->fetchRow($this->getDbTable()->select()->where($where));
+        if (!isset($row->id)) {
+            return false;
+        }
+        if ($to == 'down') {
+            $result = $this->moveDownItem($row->id, $row->parent_id, $row->position);
+        } else {
+            $result = $this->moveUpItem($row->id, $row->parent_id, $row->position);
+        }
+        return $result;
+    }
+
+    /**
+     * move up item
+     *
+     * @param int $id
+     * @param int $parentId
+     * @param int $position
+     * @return bool
+     */
+    public function moveUpItem($id, $parentId, $position)
+    {
+        $where = $this->getDbTable()->getAdapter()->quoteInto('parent_id = ?', $parentId);
+        $where .= $this->getDbTable()->getAdapter()->quoteInto(' AND position <= ?', $position);
+        $select = $this->getDbTable()->select()->where($where)->order('position DESC')->limit(2, 0);
+        $row = $this->getDbTable()->fetchAll($select);
+
+        if (count($row) == 2) {
+            $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $row[0]['id']);
+            $result = $this->getDbTable()->update(array('position'  => $row[1]['position']), $where);
+            if (!$result) {
+                return false;
+            }
+            $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $row[1]['id']);
+            $result = $this->getDbTable()->update(array('position'  => $row[0]['position']), $where);
+            if (!$result) {
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * move down item
+     *
+     * @param int $id
+     * @param int $parentId
+     * @param int $position
+     * @return bool
+     */
+    public function moveDownItem($id, $parentId, $position)
+    {
+        $where = $this->getDbTable()->getAdapter()->quoteInto('parent_id = ?', $parentId);
+        $where .= $this->getDbTable()->getAdapter()->quoteInto(' AND position >= ?', $position);
+        $select = $this->getDbTable()->select()->where($where)->order('position ASC')->limit(2, 0);
+        $row = $this->getDbTable()->fetchAll($select);
+
+        if (count($row) == 2) {
+            $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $row[0]['id']);
+            $result = $this->getDbTable()->update(array('position'  => $row[1]['position']), $where);
+            if (!$result) {
+                return false;
+            }
+            $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $row[1]['id']);
+            $result = $this->getDbTable()->update(array('position'  => $row[0]['position']), $where);
+            if (!$result) {
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * get last position by parent
+     *
+     * @param int $id
+     * @return int
+     */
+    public function getLastPositionByParent($id)
+    {
+        $where = $this->getDbTable()->getAdapter()->quoteInto('parent_id = ?', $id);
+        $select = $this->getDbTable()->select()->where($where)->order('position DESC');
+        $row = $this->getDbTable()->fetchRow($select);
+        return $row->position + 1;
+    }
+
+    /**
+     * get routes
+     *
      * @param $onlyNames bool
      * @return array
      */
     public function getRoutes($onlyNames = false)
     {
-
         $instance = Zend_Controller_Front::getInstance();
         $routes = $instance->getRouter()->getRoutes();
         $num = 0;
         $numes = array();
         foreach ($routes as $routeName => $route) {
             if ($onlyNames) {
-                $numes[$num] = $routeName;
+                $numes[$routeName] = $routeName;
                 $num++;
             } else {
                 if ($routes[$routeName] instanceof Zend_Controller_Router_Route_Static) {
@@ -364,7 +524,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
                 } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route_Module) {
                     $routesArray[$routeName] = $this->getInfoFromModuleRoute($routeName, (array)$route, $instance);
                 } else {
-                    var_dump($routes[$routeName]);
+                    //var_dump($routes[$routeName]);
                     $num--;
                 }
                 $num++;
@@ -377,10 +537,10 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         return $routesArray;
     }
     /**
+     * get info from static route
      *
-     * getInfoFromStaticRoute
-     * @param $routeName string
-     * @param $route array
+     * @param string $routeName
+     * @param array $route
      * @return array
      */
     public function getInfoFromStaticRoute($routeName, $route)
@@ -396,18 +556,18 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         return array(
             'name'       => $routeName,
             'path'       => '/' . $path,
-               'type'       => Menus_Model_Menu::ROUTE_TYPE_STATIC,
+            'type'       => Menus_Model_Menu::ROUTE_TYPE_STATIC,
             'module'     => $defaults['module'],
-              'controller' => $defaults['controller'],
-              'action'     => $defaults['action']
+            'controller' => $defaults['controller'],
+            'action'     => $defaults['action']
         );
     }
 
     /**
+     * get info from route
      *
-     * getInfoFromRoute
-     * @param $routeName string
-     * @param $route array
+     * @param string $routeName
+     * @param array $route
      * @return array
      */
     public function getInfoFromRoute($routeName, $route)
@@ -420,6 +580,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
             if (preg_match("/_variables/i", $names)) {
                 foreach ($val as $names => $param) {
                     $params[$names] = $param;
+                    $arrayParams[$param] = $param;
                 }
             }
             if (preg_match("/_part/i", $names)) {
@@ -445,26 +606,27 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         return array(
             'name'     => $routeName,
             'path'     => $path,
-               'type'     => Menus_Model_Menu::ROUTE_TYPE_ROUTE,
+            'type'     => Menus_Model_Menu::ROUTE_TYPE_ROUTE,
             'wildcard' => $wildcard,
-            'params'   => $params,
+            'params'   => $arrayParams,
             'module'     => $defaults['module'],
-              'controller' => $defaults['controller'],
-              'action'     => $defaults['action']
+            'controller' => $defaults['controller'],
+            'action'     => $defaults['action']
         );
     }
 
     /**
+     * get info from regex route
      *
-     * getInfoFromRegexRoute
-     * @param $routeName string
-     * @param $route array
+     * @param string $routeName
+     * @param array $route
      * @return array
      */
     public function getInfoFromRegexRoute($routeName, $route)
     {
         $params = array();
         $path = '';
+        $pattern = "/\([\S\s]*\)/i";
         foreach ($route as $names => $val) {
 
             if (preg_match("/_regex/i", $names)) {
@@ -473,7 +635,8 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
             if (preg_match("/_map/i", $names)) {
                 $num = 0;
                 foreach ($val as $param => $val) {
-                    $params[$num] = $param;
+                    $params[$param] = $param;
+                    $regex =  preg_replace($pattern, $param, $regex, 1);
                     $num++;
                 }
             }
@@ -481,28 +644,23 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
                 $defaults = $val;
             }
         }
-        $pattern = "/\([\S\s]*\)/i";
-        for ($i = 0; $i < $num; $i++) {
-            $regex =  preg_replace($pattern, $params[$i], $regex, 1);
-        }
         $path = str_replace("\\", "", $regex);
-
         return array(
             'name'   => $routeName,
             'path'   => '/' . $path,
-               'type'   => Menus_Model_Menu::ROUTE_TYPE_REGEX,
+            'type'   => Menus_Model_Menu::ROUTE_TYPE_REGEX,
             'params' => $params,
             'module'     => $defaults['module'],
-              'controller' => $defaults['controller'],
-              'action'     => $defaults['action']
+            'controller' => $defaults['controller'],
+            'action'     => $defaults['action']
         );
     }
 
     /**
+     * get info from module route
      *
-     * getInfoFromModuleRoute
-     * @param $routeName string
-     * @param $values array
+     * @param string $routeName
+     * @param array $route
      * @param Zend_Controller_Front::getInstance()
      * @return array
      */
@@ -513,23 +671,24 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         return array(
             'name'   => $routeName,
             'path'   => '/:module/:controller/:action',
-               'type'   => Menus_Model_Menu::ROUTE_TYPE_MODULE,
+            'type'   => Menus_Model_Menu::ROUTE_TYPE_MODULE,
             'modules' => $modules
         );
     }
 
 
 
+    /**
+     * insert menu item in db
+     *
+     * @param array $data
+     * @return row|bool
+     */
     public function addMenuItem($data = null)
     {
         if (!empty($data) && is_array($data)) {
 
-            $label = $data['label'];
-            $parent = (integer) $data['parent'];
-            $target = (integer) $data['target'];
-
             $menu = $this->getDbTable()->create();
-
             $options = array();
 
             if (isset($data['params']) && is_array($data['params'])) {
@@ -569,7 +728,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
 
                 $menu->route_type = $routes[$data['route']]['type'];
 
-                if($menu->route_type != Menus_Model_Menu::ROUTE_TYPE_MODULE){
+                if ($menu->route_type != Menus_Model_Menu::ROUTE_TYPE_MODULE) {
                     $menu->module     = $routes[$data['route']]['module'];
                     $menu->controller = $routes[$data['route']]['controller'];
                     $menu->action     = $routes[$data['route']]['action'];
@@ -586,7 +745,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
             $menu->title     = $data['title'];
             $menu->params    = json_encode($options);
             $menu->parent_id = $data['parent'];
-            //$menu->order   = $data['order'];
+            $menu->position  = $this->getLastPositionByParent($data['parent']);
 
         if ( $menu->save() ) {
             return $menu;
@@ -596,6 +755,93 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
 
         }
 
+        return false;
+    }
+
+
+    /**
+     * Update menu item
+     *
+     * @param array $data
+     * @return row|bool
+     */
+    public function updateMenuItem($data = null)
+    {
+        if (!empty($data) && is_array($data)) {
+            $menu = $this->getRowById($data['id']);
+
+            if ($menu->id) {
+
+                $options = array();
+
+                if (isset($data['params']) && is_array($data['params'])) {
+                    $options = $data['params'];
+                }
+                $menu->visible = (int)$data['visible'];
+                $menu->active = (int)$data['active'];
+                if ($data['class']) {
+                    $menu->class = $data['class'];
+                }
+                if ($data['target'] == Menus_Model_Menu::TARGET_BLANK ||
+                    $data['target'] == Menus_Model_Menu::TARGET_PARENT ||
+                    $data['target'] == Menus_Model_Menu::TARGET_SELF ||
+                    $data['target'] == Menus_Model_Menu::TARGET_TOP) {
+
+                    $menu->target = $data['target'];
+                }
+
+                if ($data['linkType'] == 0) {//link
+                    $menu->type = Menus_Model_Menu::TYPE_URI;
+                    if (!$data['uri']) {
+                        return false;
+                    }
+                    $menu->uri = $data['uri'];
+
+
+                } elseif ($data['linkType'] == 1) {//route
+                    $menu->type = Menus_Model_Menu::TYPE_MVC;
+                    if (!$data['route']) {
+                        return false;
+                    }
+                    $routes = $this->getRoutes();
+                    if (!isset($routes[$data['route']])) {
+                        return false;
+                    }
+
+
+                    $menu->route_type = $routes[$data['route']]['type'];
+
+                    if ($menu->route_type != Menus_Model_Menu::ROUTE_TYPE_MODULE) {
+                        $menu->module     = $routes[$data['route']]['module'];
+                        $menu->controller = $routes[$data['route']]['controller'];
+                        $menu->action     = $routes[$data['route']]['action'];
+                    } else {
+                        $menu->module     = $options['module'];
+                        $menu->controller = $options['controller'];
+                        $menu->action     = $options['action'];
+                        //clean
+                        unset($options['module']);
+                        unset($options['controller']);
+                        unset($options['action']);
+                    }
+
+                    $menu->route = $routes[$data['route']]['name'];
+                }
+
+                $menu->label     = $data['label'];
+                $menu->title     = $data['title'];
+                $menu->params    = json_encode($options);
+
+                if ($menu->parent_id != $data['parent']) {
+                    $menu->parent_id = $data['parent'];
+                    $menu->position  = $this->getLastPositionByParent($data['parent']);
+                }
+
+                if ($menu->save()) {
+                    return $menu;
+                }
+            }
+        }
         return false;
     }
 }
