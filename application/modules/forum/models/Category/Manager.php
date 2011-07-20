@@ -20,11 +20,21 @@ class Forum_Model_Category_Manager extends Core_Categories_Manager
     protected $_root;
 
     /**
-     * Constructor
+     * @var string
      */
-    public function __construct()
+    protected $_tableClass = 'Categories_Model_Categories_Table';
+
+    /**
+     * Constructor
+     *
+     * @param Zend_Db_Table $table
+     */
+    public function __construct(Zend_Db_Table_Abstract $table = null)
     {
-        $this->setDbTable(new Categories_Model_Categories_Table());
+        if (!$table) {
+            $table = new $this->_tableClass;
+        }
+        $this->setDbTable($table);
     }
 
     /**

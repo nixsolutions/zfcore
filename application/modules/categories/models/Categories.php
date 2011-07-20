@@ -75,11 +75,11 @@ class Categories_Model_Categories extends Core_Categories_Row
      * @param integer $offset
      * @return Zend_Db_Table_Rowset_Abstract
      */
-    public function getAllChildren($down = null, $order = null, $limit = null,
-        $offset = null)
+    public function getAllChildren($down = null, $order = 'path',
+        $limit = null, $offset = null)
     {
         $select = $this->select();
-        $select->where('path LIKE ?', '%' . $this->alias . self::PATH_SEPARATOR .'%')
+        $select->where('path LIKE ?', $this->path . self::PATH_SEPARATOR .'%')
                ->where('level > ?', $this->level);
 
         if ($order) {
