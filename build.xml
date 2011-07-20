@@ -25,7 +25,7 @@
     			  -ti 'ZFCore Docs'
     			  --parseprivate on
     			  --undocumentedelements on
-    			  --output HTML:frames:PHP
+    			  --output HTML:Smarty:PHP
     			  --ignore '*.phtml'
     			  --sourcecode on"/>
         </exec>
