@@ -16,18 +16,13 @@
     </listeners>
 
     <filter>
-        <blacklist>
-            <directory suffix=".php">/usr/share/php</directory>
-            <directory suffix=".php">../tests</directory>
-            <directory suffix=".php">../migrations</directory>
-        </blacklist>
         <whitelist>
             <directory suffix=".php">../application</directory>
-            <directory suffix=".php">../library</directory>
+            <directory suffix=".php">../library/Core</directory>
             <exclude>
                 <directory suffix=".phtml">../application</directory>
-                <directory prefix="migrations">../migrations</directory>
-                <file>../application/Bootstrap.php</file>
+                <directory prefix="migrations">../application</directory>
+                <directory prefix="Bootstrap">../application</directory>
             </exclude>
         </whitelist>
     </filter>
