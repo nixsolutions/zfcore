@@ -182,7 +182,7 @@ class Blog_PostControllerTest extends ControllerTestCase
         $table = new Blog_Model_Post_Table();
         $table->delete('1');
 
-        $table = new Categories_Model_Categories_Table();
+        $table = new Categories_Model_Category_Table();
         $table->delete(' id = 43');
     }
 

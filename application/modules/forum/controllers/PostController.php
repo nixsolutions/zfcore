@@ -28,7 +28,7 @@ class Forum_PostController extends Core_Controller_Action
         $users = new Users_Model_Users_Table();
         $this->view->author = $users->getById($post->userId);
 
-        $categories = new Categories_Model_Categories_Table();
+        $categories = new Categories_Model_Category_Table();
         $this->view->category = $categories->getById($post->categoryId);
 
 

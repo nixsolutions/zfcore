@@ -198,7 +198,7 @@ class Forum_PostControllerTest extends ControllerTestCase
         $table = new Forum_Model_Comment_Table();
         $table->delete('1');
 
-        $table = new Categories_Model_Categories_Table();
+        $table = new Categories_Model_Category_Table();
         $table->delete('id = 33');
 
 

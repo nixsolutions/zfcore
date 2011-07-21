@@ -87,7 +87,7 @@ class Categories_ManagementController extends Core_Controller_Action_Scaffold
      */
     protected function _getTable()
     {
-        return new Categories_Model_Categories_Table();
+        return new Categories_Model_Category_Table();
     }
 
     /**

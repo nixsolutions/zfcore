@@ -1,9 +1,9 @@
 <?php
 /**
- * Categories_Model_Categories_Table
+ * Categories_Model_Category_Table
  *
  *
- * @example $categories = new Categories_Model_Categories_Table();
+ * @example $categories = new Categories_Model_Category_Table();
  *          $category = $categories->getById(1);
  *          $category->loadTree(); //load all child categories
  *
@@ -24,7 +24,7 @@
  *
  * @version $Id$
  */
-class Categories_Model_Categories_Table extends Core_Categories_Table
+class Categories_Model_Category_Table extends Core_Categories_Table
 {
     /**
      * @var string
@@ -34,5 +34,5 @@ class Categories_Model_Categories_Table extends Core_Categories_Table
     /**
      * @var string
      */
-    protected $_rowClass = 'Categories_Model_Categories';
+    protected $_rowClass = 'Categories_Model_Category';
 }

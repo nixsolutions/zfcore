@@ -1,10 +1,10 @@
 <?php
 /**
- * Categories_Model_Categories
+ * Categories_Model_Category
  *
  * @version $Id$
  */
-class Categories_Model_Categories extends Core_Categories_Row
+class Categories_Model_Category extends Core_Categories_Row
 {
     /**
      * @var string

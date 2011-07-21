@@ -34,7 +34,7 @@ class Blog_PostController extends Core_Controller_Action
         $users = new Users_Model_Users_Table();
         $this->view->user = $users->getById($row->userId);
 
-        $categories = new Categories_Model_Categories_Table();
+        $categories = new Categories_Model_Category_Table();
         $this->view->category = $categories->getById($row->categoryId);
 
 

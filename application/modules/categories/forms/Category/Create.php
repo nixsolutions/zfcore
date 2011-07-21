@@ -96,7 +96,7 @@ class Categories_Form_Category_Create extends Zend_Dojo_Form
              ->setRequired(false);
 
         $element->addMultiOption('', '');
-        $categories = new Categories_Model_Categories_Table();
+        $categories = new Categories_Model_Category_Table();
         $select = $categories->select()->order('path');
         foreach ($categories->fetchAll($select) as $row) {
             $element->addMultiOption($row->id, str_repeat("-", $row->level) . " " . $row->title);

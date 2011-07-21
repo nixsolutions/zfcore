@@ -109,6 +109,7 @@ testing:
   phpSettings:
     display_startup_errors: true
     display_errors: true
+    memory_limit: 512M
   resources:
     db:
       params:

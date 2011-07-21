@@ -9,14 +9,14 @@ class Blog_Model_Category_Manager extends Core_Categories_Manager
     const CATEGORY_ALIAS = 'blog';
 
     /**
-     * @var Categories_Model_Categories
+     * @var Categories_Model_Category
      */
     protected $_root;
 
     /**
      * @var string
      */
-    protected $_tableClass = 'Categories_Model_Categories_Table';
+    protected $_tableClass = 'Categories_Model_Category_Table';
 
     /**
      * Constructor
@@ -34,7 +34,7 @@ class Blog_Model_Category_Manager extends Core_Categories_Manager
     /**
      * Get blog root category
      *
-     * @return Categories_Model_Categories
+     * @return Categories_Model_Category
      */
     public function getRoot()
     {
@@ -52,7 +52,7 @@ class Blog_Model_Category_Manager extends Core_Categories_Manager
      */
     public function getById($id)
     {
-        $separator = Categories_Model_Categories::PATH_SEPARATOR;
+        $separator = Categories_Model_Category::PATH_SEPARATOR;
 
         $select = $this->getDbTable()->select();
         $select->where('id=?', $id)
@@ -68,7 +68,7 @@ class Blog_Model_Category_Manager extends Core_Categories_Manager
      */
     public function getByAlias($alias)
     {
-        $separator = Categories_Model_Categories::PATH_SEPARATOR;
+        $separator = Categories_Model_Category::PATH_SEPARATOR;
 
         $select = $this->getDbTable()->select();
         $select->where('alias=?', $alias)
@@ -84,7 +84,7 @@ class Blog_Model_Category_Manager extends Core_Categories_Manager
      */
     public function getList($fetch = false)
     {
-        $separator = Categories_Model_Categories::PATH_SEPARATOR;
+        $separator = Categories_Model_Category::PATH_SEPARATOR;
 
         $select = $this->getDbTable()->select();
 
