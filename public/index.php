@@ -42,11 +42,11 @@ function errorHandler() {
 }
 
 /** Zend_Application */
-require_once 'Zend/Application.php';  
+require_once 'Zend/Application.php';
 
 try {
     require_once 'Zend/Cache.php';
-    
+
     $frontendOptions = array("lifetime" => 60*60*24,
                              "automatic_serialization" => true,
                              "automatic_cleaning_factor" => 1,
@@ -65,6 +65,7 @@ try {
     );
 
     if (!$result = $cache->load('application')) {
+        require_once 'Zend/Config/Yaml.php';
         require_once 'Core/Config/Yaml.php';
         $config = new Core_Config_Yaml(
             APPLICATION_PATH . '/configs/application.yaml',
