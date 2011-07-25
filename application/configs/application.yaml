@@ -114,9 +114,10 @@ testing:
   resources:
     db:
       params:
-        host: elephant.nixsolutions.com
-        username: p_zfc2
-        dbname: p_zfc2
+        host: hippo.nixsolutions.com
+        username: d_unittest
+        password: unittest
+        dbname: p_zfc_test
         persistent: true
     frontController:
       plugins:

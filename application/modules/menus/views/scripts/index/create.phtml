@@ -81,7 +81,7 @@
                             <input class="newparam" dojoType="dijit.form.TextBox" type="text" name="newparam" value="">
                         </div>
 
-                        <input dojoType="dijit.form.Button" onclick="addParam();" type="button" name="add" value="Add param">
+                        <input dojoType="dijit.form.Button" onclick="addParam();" type="button" name="add" label="Add param" value="Add param">
                     <?php
                     endif;
                 endif;
@@ -98,8 +98,9 @@
                 if ($route['type'] == Menus_Model_Menu::ROUTE_TYPE_MODULE):?>
                         <label>Module</label>
                         <div>
-                        <select dojoType="dijit.form.FilteringSelect" name="params[module]" id="mvcModule" style="margin-bottom:5px;">
-                            <?php
+                        <select onChange="changeModule(document.getElementById('mvcModule'))" dojoType="dijit.form.FilteringSelect" name="params[module]" id="mvcModule" style="margin-bottom:5px;">
+			                <option value="" label="---">---</option>
+			                <?php
                             foreach ($route['modules'] as $key => $param):?>
                                 <option value="<?php echo $key; ?>" label="<?php echo $key; ?>"><?php echo $key; ?></option>
                             <?php
@@ -107,16 +108,39 @@
                         ?>
                         </select>
                         </div>
+                        <div class="modules">
 
-                        <label>Controller</label>
-                        <div>
-                            <input dojoType="dijit.form.TextBox" type="text" name="params[controller]" value="">
+                        	<?php
+                        	foreach ($route['modules'] as $modul => $controllers):?>
+                                <div style="display:none;" id="module-<?php echo $modul; ?>">
+	                                <label>Controller</label>
+	                                <div>
+		                                <select onChange="getActions(document.getElementById('<?php echo $modul; ?>-Controller'),'<?php echo $modul; ?>')" dojoType="dijit.form.FilteringSelect" name="params[controller]" id="<?php echo $modul; ?>-Controller" style="margin-bottom:5px;">
+		                                    <option value="" label="---">---</option>
+		                        			<?php
+				                            foreach ($controllers as $key => $param):?>
+				                                <option value="<?php echo $key; ?>" label="<?php echo $key; ?>"><?php echo $key; ?></option>
+				                            <?php
+				                            endforeach;
+				                        	?>
+		                                </select>
+	                                </div>
+                                </div>
+
+	                            <?php
+	                            foreach ($controllers as $key => $param):?>
+                                <div style="display:none;" id="<?php echo $modul.'-'.$key.'-'; ?>actions">
+	                                <label>Action</label>
+		                            <input  style="display:none;" id="<?php echo $modul.'-'.$key.'-'; ?>action">
+                                </div>
+	                            <?php
+	                            endforeach;
+	                            ?>
+                            <?php
+                            endforeach;
+                        	?>
                         </div>
 
-                        <label>Action</label>
-                        <div>
-                            <input dojoType="dijit.form.TextBox" type="text" name="params[action]" value="">
-                        </div>
                         <p class="new-parameters"></p>
                         <span>Add param:</span>
                         <div>

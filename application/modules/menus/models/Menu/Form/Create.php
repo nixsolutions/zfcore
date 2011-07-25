@@ -99,7 +99,7 @@ class Menus_Model_Menu_Form_Create extends Zend_Dojo_Form
                       'onChange' => "changedRoute(document.getElementById('route'));"
                   )
               );
-        $route->addMultiOptions($this->_menuManager->getRoutes(true));
+        $route->addMultiOptions($this->_menuManager->getNamesOfRoutes());
 
         $uri = new Zend_Dojo_Form_Element_TextBox('uri');
         $uri->setLabel('URI')

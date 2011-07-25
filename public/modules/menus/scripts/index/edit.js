@@ -4,6 +4,8 @@
 var mvc = "Route";
 var uri = "Link";
 var idSelectedRoute = null;
+var idSelectedModule = null;
+var idSelectedController = null;
 
 function changedLinkType(el){
     var result = dojo.attr(el, 'value');
@@ -63,6 +65,68 @@ function addParam() {
     }
 }
 
+function changeModule(el){
+	
+
+	var moduleName = dojo.attr(el, 'value');
+	
+	if (idSelectedModule) {
+        var selectedModule = dojo.byId(idSelectedModule);
+        dojo.style(selectedModule, "display", "none");
+    }
+	if (idSelectedController && dojo.byId(idSelectedController + 's')) {
+        dojo.style(dojo.byId(idSelectedController + 's'), "display", "none");
+    }
+	
+	if (moduleName != '---') {
+		
+	    idSelectedModule = 'module-' + moduleName;
+	    dojo.query(".modules input").attr({disabled: "disabled"});
+	    dojo.query(".modules #" + idSelectedModule + " input").removeAttr("disabled");
+	    var selectedModule = dojo.byId(idSelectedModule);
+	    dojo.style(selectedModule, "display", "block");
+	}
+}
+
+function getActions(el,moduleName,defaultAction) {
+	
+	
+	var controllerName = dojo.attr(el, 'value');
+	
+	if (controllerName != '---') {
+
+	   	if (idSelectedController) {
+	        dojo.style(dojo.byId(idSelectedController), "display", "none");
+	        dojo.style(dojo.byId(idSelectedController + 's'), "display", "none");
+	        dojo.style(dojo.byId('widget_' + idSelectedController), "display", "none");
+	    }
+	   	
+	   	idSelectedController = moduleName + '-' + controllerName + "-action";
+
+	   	if (dojo.byId('widget_' + idSelectedController) != true) {
+	   		
+	   		var actionsStore = new dojo.data.ItemFileReadStore({
+		        url:"/menus/index/get-actions/m/" + moduleName + "/c/" + controllerName
+		    });
+		    var filteringSelect = new dijit.form.ComboBox({
+		        id: idSelectedController,
+		        name: "params[action]",
+		        value: defaultAction,
+		        store: actionsStore,
+		        searchAttr: "name"
+		    },
+		    idSelectedController);
+	   	}
+	   	
+	    dojo.style(dojo.byId('widget_' + idSelectedController), "display", "block");
+	    if (dojo.byId(idSelectedController + 's')) {
+	    	dojo.style(dojo.byId(idSelectedController + 's'), "display", "block");
+	    }
+	    
+	}
+}
+
 dojo.ready(function(){
     changedLinkType(document.getElementById('linkType'));
+    
 });

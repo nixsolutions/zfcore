@@ -24,9 +24,7 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
         $this->_isDashboard();
 
         $this->_helper->contextSwitch()
-                //->addActionContext('store', 'json')
-                ->addActionContext('controllers', 'json')
-                //->addActionContext('actions', 'json')
+                ->addActionContext('get-actions', 'json')
                 ->initContext('json');
     }
 
@@ -39,7 +37,7 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
      */
     protected function _getCreateForm()
     {
-        return new Categories_Form_Category_Create();
+
     }
 
     /**
@@ -51,9 +49,7 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
      */
     protected function _getEditForm()
     {
-        $form = new Categories_Form_Category_Edit();
-        $form->addElement(new Zend_Form_Element_Hidden('id'));
-        return $form;
+
     }
 
     /**
@@ -77,8 +73,7 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
      */
     public function indexAction()
     {
-        //$_menuTable = new Model_Menu_Manager();
-        //$_menuArray = $_menuTable->getRawMenuArray();
+        //...
     }
 
     /**
@@ -91,8 +86,6 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
     public function storeAction()
     {
         $menuTable = new Menus_Model_Menu_Manager();
-        /*$menuArray = $menuTable->getRawMenuArray();
-        $this->view->items = $menuArray;*/
 
         $start  = $this->_getParam('start');
         $count  = $this->_getParam('count');
@@ -170,7 +163,6 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
                 break;
         }
 
-
         if ($total) {
             $primary = $this->_table->getPrimary();
             if (is_array($primary)) {
@@ -192,10 +184,6 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
 
             $data = new Zend_Dojo_Data($primary, $datas);
             $data->setMetadata('numRows', $total);
-
-
-
-
 
             $this->_helper->json($data);
         } else {
@@ -227,7 +215,11 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
 
     public function editAction()
     {
-        $id = $this->_getParam('id', 0);
+        $id = (int)$this->_getParam('id');
+
+        if ($id == 0) {
+            $this->_helper->getHelper('redirector')->direct('index');
+        }
 
         $menuManager = new Menus_Model_Menu_Manager();
         $menuEditForm = new Menus_Model_Menu_Form_Edit();
@@ -305,21 +297,28 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
         if ($isAjax) {
             $this->_helper->json($moved);
         }
-        return $deleted;
+        return $moved;
     }
 
-    public function controllersAction()
-    {
 
-        /*$_menuTable = new Menus_Model_Menu_Manager();
-        $_controllers = $_menuTable->getControllersByModuleName($this->_getParam('name', 'default'));
-        $this->view->assign('items', $_controllers);*/
-    }
-
-    public function actionsAction()
+    public function getActionsAction()
     {
-        /*$_menuTable = new Menus_Model_Menu_Manager();
-        $_actions = $_menuTable->getActionsByControllerName($this->_getParam('name', 'index'));
-        $this->view->assign('items', $_actions);*/
+        $module = $this->_getParam('m');
+        $controller = $this->_getParam('c');
+        $controllerActions = array();
+
+        $instance = Zend_Controller_Front::getInstance();
+        $modules = $instance->getControllerDirectory();
+        require_once $modules[$module].'/'.ucfirst($controller).'Controller.php';
+        $methods = get_class_methods(ucfirst($module).'_'.$controller.'Controller');
+        if (is_array($methods)) {
+            foreach ($methods as $method) {
+                if (preg_match("/^([\w]*)Action$/", $method, $actions)) {
+                    $action = strtolower(preg_replace("/([A-Z])/", "-$1", $actions[1]));
+                    $controllerActions[] = array('name' => $action);
+                }
+            }
+        }
+        $this->view->items = $controllerActions;
     }
 }

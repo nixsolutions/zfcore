@@ -28,7 +28,7 @@ require_once 'Zend/Json.php';
 
 /**
  * Dojo Editor dijit
- * 
+ *
  * @uses       Zend_Dojo_View_Helper_Textarea
  * @package    Zend_Dojo
  * @subpackage View
@@ -36,7 +36,7 @@ require_once 'Zend/Json.php';
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  * @see http://framework.zend.com/issues/browse/ZF-6753
  */
-class Admin_View_Helper_Editor extends Zend_Dojo_View_Helper_Textarea
+class Mail_View_Helper_Editor extends Zend_Dojo_View_Helper_Textarea
 {
     /**
      * @param string Dijit type
@@ -56,11 +56,11 @@ class Admin_View_Helper_Editor extends Zend_Dojo_View_Helper_Textarea
 
     /**
      * dijit.Editor
-     * 
-     * @param  string $id 
-     * @param  string $value 
-     * @param  array $params 
-     * @param  array $attribs 
+     *
+     * @param  string $id
+     * @param  string $value
+     * @param  array $params
+     * @param  array $attribs
      * @return string
      */
     public function editor($id, $value = null, $params = array(), $attribs = array())
@@ -79,7 +79,7 @@ class Admin_View_Helper_Editor extends Zend_Dojo_View_Helper_Textarea
             'value' => $value,
             'type'  => 'hidden',
         );
-        
+
         $editorAttribs = array(
             'id'    => $hiddenId . '-Editor',
             'name'  => $this->_normalizeEditorName($hiddenName),
@@ -87,7 +87,7 @@ class Admin_View_Helper_Editor extends Zend_Dojo_View_Helper_Textarea
         );
 
         $editorAttribs = $this->_prepareDijit($editorAttribs, $params, 'textarea');
-        
+
         $this->_createGetParentFormFunction();
         $this->_createEditorOnSubmit($hiddenId, $hiddenId . '-Editor');
 
@@ -99,8 +99,8 @@ class Admin_View_Helper_Editor extends Zend_Dojo_View_Helper_Textarea
 
     /**
      * Normalize editor element name
-     * 
-     * @param  string $name 
+     *
+     * @param  string $name
      * @return string
      */
     protected function _normalizeEditorName($name)
@@ -116,9 +116,9 @@ class Admin_View_Helper_Editor extends Zend_Dojo_View_Helper_Textarea
 
     /**
      * Create onSubmit binding for element
-     * 
-     * @param  string $hiddenId 
-     * @param  string $editorId 
+     *
+     * @param  string $hiddenId
+     * @param  string $editorId
      * @return void
      */
     protected function _createEditorOnSubmit($hiddenId, $editorId)

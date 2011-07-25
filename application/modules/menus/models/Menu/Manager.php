@@ -83,7 +83,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         }
         $this->buildTreeGt($array, 0);
         //$this->buildTree($array, 0, 0, 1);
-        return $this->_parentArray;
+        return array_merge(array(0 => '/'),$this->_parentArray);
     }
 
     /**
@@ -310,17 +310,6 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         return $menuArray;
     }
 
-    /**
-     * getRawMenuArray
-     * Return _menuArray->toArray()
-     *
-     * @return array
-     */
-    /*public function getRawMenuArray()
-    {
-        $result = $this->getDbTable()->getMenuItems();
-        return $result->toArray();
-    }*/
 
     /**
      * @return void
@@ -351,22 +340,6 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     }
 
 
-    /*public function getControllersByModuleName($moduleName = 'default')
-    {
-        return array(
-            array(array('controller' => 'index',"label" => "index", 'name' => 'index'),
-            array('controller' => 'index2',"label" => "index2", 'name' => 'index3'))
-        );
-    }
-
-    public function getActionsByControllerName($controllerName = 'index')
-    {
-       return array(
-            array(array('controller' => 'index',"label" => "index", 'name' => 'index'),
-            array('controller' => 'index2',"label" => "index2", 'name' => 'index3'))
-        );
-    }*/
-
     /**
      * get row by id
      *
@@ -389,11 +362,13 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     public function removeById($id)
     {
         $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $id);
-        $this->getDbTable()->delete($where);
-        //update child if deleted paren
-        $where = $this->getDbTable()->getAdapter()->quoteInto('parent_id = ?', $id);
-        $this->getDbTable()->update(array('parent_id'  => 0), $where);
-        return true;
+        if ($this->getDbTable()->delete($where)) {
+            //update child if deleted paren
+            $where = $this->getDbTable()->getAdapter()->quoteInto('parent_id = ?', $id);
+            $this->getDbTable()->update(array('parent_id'  => 0), $where);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -498,41 +473,47 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     }
 
     /**
+     * get names of routes
+     *
+     * @return array
+     */
+    public function getNamesOfRoutes()
+    {
+        $instance = Zend_Controller_Front::getInstance();
+
+        $routes = $instance->getRouter()->getRoutes();
+        $numes = array();
+        foreach ($routes as $routeName => $route) {
+            $numes[$routeName] = $routeName;
+        }
+        return $numes;
+    }
+
+    /**
      * get routes
      *
      * @param $onlyNames bool
      * @return array
      */
-    public function getRoutes($onlyNames = false)
+    public function getRoutes()
     {
         $instance = Zend_Controller_Front::getInstance();
+
         $routes = $instance->getRouter()->getRoutes();
-        $num = 0;
         $numes = array();
         foreach ($routes as $routeName => $route) {
-            if ($onlyNames) {
-                $numes[$routeName] = $routeName;
-                $num++;
+            if ($routes[$routeName] instanceof Zend_Controller_Router_Route_Static) {
+                $routesArray[$routeName] = $this->getInfoFromStaticRoute($routeName, (array)$route);
+            } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route) {
+                $routesArray[$routeName] = $this->getInfoFromRoute($routeName, (array)$route);
+            } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route_Regex) {
+                $routesArray[$routeName] = $this->getInfoFromRegexRoute($routeName, (array)$route);
+
+            } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route_Module) {
+                $routesArray[$routeName] = $this->getInfoFromModuleRoute($routeName, (array)$route, $instance);
             } else {
-                if ($routes[$routeName] instanceof Zend_Controller_Router_Route_Static) {
-                    $routesArray[$routeName] = $this->getInfoFromStaticRoute($routeName, (array)$route);
-                } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route) {
-                    $routesArray[$routeName] = $this->getInfoFromRoute($routeName, (array)$route);
-                } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route_Regex) {
-                    $routesArray[$routeName] = $this->getInfoFromRegexRoute($routeName, (array)$route);
-
-                } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route_Module) {
-                    $routesArray[$routeName] = $this->getInfoFromModuleRoute($routeName, (array)$route, $instance);
-                } else {
-                    //var_dump($routes[$routeName]);
-                    $num--;
-                }
-                $num++;
+                //var_dump($routes[$routeName]);
             }
-
-        }
-        if ($onlyNames) {
-            return $numes;
         }
         return $routesArray;
     }
@@ -661,18 +642,27 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
      *
      * @param string $routeName
      * @param array $route
-     * @param Zend_Controller_Front::getInstance()
+     * @param Zend_Controller_Front $instance
      * @return array
      */
     public function getInfoFromModuleRoute($routeName, $route, $instance)
     {
         $modules = $instance->getControllerDirectory();
-
+        foreach ($modules as $modul => $path) {
+            $controllers = scandir($path);
+            foreach ($controllers as $key => $name) {
+                if (preg_match("/^([\w]*)Controller.php$/", $name, $matches)) {
+                    $lowerClasses = strtolower($matches[1]);
+                    $module[$modul][$lowerClasses] = $lowerClasses;
+                }
+            }
+        }
+        //var_dump($module);exit('*-*');
         return array(
             'name'   => $routeName,
             'path'   => '/:module/:controller/:action',
             'type'   => Menus_Model_Menu::ROUTE_TYPE_MODULE,
-            'modules' => $modules
+            'modules' => $module
         );
     }
 
@@ -721,10 +711,10 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
                     return false;
                 }
                 $routes = $this->getRoutes();
-                if (!isset($routes[$data['route']])) {
+
+                if (isset($routes[$data['route']]) == false) {
                     return false;
                 }
-
 
                 $menu->route_type = $routes[$data['route']]['type'];
 
@@ -736,6 +726,9 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
                     $menu->module     = $options['module'];
                     $menu->controller = $options['controller'];
                     $menu->action     = $options['action'];
+                    unset($options['module']);
+                    unset($options['controller']);
+                    unset($options['action']);
                 }
 
                 $menu->route = $routes[$data['route']]['name'];
@@ -750,11 +743,9 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
         if ( $menu->save() ) {
             return $menu;
         }
-
         return false;
 
         }
-
         return false;
     }
 
