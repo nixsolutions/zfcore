@@ -1,43 +1,4 @@
-<<<<<<< local
-<?xml version="1.0" encoding="UTF-8" ?>
-<phpunit bootstrap="./application/bootstrap.php" 
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    stopOnFailure="false"
-    syntaxCheck="true">
-        
-    <testsuite name="Main Test Suite">
-        <directory>./</directory>
-    </testsuite>
-    <listeners>
-      <listener class="TestListener" file="./application/TestListener.php"/>
-    </listeners>
 
-    <filter>
-        <blacklist>
-            <directory suffix=".php">/usr/share/php</directory>
-            <directory suffix=".php">../tests</directory>
-            <directory suffix=".php">../migrations</directory>
-        </blacklist>
-        <whitelist>
-            <directory suffix=".php">../application</directory>
-            <directory suffix=".php">../library</directory>
-            <exclude>
-                <directory suffix=".phtml">../application</directory>
-                <directory prefix="migrations">../migrations</directory>
-                <file>../application/Bootstrap.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
-    
-    <logging>
-      <log type="coverage-html" target="./reports/coverage" charset="UTF-8" yui="true" highlight="true" lowUpperBound="35" highLowerBound="70"/>
-      <!--<log type="coverage-xml" target="./reports/coverage/clover.xml"/>-->
-      <!--<log type="junit" target="./reports/phpunit.xml" logIncompleteSkipped="false"/>-->
-    </logging>
-=======
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpunit bootstrap="./application/bootstrap.php" 
     colors="true"
@@ -72,5 +33,4 @@
       <!--<log type="coverage-xml" target="./reports/coverage/clover.xml"/>-->
       <!--<log type="junit" target="./reports/phpunit.xml" logIncompleteSkipped="false"/>-->
     </logging>
->>>>>>> other
 </phpunit>
