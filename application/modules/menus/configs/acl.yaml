@@ -1,0 +1,6 @@
+mvc:
+  menus:
+    index:
+      allow: admin
+    error:
+      allow: admin

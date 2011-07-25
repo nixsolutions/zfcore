@@ -1,0 +1,17 @@
+menumanagment:
+  label: Menu
+  uri:
+  pages:
+    create:
+      label: Create Menu Item
+      module: menus
+      controller: index
+      action: create
+      route: default
+    manage:
+      label: Manage Menu
+      module: menus
+      controller: index
+      action: index
+      route: default
+      

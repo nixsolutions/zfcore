@@ -4,7 +4,7 @@
     <?php echo $this->headMeta() ?>
     <?php echo $this->headTitle() ?>
     <base href="<?php echo $this->baseUrl();?>" />
-    <?php $this->headLink() 
+    <?php $this->headLink()
                ->prependStylesheet($this->baseUrl('layouts/default/css/style.css'))
                ->headLink(array('rel' => 'shortcut icon', 'href' => $this->baseUrl('/favicon.ico'), 'type' => 'image/x-icon'), 'PREPEND')?>
     <?php $this->headScript()->prependFile($this->baseUrl('scripts/jquery/jquery.js?ver=1.4.2'));?>
@@ -17,7 +17,7 @@
     <?php if (0 != $this->FlashMessenger()->count() or $this->messages) :?>
         <div id="messages" class="opacity shadow" style="display: none;">
             <ul>
-            <?php 
+            <?php
                 foreach ($this->FlashMessenger()->getMessages() as $message) :
                       echo "<li>".$this->__($message)."</li>";
                 endforeach;
@@ -38,46 +38,54 @@
                     <h2>Content Management Framework</h2>
                 </div>
                 <div class="menu small">
-                    <?php echo $this->navigation()->menu()->setMinDepth(0)->setMaxDepth(0); ?>
                 </div>
                 <div class="menu clearright">
-                    <?php echo $this->navigation()->menu()->setMinDepth(1)->setMaxDepth(1); ?>
-                    <?php //var_dump($this->navigation()->menu()->setMinDepth(1));?>
+                <?php
+                $this->coreMenu()->setPartial(array('/default/partial/mainMenu.phtml', 'default'));
+                //echo $this->navigation()->coreMenu()->byId(0);
+                //echo $this->navigation()->coreMenu()->byLabel('Home');
+                echo $this->navigation()->coreMenu()/*->byId(0)*/->byLabel('Home')->setMinDepth(0)->setMaxDepth(50); ?>
                     <br class="clear"/>
+               <?php
+
+          // echo $this->getMenu(13)->setMinDepth(0)->setMaxDepth(0); ?>
+                       <?php //echo $this->getMenu(12)->setMinDepth(1)->setMaxDepth(1); ?>
                 </div>
             </div>
             <div class="topgreen clear">
                 <div class="cont_width">
                 <?php
-                    $titleArr = $this->headTitle()->getIterator();
+
+                    /*$titleArr = $this->headTitle()->getIterator();
                     $title = reset($titleArr);
                     if (sizeof($titleArr) != 1) {
                         echo $title;
-                    } else {
-                        $nav = $this->navigation()->menu()->setMinDepth(1)->setMaxDepth(1)->findByActive('true');
+                    } else {*/
+                        $nav = $this->navigation()->coreMenu()->setMinDepth(1)->setMaxDepth(1)->findByActive('true');
                         if ($nav) {
                         //showing page title or smthn another from navigation
                         //done only for 1st lev navigation
                             echo $nav->getLabel();
                         } else {
-                            echo '&nbsp;';
+                            echo 'home';
                         }
-                    }
+                    //}
                     ?>
                 </div>
             </div>
             <div class="tophelp">
                 <div class="cont_width">
+                    <div class="simpleMenu">
+                        <br class="clear"/>
+                    </div>
                     Here goes help text
                 </div>
             </div>
-        </div>           
-        <?php //echo $this->navigation()->breadcrumbs()->setPartial('default/partial/breadcrumbs.phtml'); ?>
-        
+        </div>
         <div class="content cont_width">
             <?php echo $this->layout()->content ?>
         </div>
-        
+
         <div class="footer">
             <div class="cont_width">
                 <div class="footer_logo">
@@ -86,10 +94,13 @@
                 <div>
                     <ul>
                         <li>
-                            <h4>Home </h4>
+                        <h4>Home </h4>
                         </li>
                         <li>
-                            <?php echo ($this->navigation()->menu()->setMinDepth(1)->setMaxDepth(1)); ?>
+                        <?php
+                            //$this->navigation()->coreMenu()->setPartial(array('/default/partial/bottomMenu.phtml', 'default'));
+                            echo $this->coreMenu()->byId(1)->setMinDepth(0)->setMaxDepth(2);
+                            ?>
                         </li>
                     </ul>
                     <ul>
