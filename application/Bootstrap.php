@@ -4,13 +4,13 @@
  *
  * @category Application
  * @package  Bootstrap
- * 
+ *
  * @version  $Id: Bootstrap.php 1607 2009-12-02 15:10:38Z dark $
  */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
     /**
-     * @return Zend_Application_Module_Autoloader 
+     * @return Zend_Application_Module_Autoloader
      */
     protected function _initAutoload()
     {
@@ -49,31 +49,31 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             $cacheFrontendOptions,
             $cacheBackendOptions
         );
-                                     
+
         Zend_Db_Table_Abstract::setDefaultMetadataCache($cache);
-        
-        /**  
-         * set Include File Cache 
-         */   
+
+        /**
+         * set Include File Cache
+         */
 //        $classFileIncCache = APPLICATION_PATH . '/../data/cache/loader.php';
-//        
+//
 //        if (file_exists($classFileIncCache)) include_once $classFileIncCache;
-//  
+//
 //        Zend_Loader_PluginLoader::setIncludeFileCache($classFileIncCache);
         return $this;
     }
 
 
     /**
-     * 
+     *
      * @return Zend_View
      */
     protected function _initView()
     {
         $this->bootstrap('layout');
-        
+
         $options = $this->getOption('view');
-        
+
         // Initialize view
         $view = new Core_View();
         $view->headMeta()
@@ -90,12 +90,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
          *   resources.view.filterPath.Core_View_Filter = "Core/View/Filter"
          * </code>
          */
-        $view->addHelperPath('Core/View/Helper/', 'Core_View_Helper');        
+        $view->addHelperPath('Core/View/Helper/', 'Core_View_Helper');
         $view->addFilterPath('Core/View/Filter', 'Core_View_Filter');
-        
+
         /* Application specified scripts/helpers/filters */
         $view->addScriptPath(APPLICATION_PATH . '/views/scripts');
-        $view->addHelperPath(APPLICATION_PATH . '/views/helpers', 'Application_View_Helper');
+        $view->addHelperPath(APPLICATION_PATH . '/layouts/helpers', 'Application_View_Helper');
         $view->addFilterPath(APPLICATION_PATH . '/views/filters', 'Application_View_Filter');
 
         $view->assign('env', APPLICATION_ENV);

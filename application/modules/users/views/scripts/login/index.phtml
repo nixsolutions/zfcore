@@ -2,15 +2,42 @@
 <h3>Use <strong>admin:123456</strong> for login</h3>
 <div>
 <?php echo $this->form; ?>
+
 <p class="small">
     <a href="<?php echo $this->url(array('module' => 'users',
                                          'controller'=>'register',
                                          'action'=>'index'),
-                                   'default'); ?>">Register now</a> |
+                                   'default'); ?>"><?php echo $this->__('Register now')?></a> |
     <a href="<?php echo $this->url(array('module' => 'users',
                                          'controller'=>'register',
                                          'action'=>'forget-password'),
-                                   'forgetPassword'); ?>">Forget Password</a>
-</p>
-</div>
+                                   'forgetPassword'); ?>"><?php echo $this->__('Forget Password')?></a> |
 
+    <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'google'));?>">
+        <?php echo $this->__('Sign in with Google')?>
+    </a> |
+    <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'twitter'));?>">
+        <img src="<?php echo $this->baseUrl('/layouts/default/css/images/twitter-darker.png')?>" alt="<?php echo $this->__('Sign in with Twitter')?>"/>
+    </a> |
+    <?php echo $this->fbConnect()->login(
+        $this->__('Login with Facebook'),
+        array('email', 'user_checkins'),
+        'onConnect()'
+    );?>
+</p>
+<script type="text/javascript">
+function onConnect() {
+	FB.getLoginStatus(function(response) {
+		if (response.session) {
+			$.post("/users/login/facebook", {}, function(response) {
+				console.log(response, response.success);
+				if (response.success) {
+					location = '/';
+				}
+			}, "json");
+		}
+	});
+}
+</script>
+
+</div>

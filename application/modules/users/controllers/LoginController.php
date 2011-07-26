@@ -139,4 +139,36 @@ class Users_LoginController extends Core_Controller_Action
         $this->_flashMessenger->addMessage($message);
         $this->_redirect('/');
     }
+
+    /**
+     * Facebook Connect
+     *
+     */
+    public function facebookAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        $this->_helper->facebook->login();
+
+        echo $this->_helper->json(array('success' => true));
+    }
+
+    /**
+     * Twitter Connect
+     *
+     */
+    public function oauthAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        if ($this->_getParam('type') == 'twitter') {
+            $this->_helper->twitter->login();
+        } elseif ($this->_getParam('type') == 'google') {
+            $this->_helper->google->login();
+        }
+
+        $this->_redirect('/');
+    }
 }
