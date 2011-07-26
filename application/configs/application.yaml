@@ -2,6 +2,8 @@ production:
   phpSettings:
     display_startup_errors: false
     display_errors: false
+    date:
+      timezone: Europe/Kiev
   includePaths:
     library: APPLICATION_PATH/../library
   pluginPaths:
@@ -12,6 +14,7 @@ production:
   appnamespace: Application
   autoloadernamespaces:
     - Core
+    - Facebook
   resources:
     frontController:
       moduleDirectory: APPLICATION_PATH/modules
@@ -91,6 +94,24 @@ production:
     session:
       save_path: APPLICATION_PATH/../data/session
     auth: true
+    registry:
+      fbConfig:
+        appId:  
+        secret: 
+        cookie: true
+      twitterConfig:
+        callbackUrl: /users/login/oauth/type/twitter
+        siteUrl: http://twitter.com/oauth
+        consumerKey: 
+        consumerSecret: 
+      googleConfig:
+        callbackUrl: /users/login/oauth/type/google
+        siteUrl: https://www.google.com/accounts/
+        authorizeUrl: https://www.google.com/accounts/OAuthAuthorizeToken
+        requestTokenUrl: https://www.google.com/accounts/OAuthGetRequestToken
+        accessTokenUrl: https://www.google.com/accounts/OAuthGetAccessToken
+        consumerKey: 
+        consumerSecret: 
     mail:
       transport:
         type: Zend_Mail_Transport_Smtp

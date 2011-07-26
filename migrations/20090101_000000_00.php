@@ -6,90 +6,105 @@ class Migration_20090101_000000_00 extends Core_Migration_Abstract
     {
         // users table
         $this->createTable('users');
-        
-        $this->createColumn('users', 
-                            'login', 
-                            Core_Migration_Abstract::TYPE_VARCHAR, 
+
+        $this->createColumn('users',
+                            'login',
+                            Core_Migration_Abstract::TYPE_VARCHAR,
                             255, null, true);
-                            
-        $this->createColumn('users', 
-                            'email', 
-                            Core_Migration_Abstract::TYPE_VARCHAR, 
+
+        $this->createColumn('users',
+                            'email',
+                            Core_Migration_Abstract::TYPE_VARCHAR,
                             255, null, true);
-                            
-        $this->createColumn('users', 
-                            'password', 
-                            Core_Migration_Abstract::TYPE_VARCHAR, 
+
+        $this->createColumn('users',
+                            'password',
+                            Core_Migration_Abstract::TYPE_VARCHAR,
                             64, null, true);
-                            
-        $this->createColumn('users', 
-                            'salt', 
-                            Core_Migration_Abstract::TYPE_VARCHAR, 
+
+        $this->createColumn('users',
+                            'salt',
+                            Core_Migration_Abstract::TYPE_VARCHAR,
                             32, null, true);
-                            
-        $this->createColumn('users', 
-                            'firstname', 
-                            Core_Migration_Abstract::TYPE_VARCHAR, 
+
+        $this->createColumn('users',
+                            'firstname',
+                            Core_Migration_Abstract::TYPE_VARCHAR,
                             255);
-                            
-        $this->createColumn('users', 
-                            'lastname', 
-                            Core_Migration_Abstract::TYPE_VARCHAR, 
+
+        $this->createColumn('users',
+                            'lastname',
+                            Core_Migration_Abstract::TYPE_VARCHAR,
                             255);
-                            
-        $this->createColumn('users', 
-                            'avatar', 
-                            Core_Migration_Abstract::TYPE_VARCHAR, 
+
+        $this->createColumn('users',
+                            'avatar',
+                            Core_Migration_Abstract::TYPE_VARCHAR,
                             512);
-                            
-        $this->createColumn('users', 
-                            'role', 
-                            Core_Migration_Abstract::TYPE_ENUM, 
+
+        $this->createColumn('users',
+                            'role',
+                            Core_Migration_Abstract::TYPE_ENUM,
                             array('guest','user','admin'), 'guest', true);
-                            
-        $this->createColumn('users', 
-                            'status', 
+
+        $this->createColumn('users',
+                            'status',
                             Core_Migration_Abstract::TYPE_ENUM,
                             array('active','blocked','registered', 'removed'), 'registered', true);
-                            
-        $this->createColumn('users', 
-                            'created', 
+
+        $this->createColumn('users',
+                            'created',
                             Core_Migration_Abstract::TYPE_TIMESTAMP,
                             null,
                             'CURRENT_TIMESTAMP', true);
-                            
-        $this->createColumn('users', 
-                            'updated', 
+
+        $this->createColumn('users',
+                            'updated',
                             Core_Migration_Abstract::TYPE_TIMESTAMP,
                             null,
                             '2000-01-01 00:00', true);
-                            
-        $this->createColumn('users', 
-                            'logined', 
+
+        $this->createColumn('users',
+                            'logined',
                             Core_Migration_Abstract::TYPE_TIMESTAMP,
                             null,
                             '2000-01-01 00:00', true);
-                            
-        $this->createColumn('users', 
-                            'ip', 
-                            Core_Migration_Abstract::TYPE_INT, 
+
+        $this->createColumn('users',
+                            'ip',
+                            Core_Migration_Abstract::TYPE_INT,
                             null);
-                            
-        $this->createColumn('users', 
-                            'count', 
-                            Core_Migration_Abstract::TYPE_INT, 
+
+        $this->createColumn('users',
+                            'count',
+                            Core_Migration_Abstract::TYPE_INT,
                             null, '1', true);
 
         $this->createColumn('users',
                             'hashCode',
                             Core_Migration_Abstract::TYPE_VARCHAR,
                             32);
-                            
+
         $this->createColumn('users',
                             'inform',
                             Core_Migration_Abstract::TYPE_ENUM,
                             array('true','false'), 'false', true);
-                            
+
+        $this->createColumn('users',
+                            'fbUid',
+                            Core_Migration_Abstract::TYPE_VARCHAR,
+                            250);
+
+        $this->createColumn('users',
+                            'gId',
+                            Core_Migration_Abstract::TYPE_VARCHAR,
+                            250);
+
+        $this->createColumn('users',
+                            'twId',
+                            Core_Migration_Abstract::TYPE_VARCHAR,
+                            250);
+
         $this->createTable('mail_templates');
 
         $this->createColumn('mail_templates',
@@ -134,7 +149,7 @@ class Migration_20090101_000000_00 extends Core_Migration_Abstract
         $this->createUniqueIndexes('users', array('login'), 'unique_login');
         $this->createUniqueIndexes('users', array('email'), 'unique_email');
         $this->createUniqueIndexes('users', array('hashCode'), 'activate');
-        
+
         $this->insert('mail_templates', array(
             'alias'   =>  'registration',
             'subject' =>  'Registration on %host%',
@@ -144,7 +159,7 @@ class Migration_20090101_000000_00 extends Core_Migration_Abstract
                           '<a href="http://%host%/users/register/confirm-registration/hash/%hash%">http://%host%/users/register/confirm-registration/hash/%hash%</a>'.
                           '<br />'.
                           'With best regards,<br />'.
-                          '<a href="http://%host%/>%host% team</a>',   
+                          '<a href="http://%host%/>%host% team</a>',
             'bodyText' =>  'Please confirm your registration\n\n'.
                           'Open the folowing link in your browser: \n'.
                           'http://%host%/users/register/confirm-registration/hash/%hash%'.
@@ -153,7 +168,7 @@ class Migration_20090101_000000_00 extends Core_Migration_Abstract
                           "%host% team",
             'signature' => 'true'
         ));
-        $this->insert('mail_templates', array( 
+        $this->insert('mail_templates', array(
             'alias'   =>  'forgetPassword',
             'subject' =>  'Forget password on %host%',
             'description' => 'User forget password letter',
@@ -176,8 +191,8 @@ http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/no
                           "%host% team",
             'signature' => 'true'
         ));
-        
-        
+
+
         $this->insert('mail_templates', array(
             'alias'   =>  'newPassword',
             'subject' =>  'New password for %host%',
