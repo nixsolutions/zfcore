@@ -37,27 +37,20 @@ class Users_RegisterController extends Core_Controller_Action
                     // confirm email sends to user
                     Mail_Model_Mail::register($user);
 
-                    $message = $this->__(
-                        'Now you\'re registered! Please ' .
-                        'check your email and confirm your registration'
-                    );
+                    $message = 'Now you\'re registered! Please ' .
+                        'check your email and confirm your registration';
                     $this->_flashMessenger->addMessage($message);
 
                     $this->_redirect('/');
                 } else {
-                    $message = $this->__(
-                        'Something goes wrong. ' .
-                        'Please fill the registration form again'
-                    );
+                    $message = 'Something goes wrong. ' .
+                        'Please fill the registration form again';
                 }
             } else {
-                $message = $this->__(
-                    'Registration error. '.
-                    'Please check the form fields'
-                );
+                $message = 'Registration error. Please check the form fields';
             }
+            $this->view->messages = $message;
         }
-        $this->view->messages = (isset($message)) ? $message : false;
         $this->view->form = $form;
     }
 
@@ -73,18 +66,14 @@ class Users_RegisterController extends Core_Controller_Action
             $hash = $this->_getParam('hash')) {
             if ($this->_manager->confirmRegistration($hash)) {
 
-                $message = $this->__(
-                    'Now you\'re confirm your registration! ' .
-                    'Please log in now'
-                );
+                $message = 'Now you\'re confirm your registration! '
+                         . 'Please log in now';
                 $this->_flashMessenger->addMessage($message);
 
                 $this->_redirect('/login');
             } else {
-                $message = $this->__(
-                    'The user with specified data not found! '.
-                    'Possibly you\'re already confirmed your registration'
-                );
+                $message = 'The user with specified data not found! '.
+                    'Possibly you\'re already confirmed your registration';
 
                 $this->_flashMessenger->addMessage($message);
             }
@@ -113,18 +102,15 @@ class Users_RegisterController extends Core_Controller_Action
                     // send email
                     Mail_Model_Mail::forgetPassword($user);
 
-                    $message = $this->__(
-                        'The confirmation email to reset your ' .
-                        'password is sent. Please check your email '
-                    );
+                    $message = 'The confirmation email to reset your '
+                             . 'password is sent. Please check your email ';
 
                     $this->_flashMessenger->addMessage($message);
 
                     $this->_redirect('/login');
                 }
             }
-            $message = $message = $this->__('Your email is not registered');
-            $this->_flashMessenger->addMessage($message);
+            $this->_flashMessenger->addMessage('Your email is not registered');
         }
         $this->view->form = $form;
     }

@@ -35,8 +35,7 @@ class Users_LoginController extends Core_Controller_Action
             if ($form->isValid($this->_getAllParams())) {
                 if ($this->_manager->login($form->getValues())) {
 
-                    $message = $this->__('Now You\'re Logging!');
-                    $this->_flashMessenger->addMessage($message);
+                    $this->_flashMessenger->addMessage('Now You\'re Logging!');
 
                     $session = new Zend_Session_Namespace('Zend_Request');
                     if (isset($session->params)) {
@@ -57,19 +56,15 @@ class Users_LoginController extends Core_Controller_Action
                     // small bruteforce shield
                     sleep(1);
                     // TODO: failure: clear database row from session
-                    $message = $this->__(
-                        'Authorization error. '.
-                        'Please check login or/and password'
-                    );
+                    $message = 'Authorization error. '.
+                        'Please check login or/and password';
                 }
             } else {
                 // small bruteforce shield
                 sleep(1);
                 // failure: form
-                $message = $this->__(
-                    'Authorization error. '.
-                    'Please check login or/and password'
-                );
+                $message = 'Authorization error. '
+                         . 'Please check login or/and password';
             }
             $this->view->messages = $message;
         }
@@ -82,17 +77,18 @@ class Users_LoginController extends Core_Controller_Action
     public function cancelPasswordRecoveryAction()
     {
         $hash = $this->_getParam('hash');
-        if (!$this->_getParam('hash') || !$this->_manager->isSetUserHash($hash)) {
-            $message = $this->__('Incorect request recover password');
-            $this->_flashMessenger->addMessage($message);
+        if (!$hash || !$this->_manager->isSetUserHash($hash)) {
+
+            $this->_helper->flashMessenger
+                 ->addMessage('Incorect request recover password');
             $this->_redirect('/login');
         }
 
         $reset = $this->_manager->clearHash($hash);
         if ($reset) {
-            $message = $this->__('Your password recovery request was cancelled.');
+            $message = 'Your password recovery request was cancelled.';
         } else {
-            $message = $this->__('Incorrect password recovery request.');
+            $message = 'Incorrect password recovery request.';
         }
         $this->_flashMessenger->addMessage($message);
         $this->_redirect('/login');
@@ -111,9 +107,9 @@ class Users_LoginController extends Core_Controller_Action
                 $password = $this->_getParam('passw');
                 $result = $this->_manager->setPassword($hash, $password);
                 if ($result) {
-                    $message = $this->__('You have changed your password.');
+                    $message = 'You have changed your password.';
                 } else {
-                    $message = $this->__('Incorrect password recovery request.');
+                    $message = 'Incorrect password recovery request.';
                 }
                 $this->_flashMessenger->addMessage($message);
                 $this->_redirect('/login');
@@ -135,27 +131,12 @@ class Users_LoginController extends Core_Controller_Action
     public function logoutAction()
     {
         $this->_manager->logout();
-        $message = $this->__('Logout successfull');
-        $this->_flashMessenger->addMessage($message);
+        $this->_helper->flashMessenger->addMessage('Logout successfull');
         $this->_redirect('/');
     }
 
     /**
-     * Facebook Connect
-     *
-     */
-    public function facebookAction()
-    {
-        $this->_helper->layout->disableLayout();
-        $this->_helper->viewRenderer->setNoRender();
-
-        $this->_helper->facebook->login();
-
-        echo $this->_helper->json(array('success' => true));
-    }
-
-    /**
-     * Twitter Connect
+     * Oauth Connect
      *
      */
     public function oauthAction()
@@ -163,11 +144,18 @@ class Users_LoginController extends Core_Controller_Action
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
-        if ($this->_getParam('type') == 'twitter') {
-            $this->_helper->twitter->login();
-        } elseif ($this->_getParam('type') == 'google') {
-            $this->_helper->google->login();
+        switch ($this->_getParam('type')) {
+            case 'twitter':
+                $this->_helper->twitter->login();
+                break;
+            case 'google':
+                $this->_helper->google->login();
+                break;
+            case 'facebook':
+                $this->_helper->facebook->login();
+                break;
         }
+        $this->_helper->flashMessenger->addMessage('Now You\'re Logging!');
 
         $this->_redirect('/');
     }

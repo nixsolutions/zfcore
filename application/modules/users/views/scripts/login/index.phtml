@@ -29,12 +29,7 @@
 function onConnect() {
 	FB.getLoginStatus(function(response) {
 		if (response.session) {
-			$.post("/users/login/facebook", {}, function(response) {
-				console.log(response, response.success);
-				if (response.success) {
-					location = '/';
-				}
-			}, "json");
+			location = '<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'facebook'));?>';
 		}
 	});
 }
