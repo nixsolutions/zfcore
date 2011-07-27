@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * User entity Model
@@ -6,7 +6,7 @@
  * @todo http://www.zimuel.it/blog/?p=86
  * @category Application
  * @package Model
- * 
+ *
  * @version  $Id: User.php 146 2010-07-05 14:22:20Z AntonShevchuk $
  */
 class Users_Model_User extends Core_Db_Table_Row_Abstract
@@ -15,11 +15,11 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     const STATUS_ACTIVE   = 'active';
     const STATUS_BLOCKED  = 'blocked';
     const STATUS_REMOVED  = 'removed';
-    
+
     const ROLE_GUEST = 'guest';
     const ROLE_USER  = 'user';
     const ROLE_ADMIN = 'admin';
-    
+
     /**
      * Minimum of username length
      * @var integer
@@ -37,18 +37,31 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
      * @var integer
      */
     const MIN_PASSWORD_LENGTH = 6;
-    
+
     /**
      * Maximux of firstname length
      * @var integer
      */
-    const MAX_FIRSTNAME_LENGTH = 255;    
+    const MAX_FIRSTNAME_LENGTH = 255;
     /**
      * Maximux of Lastname length
      * @var integer
      */
     const MAX_LASTNAME_LENGTH = 255;
-    
+
+    /**
+     * Get user name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        if ($this->lastname || $this->firstname) {
+            return $this->firstname . ' ' . $this->lastname;
+        }
+        return $this->login;
+    }
+
     /**
      * Set row field value
      *
@@ -90,14 +103,14 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
         }
         return parent::__get($columnName);
     }
-    
+
     /**
      * Changed parent method
      * if $clean == false it return raw data(as is in base)
      * always use $clean true to get data if you can
-     * 
+     *
      * @param bool $clean
-     * 
+     *
      * @return array
      */
     public function toArray($clean = false)
@@ -111,7 +124,31 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
         }
         return parent::toArray();
     }
-    
+
+    /**
+     * Login user
+     *
+     * @return Users_Model_User
+     */
+    public function login()
+    {
+        Zend_Auth::getInstance()->getStorage()->write($this);
+
+        return $this;
+    }
+
+    /**
+     * Logout user
+     *
+     * @return Users_Model_User
+     */
+    public function logout()
+    {
+        Zend_Auth::getInstance()->clearIdentity();
+
+        return $this;
+    }
+
     /**
      * Allows pre-update logic to be applied to row.
      * Subclasses may override this method.
@@ -122,10 +159,10 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     {
         $this->updated = date('Y-m-d H:i:s');
     }
-    
+
     /**
      * Allows pre-insert logic to be applied to row.
-     * Subclasses may override this method. 
+     * Subclasses may override this method.
      *
      * @return  void
      */

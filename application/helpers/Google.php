@@ -137,7 +137,7 @@ class Helper_Google extends Zend_Controller_Action_Helper_Abstract
             $row->count++;
             $row->save();
 
-            Zend_Auth::getInstance()->getStorage()->write($row);
+            $row->login();
         } else {
             $consumer = $this->getClient();
             // fetch a request token
