@@ -2,7 +2,13 @@
     $this->stylesheet()->module();
     $this->stylesheet()->action();
 ?>
-<h1><?php echo $this->row->getName()?></h1>
+<h1>
+    <?php echo $this->row->getName()?>
+
+    <?php if ($this->user() && $this->user()->isId($this->row->id)):?>
+        ( <a href="<?php echo $this->url(array(), 'editprofile')?>"><?php echo $this->__('Edit')?></a> )
+    <?php endif?>
+</h1>
 <div>
     <div class="left">
         <?php if ($this->row->avatar):?>

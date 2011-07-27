@@ -36,3 +36,24 @@ forgetPassword:
     module: users
     controller: register
     action: forget-password
+    
+myprofile:
+  route: /users/profile
+  defaults:
+    module: users
+    controller: profile
+    action: index
+    
+userprofile:
+  route: /users/profile/:id
+  defaults:
+    module: users
+    controller: profile
+    action: view
+    
+editprofile:
+  route: /users/profile/edit
+  defaults:
+    module: users
+    controller: profile
+    action: edit
