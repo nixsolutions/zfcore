@@ -1,19 +1,15 @@
 <?php
 /**
- * @see Core_Controller_Action
- */
-require_once 'Core/Controller/Action.php';
-
-/**
- * Menus_IndexController
+ * Menus_ManagementController
  *
  * @category    Application
- * @package     Menus_IndexController
+ * @package     ManagementController
  *
  * @author      Valeriu Baleyko <baleyko.v.v@gmail.com>
- * @copyright   Copyright (c) 2010 NIX Solutions (http://www.nixsolutions.com)
+ * @author      Alexander Khaylo <alex.khaylo@gmail.com>
+ * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
-class Menus_IndexController extends Core_Controller_Action_Scaffold
+class Menus_ManagementController extends Core_Controller_Action_Scaffold
 {
     public function init()
     {

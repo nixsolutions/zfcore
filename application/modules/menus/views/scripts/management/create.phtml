@@ -79,12 +79,12 @@
                     <?php
                     if ($route['wildcard'] === true):?>
                     <p class="new-parameters"></p>
-                        <span>Add param:</span>
+                        <span>Current parameter name:</span>
                         <div>
                             <input class="newparam" dojoType="dijit.form.TextBox" type="text" name="newparam" value="">
                         </div>
 
-                        <input dojoType="dijit.form.Button" onclick="addParam();" type="button" name="add" label="Add param" value="Add param">
+                        <input dojoType="dijit.form.Button" onclick="addParam();" type="button" name="add" label="Add parameter" value="Add parameter">
                     <?php
                     endif;
                 endif;
@@ -145,11 +145,11 @@
                         </div>
 
                         <p class="new-parameters"></p>
-                        <span>Add param:</span>
+                        <span>Current parameter name:</span>
                         <div>
                             <input class="newparam" dojoType="dijit.form.TextBox" type="text" name="newparam" value="">
                         </div>
-                        <input dojoType="dijit.form.Button" onclick="addParam();" type="button" name="add" label="Add param" value="Add param">
+                        <input dojoType="dijit.form.Button" onclick="addParam();" type="button" name="add" label="Add parameter" value="Add parameter">
                     <?php
                 endif;
             endif;?>
