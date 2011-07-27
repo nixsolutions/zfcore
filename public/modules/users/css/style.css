@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+
+dt {
+    float: left;
+    padding-bottom:10px;
+    display: block;
+}
+dd {
+	clear: right;
+	padding-left: 50px;
+	padding-bottom:10px;
+}
+dl {
+    margin: 0 0 0 40px;
+}

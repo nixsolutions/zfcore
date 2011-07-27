@@ -1,0 +1,42 @@
+<?php
+    $this->stylesheet()->module();
+    $this->stylesheet()->action();
+?>
+<h1><?php echo $this->row->getName()?></h1>
+<div>
+    <div class="left">
+        <?php if ($this->row->avatar):?>
+            <img src="<?php echo $this->baseUrl($this->row->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $this->row->login?>"/>
+        <?php else:?>
+            <?php echo $this->gravatar($this->row->email, array(), array('title' => $this->__('Avatar for') . ' '  .$this->row->login))?>
+        <?php endif;?>
+    </div>
+    <div class="left">
+        <dl>
+            <dt><?php echo $this->__('Login')?>:</dt>
+            <dd><?php echo $this->row->login?></dd>
+
+            <?php if ($this->row->firstname):?>
+                <dt><?php echo $this->__('First Name')?>:</dt>
+                <dd><?php echo $this->row->firstname?></dd>
+            <?php endif?>
+
+            <?php if ($this->row->lastname):?>
+                <dt><?php echo $this->__('Last Name')?>:</dt>
+                <dd><?php echo $this->row->lastname?></dd>
+            <?php endif?>
+
+            <dt><?php echo $this->__('Role')?>:</dt>
+            <dd><?php echo $this->row->role?></dd>
+
+            <dt><?php echo $this->__('Status')?>:</dt>
+            <dd><?php echo $this->row->status?></dd>
+
+            <dt><?php echo $this->__('Registered')?>:</dt>
+            <dd><?php echo $this->row->created?></dd>
+
+            <dt><?php echo $this->__('Last Online')?>:</dt>
+            <dd><?php echo $this->row->logined?></dd>
+        </dl>
+    </div>
+</div>

@@ -15,7 +15,10 @@ mvc:
       recover-password:
         allow: guest
         deny: user
-      
+    profile:
+      allow: user
+      view:
+        allow: guest
     register:
       allow: guest
       deny: user

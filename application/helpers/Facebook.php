@@ -79,6 +79,6 @@ class Helper_Facebook extends Zend_Controller_Action_Helper_Abstract
         $row->count++;
         $row->save();
 
-        Zend_Auth::getInstance()->getStorage()->write($row);
+        $row->login();
     }
 }
