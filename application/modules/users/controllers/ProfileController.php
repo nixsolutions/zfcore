@@ -48,7 +48,7 @@ class Users_ProfileController extends Core_Controller_Action
         $row = $users->getById($identity->id);
 
         $form = new Users_Model_Users_Form_Profile();
-        $form->populate($row->toArray());
+        $form->setUser($row);
 
         if ($this->_request->isPost()
             && $form->isValid($this->_getAllParams())) {
@@ -57,6 +57,9 @@ class Users_ProfileController extends Core_Controller_Action
             $row->save();
 
             $row->login();
+
+            $this->_helper->flashMessenger('Profile Updated');
+            $this->_helper->redirector('index');
         }
         $this->view->form = $form;
     }

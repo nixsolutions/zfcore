@@ -63,6 +63,39 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     }
 
     /**
+     * Is password
+     *
+     * @param string $value
+     * @return boolen
+     */
+    public function isPassword($value)
+    {
+        return $this->encrypt($value) == $this->_data['password'];
+    }
+
+    /**
+     * Is column value equal to
+     *
+     * @param string $value
+     * @return boolen
+     */
+    public function is($column, $value)
+    {
+        return $this->{$column} == $value;
+    }
+
+    /**
+     * Encrypt password
+     *
+     * @param string $password
+     * @return string
+     */
+    public function encrypt($password)
+    {
+        return md5($this->salt . $password);
+    }
+
+    /**
      * Set row field value
      *
      * @param  string $columnName The column key.
@@ -76,13 +109,31 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
                 $value = ip2long($value);
                 break;
             case 'password':
-                if (!$this->salt) {
-                    parent::__set('salt', md5(uniqid()));
+                if ($value) {
+                    if (!$this->salt) {
+                        parent::__set('salt', md5(uniqid()));
+                    }
+                    $value = $this->encrypt($value);
                 }
-                $value = md5($this->salt . $value);
                 break;
         }
         parent::__set($columnName, $value);
+    }
+
+    /**
+     * @see Zend_Db_Table_Row_Abstract::__call()
+     */
+    public function __call($method, $args)
+    {
+        if (strpos($method, 'is') === 0) {
+            $method = substr($method, 2);
+            $method{0} = strtolower($method{0});
+
+            array_unshift($args, $method);
+
+            return call_user_func_array(array($this, 'is'), $args);
+        }
+        parent::__call($method, $args);
     }
 
     /**
@@ -95,7 +146,7 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     {
         switch ($columnName) {
             case 'password':
-                return;
+                //return;
                 break;
             case 'ip':
                 return long2ip(parent::__get($columnName));

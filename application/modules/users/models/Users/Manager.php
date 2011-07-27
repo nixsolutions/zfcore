@@ -40,11 +40,8 @@ class Users_Model_Users_Manager extends Core_Model_Manager
 
         if ($result->isValid()) {
             // success: store database row to auth's storage system
-            $authData = $authAdapter->getResultRowObject(
-                null,
-                array('password')
-            );
-            $auth->getStorage()->write($authData);
+            $users = new Users_Model_Users_Table();
+            $auth->getStorage()->write($users->getByLogin($login));
             return true;
         }
         return false;
