@@ -5,7 +5,7 @@
  * @category   Application
  * @package    Default
  * @subpackage Controller
- * 
+ *
  * @version  $Id: ErrorController.php 185 2010-08-09 14:14:47Z AntonShevchuk $
  */
 class ErrorController extends Core_Controller_Action
@@ -16,7 +16,7 @@ class ErrorController extends Core_Controller_Action
      */
     public function init()
     {
-        /* Initialize action controller here */        
+        /* Initialize action controller here */
         parent::init();
     }
 
@@ -34,21 +34,19 @@ class ErrorController extends Core_Controller_Action
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION:
                 // 404 error -- controller or action not found
                 $this->getResponse()->setHttpResponseCode(404);
-                $message = $this->__("The page you requested was not found.");
+                $message = "The page you requested was not found.";
                 break;
             default:
                 // application error
                 $this->getResponse()->setHttpResponseCode(500);
-                $message = $this->__(
-                    'An unexpected error occurred with your request. ' .
-                    'Please try again later.'
-                );
+                $message = 'An unexpected error occurred with your request. '
+                         . 'Please try again later.';
                 break;
         }
         $this->view->message   = $message;
         $this->view->exception = $errors->exception;
         $this->view->request   = $errors->request;
-         
+
     }
 
 
@@ -62,7 +60,7 @@ class ErrorController extends Core_Controller_Action
         $this->getResponse()->setHttpResponseCode(500);
         $this->view->message = $this->_getParam('error');
     }
-    
+
     /**
      * deniedAction
      *
@@ -70,9 +68,9 @@ class ErrorController extends Core_Controller_Action
      */
     public function deniedAction()
     {
-        
+
     }
-    
+
     /**
      * notfoundAction
      *
