@@ -27,10 +27,11 @@
             $this->dojo()
                  ->requireModule('dojo.parser')
                  ->requireModule('dojo.fx')
-
+                 ->requireModule('dojo.data.ItemFileReadStore')
+                 ->requireModule('dijit.form.FilteringSelect')
                  /** use dojo theme tundra */
                  ->addStyleSheetModule('dijit.themes.tundra')
-                 ->setDjConfig(array('isDebug' => false, 
+                 ->setDjConfig(array('isDebug' => false,
                                      'parseOnLoad' => true,
                                      'baseUrl' => './'))
                     ;
