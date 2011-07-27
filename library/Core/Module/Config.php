@@ -1,7 +1,7 @@
 <?php
 /**
  * Load configuration from every module, merge it, save to cache
- * 
+ *
  * <code>
  * Core_Module_Config::getConfig(
  *     String $config,
@@ -10,14 +10,14 @@
  *     Bool $cache
  * );
  * </code>
- * 
+ *
  * @category   Core
  * @package    Core_Module
  * @subpackage Config
- * 
+ *
  * @author   Anton Shevchuk <AntonShevchuk@gmail.com>
  * @link     http://anton.shevchuk.name
- * 
+ *
  * @version  $Id: Config.php 223 2011-01-19 15:14:14Z AntonShevchuk $
  */
 class Core_Module_Config
@@ -32,48 +32,48 @@ class Core_Module_Config
      * @var Core_Cache_Config
      */
     private static $_instance = null;
-    
+
     /**
      * Array of configs
      *
      * @var array
      */
     private $_configs = array();
-    
+
     /**
      * Path to application configs
      *
      * @var string
      */
     private $_configsDir;
-    
+
     /**
      * Array of available modules
      *
      * @var array
      */
     private $_modules = array();
-    
+
     /**
      * Path to modules directory
      *
      * @var string
      */
     private $_modulesDir;
-    
-    
+
+
     /**
      * Construct
-     * 
+     *
      * @return Core_Module_Config
      */
-    public function __construct() 
+    public function __construct()
     {
         $this->_modules    = array_keys(Zend_Controller_Front::getInstance()->getControllerDirectory());
         $this->_modulesDir = dirname(Zend_Controller_Front::getInstance()->getModuleDirectory());
         $this->_configsDir = APPLICATION_PATH . '/configs/';
     }
-    
+
     /**
      * Return singleton instance
      *
@@ -86,23 +86,23 @@ class Core_Module_Config
         }
         return self::$_instance;
     }
-    
+
     /**
      * _getCache
      *
      * @return  array
      */
-    protected function _getCache() 
+    protected function _getCache()
     {
         $frontendOptions = array("lifetime" => 3600,
                                  "automatic_serialization" => true,
                                  "automatic_cleaning_factor" => 1,
                                  "ignore_user_abort" => true);
-                                 
+
         $backendOptions  = array("file_name_prefix" => APPLICATION_ENV . "_config",
                                  "cache_dir" =>  APPLICATION_PATH ."/../data/cache",
                                  "cache_file_umask" => 0644);
-        
+
         // getting a Zend_Cache_Core object
         return Zend_Cache::factory(
             'Core',
@@ -111,14 +111,14 @@ class Core_Module_Config
             $backendOptions
         );
     }
-    
+
     /**
      * getConfig
      *
      * return configs from all modules merged with main
      *
      * @todo    add new parameter for set order of load main config
-     * 
+     *
      * @param   string $filename  Configuration file name w/out extension
      * @param   string $section   Section name
      * @param   int    $order     Order of load main config
@@ -131,10 +131,10 @@ class Core_Module_Config
                                      $cache = true)
     {
         $moduleConfig = Core_Module_Config::getInstance();
-        
+
         if ($cache) {
             $cache = $moduleConfig->_getCache();
-            
+
             if (!$result = $cache->load($filename.$section)) {
                 $result = $moduleConfig->_getYamlConfig($filename, $section, $order);
                 $cache->save($result, $filename.$section);
@@ -173,9 +173,7 @@ class Core_Module_Config
 
             if (is_dir($dirPath) && file_exists($confFile)) {
                 try {
-                    $config = new Core_Config_Yaml($confFile, $section, array('ignore_definitions' => true,
-                                                                              'ignore_constants' => true,
-                                                                              'skip_extends' => true));
+                    $config = new Core_Config_Yaml($confFile, $section);
                     if ($config = $config->toArray()) {
                         $result = array_merge_recursive($result, $config);
                     }
@@ -192,9 +190,7 @@ class Core_Module_Config
 
         if (is_dir($this->_configsDir)
             && file_exists($mainConfig)) {
-            $config = new Core_Config_Yaml($mainConfig, $section, array('ignore_definitions' => true,
-                                                                        'ignore_constants' => true,
-                                                                        'skip_extends' => true));
+            $config = new Core_Config_Yaml($mainConfig, $section);
             if ($config = $config->toArray()) {
                 if ($order === Core_Module_Config::MAIN_ORDER_FIRST ) {
                     $result = array_merge_recursive($config, $result);

@@ -27,8 +27,6 @@ abstract class Core_Controller_Action_Scaffold extends Core_Controller_Action
      */
     public function init()
     {
-        /* Initialize action controller here */
-        parent::init();
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
         $this->_viewRenderer = $this->_helper->getHelper('viewRenderer');
 
@@ -104,8 +102,6 @@ abstract class Core_Controller_Action_Scaffold extends Core_Controller_Action
             $model->setFromArray($createForm->getValues());
             $model->save();
             $this->_flashMessenger->addMessage('Successfully!');
-
-            //$this->_helper->redirector('index')->direct(); not workin in tests
 
             $this->_helper->getHelper('redirector')->direct('index');
 

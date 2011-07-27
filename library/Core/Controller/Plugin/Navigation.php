@@ -1,9 +1,9 @@
 <?php
 /**
  * Controller plugin that sets the correct paths to the Zend_Layout instances
- * 
+ *
  * You can initialize this is plugin in your application.yaml
- * 
+ *
  * <code>
  * navigation:
  *   class: Core_Controller_Plugin_Navigation
@@ -13,16 +13,16 @@
  *     section: dashboard
  *     cache: off
  * </code>
- * 
+ *
  * @uses       Zend_Controller_Plugin_Abstract
- * 
+ *
  * @category   Core
  * @package    Core_Controller
  * @subpackage Plugins
- * 
+ *
  * @author   Anton Shevchuk <AntonShevchuk@gmail.com>
  * @link     http://anton.shevchuk.name
- * 
+ *
  * @version  $Id: Navigation.php 223 2011-01-19 15:14:14Z AntonShevchuk $
  */
 class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
@@ -47,7 +47,7 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
      * @var string
      */
     protected $_section = 'dashboard';
-        
+
     /**
      * cache using
      *
@@ -79,7 +79,7 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
 
         $this->_options = $options;
     }
-    
+
     /**
      * preDispatch
      *
@@ -91,7 +91,7 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
 //
 //        $this->_initNavigation($section);
 //    }
-    
+
     /**
      * postDispatch
      *
@@ -100,19 +100,19 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
     public function postDispatch(Zend_Controller_Request_Abstract $request)
     {
         $section = $this->_getSection();
-        
+
         if ($section == $this->_section) {
             $this->_initNavigation();
         }
     }
-    
+
     /**
      * _initNavigation
-     * 
+     *
      * @param   string $section
-     * @return  void  
+     * @return  void
      */
-    protected function _initNavigation($section = null) 
+    protected function _initNavigation($section = null)
     {
         $container = new Zend_Navigation($this->_getConfig($section));
 
@@ -123,20 +123,12 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
             $navigation->setTranslator(Zend_Registry::get('Zend_Translate'));
         }
 
-        try {
-            $acl = Zend_Registry::get('Acl');
- 
+        if (Zend_Registry::isRegistered('Acl')) {
+            $navigation->setAcl(Zend_Registry::get('Acl'));
+
             $identity = Zend_Auth::getInstance()->getIdentity();
-            
-            if ($identity) {
-                $role = $identity->role;
-            } else {
-                $role = 'guest';
-            }
-                
-            $navigation->setAcl($acl)->setRole($role);
-        } catch (Exception $e) {
-            // Acl is not inited            
+
+            $navigation->setRole($identity ? $identity->role : 'guest');
         }
     }
 

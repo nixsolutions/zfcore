@@ -24,7 +24,7 @@ class Core_Db_Table_Abstract extends Zend_Db_Table_Abstract
     /**
      * Return Primary Key
      *
-     * @return string
+     * @return array
      */
     public function getPrimary()
     {
@@ -44,9 +44,9 @@ class Core_Db_Table_Abstract extends Zend_Db_Table_Abstract
     }
 
     /**
-     * get row by id
+     * Get row by id
      *
-     * @param  integer $id  primary key
+     * @param  mixed $id primary key
      * @return
      */
     public function getById($id)
