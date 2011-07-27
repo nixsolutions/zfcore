@@ -37,7 +37,7 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
      */
     protected function _getCreateForm()
     {
-
+        return new Menus_Model_Menu_Form_Create();
     }
 
     /**
@@ -49,7 +49,7 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
      */
     protected function _getEditForm()
     {
-
+        return new Menus_Model_Menu_Form_Edit();
     }
 
     /**
@@ -87,12 +87,9 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
     {
         $menuTable = new Menus_Model_Menu_Manager();
 
-        $start  = $this->_getParam('start');
-        $count  = $this->_getParam('count');
+        $start  = (int)$this->_getParam('start');
+        $count  = (int)$this->_getParam('count');
         $sort   = $this->_getParam('sort', 'path');
-        $field  = $this->_getParam('field');
-        $filter = $this->_getParam('filter');
-
         // sort data
         //   field  - ASC
         //   -field - DESC
@@ -104,16 +101,6 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
             } else {
                 $order = $sort  .' '.  Zend_Db_Select::SQL_ASC;
             }
-        }
-
-        // Use LIKE for filter
-        if ($field && in_array($field, $this->_table->info(Zend_Db_Table::COLS))
-            && $filter && $filter != '*') {
-
-            $filter = str_replace('*', '%', $filter);
-            $filter = $this->_table->getAdapter()->quote($filter);
-
-            $where = $field .' LIKE '. $filter;
         }
 
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -178,7 +165,6 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
             $datas = $data->toArray();
 
             foreach ($data as $key => $val) {
-
                 $datas[$key]['parent'] = $parentArray[$val['id']];
             }
 
@@ -195,10 +181,10 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
     public function createAction()
     {
         $menuManager = new Menus_Model_Menu_Manager();
-        $menuCreateForm = new Menus_Model_Menu_Form_Create();
+        $createForm = $this->_getCreateForm();
 
         if ($this->_request->isPost()
-                && $menuCreateForm->isValid($this->_getAllParams())) {
+                && $createForm->isValid($this->_getAllParams())) {
             try {
                 $menuManager->addMenuItem($this->_request->getParams());
             } catch (Exception $e) {
@@ -209,7 +195,7 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
 
         $routes = $menuManager->getRoutes();
         $this->view->routes = $routes;
-        $this->view->menuCreateForm = $menuCreateForm;
+        $this->view->createForm = $createForm;
         $this->view->javascript()->action();
     }
 
@@ -222,7 +208,9 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
         }
 
         $menuManager = new Menus_Model_Menu_Manager();
-        $menuEditForm = new Menus_Model_Menu_Form_Edit();
+
+        $editForm = $this->_getEditForm();
+        $editForm = new Menus_Model_Menu_Form_Edit();
 
         $routes = $menuManager->getRoutes();
         $row = $menuManager->getRowById($id);
@@ -237,7 +225,7 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
         }
 
         if ($this->_request->isPost()
-                && $menuEditForm->isValid($this->_getAllParams())) {
+                && $editForm->isValid($this->_getAllParams())) {
             try {
                 $menuManager->updateMenuItem($this->_request->getParams());
             } catch (Exception $e) {
@@ -248,77 +236,91 @@ class Menus_IndexController extends Core_Controller_Action_Scaffold
 
         $this->view->menu = $row;
         $this->view->routes = $routes;
-        $this->view->menuEditForm = $menuEditForm;
+        $this->view->editForm = $editForm;
         $this->view->javascript()->action();
     }
 
     public function deleteAction()
     {
-        $id = $this->_getParam('id', 0);
+        $id = $this->_getParam('id');
         $menuTable = new Menus_Model_Menu_Manager();
-        $isAjax = $this->getRequest()->isXmlHttpRequest();
 
+        $deleted = false;
         if (empty($id) || empty($menuTable)) {
-                if ($isAjax) {
-                    $this->_helper->json(0);
-                }
+            $this->_helper->json($deleted);
             return false;
         }
 
-        $deleted = false;
+
         if (!empty($id)) {
             $deleted = $menuTable->removeById($id);
         }
+        $this->_helper->json($deleted);
 
-        if ($isAjax) {
-            $this->_helper->json($deleted);
-        }
         return $deleted;
     }
 
 
     public function moveAction()
     {
-        $id = (int)$this->_getParam('id', 0);
+        $this->_helper->layout->disableLayout();
+        $id = (int)$this->_getParam('id');
         $to = $this->_getParam('to');
         $menuTable = new Menus_Model_Menu_Manager();
-        $isAjax = $this->getRequest()->isXmlHttpRequest();
-
+        $moved = false;
         if (empty($id) || empty($to) || empty($menuTable)) {
-            if ($isAjax) {
-                $this->_helper->json(0);
-            }
+            $this->_helper->json($moved);
             return false;
         }
-        $moved = false;
+
         if (!empty($id)) {
             $moved = $menuTable->moveToById($id, $to);
         }
-        if ($isAjax) {
-            $this->_helper->json($moved);
-        }
+        $this->_helper->json($moved);
+
         return $moved;
     }
 
 
+    /**
+     * get actions by controller
+     * Enter description here ...
+     * @param string $module
+     * @param string $controller
+     */
+    protected function _getActionsByController($module, $controller)
+    {
+        $instance = Zend_Controller_Front::getInstance();
+        $modules = $instance->getControllerDirectory();
+        require_once $modules[$module].'/'.ucfirst($controller).'Controller.php';
+        return get_class_methods(ucfirst($module).'_'.$controller.'Controller');
+    }
+
+    /**
+     * getActionsAction
+     */
     public function getActionsAction()
     {
         $module = $this->_getParam('m');
         $controller = $this->_getParam('c');
-        $controllerActions = array();
 
-        $instance = Zend_Controller_Front::getInstance();
-        $modules = $instance->getControllerDirectory();
-        require_once $modules[$module].'/'.ucfirst($controller).'Controller.php';
-        $methods = get_class_methods(ucfirst($module).'_'.$controller.'Controller');
-        if (is_array($methods)) {
-            foreach ($methods as $method) {
-                if (preg_match("/^([\w]*)Action$/", $method, $actions)) {
-                    $action = strtolower(preg_replace("/([A-Z])/", "-$1", $actions[1]));
-                    $controllerActions[] = array('name' => $action);
+        $result = false;
+
+        if ($controller && $module) {
+
+            $controllerActions = array();
+            $methods = $this->_getActionsByController($module, $controller);
+
+            if (is_array($methods)) {
+                foreach ($methods as $method) {
+                    if (preg_match("/^([\w]*)Action$/", $method, $actions)) {
+                        $action = strtolower(preg_replace("/([A-Z])/", "-$1", $actions[1]));
+                        $controllerActions[] = array('name' => $action);
+                    }
                 }
+                $result = $controllerActions;
             }
         }
-        $this->view->items = $controllerActions;
+        $this->view->items = $result;
     }
 }

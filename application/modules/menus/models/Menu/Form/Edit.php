@@ -16,20 +16,15 @@ require_once 'Zend/Dojo/Form.php';
  */
 class Menus_Model_Menu_Form_Edit extends Menus_Model_Menu_Form_Create
 {
-
         public function init()
         {
             parent::init();
-
-            $this->setName('menuItemEditForm')
-                    ->addElement(new Zend_Form_Element_Hidden('id'));
-
+            $this->setName('menuItemEditForm');
             return $this;
         }
 
     public function _submit()
     {
-            //$this->setLegend('Menu Item Edit Form');
             return parent::_submit()->setLabel('Save');
     }
 }

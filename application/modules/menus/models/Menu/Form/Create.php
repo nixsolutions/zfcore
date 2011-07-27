@@ -19,8 +19,8 @@ class Menus_Model_Menu_Form_Create extends Zend_Dojo_Form
 
     protected $_menuManager = null;
 
-        public function init()
-        {
+    public function init()
+    {
         $this->_menuManager = new Menus_Model_Menu_Manager();
 
         $this->setName('menuItemCreateForm');
@@ -120,16 +120,12 @@ class Menus_Model_Menu_Form_Create extends Zend_Dojo_Form
                 $title->setValue($menuRow->getTitle());
                 $class->setValue($menuRow->getClass());
                 $target->setValue($menuRow->getTarget());
-                //  $module->setValue($menuRow->getModule());
-                //  $controller->setValue($menuRow->getController());
-                //  $action->setValue($menuRow->getAction());
                 $route->setValue($menuRow->getRoute());
                 $uri->setValue($menuRow->getUri());
                 $visible->setValue($menuRow->getVisible());
                 $linkType->setValue($menuRow->getLinkType());
                 $active->setValue($menuRow->getActive());
                 $itemId->setValue($id);
-                //$this->setLegend($menuRow->getTitle() . ' - Menu Edit Form');
             }
         }
 
@@ -148,15 +144,11 @@ class Menus_Model_Menu_Form_Create extends Zend_Dojo_Form
                 $this->_submit()
             )
         );
-
-        $this->addElement($this->_submit());
-
-                return $this;
-        }
+        return $this;
+    }
 
     public function _submit()
     {
-            $this->setLegend('Menu Add Form');
             $submit = new Zend_Dojo_Form_Element_SubmitButton('submit');
             $submit->setLabel('Create');
             return $submit;

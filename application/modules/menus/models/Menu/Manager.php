@@ -163,7 +163,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
      */
     public function getTypeOptionsForEditForm()
     {
-        return $parentMenus = array(
+        return array(
             Menus_Model_Menu::TYPE_URI => 'URI',
             Menus_Model_Menu::TYPE_MVC => 'MVC'
         );
@@ -200,7 +200,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
      * @param string $value
      * @return array
      */
-    public function getArrayItemByKey ($arr, $name, $value)
+    public function getArrayItemByKey($arr, $name, $value)
     {
         if (!is_array($arr)) {
             return null;
@@ -232,9 +232,8 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
      * @param array $inputArray
      * @return array
      */
-    protected function makeParentChildRelations($inputArray)
+    public function makeParentChildRelations($inputArray)
     {
-
         if (!is_array($inputArray)) {
             return null;
         }
@@ -257,7 +256,6 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
                 $dangling[$id] = $entry;
             }
         }
-        $i = 0;
         while (count($dangling) > 0) {
             foreach ($dangling as $entry) {
                 $id = $entry['id'];
@@ -271,12 +269,6 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
                     unset($dangling[$entry['id']]);
                 }
             }
-            $i++;
-            if ($i > 50) {
-                //var_dump($dangling);
-                exit('Error in while() '.count($dangling));
-                break;
-            }
         }
         return $outputArray;
     }
@@ -288,9 +280,8 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     {
         if (null === $this->_menuArray) {
             if ($this->_menuTableRowset instanceof Zend_Db_Table_Rowset) {
-                $this->_menuArray = $this->_menuTableRowset->toArray();
-
-                $this->_menuArray = $this->makeParentChildRelations($this->_menuArray);
+                $array = $this->_menuTableRowset->toArray();
+                $this->_menuArray = $this->makeParentChildRelations($array);
             } else {
                 $this->_menuArray = array();
             }
@@ -555,6 +546,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     {
         $params = array();
         $parts = array();
+        $arrayParams = array();
         $path = '';
         $wildcard = false;
         foreach ($route as $names => $val) {
@@ -657,7 +649,6 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
                 }
             }
         }
-        //var_dump($module);exit('*-*');
         return array(
             'name'   => $routeName,
             'path'   => '/:module/:controller/:action',

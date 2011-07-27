@@ -30,51 +30,6 @@ class Core_View_Helper_CoreMenu
         } else {
             $menuArray = $menuManager->getMenuById(0);
         }
-         $testOne = array(
-             'label' => 'jjjj',
-              'id' => 1,
-              'type' => 'mvc',
-              'route' => 'pages',
-             "module" => "pages",
-            "controller" => "index",
-            "action" => "index",
-             'params' => array(
-                 "alias" => "about")
-         );
-  $testTwo = array(
-  'label' => 'hhh',
-  'id' => 2,
-  'type' => 'mvc',
-  'route' => 'default',
-  'module' => 'default',
-  'controller' => 'index',
-  'action' => 'index',
-  'uri' => null,
-  'class' => 'register',
-  'active' => '0',
-  'visible' => '1',
-  'pages' =>
-    array(
-      'register' =>  array(
-             'label' => 'register',
-             'title' => 'register',
-              'id' => 1,
-              'type' => 'mvc',
-          'route' => 'default',
-          'uri' => null,
-          'class' => 'register',
-          'active' => '1',
-          'visible' => '1',
-          'route_type' => 'module',
-          'module' => 'users',
-          'controller' => 'register',
-          'action' => 'index',
-             'params' => array(
-                 "type" => "bot",
-                "module" => "users",
-                "controller" => "register",
-                   "action" => "index",)
-         )));
 
         $container = new Zend_Navigation(array($menuArray));
 

@@ -1,5 +1,5 @@
 <?php
-//echo $this->menuEditForm;
+//echo $this->editForm;
 ?>
 <style>
 #menuItemCreateForm hr{
@@ -11,58 +11,61 @@
 </style>
 
 <form action=""
-    name="<?php echo $this->menuEditForm->getName(); ?>"
-    id="<?php echo $this->menuEditForm->getId(); ?>"
-    enctype="<?php echo $this->menuEditForm->getEnctype(); ?>"
-    method="<?php echo $this->menuEditForm->getMethod();?>">
+    name="<?php echo $this->editForm->getName(); ?>"
+    id="<?php echo $this->editForm->getId(); ?>"
+    enctype="<?php echo $this->editForm->getEnctype(); ?>"
+    method="<?php echo $this->editForm->getMethod();?>">
 
-        <?php echo $this->menuEditForm->id; ?>
+        <?php echo $this->editForm->id; ?>
     <div>
-        <?php echo $this->menuEditForm->label; ?>
+        <?php echo $this->editForm->label; ?>
     </div>
     <div>
-        <?php echo $this->menuEditForm->parent; ?>
+        <?php echo $this->editForm->parent; ?>
     </div>
     <div>
-        <?php echo $this->menuEditForm->title; ?>
-    </div>
-
-    <hr />
-
-    <div>
-        <?php echo $this->menuEditForm->visible; ?>
-    </div>
-    <div>
-        <?php echo $this->menuEditForm->active; ?>
-    </div>
-
-
-
-    <div>
-        <?php echo $this->menuEditForm->class; ?>
-    </div>
-    <div>
-        <?php echo $this->menuEditForm->target; ?>
+        <?php echo $this->editForm->title; ?>
     </div>
 
     <hr />
 
     <div>
-        <?php echo $this->menuEditForm->linkType; ?>
+        <?php echo $this->editForm->visible; ?>
+    </div>
+    <div>
+        <?php echo $this->editForm->active; ?>
+    </div>
+
+
+
+    <div>
+        <?php echo $this->editForm->class; ?>
+    </div>
+    <div>
+        <?php echo $this->editForm->target; ?>
+    </div>
+
+    <hr />
+
+    <div>
+        <?php echo $this->editForm->linkType; ?>
     </div>
     <div id="type-route">
-        <?php echo $this->menuEditForm->route; ?>
+        <?php echo $this->editForm->route; ?>
     </div>
     <div class="routes">
-    <?php //$this->routes;
-    /*var_dump($this->routes);
-    exit;*/
+    <?php
     if ($this->routes):
         foreach ($this->routes as $route):
             if ($route['name']):?>
             <div style="display:none;" id="route-<?php echo $route['name']; ?>">
                 <p><label>Route type:</label> <?php echo $route['type']; ?></p>
-                <p><label>Example path:</label> <i>http://<?php echo $_SERVER["HTTP_HOST"].$route['path']; ?></i></p>
+                <?php if ($_SERVER && isset($_SERVER["HTTP_HOST"])) {
+                    $host = $_SERVER["HTTP_HOST"];
+                } else {
+                    $host = 'localhost';
+                }?>
+                <p><label>Example path:</label> <i>http://<?php echo $host.$route['path']; ?></i></p>
                 <?php
                 if ($route['type'] == Menus_Model_Menu::ROUTE_TYPE_ROUTE):
                     foreach ($route['params'] as $key => $param):
@@ -115,9 +118,9 @@
                     <label>Module</label>
                     <div>
                         <select onChange="changeModule(document.getElementById('mvcModule'))" dojoType="dijit.form.FilteringSelect" name="params[module]" id="mvcModule" style="margin-bottom:5px;">
-			                <option value="" label="---">---</option>
-			                <?php
-			                $selectedModule = false;
+                            <option value="" label="---">---</option>
+                            <?php
+                            $selectedModule = false;
                             foreach ($route['modules'] as $key => $param):?>
                                 <?php
                                 if ($key == $this->menu->module) {
@@ -134,15 +137,15 @@
 
                         <div class="modules">
 
-                        	<?php
-                        	foreach ($route['modules'] as $modul => $controllers):?>
+                            <?php
+                            foreach ($route['modules'] as $modul => $controllers):?>
                                 <div style="display:none;" id="module-<?php echo $modul; ?>">
-	                                <label>Controller</label>
-	                                <div>
-		                                <select onChange="getActions(document.getElementById('<?php echo $modul; ?>-Controller'),'<?php echo $modul; ?>')" dojoType="dijit.form.FilteringSelect" name="params[controller]" id="<?php echo $modul; ?>-Controller" style="margin-bottom:5px;">
-		                                    <option value="" label="---">---</option>
-		                        			<?php
-				                            foreach ($controllers as $key => $param):?>
+                                    <label>Controller</label>
+                                    <div>
+                                        <select onChange="getActions(document.getElementById('<?php echo $modul; ?>-Controller'),'<?php echo $modul; ?>')" dojoType="dijit.form.FilteringSelect" name="params[controller]" id="<?php echo $modul; ?>-Controller" style="margin-bottom:5px;">
+                                            <option value="" label="---">---</option>
+                                            <?php
+                                            foreach ($controllers as $key => $param):?>
                                             <?php
                                             if($key == $this->menu->controller) {
                                                 $controllerSelected = 'selected="selected"';
@@ -150,26 +153,26 @@
                                             } else {
                                                 $controllerSelected = '';
                                             }?>
-				                                <option value="<?php echo $key; ?>" <?php echo $controllerSelected; ?>  label="<?php echo $key; ?>"><?php echo $key; ?></option>
-				                            <?php
-				                            endforeach;
-				                        	?>
-		                                </select>
-	                                </div>
+                                                <option value="<?php echo $key; ?>" <?php echo $controllerSelected; ?>  label="<?php echo $key; ?>"><?php echo $key; ?></option>
+                                            <?php
+                                            endforeach;
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
 
-	                            <?php
-	                            foreach ($controllers as $key => $param):?>
+                                <?php
+                                foreach ($controllers as $key => $param):?>
                                 <div style="display:none;" id="<?php echo $modul.'-'.$key.'-'; ?>actions">
-	                                <label>Action</label>
-		                            <input  style="display:none;" id="<?php echo $modul.'-'.$key.'-'; ?>action">
+                                    <label>Action</label>
+                                    <input  style="display:none;" id="<?php echo $modul.'-'.$key.'-'; ?>action">
                                 </div>
-	                            <?php
-	                            endforeach;
-	                            ?>
+                                <?php
+                                endforeach;
+                                ?>
                             <?php
                             endforeach;
-                        	?>
+                            ?>
                         </div>
 
                         <div class="new-parameters">
@@ -204,22 +207,21 @@
     ?>
     </div>
     <div id="type-uri">
-        <?php echo $this->menuEditForm->uri; ?>
+        <?php echo $this->editForm->uri; ?>
     </div>
 
-
     <div>
-        <?php echo $this->menuEditForm->submit; ?>
+        <?php echo $this->editForm->submit; ?>
     </div>
 </form>
 <?php
 if ($selectedModule):?>
-	<script>
-	dojo.ready(function(){
-		changeModule(document.getElementById('mvcModule'));
-		getActions(document.getElementById('<?php echo $selectedModule;?>-Controller'),'<?php echo $selectedModule;?>','<?php echo $this->menu->action;?>');
-	});
-	</script>
+    <script>
+    dojo.ready(function(){
+        changeModule(document.getElementById('mvcModule'));
+        getActions(document.getElementById('<?php echo $selectedModule;?>-Controller'),'<?php echo $selectedModule;?>','<?php echo $this->menu->action;?>');
+    });
+    </script>
 <?php
 endif;
 ?>

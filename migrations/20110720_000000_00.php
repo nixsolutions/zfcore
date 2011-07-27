@@ -38,12 +38,12 @@ class Migration_20110720_000000_00 extends Core_Migration_Abstract
                 (2,'Registration','register','mvc','{\"type\":\"bot\"}',1,9,'default',NULL,'register','_parent',0,1,'module','users','register','index'),
                 (3,'Forget Password','Forget Password','mvc','',2,1,'forgetPassword',NULL,NULL,'',0,1,'static','users','register','forget-password'),
                 (4,'Login','login','mvc','',1,2,'login',NULL,'login','',0,1,'static','users','login','index'),
+                (5,'Forum','Forum','mvc','',1,3,'default',NULL,'Forum','',0,1,'module','forum','index','index'),
                 (30,'Sitemap','sitemap','mvc','',1,4,'sitemap',NULL,'sitemap','',0,1,'static','pages','index','sitemap'),
                 (35,'logout','logout','mvc','',1,7,'logout',NULL,'logout','',0,1,'static','users','login','logout'),
                 (34,'Admin panel','Admin panel','mvc','',1,1,'default',NULL,'adminka','',0,1,'module','admin','index','index'),
                 (27,'About','about','mvc','{\"alias\":\"about\"}',1,5,'pages',NULL,'about','_self',0,1,'regex','pages','index','index'),
                 (41,'test','test','mvc','{\"alias\":\"test\"}',27,1,'pages',NULL,'test','',0,1,'regex','pages','index','index'),
-                (37,'Forum','Forum','mvc','',1,3,'default',NULL,'Forum','',0,1,'module','forum','index','index'),
                 (39,'Faq','Faq','mvc','{\"alias\":\"faq\"}',1,8,'pages',NULL,'Faq','',0,1,'regex','pages','index','index');"
         );
     }
