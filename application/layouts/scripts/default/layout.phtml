@@ -4,7 +4,7 @@
     <?php echo $this->headMeta() ?>
     <?php echo $this->headTitle() ?>
     <base href="<?php echo $this->baseUrl();?>" />
-    <?php $this->headLink() 
+    <?php $this->headLink()
                ->prependStylesheet($this->baseUrl('layouts/default/css/style.css'))
                ->headLink(array('rel' => 'shortcut icon', 'href' => $this->baseUrl('/favicon.ico'), 'type' => 'image/x-icon'), 'PREPEND')?>
     <?php $this->headScript()->prependFile($this->baseUrl('scripts/jquery/jquery.js?ver=1.4.2'));?>
@@ -17,7 +17,7 @@
     <?php if (0 != $this->FlashMessenger()->count() or $this->messages) :?>
         <div id="messages" class="opacity shadow" style="display: none;">
             <ul>
-            <?php 
+            <?php
                 foreach ($this->FlashMessenger()->getMessages() as $message) :
                       echo "<li>".$this->__($message)."</li>";
                 endforeach;
@@ -71,13 +71,13 @@
                     Here goes help text
                 </div>
             </div>
-        </div>           
+        </div>
         <?php //echo $this->navigation()->breadcrumbs()->setPartial('default/partial/breadcrumbs.phtml'); ?>
-        
+
         <div class="content cont_width">
             <?php echo $this->layout()->content ?>
         </div>
-        
+        <div class="clear">&nbsp;</div>
         <div class="footer">
             <div class="cont_width">
                 <div class="footer_logo">

@@ -109,17 +109,21 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
                 $value = ip2long($value);
                 break;
             case 'avatar':
+                if (!$value) {
+                    return;
+                }
                 if (strpos($value, 'http') !== 0 && strpos($value, '/') !== 0) {
                     $value = '/uploads/' . $value;
                 }
                 break;
             case 'password':
-                if ($value) {
-                    if (!$this->salt) {
-                        parent::__set('salt', md5(uniqid()));
-                    }
-                    $value = $this->encrypt($value);
+                if (!$value) {
+                    return;
                 }
+                if (!$this->salt) {
+                    parent::__set('salt', md5(uniqid()));
+                }
+                $value = $this->encrypt($value);
                 break;
         }
         parent::__set($columnName, $value);
