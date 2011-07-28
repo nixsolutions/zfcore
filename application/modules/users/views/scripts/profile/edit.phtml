@@ -1,4 +1,14 @@
 <h1>Edit Profile</h1>
 <div>
-    <?php echo $this->form; ?>
+    <div class="left">
+        <?php $user = $this->user();?>
+        <?php if ($user->avatar):?>
+            <img src="<?php echo $this->baseUrl($user->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>"/>
+        <?php else:?>
+            <?php echo $this->gravatar($user->email, array(), array('title' => $this->__('Avatar for') . ' '  . $user->getName()))?>
+        <?php endif;?>
+    </div>
+    <div class="left">
+        <?php echo $this->form; ?>
+    </div>
 </div>

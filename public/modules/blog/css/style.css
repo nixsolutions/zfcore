@@ -9,13 +9,23 @@
     padding: 1.625em;
     position: relative;
 }
+.commentlist > li:before {
+    content: url("images/comment-arrow.png");
+    left: -21px;
+    position: absolute;
+}
 .commentlist {
     list-style: none outside none;
-    margin: 0 auto;
+    margin: 20px auto;
     width: 68.9%;
 }
-#comments {
-    margin-top:20px;
+.commentlist .avatar {
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 2px #CCCCCC;
+    left: -107px;
+    padding: 0;
+    position: absolute;
+    top: 0;
 }
 article {
     margin-top:10px;

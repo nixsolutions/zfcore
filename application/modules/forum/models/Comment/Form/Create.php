@@ -42,7 +42,7 @@ class Forum_Model_Comment_Form_Create extends Zend_Form
                 'required'   => true,
                 'filters'    => array('StringTrim', 'HtmlEntities'),
                 'validators' => array(
-                    array('validator' => 'StringLength', 'options' => array(1, 250))
+                    array('validator' => 'StringLength', 'options' => array(1, 1000))
                 )
             )
         );

@@ -40,7 +40,7 @@ class Blog_Model_Comment_Table extends Core_Db_Table_Abstract
                ->joinLeft(
                    array('u' => $users->info('name')),
                    'userId = u.id',
-                   array('login')
+                   array('login', 'avatar')
                 )
                 ->where('postId = ?', $post);
         return $this->fetchAll($select);

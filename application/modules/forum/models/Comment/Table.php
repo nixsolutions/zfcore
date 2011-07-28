@@ -36,7 +36,7 @@ class Forum_Model_Comment_Table extends Core_Db_Table_Abstract
                ->joinLeft(
             array('u' => $users->info('name')),
             'userId = u.id',
-            array('login')
+            array('login', 'avatar')
         )
         ->order('created')
         ->where('postId=?', $postId);

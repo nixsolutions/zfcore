@@ -30,6 +30,7 @@ class Users_Model_Users_Form_Profile extends Users_Model_Users_Form_Register
 
         $this->addElement($this->_firstname());
         $this->addElement($this->_lastname());
+        $this->addElement($this->_avatar());
         $this->addElement($this->_email());
         $this->addElement($this->_newPassword());
         $this->addElement($this->_confirmPassword());
@@ -87,7 +88,7 @@ class Users_Model_Users_Form_Profile extends Users_Model_Users_Form_Register
     /**
      * Get firstname element
      *
-     * @return Zend_Form_Element_Password
+     * @return Zend_Form_Element_Text
      */
     protected function _firstname()
     {
@@ -106,7 +107,7 @@ class Users_Model_Users_Form_Profile extends Users_Model_Users_Form_Register
     /**
      * Get lastname element
      *
-     * @return Zend_Form_Element_Password
+     * @return Zend_Form_Element_Text
      */
     protected function _lastname()
     {
@@ -118,6 +119,23 @@ class Users_Model_Users_Form_Profile extends Users_Model_Users_Form_Register
                      array('max' => Users_Model_User::MAX_LASTNAME_LENGTH)
                  )
                  ->addValidator('Alpha');
+
+        return $element;
+    }
+
+    /**
+     * Get avatar element
+     *
+     * @return Zend_Form_Element_Password
+     */
+    protected function _avatar()
+    {
+        $element = new Zend_Form_Element_File('avatar');
+        $element->setLabel('Last Name')
+                ->addValidator('isImage')
+                ->addFilter(new Zend_Filter_File_Rename(array('target' => md5(time()))))
+                ->addFilter(new Users_Model_Users_Form_Filter_ImageSize(80, 80))
+                ->setDestination(APPLICATION_PATH . '/../public/uploads');
 
         return $element;
     }

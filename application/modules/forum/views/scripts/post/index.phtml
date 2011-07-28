@@ -5,38 +5,53 @@
 	<a href="<?php echo $this->url(array('alias'=> $this->category->alias), 'forumcategory') ?>"><?php echo $this->category->title; ?></a>
 	[<a href="<?php echo $this->url(array('alias'=> $this->category->alias), 'forumcategoryrss') ?>"><?php echo $this->__('rss'); ?></a>]
 </h3>
-<article class="comment">
-    <header>
-        <h4>
-            <?php echo $this->post->title; ?>
-            [<a href="<?php echo $this->url(array('id'=> $this->post->id), 'forumpostrss') ?>"><?php echo $this->__('rss'); ?></a>]
-        </h4>
-        <?php echo $this->author->login; ?>
-        <?php echo $this->__('at')?>
-        <?php echo $this->date($this->post->created); ?>
-    </header>
-    <br />
-    <div style="position:relative;"><?php echo $this->post->body; ?></div>
-</article>
+<ul class="commentlist">
+    <li class="comment">
+        <img src="<?php echo $this->baseUrl($this->author->avatar)?>"
+             alt="<?php echo $this->__('Avatar for')?> <?php echo $this->author->login?>"
+             title="<?php echo $this->__('Avatar for')?> <?php echo $this->author->login?>"
+             class="avatar"/>
+        <article>
+            <header>
+                <div class="right">#<a href="#comment-1">1</a></div>
+                <h4>
+                    <?php echo $this->post->title; ?>
+                    [<a href="<?php echo $this->url(array('id'=> $this->post->id), 'forumpostrss') ?>"><?php echo $this->__('rss'); ?></a>]
+                </h4>
+                <?php echo $this->author->login; ?>
+                <?php echo $this->__('at')?>
+                <?php echo $this->date($this->post->created); ?>
 
-<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
-
-<?php foreach($this->paginator as $i => $row): ?>
-	<br />
-    <article id="comment-<?php echo ++$i?>" class="comment">
-       <header>
-           <h5><?php echo $row->title; ?></h5>
-           <?php echo $this->author->login; ?>
-           <?php echo $this->__('at')?>
-           <?php echo $this->date($row->created); ?>
-           <div class="right">#<a href="#comment-<?php echo $i?>"><?php echo $i?></a></div>
-       </header>
-       <br />
-       <div style="position:relative;"><?php echo $row->body; ?></div>
-    </article>
-
-<?php endforeach;?>
-
-<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+            </header>
+            <br />
+            <div style="position:relative;"><?php echo $this->post->body; ?></div>
+        </article>
+    </li>
+    <li>
+        <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+    </li>
+    <?php foreach($this->paginator as $i => $row): ?>
+        <li class="comment">
+            <img src="<?php echo $this->baseUrl($row->avatar)?>"
+                 alt="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>"
+                 title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>"
+                 class="avatar"/>
+            <article id="comment-<?php echo $i = $i+2?>">
+               <header>
+                   <div class="right">#<a href="#comment-<?php echo $i?>"><?php echo $i?></a></div>
+                   <h5><?php echo $row->title; ?></h5>
+                   <?php echo $this->author->login; ?>
+                   <?php echo $this->__('at')?>
+                   <?php echo $this->date($row->created); ?>
+               </header>
+               <br />
+               <div style="position:relative;"><?php echo $row->body; ?></div>
+            </article>
+        </li>
+    <?php endforeach;?>
+    <li>
+        <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+    </li>
+</ul>
 
 <?php echo $this->action('comment', 'post', 'forum', array('postId' => $this->post->id));?>

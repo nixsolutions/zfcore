@@ -2,4 +2,15 @@
     $this->headScript()->prependFile($this->baseUrl('scripts/tiny_mce/tiny_mce.js'));
     $this->stylesheet()->module();
 ?>
-<?php echo $this->form;?>
+<ul class="commentlist">
+    <li class="comment">
+        <?php $user = $this->user();?>
+        <?php if ($user->avatar):?>
+            <img src="<?php echo $this->baseUrl($user->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>" class="avatar"/>
+        <?php else:?>
+            <?php echo $this->gravatar($user->email, array(), array('title' => $this->__('Avatar for') . ' '  . $user->getName(), 'class' => 'avatar'))?>
+        <?php endif;?>
+        <?php echo $this->form;?>
+
+    </li>
+</ul>
