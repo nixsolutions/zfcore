@@ -1,4 +1,13 @@
 <?php
+/**
+ * Menus_Model_Menu_ManagerTest
+ *
+ * @category    Application
+ * @package     Menus_Model_Menu_ManagerTest
+ *
+ * @author      Alexander Khaylo <alex.khaylo@gmail.com>
+ * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
+ */
 class Menus_Model_Menu_ManagerTest extends ControllerTestCase
 {
     public function setUp()
@@ -132,15 +141,6 @@ class Menus_Model_Menu_ManagerTest extends ControllerTestCase
         $this->dispatch('/');
         $menuItem = $this->_menuManager->getRowById($this->_fixture['item']['id']);
         $this->assertTrue($menuItem instanceof Core_Db_Table_Row_Abstract);
-    }
-
-
-
-    public function testGetTypeOptionsForEditForm()
-    {
-        $array = $this->_menuManager->getTypeOptionsForEditForm();
-        $this->assertArrayHasKey('uri', $array);
-        $this->assertArrayHasKey('mvc', $array);
     }
 
     /**

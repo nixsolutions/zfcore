@@ -29,12 +29,6 @@ function(){
         canSort: true
     },
     {
-        name: "<?php $this->_e('Logical path')?>",
-        field: "parent",
-        width: '200px',
-        canSort: true
-    },
-    {
         name: "<?php $this->_e('Order')?>",
         field: "position",
         width: '50px',
@@ -61,7 +55,7 @@ function(){
     }
     ];
 
-    var datagrid = new core.grid.Scaffold(cells, 'gridContainer', '/menus/management', true, true);
+    var datagrid = new core.grid.Scaffold(cells, 'gridContainer', '/menus/management', true, true, false, false, 50);
 
     dojo.connect(dijit.byId("grid-up"), "onClick", function(){
         var _self = datagrid;

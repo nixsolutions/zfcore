@@ -12,7 +12,8 @@ require_once 'Core/Model/Manager.php';
  * @subpackage  Manager
  *
  * @author      Valeriu Baleyko <baleyko.v.v@gmail.com>
- * @copyright   Copyright (c) 2010 NIX Solutions (http://www.nixsolutions.com)
+ * @author      Alexander Khaylo <alex.khaylo@gmail.com>
+ * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
 class Menus_Model_Menu_Manager extends Core_Model_Manager
 {
@@ -140,33 +141,6 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
                 $this->buildTreeGt($array, $cat['id']);
             }
         }
-    }
-
-    /**
-     * getTargetOptionsForEditForm
-     * @return array
-     */
-    public function getTargetOptionsForEditForm()
-    {
-        return $targetMenus = array(
-            0 => 'Don\'t set',
-            Menus_Model_Menu::TARGET_BLANK  => "New window",
-            Menus_Model_Menu::TARGET_PARENT => "Parrent frame",
-            Menus_Model_Menu::TARGET_SELF   => "Current window",
-            Menus_Model_Menu::TARGET_TOP    => "New window without frames"
-        );
-    }
-
-    /**
-     * getTypeOptionsForEditForm
-     * @return array
-     */
-    public function getTypeOptionsForEditForm()
-    {
-        return array(
-            Menus_Model_Menu::TYPE_URI => 'URI',
-            Menus_Model_Menu::TYPE_MVC => 'MVC'
-        );
     }
 
     /**

@@ -107,9 +107,6 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
                     $this->_table->info(Zend_Db_Table::NAME),
                     new Zend_Db_Expr('SQL_CALC_FOUND_ROWS *')
                 );
-                if (isset($where)) {
-                    $select->where($where);
-                }
                 if (isset($order)) {
                     $select->order($order);
                 }
@@ -127,16 +124,12 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
                     $this->_table->info(Zend_Db_Table::NAME),
                     new Zend_Db_Expr('COUNT(*) as c')
                 );
-                if (isset($where)) {
-                    $select->where($where);
-                }
+
                 if ($total = $this->_table->fetchRow($select)) {
                     $total = $total->c;
                     $select = $this->_table->select();
                     $select->from($this->_table->info(Zend_Db_Table::NAME));
-                    if (isset($where)) {
-                        $select->where($where);
-                    }
+
                     if (isset($order)) {
                         $select->order($order);
                     }
@@ -155,16 +148,28 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
             foreach ($data as $val) {
                 $array[$val['parent_id']][] =  $val;
             }
-            $menuTable->buildTreeGt($array, 0);
+            $menuTable->buildTree($array, 0, 0, 2);
+            //$menuTable->buildTreeGt($array, 0);
+
             $parentArray = $menuTable->getParentArray();
 
             $datas = $data->toArray();
 
-            foreach ($data as $key => $val) {
-                $datas[$key]['parent'] = $parentArray[$val['id']];
-            }
+            $sortArray = array();
+            foreach ($datas as $key => $val) {
+                $datas[$key]['label'] = $parentArray[$val['id']];
+                $position = 0;
+                foreach ($parentArray as $parentKey => $value) {
 
-            $data = new Zend_Dojo_Data($primary, $datas);
+                    if ($parentKey == $val['id']) {
+                        $sortArray[$position] = $datas[$key];
+                    }
+                    $position++;
+                }
+            }
+            ksort($sortArray);
+
+            $data = new Zend_Dojo_Data($primary, $sortArray);
             $data->setMetadata('numRows', $total);
 
             $this->_helper->json($data);

@@ -174,18 +174,18 @@ class Migration_20090101_000000_00 extends Core_Migration_Abstract
             'description' => 'User forget password letter',
             'bodyHtml'    =>  'You\'re ask to reset your password.<br/><br/>'.
                           'Please confirm that you wish to reset it clicking on the url:<br />'.
-                          '<a href="http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/yes">http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/yes</a><br/><br/>'.
+                          '<a href="http://%host%/users/login/recover-password/hash/%hash%/">http://%host%/users/login/recover-password/hash/%hash%/</a><br/><br/>'.
                           'If this message was created due to mistake, you can cancel password reset via next link:<br />'.
-                          '<a href="http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/no">
-http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/no</a>'.
+                          '<a href="http://%host%/users/login/cancel-password-recovery/hash/%hash%/">
+http://%host%/users/login/cancel-password-recovery/hash/%hash%/</a>'.
                           '<br />'.
                           'With best regards,<br />'.
                           '<a href="http://%host%/>%host% team</a>',
             'bodyText' =>  'You\'re ask to reset your password.\n\n'.
                           'Please confirm that you wish to reset it clicking on the url:\n'.
-                          'http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/yes\n\n'.
+                          'http://%host%/users/login/recover-password/hash/%hash%/\n\n'.
                           'If this message was created due to mistake, you can cancel password reset via next link:\n'.
-                          'http://%host%/users/register/forget-password-confirm/hash/%hash%/confirmReset/no'.
+                          'http://%host%/users/login/cancel-password-recovery/hash/%hash%/'.
                           "\n\n\n".
                           "With best regards,\n".
                           "%host% team",

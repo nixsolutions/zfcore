@@ -12,7 +12,8 @@ require_once 'Zend/Dojo/Form.php';
  * @subpackage  Form
  *
  * @author      Valeriu Baleyko <baleyko.v.v@gmail.com>
- * @copyright   Copyright (c) 2010 NIX Solutions (http://www.nixsolutions.com)
+ * @author      Alexander Khaylo <alex.khaylo@gmail.com>
+ * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
 class Menus_Model_Menu_Form_Create extends Zend_Dojo_Form
 {
@@ -87,7 +88,15 @@ class Menus_Model_Menu_Form_Create extends Zend_Dojo_Form
                ->addFilter('StripTags')
                ->addFilter('StringTrim')
                ->setAttribs(array('style'=>'margin-bottom:5px;'));
-        $target->addMultiOptions($this->_menuManager->getTargetOptionsForEditForm());
+        $target->addMultiOptions(
+            array(
+                0 => 'Don\'t set',
+                Menus_Model_Menu::TARGET_BLANK  => "New window",
+                Menus_Model_Menu::TARGET_PARENT => "Parrent frame",
+                Menus_Model_Menu::TARGET_SELF   => "Current window",
+                Menus_Model_Menu::TARGET_TOP    => "New window without frames"
+            )
+        );
 
         $route = new Zend_Dojo_Form_Element_ComboBox('route');
         $route->setLabel('Route')

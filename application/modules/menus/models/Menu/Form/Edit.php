@@ -12,7 +12,8 @@ require_once 'Zend/Dojo/Form.php';
  * @subpackage  Form
  *
  * @author      Valeriu Baleyko <baleyko.v.v@gmail.com>
- * @copyright   Copyright (c) 2010 NIX Solutions (http://www.nixsolutions.com)
+ * @author      Alexander Khaylo <alex.khaylo@gmail.com>
+ * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
 class Menus_Model_Menu_Form_Edit extends Menus_Model_Menu_Form_Create
 {
