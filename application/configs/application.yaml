@@ -61,14 +61,14 @@ production:
               controller: error
               action: denied
             role: guest
-            cache: off
+            cache: on
             
         routes:
           class: Core_Controller_Plugin_Routes
           stackindex: 40
           options:
             config: routes
-            cache: off
+            cache: on
 
         navigation:
           class: Core_Controller_Plugin_Navigation
@@ -76,7 +76,7 @@ production:
           options:
             config: navigation
             section: dashboard
-            cache: off
+            cache: on
             
     modules:
     db:
@@ -130,7 +130,6 @@ testing:
   phpSettings:
     display_startup_errors: true
     display_errors: true
-    memory_limit: 512M
   resources:
     db:
       params:
@@ -138,38 +137,25 @@ testing:
         username: d_unittest
         password: unittest
         dbname: p_zfc_test
-        persistent: false
+        persistent: true
     frontController:
       plugins:
         acl:
           options:
             allowAll: off
-            cache: off
-        routes:
-          options:
-            cache: off
-        navigation:
-            cache: off
 
 development:
   _extends: production
   phpSettings:
     display_startup_errors: true
     display_errors: true
+    error_reporting: E_ALL|E_STRICT
 
   resources:
     frontController:
       plugins:
         debug:
           class:Core_Controller_Plugin_Debug
-        acl:
-          options:
-            cache: off
-        routes:
-          options:
-            cache: off
-        navigation:
-            cache: off
     db:
       params:
         profiler:

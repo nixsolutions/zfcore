@@ -10,11 +10,14 @@ dojo.declare(
     grid:null,
     element:null,
     
-    constructor:function(cells, elementId, url, editButton, deleteButton, customButton, typeGrid){
+    constructor:function(cells, elementId, url, editButton, deleteButton, customButton, typeGrid, rowsPerPage){
         
         var _self = this;
         this.url = url;
         this.element = elementId;
+        if (!rowsPerPage) {
+        	rowsPerPage = 15;
+        }
         if (editButton) {
             cells.push({
             	name: "Edit",
@@ -57,7 +60,7 @@ dojo.declare(
                 id				 : "enhancedGrid",
                 store			 : this.store,
                 autoHeight		 : false,
-                rowsPerPage		 : 15,
+                rowsPerPage		 : rowsPerPage,
                 clientSort       : true,
                 rowSelector      : '0px',
                 structure		 : this.layout,
@@ -82,7 +85,7 @@ dojo.declare(
                 id				: "datagrid",
                 store			: this.store,
                 autoHeight		: false,
-                rowsPerPage		: 15,
+                rowsPerPage		: rowsPerPage,
                 structure		: this.layout
             }, document.createElement("div"));
         	break;
