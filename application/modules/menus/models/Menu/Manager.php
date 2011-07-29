@@ -180,25 +180,18 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
             return null;
         }
 
-        $results = false;
-        foreach ($arr as $key => $val) {
+        if ($arr[$name] == $value) {
+            $arr['label'] = null;
+            return $arr;
+        }
 
-            if (is_array($val)) {
-                $results = $this->getArrayItemByKey($val, $name, $value);
-
-            } else {
-
-                if ($key == $name && $value == $val) {
-                    $arr['label'] = null;
-                    return $arr;
-                }
-            }
-
-            if (is_array($results)) {
-                 break;
+        foreach ($arr['pages'] as $page) {
+            $results = $this->getArrayItemByKey($page, $name, $value);
+            if (null !== $results) {
+                return $results;
             }
         }
-        return $results;
+        return null;
     }
 
     /**

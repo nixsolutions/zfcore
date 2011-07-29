@@ -39,6 +39,18 @@ class Menus_Model_Menu_ManagerTest extends ControllerTestCase
         );
 
         $this->_fixture['array'] = array(
+        array(
+                'label' => null,
+                'id' => 0,
+                'type' => 'mvc',
+                'route' => 'default',
+                'module' => 'default',
+                'controller' => 'index',
+                'action' => 'index',
+                'uri' => null,
+                'class' => 'register',
+                'active' => '0',
+                'visible' => '0'),
             array(
                 'label' => 'Item1',
                 'id' => 1,
@@ -99,7 +111,8 @@ class Menus_Model_Menu_ManagerTest extends ControllerTestCase
     public function testParentChildRelationsByKey()
     {
         $array = $this->_menuManager->makeParentChildRelations($this->_fixture['array']);
-        $this->assertTrue(key($array[0]['pages']) == $this->_fixture['array'][1]['label']);
+        $this->assertTrue(key($array[1]['pages']) == $this->_fixture['array'][2]['label']);
+
 
         $this->assertNull($this->_menuManager->makeParentChildRelations($this->_fixture['array'][0]['label']));
         $this->assertNull(
@@ -109,7 +122,7 @@ class Menus_Model_Menu_ManagerTest extends ControllerTestCase
             )
         );
         $result = $this->_menuManager->getArrayItemByKey($array, 'label', $this->_fixture['array'][0]['label']);
-        $this->assertTrue(key($result['pages']) == $this->_fixture['array'][1]['label']);
+        $this->assertTrue(key($result[1]['pages']) == $this->_fixture['array'][2]['label']);
     }
 
 

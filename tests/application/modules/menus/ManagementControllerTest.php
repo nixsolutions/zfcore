@@ -56,7 +56,7 @@ class Menus_ManagementControllerTest extends ControllerTestCase
         $this->assertAction('store');
 
         $response = $this->getResponse()->getBody();
-        $this->assertRegExp('/Registration\"\}\,\{\"id\"\:\"3\"\,\"label\"\:\"Forget Password\"/', $response);
+        $this->assertRegExp('/\"controller\"\:\"register\"\,\"action\"\:\"index\"\}\,\{\"id\"\:\"3\"/', $response);
     }
 
     public function testViewSelectedMenu()
