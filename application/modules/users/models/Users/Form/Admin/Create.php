@@ -1,11 +1,11 @@
 <?php
 /**
  * Create user form
- * 
+ *
  * @category Application
  * @package Model
  * @subpackage Form
- * 
+ *
  * @version  $Id: Create.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
 class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
@@ -17,9 +17,9 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
      */
     public function init()
     {
-        $this->setName('userCreateForm')
+        $this->setName('userForm')
              ->setMethod('post');
-        
+
         $this->addElements(
             array($this->_login(),
                 $this->_firstname(),
@@ -27,7 +27,7 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
                 $this->_role(),
                 $this->_status(),
                 $this->_password(),
-                $this->_email(), 
+                $this->_email(),
                 // $this->_date_create(),
                 // $this->_date_login(),
                 $this->_login_ip(),
@@ -36,7 +36,7 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
         );
         return $this;
     }
-    
+
     /**
      * Create user login element
      *
@@ -63,13 +63,13 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
                  ->addValidator(
                      'Db_NoRecordExists', false,
                      array(
-                         array('table' => 'users', 
+                         array('table' => 'users',
                                'field' => 'login'))
                  );
-                 
+
         return $username;
     }
-    
+
     /**
      * Create user first name element
      *
@@ -93,7 +93,7 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
                   );
         return $firstname;
     }
-    
+
     /**
      * Create user last name element
      *
@@ -117,7 +117,7 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
                  );
          return $lastname;
     }
-    
+
     /**
      * Create user role element
      *
@@ -131,17 +131,17 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
              ->setRequired(true)
              ->setMultiOptions(
                  array(
-                     Users_Model_User::ROLE_GUEST => 
+                     Users_Model_User::ROLE_GUEST =>
                         Users_Model_User::ROLE_GUEST,
-                     Users_Model_User::ROLE_USER  => 
+                     Users_Model_User::ROLE_USER  =>
                         Users_Model_User::ROLE_USER,
-                     Users_Model_User::ROLE_ADMIN => 
+                     Users_Model_User::ROLE_ADMIN =>
                         Users_Model_User::ROLE_ADMIN
                  )
              );
         return $role;
     }
-    
+
     /**
      * Create user status element
      *
@@ -155,20 +155,20 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
                ->setAttribs(array('style' => 'width:60%'))
                ->setMultiOptions(
                    array(
-                       Users_Model_User::STATUS_ACTIVE   => 
+                       Users_Model_User::STATUS_ACTIVE   =>
                            Users_Model_User::STATUS_ACTIVE,
-                       Users_Model_User::STATUS_BLOCKED  => 
+                       Users_Model_User::STATUS_BLOCKED  =>
                            Users_Model_User::STATUS_BLOCKED,
-                       Users_Model_User::STATUS_REGISTER => 
+                       Users_Model_User::STATUS_REGISTER =>
                            Users_Model_User::STATUS_REGISTER,
-                       Users_Model_User::STATUS_REMOVED  => 
+                       Users_Model_User::STATUS_REMOVED  =>
                            Users_Model_User::STATUS_REMOVED
                    )
                );
-                    
+
         return $status;
     }
-    
+
     /**
      * Create user password element
      *
@@ -186,10 +186,10 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
                      'StringLength', false,
                      array(Users_Model_User::MIN_PASSWORD_LENGTH)
                  );
-                                
+
         return $password;
     }
-    
+
     /**
      * Create user email element
      *
@@ -213,10 +213,10 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
                       array('table' => 'users', 'field' => 'email')
                   )
               );
-              
+
         return $email;
     }
-    
+
     /**
      * Create user date login element
      *
@@ -228,10 +228,10 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
         $date->setLabel('Date login')
              ->setDatePattern('yyyy-MM-dd HH:mm:ss')
              ->setAttribs(array('style'=>'width:60%;height:15px;'));
-              
+
         return $date;
     }
-    
+
     /**
      * Create user date create element
      *
@@ -243,10 +243,10 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
         $date->setLabel('Date create')
              ->setDatePattern('yyyy-MM-dd HH:mm:ss')
              ->setAttribs(array('style'=>'width:60%;height:15px;'));
-              
+
         return $date;
     }
-    
+
     /**
      * Create login ip element
      *
@@ -257,10 +257,10 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
         $ip = new Zend_Dojo_Form_Element_ValidationTextBox('ip');
         $ip->setLabel('Login ip')
            ->setAttribs(array('style'=>'width:60%;'));
-              
+
         return $ip;
     }
-    
+
     /**
      * Create login count element
      *
@@ -271,10 +271,10 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
         $ip = new Zend_Dojo_Form_Element_NumberSpinner('count');
         $ip->setLabel('Login count')
            ->setAttribs(array('style'=>'width:60%; height:15px;'));
-              
+
         return $ip;
     }
-    
+
     /**
      * Create submit element
      *
@@ -284,7 +284,7 @@ class Users_Model_Users_Form_Admin_Create extends Zend_Dojo_Form
     {
         $submit = new Zend_Dojo_Form_Element_SubmitButton('submit');
         $submit->setLabel('Create');
-        
+
         return $submit;
     }
 }

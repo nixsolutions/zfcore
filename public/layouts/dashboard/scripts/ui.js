@@ -52,3 +52,13 @@ dojo.addOnLoad(function(){
         return false;
     });
 });
+$(function(){
+	$('.button, input:submit, input:reset').button();
+	$('input:text, select, textarea, input:password').addClass('ui-state-default ui-corner-all');
+	
+	$('.delete').click(function(e){
+        if (!confirm(this.title)) {
+            e.preventDefault();
+        }
+    });
+});

@@ -1,0 +1,23 @@
+<?php
+    $this->stylesheet()->controller();
+?>
+<script type="text/javascript">
+	$(function(){
+		var button = $('<a>');
+		button.attr('onclick', "generate(6); return false;")
+			  .html('&nbsp;<?php echo $this->__('Generate')?>')
+			  .attr('href', 'javascript:void(0)');
+		$('#password').after(button)//.button();
+	})
+	function generate(length)
+	{
+		var str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		var password = '';
+
+		for (var i = 0; i < length; i++) {
+			password += str[Math.floor(Math.random()*62)];
+        }
+        $('#password').val(password);
+	}
+</script>
+<?php echo $this->form?>

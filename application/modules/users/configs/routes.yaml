@@ -57,3 +57,23 @@ editprofile:
     module: users
     controller: profile
     action: edit
+    
+usersedit:
+  route: /users/management/edit/:id
+  defaults:
+    module: users
+    controller: management
+    action: edit
+    
+usersdelete:
+  route: /users/management/delete/:id
+  defaults:
+    module: users
+    controller: management
+    action: delete
+userscreate:
+  route: /users/management/create
+  defaults:
+    module: users
+    controller: management
+    action: create

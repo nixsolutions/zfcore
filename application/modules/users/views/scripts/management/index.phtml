@@ -1,88 +1,55 @@
 <?php
+    $this->headTitle($this->__('Manage Users') . ' » ', Zend_View_Helper_Placeholder_Container_Abstract::PREPEND);
 
-$this->dojo()->addStyleSheet($this->dojo()->getCdnBase() . $this->dojo()->getCdnVersion() . '/dojox/grid/resources/tundraGrid.css')
-             ->requireModule('core.grid.Scaffold')
-             ->onLoadCaptureStart();
-?>
-function(){
-    var cells = [
-    {
-        name: "<?php $this->_e('Login')?>",
-        field: "login",
-        width:'100px'
-    },
-    {
-        name: "<?php $this->_e('Role')?>",
-        field: "role",
-        width:'120px'
-    },
-    {
-        name: "<?php $this->_e('Status')?>",
-        field: "status",
-        width:'auto'
-    },
-    {
-        name: "<?php $this->_e('Email')?>",
-        field: "email",
-        width:'100px'
-    },
-    {
-        name: "<?php $this->_e('Date login')?>",
-        field: "logined",
-        width:'100px'
-    }
-    ];
-    
-    var datagrid = new core.grid.Scaffold(cells, 
-                                          'gridContainer', 
-                                          '<?php echo $this->url();?>',
-                                          true,
-                                          true);
-}
-<?php $this->dojo()->onLoadCaptureEnd(); ?>
-<div class="gridControl">
-<?php
-    echo $this->comboBox('grid-field', 
-                         'login',
-                         array('jsid' => 'grid-field', 'autocomplete' => false),
-                         array(), 
-                         array('login'      => $this->__('Login'),
-                               'role'       => $this->__('Role'),
-                               'status'     => $this->__('Status'),
-                               'email'      => $this->__('Email'),
-                               'date_login' => $this->__('Date login')
-                              )
-                        );
-    echo $this->validationTextBox('grid-filter',
-                                  '*',
-                                  array('jsid'      => 'grid-filter',
-                                        'regExp'    => '[\S\s]+',
-                                        'required'  => 'true'),
-                                  array('style'     => 'padding:2px 1px 1px')
-                                  );
-                                                 
-    echo $this->button('grid-search', 
-                       $this->__('Filter'), 
-                       array('jsid'      => 'grid-search',
-                             'baseClass' => 'gridButton'));
-    echo $this->button('grid-undo', 
-                       $this->__('Undo'), 
-                       array('jsid'      => 'grid-undo',
-                             'baseClass' => 'gridButton'));
-?>
-</div>
+    $this->headScript()->appendFile("http://www.datatables.net/release-datatables/media/js/jquery.dataTables.js");
 
-<div class="gridContainer" id="gridContainer" style="height:300px;"></div>
-
-<div class="gridControl">
-<?php
-    echo $this->button('grid-new', 
-                       $this->__('Create New'), 
-                       array('jsid'      => 'grid-new',
-                             'baseClass' => 'gridButton'));
-    echo $this->button('grid-del', 
-                       $this->__('Delete Selected'), 
-                       array('jsid'      => 'grid-del',
-                             'baseClass' => 'gridButton'));
+    $this->stylesheet()->controller();
 ?>
-</div>
+
+
+<a href="<?php echo $this->url(array(), 'userscreate')?>" class="button"><?php echo $this->__('Add User')?></a>
+
+<div class="clear">&nbsp;</div>
+
+<table id="userGrid" width="100%">
+    <thead>
+        <tr>
+            <?php foreach ($this->columns as $column):?>
+                <th><?php echo $column?></th>
+            <?php endforeach;?>
+            <th><?php echo $this->__('Edit')?></th>
+            <th><?php echo $this->__('Delete')?></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="5" class="dataTables_empty">Loading data from server</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+$(function() {
+	$('#userGrid').dataTable({
+	    "bJQueryUI": true,
+		"bProcessing": true,
+		"bServerSide": true,
+		"sAjaxSource": "<?php echo $this->url()?>",
+		"aoColumns": [
+            <?php foreach ($this->columns as $i => $column):?>
+				{ "mDataProp": "<?php echo $column?>" }<?php //if (count($this->columns) != $i+1):?>,<?php //endif?>
+			<?php endforeach;?>
+			{ "mDataProp": "editUrl" },
+			{ "mDataProp": "deleteUrl"}
+					]
+	});
+    $('#userGrid_wrapper').addClass('ui-widget-content ui-corner-all');
+
+    $('#userGrid').delegate('.delete', 'click', function(e){
+       if (!confirm(this.title)) {
+           e.preventDefault();
+       }
+    });
+});
+</script>
