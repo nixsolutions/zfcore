@@ -32,18 +32,6 @@ class Core_Db_Table_Abstract extends Zend_Db_Table_Abstract
     }
 
     /**
-     * Fetches a new blank row (not from the database).
-     *
-     * @param  array $data OPTIONAL data to populate in the new row.
-     * @param  string $defaultSource OPTIONAL flag to force default values
-     * @return Zend_Db_Table_Row_Abstract
-     */
-    public function create(array $data = array(), $defaultSource = null)
-    {
-        return parent::createRow($data, $defaultSource);
-    }
-
-    /**
      * Get row by id
      *
      * @param  mixed $id primary key

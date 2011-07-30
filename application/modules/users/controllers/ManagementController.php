@@ -102,6 +102,7 @@ class Users_ManagementController extends Core_Controller_Action
 
             $this->_helper->redirector('index');
         }
+        $this->view->id = $row->id;
         $this->view->form = $form;
 
         $this->render('create');
@@ -140,14 +141,14 @@ class Users_ManagementController extends Core_Controller_Action
 
         $row = null;
         if ($id = $this->_getParam('id')) {
-            $row = $users->getById($id);
+            $row = $table->getById($id);
         }
         if (!$row) {
             $row = $table->createRow();
             $form = new Users_Form_Users_Create();
-            $form->populate($row->toArray());
         } else {
             $form = new Users_Form_Users_Edit();
+            $form->populate($row->toArray());
         }
         $form->populate($this->_getAllParams());
 
@@ -156,14 +157,15 @@ class Users_ManagementController extends Core_Controller_Action
             $response = array(
                 'success' => $element->isValid($this->_getParam($field)),
                 'message' => $this->view->formErrors($element->getMessages()),
-                'params' => $this->_getAllParams()
             );
         } else {
             $response = array(
                 'success' => $form->isValid($this->_getAllParams()),
                 'message' => $this->view->formErrors($form->getMessages()),
-                'params' => $this->_getAllParams()
             );
+        }
+        if (APPLICATION_ENV != 'production') {
+            $response['params'] = $this->_getAllParams();
         }
         echo $this->_helper->json($response);
     }

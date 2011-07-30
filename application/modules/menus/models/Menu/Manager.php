@@ -636,7 +636,7 @@ class Menus_Model_Menu_Manager extends Core_Model_Manager
     {
         if (!empty($data) && is_array($data)) {
 
-            $menu = $this->getDbTable()->create();
+            $menu = $this->getDbTable()->createRow();
             $options = array();
 
             if (isset($data['params']) && is_array($data['params'])) {

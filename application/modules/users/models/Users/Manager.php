@@ -96,7 +96,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
                 'ip'       => $this->_getIpFromRequest()
             )
         );
-        $user = $this->getDbTable()->create($data);
+        $user = $this->getDbTable()->createRow($data);
         if ($user->save()) {
             return $user;
         }

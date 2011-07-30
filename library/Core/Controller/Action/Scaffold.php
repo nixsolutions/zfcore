@@ -98,7 +98,7 @@ abstract class Core_Controller_Action_Scaffold extends Core_Controller_Action
         if ($this->_request->isPost() &&
                 $createForm->isValid($this->_getAllParams())
         ) {
-            $model = $this->_table->create();
+            $model = $this->_table->createRow();
             $model->setFromArray($createForm->getValues());
             $model->save();
             $this->_flashMessenger->addMessage('Successfully!');

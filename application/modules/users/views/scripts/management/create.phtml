@@ -22,4 +22,4 @@
         $('#password').val(password).change();
 	}
 </script>
-<?php echo $this->aForm($this->form)->ajax(array('validateUrl' => $this->url(array(), 'usersvalidate')))?>
+<?php echo $this->aForm($this->form)->ajax(array('validateUrl' => $this->url(array('id' => $this->id), 'usersvalidate')))?>
