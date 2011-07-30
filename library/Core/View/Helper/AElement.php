@@ -28,7 +28,7 @@ class Core_View_Helper_AElement extends Zend_View_Helper_FormElement
         }
         if ($element->hasErrors()) {
             $viewClasses[] = 'aForm-field-invalid';
-        } elseif ($element->getValue()) {
+        } elseif ($element->getValue() || !$element->isRequired()) {
             $viewClasses[] = 'aForm-field-valid';
         }
         if ($element->getValidators()) {

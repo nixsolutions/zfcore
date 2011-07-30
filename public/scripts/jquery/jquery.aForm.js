@@ -41,22 +41,34 @@
                 adviceClass:   'aForm-field-advice',
                 validClass:    'aForm-field-valid',
                 validateUrl:   'validate',
-                valid: function(el){ /*if (window.console) console.log('Called valid', el)*/ },
-                invalid: function(el){ /*if (window.console) console.log('Called invalid', el)*/ },
+                valid: function(el){ /* if (window.console) console.log('Called valid', el) */ },
+                invalid: function(el){ /* if (window.console) console.log('Called invalid', el) */ },
                 clean: function(el){ /*if (window.console) console.log('Called clean', el) */ },
             };
+            
+            //validate and required fields as keys and status as value
+            var fields = {};
 
             //Make field valid
-            var makeValid = function(jNode) {
+            var makeValid = function(jNode, jForm) {
                 jNode.addClass(options.validClass);
                 options.valid(jNode);
+                
+                jForm.data('aFields')[jNode.attr('name')] = true;
             };
             //Make field invalid
-            var makeInvalid = function(jNode, message) {
+            var makeInvalid = function(jNode, message, jForm) {
                  jNode.addClass(options.invalidClass)
-                      .parent().append('<div class="'+options.adviceClass+'">'+message+'</div>');
+                      .parent().append('<div class="'+options.adviceClass+'"><ul class="errors"><li>'+message+'</li></ul></div>');
                  
                  options.invalid(jNode);
+                 
+                 jForm.data('aFields')[jNode.attr('name')] = false;
+                 
+                 if (jForm.data('intervalID')) {
+                     clearInterval(jForm.data('intervalID'));
+                     jForm.data('intervalID', false);
+                 }
             };
             
             //Make field clean
@@ -65,6 +77,17 @@
                      .parent().children('div.'+options.adviceClass).remove();
                      
                 options.clean(jNode);
+            };
+            
+            //check is form is valid
+            var isValid = function(jForm) {
+                var valid = true;
+                
+                var fields = jForm.data('aFields');
+                for (var i in fields) {
+                    valid = valid && fields[i];
+                }
+                return valid;
             };
             
             //validate field by ajax
@@ -79,11 +102,11 @@
                 $.post(options.validateUrl,
                    data,
                    function (data) {
-                       //makeClean(jNode)
+                       makeClean(jNode)
                        if (data.success == true) {
-                           makeValid(jNode);
+                           makeValid(jNode, jForm);
                        } else {
-                           makeInvalid(jNode, data.message);
+                           makeInvalid(jNode, data.message, jForm);
                        }
                    }, 
                    "json"
@@ -91,7 +114,8 @@
             };
             
             var init = function(jForm) {
-
+                var fields = {};
+                
                 jForm.find('.' + options.requiredClass + ', .' + options.validateClass).unbind().blur(function() {
                     var _jNode = $(this);
                     if ((!_jNode.hasClass(options.validClass) && !_jNode.hasClass(options.invalidClass))
@@ -99,59 +123,87 @@
                         if (_jNode.hasClass(options.requiredClass)) {
                             makeClean(_jNode);
                             if (this.value.length < 1) {
-                                makeInvalid(_jNode, this.title || options.requiredMessage);
+                                makeInvalid(_jNode, this.title || options.requiredMessage, jForm);
                             } else {
                                 if (_jNode.hasClass(options.validateClass) == false) {
-                                    makeValid(_jNode);
+                                    makeValid(_jNode, jForm);
                                 }
                             }
                         }
                         if (_jNode.hasClass(options.validateClass)) {
                             if (this.value.length > 0) {
                                 validateAjax(jForm, $(this));
+                            } if (!_jNode.hasClass(options.requiredClass)) {
+                                makeValid(_jNode, jForm);
                             }
                         }
                         _jNode.data('value', this.value);
                     }
                 }).change(function() {
                     makeClean($(this));
+                }).each(function(){
+                    if (this.value == "" && $(this).is('.' + options.requiredClass) == false) {
+                        fields[this.name] = true;
+                    } else {
+                        fields[this.name] = false;
+                    }
                 });
                 
-                jForm.find('input:submit').click(function(e){
-                    if ($(this).data('aForm')) {
-                        return;
-                    } else {
-                        $(this).data('aForm', true);
-                    }
-                    e.preventDefault();
-                    
-                    var ok = true;
-                    
-                    jForm.find('.'+options.requiredClass).each(function() {
-                        var _jNode = $(this);
-                        
-                        if ((_jNode.hasClass(options.validClass) == false) &&
-                            (_jNode.hasClass(options.invalidClass) == false)) {
-                            _jNode.blur();
-                        }
-                        
-                        if (_jNode.hasClass(options.invalidClass) == true) {
-                            ok = false;
-                        }
-                    });
-                    jForm.find('.'+options.validateClass).each(function() {
-                        if ($(this).hasClass(options.invalidClass) == true) {
-                            ok = false;
-                        }
-                    });
-                    if (ok == true) {
-                        jForm.submit();
-                    }
-                });
+                jForm.data('aFields', fields);
+                
+                if (!jForm.data('submitBinded')) {
+	                jForm.submit(function(e) {
+	                    if (jForm.data('intervalID')) {
+	                        clearInterval(jForm.data('intervalID'));
+	                        jForm.data('intervalID', false);
+	                    }
+	                    jForm.data('submitBinded', true)
+	
+	                    var ok = true;
+	                    
+	                    jForm.find('.'+options.requiredClass).each(function() {
+	                        var _jNode = $(this);
+	                        
+	                        if ((_jNode.hasClass(options.validClass) == false) &&
+	                            (_jNode.hasClass(options.invalidClass) == false)) {
+	                            
+                                var intervalID = setInterval(function(){ jForm.submit(); }, 1000);
+	                            jForm.data('intervalID', intervalID);
+                                
+	                            _jNode.blur();
+	                            
+	                            ok = false;
+	                        }
+	                        
+	                        if (_jNode.hasClass(options.invalidClass) == true) {
+	                            ok = false;
+	                        }
+	                    });
+	                    if (ok) {
+		                    jForm.find('.'+options.validateClass).each(function() {
+		                        if ($(this).hasClass(options.validClass) == false) {
+		                            ok = false;
+		                        }
+		                    });
+	                    }
+	                    if (ok) {
+	                        return true;
+	                    }
+	                    return false;
+	                });
+                }
             };
    
+            if (options == 'isValid') {
+                var valid = true;
+                
+                this.each(function(){
+                	valid = (valid && isValid($(this)));
+                })
+                return valid;
+            }
             var options =  $.extend(defaults, options);
-
+            
             //run thought all passed elements
             return this.each(function() {
                 var jForm = $(this);
