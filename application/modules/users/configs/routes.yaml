@@ -77,3 +77,9 @@ userscreate:
     module: users
     controller: management
     action: create
+usersvalidate:
+  route: /users/management/validate
+  defaults:
+    module: users
+    controller: management
+    action: validate

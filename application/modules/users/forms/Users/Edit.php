@@ -33,6 +33,9 @@ class Users_Form_Users_Edit extends Users_Form_Users_Create
             $this->getElement('email')->getValidator('Db_NoRecordExists')
                                       ->setExclude("id!={$defaults['id']}");
         }
+        if (isset($defaults['password'])) {
+            unset($defaults['password']);
+        }
         return parent::setDefaults($defaults);
     }
 }

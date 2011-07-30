@@ -27,7 +27,10 @@
     width: 200px;
 }
 
-dd {
+#userForm dd, #userForm li {
 	margin-top:5px;
 	margin-bottom:5px;
+}
+.errors {
+    color: #f00;
 }

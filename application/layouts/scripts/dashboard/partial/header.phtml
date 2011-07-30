@@ -39,7 +39,9 @@
                     ;
 
             /** echo out the dojo <script> tags */
-            echo $this->dojo();
+            if (!$this->disableDojo) {
+                echo $this->dojo();
+            }
         ?>
         <?php echo $this->headScript()
                         ->appendFile($this->baseUrl('/layouts/dashboard/scripts/ui.js'))

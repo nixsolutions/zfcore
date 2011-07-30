@@ -1,4 +1,4 @@
-dojo.addOnLoad(function(){
+if (window.dojo) dojo.addOnLoad(function(){
 
     // hide all sub menu
     dojo.query("ul.navigation > li ul").style('display','none');

@@ -1,5 +1,7 @@
 <?php
     $this->stylesheet()->controller();
+
+    $this->disableDojo = true;
 ?>
 <script type="text/javascript">
 	$(function(){
@@ -17,7 +19,7 @@
 		for (var i = 0; i < length; i++) {
 			password += str[Math.floor(Math.random()*62)];
         }
-        $('#password').val(password);
+        $('#password').val(password).change();
 	}
 </script>
-<?php echo $this->form?>
+<?php echo $this->aForm($this->form)->ajax(array('validateUrl' => $this->url(array(), 'usersvalidate')))?>

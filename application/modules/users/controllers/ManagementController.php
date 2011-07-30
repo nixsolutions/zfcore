@@ -126,5 +126,45 @@ class Users_ManagementController extends Core_Controller_Action
 
         $this->_helper->redirector('index');
     }
-}
 
+    /**
+     * Validate form param by ajax
+     *
+     */
+    public function validateAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        $table = new Users_Model_Users_Table();
+
+        $row = null;
+        if ($id = $this->_getParam('id')) {
+            $row = $users->getById($id);
+        }
+        if (!$row) {
+            $row = $table->createRow();
+            $form = new Users_Form_Users_Create();
+            $form->populate($row->toArray());
+        } else {
+            $form = new Users_Form_Users_Edit();
+        }
+        $form->populate($this->_getAllParams());
+
+        if ($field = $this->_getParam('validateField')) {
+            $element = $form->getElement($field);
+            $response = array(
+                'success' => $element->isValid($this->_getParam($field)),
+                'message' => $this->view->formErrors($element->getMessages()),
+                'params' => $this->_getAllParams()
+            );
+        } else {
+            $response = array(
+                'success' => $form->isValid($this->_getAllParams()),
+                'message' => $this->view->formErrors($form->getMessages()),
+                'params' => $this->_getAllParams()
+            );
+        }
+        echo $this->_helper->json($response);
+    }
+}

@@ -83,7 +83,7 @@ class Users_Form_Users_Create extends Zend_Form
     /**
      * Create user last name element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return Zend_Form_Element_Text
      */
     protected function _lastname()
     {
