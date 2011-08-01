@@ -81,7 +81,7 @@
                     if ($route['wildcard'] === true):?>
                         <div class="new-parameters">
                             <?php
-                             if ($this->menu->route_type == Menu_Model_Menu::ROUTE_TYPE_MODULE) {
+                             if ($this->menu->routeType == Menu_Model_Menu::ROUTE_TYPE_MODULE) {
                                 $params = json_decode($this->menu->params);
                                 if ($params):
                                     foreach($params as $key => $val):
@@ -177,7 +177,7 @@
 
                         <div class="new-parameters">
                         <?php
-                         if ($this->menu->route_type == Menu_Model_Menu::ROUTE_TYPE_MODULE) {
+                         if ($this->menu->routeType == Menu_Model_Menu::ROUTE_TYPE_MODULE) {
                             $params = json_decode($this->menu->params);
                             if ($params):
                                 foreach($params as $key => $val):

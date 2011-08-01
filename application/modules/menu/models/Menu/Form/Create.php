@@ -45,7 +45,7 @@ class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
                          'onChange' => "changedLinkType(document.getElementById('linkType'));"
                      )
                  );
-        $linkType->addMultiOptions(array(0 => 'Link', 1 => 'Route'));
+        $linkType->addMultiOptions(array(Menu_Model_Menu::TYPE_URI => 'Link', Menu_Model_Menu::TYPE_MVC => 'Route'));
 
         $parent = new Zend_Dojo_Form_Element_FilteringSelect('parent');
         $parent->setLabel('Parent Menu Item')
