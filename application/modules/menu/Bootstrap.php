@@ -8,7 +8,7 @@
  *
  * @version  $Id$
  */
-class Menus_Bootstrap extends Zend_Application_Module_Bootstrap
+class Menu_Bootstrap extends Zend_Application_Module_Bootstrap
 {
 
 }

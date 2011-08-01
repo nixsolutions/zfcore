@@ -1,5 +1,5 @@
 mvc:
-  menus:
+  menu:
     management:
       allow: admin
     index:

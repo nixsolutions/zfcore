@@ -106,7 +106,7 @@ function getActions(el,moduleName,defaultAction) {
            if (dojo.byId('widget_' + idSelectedController) != true) {
                
                var actionsStore = new dojo.data.ItemFileReadStore({
-                url:"/menus/management/get-actions/m/" + moduleName + "/c/" + controllerName
+                url:"/menu/management/get-actions/m/" + moduleName + "/c/" + controllerName
             });
                if (actionsStore) {
                    var filteringSelect = new dijit.form.ComboBox({

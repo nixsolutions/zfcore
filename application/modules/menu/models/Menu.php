@@ -5,16 +5,16 @@
 require_once 'Core/Db/Table/Row/Abstract.php';
 
 /**
- * Menus_Model_Menu
+ * Menu_Model_Menu
  *
  * @category    Application
- * @package     Menus_Model_Menu
+ * @package     Menu_Model_Menu
  *
  * @author      Valeriu Baleyko <baleyko.v.v@gmail.com>
  * @author      Alexander Khaylo <alex.khaylo@gmail.com>
  * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
-class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
+class Menu_Model_Menu extends Core_Db_Table_Row_Abstract
 {
     const TYPE_DEFAULT      = 'mvc';
     const TYPE_MVC          = 'mvc';
@@ -58,7 +58,7 @@ class Menus_Model_Menu extends Core_Db_Table_Row_Abstract
 
     public function getParent()
     {
-        return (integer) $this->_data['parent_id'];
+        return (integer) $this->_data['parentId'];
     }
 
     public function getRoute()

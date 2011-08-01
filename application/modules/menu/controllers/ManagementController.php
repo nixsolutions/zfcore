@@ -1,6 +1,6 @@
 <?php
 /**
- * Menus_ManagementController
+ * Menu_ManagementController
  *
  * @category    Application
  * @package     ManagementController
@@ -9,7 +9,7 @@
  * @author      Alexander Khaylo <alex.khaylo@gmail.com>
  * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
-class Menus_ManagementController extends Core_Controller_Action_Scaffold
+class Menu_ManagementController extends Core_Controller_Action_Scaffold
 {
     public function init()
     {
@@ -33,7 +33,7 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
      */
     protected function _getCreateForm()
     {
-        return new Menus_Model_Menu_Form_Create();
+        return new Menu_Model_Menu_Form_Create();
     }
 
     /**
@@ -45,7 +45,7 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
      */
     protected function _getEditForm()
     {
-        return new Menus_Model_Menu_Form_Edit();
+        return new Menu_Model_Menu_Form_Edit();
     }
 
     /**
@@ -57,7 +57,7 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
      */
     protected function _getTable()
     {
-        return new Menus_Model_Menu_Table();
+        return new Menu_Model_Menu_Table();
     }
 
     /**
@@ -81,7 +81,7 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function storeAction()
     {
-        $menuTable = new Menus_Model_Menu_Manager();
+        $menuTable = new Menu_Model_Menu_Manager();
 
         $start  = (int)$this->_getParam('start');
         $count  = (int)$this->_getParam('count');
@@ -146,7 +146,7 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
             }
 
             foreach ($data as $val) {
-                $array[$val['parent_id']][] =  $val;
+                $array[$val['parentId']][] =  $val;
             }
             $menuTable->buildTree($array, 0, 0, 2);
             //$menuTable->buildTreeGt($array, 0);
@@ -181,7 +181,7 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
 
     public function createAction()
     {
-        $menuManager = new Menus_Model_Menu_Manager();
+        $menuManager = new Menu_Model_Menu_Manager();
         $createForm = $this->_getCreateForm();
 
         if ($this->_request->isPost()
@@ -208,15 +208,15 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
             $this->_helper->getHelper('redirector')->direct('index');
         }
 
-        $menuManager = new Menus_Model_Menu_Manager();
+        $menuManager = new Menu_Model_Menu_Manager();
 
         $editForm = $this->_getEditForm();
-        $editForm = new Menus_Model_Menu_Form_Edit();
+        $editForm = new Menu_Model_Menu_Form_Edit();
 
         $routes = $menuManager->getRoutes();
         $row = $menuManager->getRowById($id);
 
-        if ($row->type == Menus_Model_Menu::TYPE_MVC) {
+        if ($row->type == Menu_Model_Menu::TYPE_MVC) {
             $params = json_decode($row->params);
             if ($params) {
                 foreach ($params as $key => $val) {
@@ -244,7 +244,7 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
     public function deleteAction()
     {
         $id = $this->_getParam('id');
-        $menuTable = new Menus_Model_Menu_Manager();
+        $menuTable = new Menu_Model_Menu_Manager();
 
         $deleted = false;
         if (empty($id) || empty($menuTable)) {
@@ -267,7 +267,7 @@ class Menus_ManagementController extends Core_Controller_Action_Scaffold
         $this->_helper->layout->disableLayout();
         $id = (int)$this->_getParam('id');
         $to = $this->_getParam('to');
-        $menuTable = new Menus_Model_Menu_Manager();
+        $menuTable = new Menu_Model_Menu_Manager();
         $moved = false;
         if (empty($id) || empty($to) || empty($menuTable)) {
             $this->_helper->json($moved);

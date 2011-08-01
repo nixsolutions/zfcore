@@ -1,5 +1,5 @@
 <?php
-class Migration_20110720_000000_00 extends Core_Migration_Abstract
+class Migration_00000000_000000_00 extends Core_Migration_Abstract
 {
 
     public function up()
@@ -12,7 +12,7 @@ class Migration_20110720_000000_00 extends Core_Migration_Abstract
                 `title` VARCHAR(255) NOT NULL,
                 `type` ENUM('uri','mvc') DEFAULT 'uri',
                 `params` TEXT,
-                `parent_id` INT(10) UNSIGNED DEFAULT '0',
+                `parentId` INT(10) UNSIGNED DEFAULT '0',
                 `position` INT(11) NOT NULL DEFAULT '0',
                   `route` VARCHAR(255) DEFAULT NULL,
                 `uri` VARCHAR(255) DEFAULT NULL,
@@ -20,19 +20,19 @@ class Migration_20110720_000000_00 extends Core_Migration_Abstract
                 `target` ENUM('','_blank','_parent','_self','_top') DEFAULT '',
                 `active` TINYINT(1) DEFAULT '0',
                 `visible` TINYINT(1) DEFAULT '1',
-                `route_type` VARCHAR(40) DEFAULT NULL,
+                `routeType` VARCHAR(40) DEFAULT NULL,
                 `module` VARCHAR(40) DEFAULT NULL,
                 `controller` VARCHAR(40) DEFAULT NULL,
                 `action` VARCHAR(40) DEFAULT NULL,
                 PRIMARY KEY (`id`),
-                KEY `parent_id` (`parent_id`)
+                KEY `parentId` (`parentId`)
             ) ENGINE=MYISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 "
         );
 
 
         $this->query(
             "Insert  into `menu`
-                (`id`,`label`,`title`,`type`,`params`,`parent_id`,`position`,`route`,`uri`,`class`,`target`,`active`,`visible`,`route_type`,`module`,`controller`,`action`)
+                (`id`,`label`,`title`,`type`,`params`,`parentId`,`position`,`route`,`uri`,`class`,`target`,`active`,`visible`,`routeType`,`module`,`controller`,`action`)
             values
                 (1,'Home','home','uri','{\"uri\":\"\\/\",\"visible\":\"1\",\"active\":\"0\"}',0,0,NULL,'/',NULL,'',0,1,NULL,NULL,NULL,NULL),
                 (2,'Registration','register','mvc','{\"type\":\"bot\"}',1,9,'default',NULL,'register','_parent',0,1,'module','users','register','index'),

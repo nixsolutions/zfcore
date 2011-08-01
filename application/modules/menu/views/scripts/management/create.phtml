@@ -66,7 +66,7 @@
                 }?>
                 <p><label>Example path:</label> <i>http://<?php echo $host.$route['path']; ?></i></p>
                 <?php
-                if ($route['type'] == Menus_Model_Menu::ROUTE_TYPE_ROUTE):
+                if ($route['type'] == Menu_Model_Menu::ROUTE_TYPE_ROUTE):
                     foreach ($route['params'] as $key => $param):
                 ?>
                 <label><?php echo $param; ?></label>
@@ -88,7 +88,7 @@
                     <?php
                     endif;
                 endif;
-                if ($route['type'] == Menus_Model_Menu::ROUTE_TYPE_REGEX):
+                if ($route['type'] == Menu_Model_Menu::ROUTE_TYPE_REGEX):
                     foreach ($route['params'] as $key => $param):?>
                         <label>Param[<?php echo $key; ?>]</label>
                         <div class="dijit dijitReset dijitInline dijitLeft dijitTextBox">
@@ -98,7 +98,7 @@
                             <?php
                     endforeach;
                 endif;
-                if ($route['type'] == Menus_Model_Menu::ROUTE_TYPE_MODULE):?>
+                if ($route['type'] == Menu_Model_Menu::ROUTE_TYPE_MODULE):?>
                         <label>Module</label>
                         <div>
                         <select onChange="changeModule(document.getElementById('mvcModule'))" dojoType="dijit.form.FilteringSelect" name="params[module]" id="mvcModule" style="margin-bottom:5px;">

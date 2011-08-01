@@ -19,7 +19,7 @@ class Core_View_Helper_CoreMenu
      */
     public function coreMenu(Zend_Navigation_Container $container = null)
     {
-        $menuManager = new Menus_Model_Menu_Manager();
+        $menuManager = new Menu_Model_Menu_Manager();
 
         if ($this->_menuLabel) {
             $menuArray = $menuManager->getMenuByLabel($this->_menuLabel);

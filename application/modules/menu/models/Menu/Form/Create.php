@@ -5,24 +5,24 @@
 require_once 'Zend/Dojo/Form.php';
 
 /**
- * Menus_Model_Menu_Form_Create
+ * Menu_Model_Menu_Form_Create
  *
  * @category    Application
- * @package     Menus_Model_Menu
+ * @package     Menu_Model_Menu
  * @subpackage  Form
  *
  * @author      Valeriu Baleyko <baleyko.v.v@gmail.com>
  * @author      Alexander Khaylo <alex.khaylo@gmail.com>
  * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
-class Menus_Model_Menu_Form_Create extends Zend_Dojo_Form
+class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
 {
 
     protected $_menuManager = null;
 
     public function init()
     {
-        $this->_menuManager = new Menus_Model_Menu_Manager();
+        $this->_menuManager = new Menu_Model_Menu_Manager();
 
         $this->setName('menuItemCreateForm');
         $this->setMethod('post');
@@ -91,10 +91,10 @@ class Menus_Model_Menu_Form_Create extends Zend_Dojo_Form
         $target->addMultiOptions(
             array(
                 0 => 'Don\'t set',
-                Menus_Model_Menu::TARGET_BLANK  => "New window",
-                Menus_Model_Menu::TARGET_PARENT => "Parrent frame",
-                Menus_Model_Menu::TARGET_SELF   => "Current window",
-                Menus_Model_Menu::TARGET_TOP    => "New window without frames"
+                Menu_Model_Menu::TARGET_BLANK  => "New window",
+                Menu_Model_Menu::TARGET_PARENT => "Parrent frame",
+                Menu_Model_Menu::TARGET_SELF   => "Current window",
+                Menu_Model_Menu::TARGET_TOP    => "New window without frames"
             )
         );
 

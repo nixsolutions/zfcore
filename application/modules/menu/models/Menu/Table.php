@@ -14,7 +14,7 @@ require_once 'Core/Db/Table/Abstract.php';
  * @author      Valeriu Baleyko <baleyko.v.v@gmail.com>
  * @copyright   Copyright (c) 2010 NIX Solutions (http://www.nixsolutions.com)
  */
-class Menus_Model_Menu_Table extends Core_Db_Table_Abstract
+class Menu_Model_Menu_Table extends Core_Db_Table_Abstract
 {
     /** Table name */
     protected $_name    = 'menu';
@@ -23,5 +23,5 @@ class Menus_Model_Menu_Table extends Core_Db_Table_Abstract
     protected $_primary = 'id';
 
     /** Row Class */
-    protected $_rowClass = 'Menus_Model_Menu';
+    protected $_rowClass = 'Menu_Model_Menu';
 }
