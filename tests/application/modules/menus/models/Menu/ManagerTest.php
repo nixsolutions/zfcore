@@ -1,21 +1,21 @@
 <?php
 /**
- * Menus_Model_Menu_ManagerTest
+ * Menu_Model_Menu_ManagerTest
  *
  * @category    Application
- * @package     Menus_Model_Menu_ManagerTest
+ * @package     Menu_Model_Menu_ManagerTest
  *
  * @author      Alexander Khaylo <alex.khaylo@gmail.com>
  * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
-class Menus_Model_Menu_ManagerTest extends ControllerTestCase
+class Menu_Model_Menu_ManagerTest extends ControllerTestCase
 {
     public function setUp()
     {
         parent::setUp();
 
-        $this->_menuTable = new Menus_Model_Menu_Table();
-        $this->_menuManager = new Menus_Model_Menu_Manager();
+        $this->_menuTable = new Menu_Model_Menu_Table();
+        $this->_menuManager = new Menu_Model_Menu_Manager();
 
         $this->_fixture['item'] = array(
             'id'         => 2,

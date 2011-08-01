@@ -24,7 +24,7 @@ function(){
     },
     {
         name: "<?php $this->_e('Parent Id')?>",
-        field: "parent_id",
+        field: "parentId",
         width: '50px',
         canSort: true
     },
@@ -55,7 +55,7 @@ function(){
     }
     ];
 
-    var datagrid = new core.grid.Scaffold(cells, 'gridContainer', '/menus/management', true, true, false, false, 50);
+    var datagrid = new core.grid.Scaffold(cells, 'gridContainer', '/menu/management', true, true, false, false, 50);
 
     dojo.connect(dijit.byId("grid-up"), "onClick", function(){
         var _self = datagrid;

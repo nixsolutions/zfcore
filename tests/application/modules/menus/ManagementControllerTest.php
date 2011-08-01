@@ -1,6 +1,6 @@
 <?php
 /**
- * Menus_ManagementControllerTest
+ * Menu_ManagementControllerTest
  *
  * @category    Application
  * @package     ManagementControllerTest
@@ -8,7 +8,7 @@
  * @author      Alexander Khaylo <alex.khaylo@gmail.com>
  * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
-class Menus_ManagementControllerTest extends ControllerTestCase
+class Menu_ManagementControllerTest extends ControllerTestCase
 {
 
     public function setUp()

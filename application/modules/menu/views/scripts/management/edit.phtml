@@ -1,5 +1,5 @@
 <?php
-//echo $this->createForm;
+//echo $this->editForm;
 ?>
 <style>
 #menuItemCreateForm hr{
@@ -11,53 +11,54 @@
 </style>
 
 <form action=""
-    name="<?php echo $this->createForm->getName(); ?>"
-    id="<?php echo $this->createForm->getId(); ?>"
-    enctype="<?php echo $this->createForm->getEnctype(); ?>"
-    method="<?php echo $this->createForm->getMethod();?>">
+    name="<?php echo $this->editForm->getName(); ?>"
+    id="<?php echo $this->editForm->getId(); ?>"
+    enctype="<?php echo $this->editForm->getEnctype(); ?>"
+    method="<?php echo $this->editForm->getMethod();?>">
 
+        <?php echo $this->editForm->id; ?>
     <div>
-        <?php echo $this->createForm->label; ?>
+        <?php echo $this->editForm->label; ?>
     </div>
     <div>
-        <?php echo $this->createForm->parent; ?>
+        <?php echo $this->editForm->parent; ?>
     </div>
     <div>
-        <?php echo $this->createForm->title; ?>
-    </div>
-
-    <hr />
-
-    <div>
-        <?php echo $this->createForm->visible; ?>
-    </div>
-    <div>
-        <?php echo $this->createForm->active; ?>
-    </div>
-
-
-
-    <div>
-        <?php echo $this->createForm->class; ?>
-    </div>
-    <div>
-        <?php echo $this->createForm->target; ?>
+        <?php echo $this->editForm->title; ?>
     </div>
 
     <hr />
 
     <div>
-        <?php echo $this->createForm->linkType; ?>
+        <?php echo $this->editForm->visible; ?>
+    </div>
+    <div>
+        <?php echo $this->editForm->active; ?>
+    </div>
+
+
+
+    <div>
+        <?php echo $this->editForm->class; ?>
+    </div>
+    <div>
+        <?php echo $this->editForm->target; ?>
+    </div>
+
+    <hr />
+
+    <div>
+        <?php echo $this->editForm->linkType; ?>
     </div>
     <div id="type-route">
-        <?php echo $this->createForm->route; ?>
+        <?php echo $this->editForm->route; ?>
     </div>
     <div class="routes">
     <?php
     if ($this->routes):
         foreach ($this->routes as $route):
             if ($route['name']):?>
-                <div style="display:none;" id="route-<?php echo $route['name']; ?>">
+            <div style="display:none;" id="route-<?php echo $route['name']; ?>">
                 <p><label>Route type:</label> <?php echo $route['type']; ?></p>
                 <?php if ($_SERVER && isset($_SERVER["HTTP_HOST"])) {
                     $host = $_SERVER["HTTP_HOST"];
@@ -66,19 +67,34 @@
                 }?>
                 <p><label>Example path:</label> <i>http://<?php echo $host.$route['path']; ?></i></p>
                 <?php
-                if ($route['type'] == Menus_Model_Menu::ROUTE_TYPE_ROUTE):
+                if ($route['type'] == Menu_Model_Menu::ROUTE_TYPE_ROUTE):
                     foreach ($route['params'] as $key => $param):
                 ?>
-                <label><?php echo $param; ?></label>
+                <label><?php echo $key; ?></label>
                 <div class="dijit dijitReset dijitInline dijitLeft dijitTextBox">
-                    <input id="<?php echo $route['name'] . '-' . $param; ?>" class="dijitReset dijitInputInner" type="text" name="params[<?php echo $param; ?>]" value="<?php echo $param; ?>">
+                    <input id="<?php echo $route['name'] . '-' . $param; ?>" class="dijitReset dijitInputInner" type="text" name="params[<?php echo $key; ?>]" value="<?php echo $param; ?>">
                 </div>
                 <br />
                     <?php
                     endforeach;?>
                     <?php
                     if ($route['wildcard'] === true):?>
-                    <p class="new-parameters"></p>
+                        <div class="new-parameters">
+                            <?php
+                             if ($this->menu->routeType == Menu_Model_Menu::ROUTE_TYPE_MODULE) {
+                                $params = json_decode($this->menu->params);
+                                if ($params):
+                                    foreach($params as $key => $val):
+                                    ?>
+                                        <label><?php echo $key;?></label>
+                                        <div>
+                                            <input dojoType="dijit.form.TextBox" type="text" name="params[<?php echo $key;?>" value="<?php echo $val;?>">
+                                        </div>
+                                    <?php
+                                    endforeach;
+                                endif;
+                            }?>
+                        </div>
                         <span>Current parameter name:</span>
                         <div>
                             <input class="newparam" dojoType="dijit.form.TextBox" type="text" name="newparam" value="">
@@ -88,29 +104,37 @@
                     <?php
                     endif;
                 endif;
-                if ($route['type'] == Menus_Model_Menu::ROUTE_TYPE_REGEX):
+                if ($route['type'] == Menu_Model_Menu::ROUTE_TYPE_REGEX):
                     foreach ($route['params'] as $key => $param):?>
                         <label>Param[<?php echo $key; ?>]</label>
                         <div class="dijit dijitReset dijitInline dijitLeft dijitTextBox">
-                            <input id="<?php echo $route['name'] . '-' . $param; ?>" class="dijitReset dijitInputInner" type="text" name="params[<?php echo $param; ?>]" value="<?php echo $param; ?>">
+                            <input id="<?php echo $route['name'] . '-' . $param; ?>" class="dijitReset dijitInputInner" type="text" name="params[<?php echo $key; ?>]" value="<?php echo $param; ?>">
                         </div>
                         <br />
                             <?php
                     endforeach;
                 endif;
-                if ($route['type'] == Menus_Model_Menu::ROUTE_TYPE_MODULE):?>
-                        <label>Module</label>
-                        <div>
+                if ($route['type'] == Menu_Model_Menu::ROUTE_TYPE_MODULE):?>
+                    <label>Module</label>
+                    <div>
                         <select onChange="changeModule(document.getElementById('mvcModule'))" dojoType="dijit.form.FilteringSelect" name="params[module]" id="mvcModule" style="margin-bottom:5px;">
                             <option value="" label="---">---</option>
                             <?php
+                            $selectedModule = false;
                             foreach ($route['modules'] as $key => $param):?>
-                                <option value="<?php echo $key; ?>" label="<?php echo $key; ?>"><?php echo $key; ?></option>
+                                <?php
+                                if ($key == $this->menu->module) {
+                                    $selected = 'selected="selected"';
+                                    $selectedModule = $key;
+                                } else {
+                                    $selected = '';
+                                }?>
+                                <option value="<?php echo $key; ?>" <?php echo $selected; ?> label="<?php echo $key; ?>"><?php echo $key; ?></option>
                             <?php
                             endforeach;
                         ?>
                         </select>
-                        </div>
+
                         <div class="modules">
 
                             <?php
@@ -122,7 +146,14 @@
                                             <option value="" label="---">---</option>
                                             <?php
                                             foreach ($controllers as $key => $param):?>
-                                                <option value="<?php echo $key; ?>" label="<?php echo $key; ?>"><?php echo $key; ?></option>
+                                            <?php
+                                            if($key == $this->menu->controller) {
+                                                $controllerSelected = 'selected="selected"';
+
+                                            } else {
+                                                $controllerSelected = '';
+                                            }?>
+                                                <option value="<?php echo $key; ?>" <?php echo $controllerSelected; ?>  label="<?php echo $key; ?>"><?php echo $key; ?></option>
                                             <?php
                                             endforeach;
                                             ?>
@@ -144,12 +175,28 @@
                             ?>
                         </div>
 
-                        <p class="new-parameters"></p>
+                        <div class="new-parameters">
+                        <?php
+                         if ($this->menu->routeType == Menu_Model_Menu::ROUTE_TYPE_MODULE) {
+                            $params = json_decode($this->menu->params);
+                            if ($params):
+                                foreach($params as $key => $val):
+                                ?>
+                                    <label><?php echo $key;?></label>
+                                    <div>
+                                        <input dojoType="dijit.form.TextBox" type="text" name="params[<?php echo $key;?>]" value="<?php echo $val;?>">
+                                    </div>
+                                <?php
+                                endforeach;
+                            endif;
+                        }?>
+                        </div>
                         <span>Current parameter name:</span>
                         <div>
                             <input class="newparam" dojoType="dijit.form.TextBox" type="text" name="newparam" value="">
                         </div>
                         <input dojoType="dijit.form.Button" onclick="addParam();" type="button" name="add" label="Add parameter" value="Add parameter">
+                    </div>
                     <?php
                 endif;
             endif;?>
@@ -160,11 +207,21 @@
     ?>
     </div>
     <div id="type-uri">
-        <?php echo $this->createForm->uri; ?>
+        <?php echo $this->editForm->uri; ?>
     </div>
-
 
     <div>
-        <?php echo $this->createForm->submit; ?>
+        <?php echo $this->editForm->submit; ?>
     </div>
 </form>
+<?php
+if ($selectedModule):?>
+    <script>
+    dojo.ready(function(){
+        changeModule(document.getElementById('mvcModule'));
+        getActions(document.getElementById('<?php echo $selectedModule;?>-Controller'),'<?php echo $selectedModule;?>','<?php echo $this->menu->action;?>');
+    });
+    </script>
+<?php
+endif;
+?>

@@ -129,51 +129,26 @@ class Categories_ManagementController extends Core_Controller_Action_Scaffold
             $where = $field .' LIKE '. $filter;
         }
 
-        $db = Zend_Db_Table::getDefaultAdapter();
-        switch ($db) {
-            case $db instanceof Zend_Db_Adapter_Pdo_Mysql :
-                $select = $this->_table->select();
-                $select->from(
-                    $this->_table->info(Zend_Db_Table::NAME),
-                    new Zend_Db_Expr('SQL_CALC_FOUND_ROWS *')
-                );
-                if (isset($where)) {
-                    $select->where($where);
-                }
-                if (isset($order)) {
-                    $select->order($order);
-                }
-                $select->limit($count, $start);
-                if ($data = $this->_table->fetchAll($select)) {
-                    $total = $this->_table->getAdapter()
-                    ->fetchOne(
-                    $this->_table->getAdapter()->select()->from(null, new Zend_Db_Expr('FOUND_ROWS()'))
-                    );
-                }
-                break;
-            default:
-                $select = $this->_table->select();
-                $select->from(
-                    $this->_table->info(Zend_Db_Table::NAME),
-                    new Zend_Db_Expr('COUNT(*) as c')
-                );
+        $select = $this->_table->select();
+        $select->from(
+            $this->_table->info(Zend_Db_Table::NAME),
+            new Zend_Db_Expr('COUNT(*) as c')
+        );
+        if (isset($where)) {
+            $select->where($where);
+        }
+        if ($total = $this->_table->fetchRow($select)) {
+            $total = $total->c;
+            $select = $this->_table->select();
+            $select->from($this->_table->info(Zend_Db_Table::NAME));
             if (isset($where)) {
                 $select->where($where);
             }
-            if ($total = $this->_table->fetchRow($select)) {
-                $total = $total->c;
-                $select = $this->_table->select();
-                $select->from($this->_table->info(Zend_Db_Table::NAME));
-                if (isset($where)) {
-                    $select->where($where);
-                }
-                if (isset($order)) {
-                    $select->order($order);
-                }
-                $select->limit($count, $start);
-                $data = $this->_table->fetchAll($select);
+            if (isset($order)) {
+                $select->order($order);
             }
-            break;
+            $select->limit($count, $start);
+            $data = $this->_table->fetchAll($select);
         }
 
 

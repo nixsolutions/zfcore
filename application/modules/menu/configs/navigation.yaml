@@ -4,13 +4,13 @@ menumanagment:
   pages:
     create:
       label: Create Menu Item
-      module: menus
+      module: menu
       controller: management
       action: create
       route: default
     manage:
       label: Manage Menu
-      module: menus
+      module: menu
       controller: management
       action: index
       route: default

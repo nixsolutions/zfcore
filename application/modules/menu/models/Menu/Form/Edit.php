@@ -5,7 +5,7 @@
 require_once 'Zend/Dojo/Form.php';
 
 /**
- * Menus_Model_Menu_Form_Edit
+ * Menu_Model_Menu_Form_Edit
  *
  * @category    Application
  * @package     Model_Menu
@@ -15,7 +15,7 @@ require_once 'Zend/Dojo/Form.php';
  * @author      Alexander Khaylo <alex.khaylo@gmail.com>
  * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
-class Menus_Model_Menu_Form_Edit extends Menus_Model_Menu_Form_Create
+class Menu_Model_Menu_Form_Edit extends Menu_Model_Menu_Form_Create
 {
         public function init()
         {

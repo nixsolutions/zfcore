@@ -1,5 +1,5 @@
 <?php
-class Menus_Model_Menu_TableTest extends ControllerTestCase
+class Menu_Model_Menu_TableTest extends ControllerTestCase
 {
 
 }
