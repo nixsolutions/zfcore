@@ -35,7 +35,7 @@ class Users_ManagementController extends Core_Controller_Action
         $columns = array('id', 'login', 'firstname', 'lastname', 'email', 'role', 'status');
 
         if ($this->_request->isXmlHttpRequest()) {
-            $data = $this->_helper->dataTables($table, null, $columns);
+            $data = $this->_helper->dataTables($table->select(), $columns);
 
             $url = $this->_helper->url;
             foreach ($data['aaData'] as &$rowData) {

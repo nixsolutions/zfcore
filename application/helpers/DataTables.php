@@ -10,19 +10,15 @@ class Helper_DataTables
     /**
      * Get DataTable data
      *
-     * @param Zend_Db_Table $table
      * @param Zend_Db_Table_Select $select
      * @param array|null $columns
      * @return array
      */
-    public function direct(Zend_Db_Table_Abstract $table,
-        Zend_Db_Table_Select $select = null, $columns = null)
+    public function direct(Zend_Db_Table_Select $select, $columns = null)
     {
+        $table = $select->getTable();
         if (!$columns) {
             $columns = $table->info(Zend_Db_Table_Abstract::COLS);
-        }
-        if (!$select) {
-            $select = $table->select();
         }
 
         $colCount = count($columns);
@@ -49,7 +45,7 @@ class Helper_DataTables
          */
         if ($search = $request->getParam('sSearch')) {
             for ($i = 0; $i < $colCount; $i++) {
-                $select->orWhere("{$columns[$i]} LIKE ?", '%' . $search . '%');
+                $select->orHaving("{$columns[$i]} LIKE ?", '%' . $search . '%');
             }
         }
 
@@ -57,7 +53,7 @@ class Helper_DataTables
         for ($i = 0; $i < $colCount; $i++) {
             if ($request->getParam('bSearchable_' . $i) == "true") {
                 if ($search = $request->getParam('sSearch_' . $i)) {
-                    $select->where("{$columns[$i]} LIKE ?", '%' . $search . '%');
+                    $select->having("{$columns[$i]} LIKE ?", '%' . $search . '%');
                 }
             }
         }
