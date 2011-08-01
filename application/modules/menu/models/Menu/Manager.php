@@ -84,7 +84,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
         }
         $this->buildTreeGt($array, 0);
         //$this->buildTree($array, 0, 0, 1);
-        return array_merge(array(0 => '/'),$this->_parentArray);
+        return array_merge(array(0 => '/'), $this->_parentArray);
     }
 
     /**
@@ -220,23 +220,15 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                 $outputArray[] = &$all[$id];
 
             } else {
-                $dangling[$id] = $entry;
-            }
-        }
-        while (count($dangling) > 0) {
-            foreach ($dangling as $entry) {
-                $id = $entry['id'];
                 $pid = $entry['parentId'];
 
                 if (isset($all[$pid])) {
                     $all[$id] = $entry;
                     $all[$pid]['pages'][$entry['label']] =& $all[$id];
-
-                    unset($all[$id]['parentId']);
-                    unset($dangling[$entry['id']]);
                 }
             }
         }
+
         return $outputArray;
     }
 
