@@ -54,4 +54,4 @@
     </li>
 </ul>
 
-<?php echo $this->action('comment', 'post', 'forum', array('postId' => $this->post->id));?>
+<?php if ($this->user()) echo $this->action('comment', 'post', 'forum', array('postId' => $this->post->id));?>

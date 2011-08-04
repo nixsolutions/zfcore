@@ -6,5 +6,8 @@ mvc:
       allow: guest
     post:
       allow: guest
+      comment:
+        allow: user
+        deny: guest
     management:
       allow: admin
