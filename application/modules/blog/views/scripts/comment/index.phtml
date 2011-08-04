@@ -19,15 +19,19 @@
     </div>
 <?php endif;?>
 
-<ul class="commentlist">
-    <li id="li-comment-1" class="comment">
-        <?php $user = $this->user();?>
-        <?php if ($user->avatar):?>
-            <img src="<?php echo $this->baseUrl($user->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>" class="avatar"/>
-        <?php else:?>
-            <?php echo $this->gravatar($user->email, array(), array('title' => $this->__('Avatar for') . ' '  . $user->getName(), 'class' => 'avatar'))?>
-        <?php endif;?>
+<?php $user = $this->user();?>
 
-        <?php echo $this->form;?>
-    </li>
-</ul>
+<?php if ($user):?>
+    <ul class="commentlist">
+        <li id="li-comment-1" class="comment">
+
+            <?php if ($user->avatar):?>
+                <img src="<?php echo $this->baseUrl($user->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>" class="avatar"/>
+            <?php else:?>
+                <?php echo $this->gravatar($user->email, array(), array('title' => $this->__('Avatar for') . ' '  . $user->getName(), 'class' => 'avatar'))?>
+            <?php endif;?>
+
+            <?php echo $this->form;?>
+        </li>
+    </ul>
+<?php endif?>
