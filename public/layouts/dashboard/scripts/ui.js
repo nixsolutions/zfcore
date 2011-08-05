@@ -1,57 +1,22 @@
-if (window.dojo) dojo.addOnLoad(function(){
+var animateNext;
 
-    // hide all sub menu
-    dojo.query("ul.navigation > li ul").style('display','none');
+function showSubMenu(jNode)
+{
+    animateNext = null;
+    if (!$("ul.navigation > li ul").is(':animated')) {
+        jNode.children('ul').slideDown();
+    } else {
+        animateNext = jNode;
+    }
+}
 
-    dojo.query("ul.navigation > li.active ul").style('display','block');
+function hideSubMenu(jNode) {
+    animateNext = null;
+    jNode.children('ul').slideUp();
+}
 
-    // click in main menu
-    dojo.query("ul.navigation > li > span").onclick(function(){
-        if (this.parentNode.className == 'active' ) {
-            return false;
-        }
-        dojo.query('ul.navigation > li.active').removeClass('active');
-        dojo.addClass(this.parentNode, 'active');
+setInterval(function() { if (animateNext) showSubMenu(animateNext); }, 500);
 
-        dojo.query("ul.navigation > li ul").forEach(function(node){
-
-            if ( dojo.style(node, 'display') != 'none') {
-                dojo.fx.wipeOut({
-                    node: node,
-                    duration: 500
-                }).play();
-            }
-        });
-
-        dojo.fx.wipeIn({
-            node: dojo.query('ul',this.parentNode)[0],
-            duration: 500
-        }).play();
-    });
-
-    // fly left on mouse over
-    dojo.query("ul.navigation > li > a, ul.navigation > li > span").onmouseover(function(){
-        dojo.animateProperty({ node: this,
-                               duration:200,
-                               properties: {
-                                   paddingRight: { start: 15, end: 25, unit:"px"  }  // ������������
-                               }
-                            }).play();
-        return false;
-    });
-
-    // fly back on mouse out
-    dojo.query("ul.navigation > li > a, ul.navigation > li > span").onmouseout(function(){
-
-        dojo.animateProperty({ node: this,
-                               duration:500,
-                               properties: {
-                                   paddingRight: { start: 25, end: 15, unit:"px"  }  // ������������
-                               }
-                            }).play();
-        return false;
-    });
-});
 $(function(){
 	$('.button, input:submit, input:reset').button();
 	$('input:text, select, textarea, input:password').addClass('ui-state-default ui-corner-all');
@@ -60,5 +25,18 @@ $(function(){
         if (!confirm(this.title)) {
             e.preventDefault();
         }
+    });
+	
+	// hide all sub menu
+    $("ul.navigation > li ul").hide();
+
+ // show active sub menu
+    $("ul.navigation > li.active ul").show();
+
+    // fly back on mouse out
+    $("ul.navigation > li").hover(function(e){
+        showSubMenu($(this));
+    }, function(){
+        hideSubMenu($(this));
     });
 });
