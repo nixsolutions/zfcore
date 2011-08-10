@@ -20,6 +20,8 @@ RewriteEngine On
 # protect source code
 RewriteRule ^(.*/)*\.svn/ / [F,L]
 
+RewriteRule ^\w{2}/(.*\.(:?jpe?g|png|gif|ico|js|css))$ $1
+
 # loop stopping
 RewriteCond %{ENV:REDIRECT_STATUS} 200
 RewriteRule .* - [L]
