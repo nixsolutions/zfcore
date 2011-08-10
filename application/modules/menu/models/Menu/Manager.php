@@ -121,6 +121,31 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     }
 
     /**
+     * Build hierarchical tree array for menu of parents
+     *
+     * @param $array array
+     * @param $parentId int
+     * @param $level int
+     * @param $shift int
+     * @param $tmpArray array
+     */
+    public function buildTreeArray($array, $parentId, $level, $shift, $tmpArray = null)
+    {
+        if ($parentId == 0) {
+            $tmpArray = array();
+        }
+        if (is_array($array) && isset($array[$parentId]) && count($array[$parentId]) > 0) {
+            foreach ($array[$parentId] as $cat) {
+                $level = $level + $shift;
+                $cat['label'] = str_pad('', $level - $shift, "-", STR_PAD_RIGHT).$cat['label'];
+                $tmpArray[] = $cat;
+                $this->buildTreeArray($array, $cat['id'], $level, $shift, &$tmpArray);
+                $level = $level - $shift;
+            }
+        }
+    }
+
+    /**
      * build tree Gt
      * Insert menu tree with ">" to $this->_parentArray
      * @param array $array
@@ -201,6 +226,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
      */
     public function makeParentChildRelations($inputArray)
     {
+        $inputArray = $this->isExistRoutes($inputArray);
         if (!is_array($inputArray)) {
             return null;
         }
@@ -230,6 +256,23 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
         }
 
         return $outputArray;
+    }
+    /**
+     * Verification routes on exist
+     * Enter description here ...
+     * @param array $inputArray
+     * @return array
+     */
+    public function isExistRoutes($inputArray)
+    {
+        $routes = $this->getNamesOfRoutes();
+        $newArray = array();
+        foreach ($inputArray as $name){
+            if ($name['type'] != Menu_Model_Menu::TYPE_MVC || isset($routes[$name['route']])) {
+                $newArray[] = $name;
+            }
+        }
+        return $newArray;
     }
 
     /**
@@ -600,13 +643,16 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     {
         $modules = $instance->getControllerDirectory();
         foreach ($modules as $modul => $path) {
-            $controllers = scandir($path);
-            foreach ($controllers as $key => $name) {
-                if (preg_match("/^([\w]*)Controller.php$/", $name, $matches)) {
-                    $lowerClasses = strtolower($matches[1]);
-                    $module[$modul][$lowerClasses] = $lowerClasses;
+            if (is_dir($path)) {
+                $controllers = scandir($path);
+                foreach ($controllers as $key => $name) {
+                    if (preg_match("/^([\w]*)Controller.php$/", $name, $matches)) {
+                        $lowerClasses = strtolower($matches[1]);
+                        $module[$modul][$lowerClasses] = $lowerClasses;
+                    }
                 }
             }
+
         }
         return array(
             'name'   => $routeName,
@@ -635,7 +681,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                 $options = $data['params'];
             }
             $menu->visible = (int)$data['visible'];
-            $menu->active = (int)$data['active'];
             if ($data['class']) {
                 $menu->class = $data['class'];
             }
@@ -647,7 +692,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                 $menu->target = $data['target'];
             }
 
-            if ($data['linkType'] == 0) {//link
+            if ($data['linkType'] == Menu_Model_Menu::TYPE_URI) {//link
                 $menu->type = Menu_Model_Menu::TYPE_URI;
                 if (!$data['uri']) {
                     return false;
@@ -655,7 +700,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                 $menu->uri = $data['uri'];
 
 
-            } elseif ($data['linkType'] == 1) {//route
+            } elseif ($data['linkType'] == Menu_Model_Menu::TYPE_MVC) {//route
                 $menu->type = Menu_Model_Menu::TYPE_MVC;
                 if (!$data['route']) {
                     return false;
@@ -719,7 +764,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                     $options = $data['params'];
                 }
                 $menu->visible = (int)$data['visible'];
-                $menu->active = (int)$data['active'];
                 if ($data['class']) {
                     $menu->class = $data['class'];
                 }
@@ -731,7 +775,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                     $menu->target = $data['target'];
                 }
 
-                if ($data['linkType'] == 0) {//link
+                if ($data['linkType'] == Menu_Model_Menu::TYPE_URI) {//link
                     $menu->type = Menu_Model_Menu::TYPE_URI;
                     if (!$data['uri']) {
                         return false;
@@ -739,7 +783,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                     $menu->uri = $data['uri'];
 
 
-                } elseif ($data['linkType'] == 1) {//route
+                } elseif ($data['linkType'] == Menu_Model_Menu::TYPE_MVC) {//route
                     $menu->type = Menu_Model_Menu::TYPE_MVC;
                     if (!$data['route']) {
                         return false;

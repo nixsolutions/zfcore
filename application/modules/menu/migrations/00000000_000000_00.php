@@ -1,5 +1,5 @@
 <?php
-class Migration_00000000_000000_00 extends Core_Migration_Abstract
+class Menu_Migration_00000000_000000_00 extends Core_Migration_Abstract
 {
 
     public function up()

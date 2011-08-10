@@ -68,13 +68,6 @@ class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
               ->addFilter('StringTrim')
               ->setAttribs(array('style'=>'width:30%;margin-bottom:5px;'));
 
-        $active = new Zend_Dojo_Form_Element_FilteringSelect('active');
-        $active->setLabel('Active')
-               ->addFilter('StripTags')
-               ->addFilter('StringTrim')
-               ->setAttribs(array('style'=>'margin-bottom:5px;'));
-        $active->addMultiOptions(array(0 => 'No', 1 => 'Yes'));
-
         $visible = new Zend_Dojo_Form_Element_FilteringSelect('visible');
         $visible->setLabel('Visibility')
                 ->addFilter('StripTags')
@@ -133,7 +126,6 @@ class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
                 $uri->setValue($menuRow->getUri());
                 $visible->setValue($menuRow->getVisible());
                 $linkType->setValue($menuRow->getLinkType());
-                $active->setValue($menuRow->getActive());
                 $itemId->setValue($id);
             }
         }
@@ -149,7 +141,6 @@ class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
                 $route,
                 $uri,
                 $visible,
-                $active,
                 $this->_submit()
             )
         );
