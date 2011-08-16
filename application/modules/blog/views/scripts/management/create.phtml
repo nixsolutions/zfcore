@@ -1,11 +1,9 @@
 <?php
-    $this->stylesheet()->controller();
-    
     $this->dojo()
-         ->requireModule('dijit._editor.plugins.FullScreen') 
-         ->requireModule('dijit._editor.plugins.ViewSource') 
+         ->requireModule('dijit._editor.plugins.FullScreen')
+         ->requireModule('dijit._editor.plugins.ViewSource')
          //->requireModule('core.editor.plugins.ImageManager')
          ;
-    
+
     echo $this->createForm;
 ?>
