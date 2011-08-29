@@ -120,30 +120,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
         }
     }
 
-    /**
-     * Build hierarchical tree array for menu of parents
-     *
-     * @param $array array
-     * @param $parentId int
-     * @param $level int
-     * @param $shift int
-     * @param $tmpArray array
-     */
-    public function buildTreeArray($array, $parentId, $level, $shift, $tmpArray = null)
-    {
-        if ($parentId == 0) {
-            $tmpArray = array();
-        }
-        if (is_array($array) && isset($array[$parentId]) && count($array[$parentId]) > 0) {
-            foreach ($array[$parentId] as $cat) {
-                $level = $level + $shift;
-                $cat['label'] = str_pad('', $level - $shift, "-", STR_PAD_RIGHT).$cat['label'];
-                $tmpArray[] = $cat;
-                $this->buildTreeArray($array, $cat['id'], $level, $shift, &$tmpArray);
-                $level = $level - $shift;
-            }
-        }
-    }
 
     /**
      * build tree Gt
