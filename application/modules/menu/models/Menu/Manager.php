@@ -286,7 +286,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     public function setMenuRowset()
     {
         if (null === $this->_menuTableRowset) {
-            $this->_menuTableRowset = $this->_dbTable->fetchAll();
+            $this->_menuTableRowset = $this->_dbTable->fetchAll($this->_dbTable->select()->order('parentId ASC'));
         }
     }
 
