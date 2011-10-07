@@ -1,0 +1,10 @@
+<?php
+
+$this->grid();
+
+?>
+<div id="grid" data-url="<?php echo $this->url(array('module' => 'pages', 'controller' => 'management2', 'action' => 'grid')) ?>"></div>
+<div id="grid-2" data-url="<?php echo $this->url(array('module' => 'pages', 'controller' => 'management2', 'action' => 'grid')) ?>"></div>
+<script>
+$('#grid, #grid-2').grid();
+</script>
