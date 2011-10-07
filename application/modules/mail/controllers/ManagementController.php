@@ -47,7 +47,7 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function deleteAction()
     {
-        return $this->_forward('notfound', 'error');
+        return $this->_forward('notfound', 'error', 'admin');
     }
 
     /**
@@ -55,7 +55,7 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function createAction()
     {
-         return $this->_forward('notfound', 'error');
+         return $this->_forward('notfound', 'error', 'admin');
     }
 
     /**
