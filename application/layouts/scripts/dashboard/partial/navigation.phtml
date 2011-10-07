@@ -1,24 +1,20 @@
 <div id="sidebar">
     <div id="sidebar-wrapper"><!-- Sidebar with logo and menu -->
 
-        <a id="logo" href="<?php echo $this->url(array('module'=>'admin','controller'=>'index','action'=>'index')) ?>" title="Nixsolutions.com">
-            <!-- Logo (194px*104px wide) -->
+        <a id="logo"
+           href="<?php echo $this->url(array('module' => 'admin', 'controller' => 'index', 'action' => 'index')) ?>"
+           title="Nixsolutions.com"><!-- Logo (194px*104px wide) -->
         </a>
 
         <!-- Sidebar Profile links -->
         <div id="profile-links">
-
-            <a href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index'));?>" title="View the Site">View the Site</a> |
-            <a href="<?php echo $this->url(array('module'=>'default','controller'=>'login','action'=>'logout'), 'logout');?>" title="Sign Out">Sign Out</a>
-
+            <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'index', 'action' => 'index')) ?>"
+               title="View the Site">View the Site</a> |
+            <a href="<?php echo $this->url(array('module' => 'default', 'controller' => 'login', 'action' => 'logout'), 'logout') ?>"
+               title="Sign Out">Sign Out</a>
         </div>
 
         <!-- Accordion Menu -->
-        <?php echo $this->navigation()->menu(); ?>
-
-       
-     </div>
-
-</div><!-- End #sidebar -->
-
-
+        <?php echo $this->navigation()->menu() ?>
+    </div>
+</div>

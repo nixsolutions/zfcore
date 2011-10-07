@@ -40,3 +40,13 @@ $(function(){
         hideSubMenu($(this));
     });
 });
+
+;(function($) {
+    $(function() {
+        $('#messages').slideDown(function() {
+            setTimeout(function() {
+                $('#messages').slideUp();
+            }, 3200);
+        });
+    });
+})(jQuery);

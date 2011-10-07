@@ -1,23 +1,19 @@
-<?php echo $this->render('dashboard/partial/header.phtml');?>
+<?php echo $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <body class="tundra">
+        <?php echo $this->render('dashboard/partial/head.phtml') ?>
+        <!-- Wrapper for the radial gradient background -->
+        <div id="body-wrapper">
+            <!-- Main Content Section with everything -->
+            <div id="main-content">
+                <?php echo $this->render('dashboard/partial/messages.phtml') ?>
 
-    <div id="body-wrapper"> <!-- Wrapper for the radial gradient background -->
-    
-        <div id="main-content"> <!-- Main Content Section with everything -->
+                <div class="content shadow"><?php echo $this->layout()->content ?></div>
+                <div class="clear"></div>
 
-            <?php echo $this->render('dashboard/partial/messages.phtml');?>
-                        
-            <div class="content shadow">
-                <?php echo $this->layout()->content ?>
+                <?php echo $this->render('dashboard/partial/footer.phtml') ?>
             </div>
-            
-            <div class="clear"></div>
-
-            <div id="footer">
-                <small>
-                    &#169; Copyright 2009 <a href="http://nixsolutions.com" title="NIX Solutions Ltd.">NIX Solutions Ltd.</a>
-                </small>
-            </div><!-- End #footer -->
-
-        </div> <!-- End #main-content -->
-
-<?php echo $this->render('dashboard/partial/footer.phtml');?>
+            <!-- End #main-content -->
+        </div>
+    </body>
+</html>
