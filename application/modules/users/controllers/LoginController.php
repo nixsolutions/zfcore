@@ -25,46 +25,48 @@ class Users_LoginController extends Core_Controller_Action
     }
 
     /**
-     * The default action - show the home page
+     * login page
+     *
+     * @return void
      */
     public function indexAction()
     {
         $form = new Users_Model_Users_Form_Login();
+        $form->setAction($this->view->url(array(), 'login'));
 
         if ($this->_request->isPost()) {
             if ($form->isValid($this->_getAllParams())) {
                 if ($this->_manager->login($form->getValues())) {
 
-                    $this->_flashMessenger->addMessage('Now You\'re Logging!');
-
+                    /** redirect to previously */
                     $session = new Zend_Session_Namespace('Zend_Request');
                     if (isset($session->params)) {
-                        // redirect to previously
                         $router = $this->getFrontController()->getRouter();
-                        $url    = $router->assemble(
-                            $session->params,
-                            'default',
-                            true
-                        );
+                        $url = $router->assemble($session->params, 'default', true);
                         $session->unsetAll();
-                        if (strpos($url, 'login') !== false) {
-                            $url = "/";
-                        }
                     }
-                    $this->_redirect(isset($url)?$url:'/');
+
+                    if (empty($url) || strpos($url, 'login') !== false) {
+                        $url = $this->getHelper('url')->url(array(
+                            'module' => 'default',
+                            'controller' => 'index',
+                            'action' => 'index'
+                        ), 'default', true);
+                    }
+
+                    $this->_flashMessenger->addMessage('Now You\'re logged in');
+                    $this->_redirect($url, array('prependBase' => false));
                 } else {
-                    // small bruteforce shield
+                    // small brute force shield
                     sleep(1);
                     // TODO: failure: clear database row from session
-                    $message = 'Authorization error. '.
-                        'Please check login or/and password';
+                    $message = 'Authorization error. Please check login or/and password';
                 }
             } else {
-                // small bruteforce shield
+                // small brute force shield
                 sleep(1);
                 // failure: form
-                $message = 'Authorization error. '
-                         . 'Please check login or/and password';
+                $message = 'Authorization error. Please check login or/and password';
             }
             $this->view->messages = $message;
         }
