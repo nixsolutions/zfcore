@@ -1,9 +1,7 @@
 <?php
-   $this->headTitle($this->Page->title .' » ', Zend_View_Helper_Placeholder_Container_Abstract::PREPEND);
-   $this->headMeta()->appendName('keywords',    empty($this->Page->keywords)    ? $this->Page->title : $this->Page->keywords);
-   $this->headMeta()->appendName('description', empty($this->Page->description) ? $this->Page->title : $this->Page->description);
-?>
 
+$this->headTitle($this->page->title, Zend_View_Helper_Placeholder_Container_Abstract::PREPEND)->setSeparator(' » ');
+$this->headMeta()->appendName('keywords', empty($this->page->keywords) ? $this->page->title : $this->page->keywords);
+$this->headMeta()->appendName('description', empty($this->page->description) ? $this->page->title : $this->page->description);
 
-<?php echo $this->Page->content ?>
-
+echo $this->page->content;
