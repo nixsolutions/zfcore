@@ -8,3 +8,4 @@ library/Zend/
 .buildpath
 .project
 .settings
+public/uploads
