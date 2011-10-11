@@ -1,0 +1,12 @@
+<?php
+
+/** add grid plugin */
+$this->plugins()->grid();
+
+?>
+<div id="grid" data-url="<?php echo $this->url(array('action' => 'grid')) ?>"></div>
+<script>
+$(function() {
+    $('#grid').grid();
+});
+</script>

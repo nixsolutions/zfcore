@@ -1,0 +1,38 @@
+<?php if ($this->grid->getData()): ?>
+<table cols="<?php echo count($this->grid->getHeaders()) ?>" class="zebra-striped">
+    <thead>
+        <tr>
+            <?php foreach ($this->grid->getHeaders() as $header): ?>
+                <?php
+                    $class = 'header';
+                    if ($header->isOrdered) {
+                        $class .= $header->orderDirection == 'ASC' ? ' headerSortDown' : ' headerSortUp';
+                    }
+                ?>
+                <th class="<?php echo $class ?>" data-column="<?php echo $header->id ?>" data-direction="<?php echo $header->orderDirection ?>">
+                    <?php echo $header->name ?>
+                </th>
+            <?php endforeach; ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->grid->getData() as $row): ?>
+        <tr>
+            <?php foreach ($row as $column): ?>
+                <td><?php echo $column ?></td>
+            <?php endforeach; ?>
+        </tr>
+        <?php endforeach; ?>
+        <?php for ($i = $this->grid->getItemCountPerPage() - count($this->grid->getData()); $i > 0; $i--): ?>
+        <tr>
+            <?php for ($j = count($this->grid->getHeaders()); $j > 0; $j--): ?>
+                <td>&nbsp;</td>
+            <?php endfor; ?>
+        </tr>
+        <?php endfor; ?>
+    </tbody>
+</table>
+<?php echo $this->paginationControl($this->grid->getPaginator(), 'Sliding', 'crud/paginator.phtml') ?>
+<?php else: ?>
+    <p>Result is empty</p>
+<?php endif; ?>
