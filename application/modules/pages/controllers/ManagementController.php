@@ -35,27 +35,53 @@ class Pages_ManagementController extends Core_Controller_Action_Scaffold
         // see view script
         // use dojox.grid.DataGrid
     }
-    
+
     /**
      * createAction
      *
      * @return void
      */
-    function createAction()
-    {
-        parent::createAction();
-        $this->_setDefaultScriptPath();
-    }
-    
+//    function createAction()
+//    {
+//        parent::createAction();
+//        $this->_setDefaultScriptPath();
+//    }
+
     /**
      * createAction
      *
      * @return void
      */
-    function editAction()
+//    function editAction()
+//    {
+//        parent::editAction();
+//        $this->_setDefaultScriptPath();
+//    }
+
+    /**
+     * upload image
+     *
+     * @return void
+     */
+    public function uploadAction()
     {
-        parent::editAction();
-        $this->_setDefaultScriptPath();
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender();
+
+        $type = strtolower($_FILES['file']['type']);
+        $allowed = array(
+            'image/png',
+            'image/jpg',
+            'image/jpeg',
+            'image/pjpeg',
+            'image/gif'
+        );
+
+        if (in_array($type, $allowed)) {
+            $path = realpath(APPLICATION_PATH . '/../public/uploads') . '/' . $_FILES['file']['name'];
+            move_uploaded_file($_FILES['file']['tmp_name'], $path);
+            echo $this->view->baseUrl('/uploads/' . $_FILES['file']['name']);
+        }
     }
 
     /**
@@ -69,31 +95,28 @@ class Pages_ManagementController extends Core_Controller_Action_Scaffold
     {
         return new Pages_Model_Page_Table();
     }
-    
+
     /**
      * _getCreateForm
      *
      * return create form for scaffolding
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getCreateForm()
     {
-        return new Pages_Model_Page_Form_Edit();
+        return new Pages_Form_Create();
     }
-    
+
     /**
      * _getEditForm
      *
      * return edit form for scaffolding
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getEditForm()
     {
-        $form =  new Pages_Model_Page_Form_Edit();
-        $form->addElement(new Zend_Form_Element_Hidden('id'));
-        
-        return $form;
+        return new Pages_Form_Edit();
     }
 }
