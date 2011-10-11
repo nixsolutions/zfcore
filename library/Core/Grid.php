@@ -5,35 +5,13 @@
  * @category Core
  * @package  Core_Grid
  */
-class Core_Grid
+class Core_Grid extends Core_Grid_Abstract
 {
     /**
-     * columns
-     *
-     * @var array
+     * types
      */
-    protected $_columns = array();
-
-    /**
-     * headers
-     *
-     * @var array
-     */
-    protected $_headers = null;
-
-    /**
-     * data
-     *
-     * @var array
-     */
-    protected $_data = null;
-
-    /**
-     * select
-     *
-     * @var Zend_Db_Select
-     */
-    protected $_select = null;
+    const TYPE_DATA = 'data';
+    const TYPE_EMPTY = 'empty';
 
     /**
      * paginator
@@ -41,69 +19,6 @@ class Core_Grid
      * @var Zend_Paginator
      */
     protected $_paginator = null;
-
-    /**
-     * orders
-     *
-     * @var array
-     */
-    protected $_orders = array();
-
-    /**
-     * filters
-     *
-     * @var array
-     */
-    protected $_filters = array();
-
-    /**
-     * item count per page
-     *
-     * @var int
-     */
-    protected $_itemCountPerPage = null;
-
-    /**
-     * current page
-     *
-     * @var int
-     */
-    protected $_currentPageNumber = null;
-
-    /**
-     * constructor
-     */
-    public function __construct()
-    {
-
-    }
-
-    /**
-     * add column
-     *
-     * @param $columnId
-     * @param array $options
-     * @return Core_Grid
-     */
-    public function addColumn($columnId, array $options)
-    {
-        $this->_columns[$columnId] = $options;
-        return $this;
-    }
-
-    /**
-     * remove column
-     *
-     * @param $columnId
-     * @return Core_Grid
-     */
-    public function removeColumn($columnId)
-    {
-        if (isset($this->_columns[$columnId])) {
-            unset($this->_columns[$columnId]);
-        }
-        return $this;
-    }
 
     /**
      * get headers
@@ -114,14 +29,14 @@ class Core_Grid
     public function getHeaders()
     {
         if ($this->_headers === null) {
-            if (empty($this->_paginator)) {
-                $this->_buildPaginator();
-            }
+
+            /** init paginator if it wasn't initialized */
+            $this->getPaginator();
 
             $this->_headers = array();
             foreach ($this->_columns as $columnId => $column) {
                 if (empty($column['name'])) {
-                    throw new Core_Exception('Column ' . $columnId . ' does not have name');
+                    throw new Core_Exception('Column "' . $columnId . '" does not have name');
                 }
 
                 $header = new stdClass();
@@ -151,34 +66,6 @@ class Core_Grid
     }
 
     /**
-     * set filter
-     *
-     * @param $columnId
-     * @param $filter
-     * @return Core_Grid
-     */
-    public function setFilter($columnId, $filter)
-    {
-        isset($this->_filters[$columnId]) || $this->_filters[$columnId] = array();
-
-        $this->_filters[$columnId][] = $filter;
-        return $this;
-    }
-
-    /**
-     * set ordering
-     *
-     * @param $columnId
-     * @param string $direction
-     * @return Core_Grid
-     */
-    public function setOrder($columnId, $direction = 'ASC')
-    {
-        $this->_orders[$columnId] = strtoupper($direction);
-        return $this;
-    }
-
-    /**
      * get data
      *
      * @throws Core_Exception
@@ -187,11 +74,7 @@ class Core_Grid
     public function getData()
     {
         if ($this->_data === null) {
-            if (empty($this->_paginator)) {
-                $this->_buildPaginator();
-            }
-
-            $items = $this->_paginator->getCurrentItems();
+            $items = $this->getPaginator()->getCurrentItems();
 
             if ($items instanceof Zend_Db_Table_Rowset) {
                 $items = $items->toArray();
@@ -201,15 +84,26 @@ class Core_Grid
             foreach ($items as $item) {
                 $row = array();
                 foreach ($this->_columns as $id => $column) {
-                    $index = $this->_getColumnIndex($id);
-                    $value = isset($item[$index]) ? $item[$index] : '';
+                    $value = '';
+                    $type = $this->_getColumnType($id);
+
+                    if ($type === self::TYPE_DATA) {
+                        $index = $this->_getColumnIndex($id);
+
+                        if (!isset($item[$index])) {
+                            throw new Core_Exception('Index "' . $index . '" does not exist in data source');
+                        }
+
+                        $value = $item[$index];
+                    }
+
                     if (isset($column['formatter'])) {
                         $function = '';
                         $formatter = $column['formatter'];
                         if (!is_callable($formatter, null, $function)) {
-                            throw new Core_Exception($function . ' is not callable');
+                            throw new Core_Exception('"' . $function . '" is not callable');
                         }
-                        $value = call_user_func($formatter, $value, $item);
+                        $value = call_user_func($formatter, $value, $item, $column);
                     }
                     $row[$id] = $value;
                 }
@@ -268,39 +162,19 @@ class Core_Grid
     }
 
     /**
-     * set select
+     * get column
      *
-     * @param Zend_Db_Select $select
-     * @return Core_Grid
+     * @throws Core_Exception
+     * @param $columnId
+     * @return
      */
-    public function setSelect(Zend_Db_Select $select)
+    protected function _getColumn($columnId)
     {
-        $this->_select = $select;
-        return $this;
-    }
+        if (empty($this->_columns[$columnId])) {
+            throw new Core_Exception('Column "' . $columnId . '" does not exist');
+        }
 
-    /**
-     * set item count per page
-     *
-     * @param $count
-     * @return Core_Grid
-     */
-    public function setItemCountPerPage($count)
-    {
-        $this->_itemCountPerPage = $count;
-        return $this;
-    }
-
-    /**
-     * set current page number
-     *
-     * @param $page
-     * @return Core_Grid
-     */
-    public function setCurrentPageNumber($page)
-    {
-        $this->_currentPageNumber = $page;
-        return $this;
+        return $this->_columns[$columnId];
     }
 
     /**
@@ -308,18 +182,52 @@ class Core_Grid
      *
      * @throws Core_Exception
      * @param $columnId
-     * @return
+     * @return string
      */
     protected function _getColumnIndex($columnId)
     {
-        if (empty($this->_columns[$columnId])) {
-            throw new Core_Exception('Column ' . $columnId . ' does not exist');
+        $column = $this->_getColumn($columnId);
+
+        if (empty($column['index'])) {
+            throw new Core_Exception('Index of column "' . $columnId . '" does not exist');
         }
 
-        if (empty($this->_columns[$columnId]['index'])) {
-            throw new Core_Exception('Index of column ' . $columnId . ' does not exist');
+        return $column['index'];
+    }
+
+    /**
+     * get column type
+     *
+     * @throws Core_Exception
+     * @param $columnId
+     * @return string
+     */
+    protected function _getColumnType($columnId)
+    {
+        $column = $this->_getColumn($columnId);
+
+        $type = 'empty';
+        if (isset($column['type'])) {
+            $type = $column['type'];
         }
 
-        return $this->_columns[$columnId]['index'];
+        if (!in_array($type, $this->_getAllowedTypes())) {
+            throw new Core_Exception('Type "' . $type . '" of column "' . $columnId . '" is not allowed');
+        }
+
+        return $type;
+    }
+
+    /**
+     * get allowed types
+     *
+     * @return array
+     */
+    protected function _getAllowedTypes()
+    {
+        return array(
+            self::TYPE_DATA,
+            self::TYPE_EMPTY
+        );
     }
 }
