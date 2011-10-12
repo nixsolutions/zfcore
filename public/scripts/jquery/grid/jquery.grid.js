@@ -1,88 +1,65 @@
-(function($) {
-    var defaults = {}
-      , methods = {
+;(function($) {
+    var pluginName = 'grid'
+      , defaults = {};
+
+    function Plugin(element, options) {
+        this.element = $(element);
+        this.options = $.extend({}, defaults, this.element.data(), options || {}) ;
+        this.data = {};
+        this._defaults = defaults;
+        this._name = pluginName;
+        this.init();
+    }
+
+    Plugin.prototype = {
+        init: function() {
+            var that = this;
+            if (!this.options.url) {
+                $.error('Url is not set');
+            }
+
+            /** listen changing page */
+            this.element.delegate('.pagination a', 'click', function() {
+                var page = $(this).data('page');
+                if (!!page) {
+                    that.page(page);
+                }
+                return false;
+            });
+
+            /** listen changing ordering */
+            this.element.delegate('th.header', 'click', function() {
+                var data = $(this).data();
+                data.direction = data.direction.toUpperCase() == 'ASC' ? 'DESC' : 'ASC';
+                that.order(data.column, data.direction);
+            });
+
+            /** draw grid */
+            this.refresh();
+        },
         page: function(page) {
-            var _e = $(this)
-              , data = $.extend({}, _e.data('data'), { page: page });
-
-            _e.data('data', data);
-
-            methods.refresh.call(this);
+            this.data.page = page;
+            this.refresh();
         },
         order: function(column, direction) {
-            var _e = $(this)
-              , data = $.extend({}, _e.data('data'), {
-                orderColumn: column,
-                orderDirection: direction || 'ASC'
-            });
-
-            _e.data('data', data);
-
-            methods.refresh.call(this);
+            this.data.orderColumn = column;
+            this.data.orderDirection = direction || 'ASC';
+            this.refresh();
         },
         refresh: function() {
-            var _e = $(this);
-            $.post(_e.data('url'), _e.data('data'), function(res) {
-                _e.html(res);
+            var that = this;
+            $.post(this.options.url, this.data, function(res) {
+                that.element.html(res);
             });
-        },
-        init: function(params) {
-            var _e = $(this)
-              , that = this
-              , options = {};
-
-            /** check if grid is not initialized */
-            if (!_e.data('grid')) {
-
-                /** merge options */
-                $.extend(options, defaults, _e.data(), params || {});
-
-                /** check if url is set */
-                if (!options.url) {
-                    $.error('Url is not set');
-                }
-
-                /** init plugin */
-                _e.data('grid', true)
-                  .data('url', options.url)
-                  .data('data', {});
-
-                /** listen changing page */
-                _e.delegate('.pagination a', 'click', function() {
-                    var page = $(this).data('page');
-                    if (!!page) {
-                        methods.page.call(that, page);
-                    }
-                    return false;
-                });
-
-                /** listen changing ordering */
-                _e.delegate('th.header', 'click', function() {
-                    var data = $(this).data();
-                    data.direction = data.direction.toUpperCase() == 'ASC' ? 'DESC' : 'ASC';
-                    methods.order.call(that, data.column, data.direction);
-                });
-
-                /** refresh grid */
-                methods.refresh.call(this);
-            }
         }
     };
 
-    $.fn.grid = function(method) {
-        var args = arguments;
-        if (!!methods[method]) {
-            this.each(function(i, e) {
-                methods[method].apply(e, Array.prototype.slice.call(args, 1));
-            });
-        } else if (typeof method === 'object' || !method) {
-            this.each(function(i, e) {
-                methods.init.apply(e, args);
-            });
-        } else {
-            $.error('Method "' + method + '" does not exist');
-        }
-
-        return this;
+    $.fn[pluginName] = function(options) {
+        return this.each(function() {
+            var element = $(this);
+            if (!element.data('plugin_' + pluginName)) {
+                element.data('plugin_' + pluginName, new Plugin(this, options));
+            }
+        });
     };
 })(jQuery);
