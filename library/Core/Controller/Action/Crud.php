@@ -37,7 +37,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function indexAction()
     {
-
+        $this->view->grid = $this->_getGrid();
     }
 
     /**
@@ -175,7 +175,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $grid->setSelect($this->_getSource())
             ->setOrder($this->_getParam('orderColumn', 'id'), $this->_getParam('orderDirection', 'asc'))
             ->setCurrentPageNumber($this->_getParam('page', 1))
-            ->setItemCountPerPage(5);
+            ->setItemCountPerPage(10);
 
         if ($this->_getParam('filterColumn')) {
             $grid->setFilter($this->_getParam('filterColumn'), $this->_getParam('filterValue'));
@@ -211,7 +211,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function editLinkFormatter($value, $row)
     {
-        $link = '<a href="%s">Edit</a>';
+        $link = '<a href="%s" class="edit">Edit</a>';
         $url = $this->getHelper('url')->url(array(
             'action' => 'edit',
             'id' => $row['id']
@@ -229,7 +229,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function deleteLinkFormatter($value, $row)
     {
-        $link = '<a href="%s">Delete</a>';
+        $link = '<a href="%s" class="delete">Delete</a>';
         $url = $this->getHelper('url')->url(array(
             'action' => 'delete',
             'id' => $row['id']

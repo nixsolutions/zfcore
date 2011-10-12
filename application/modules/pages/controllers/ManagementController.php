@@ -45,7 +45,8 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getGrid()
     {
-        $grid = parent::_getGrid();
-        return $grid->removeColumn('pid')->removeColumn('user_id');
+        return parent::_getGrid()
+            ->removeColumn('pid')
+            ->removeColumn('user_id');
     }
 }

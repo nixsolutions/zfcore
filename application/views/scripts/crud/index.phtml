@@ -3,10 +3,44 @@
 /** add grid plugin */
 $this->plugins()->grid();
 
+$columns = array();
+foreach ($this->grid->getHeaders() as $header) {
+    if ($header->type === Core_Grid::TYPE_DATA) {
+        $columns[$header->id] = $header->name;
+    }
+}
+
 ?>
-<div id="grid" data-url="<?php echo $this->url(array('action' => 'grid')) ?>"></div>
+<p><a href="<?php echo $this->url(array('action' => 'create'), 'default') ?>" class="button"><?php echo $this->__('Add Page')?></a></p>
+<p>
+    <?php echo $this->formSelect('filter-column', null, null, $columns) ?>
+    <input type="text" id="filter-value" />
+    <a href="#" id="filter-button" class="button"><?php echo $this->__('Ok')?></a>
+    <a href="#" id="filter-reset" class="button"><?php echo $this->__('Reset')?></a>
+</p>
+<div id="grid" data-url="<?php echo $this->url(array('action' => 'grid'), 'default') ?>"></div>
 <script>
 $(function() {
-    $('#grid').grid();
+    $('#grid').grid().delegate('a.delete', 'click', function() {
+        if (confirm('Are you sure you want to delete this?')) {
+            $.post(this.href, function(res) {
+                $('#grid').data('plugin_grid').refresh();
+            });
+        }
+        return false;
+    });
+
+    $('#filter-button').click(function() {
+        var filterColumn = $('#filter-column').val()
+          , filterValue = $('#filter-value').val();
+        $('#grid').data('plugin_grid').filter(filterColumn, filterValue);
+        return false;
+    });
+
+    $('#filter-reset').click(function() {
+        $('#filter-value').val('');
+        $('#grid').data('plugin_grid').reset();
+        return false;
+    });
 });
 </script>

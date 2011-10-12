@@ -30,12 +30,15 @@
             /** listen changing ordering */
             this.element.delegate('th.header', 'click', function() {
                 var data = $(this).data();
-                data.direction = data.direction.toUpperCase() == 'ASC' ? 'DESC' : 'ASC';
-                that.order(data.column, data.direction);
+                if (!!data.column) {
+                    data.direction = data.direction.toUpperCase() == 'ASC' ? 'DESC' : 'ASC';
+                    that.order(data.column, data.direction);
+                }
             });
 
             /** draw grid */
             this.refresh();
+            this.element.disableSelection();
         },
         page: function(page) {
             this.data.page = page;
@@ -46,8 +49,37 @@
             this.data.orderDirection = direction || 'ASC';
             this.refresh();
         },
+        filter: function(column, filter) {
+            this.data.filterColumn = column;
+            this.data.filterValue = filter;
+            this.refresh();
+        },
+        reset: function() {
+            this.data = {};
+            this.refresh();
+        },
+        overlay: function() {
+            var styles = {
+                "position": "absolute",
+                "top": "0",
+                "left": "0",
+                "background-color": "#fff",
+                "z-index": "1000",
+                "width": "100%",
+                "height": "100%",
+                "filter": "progid:DXImageTransform.Microsoft.Alpha(opacity=60)",
+                "-moz-opacity": "0.6",
+                "-khtml-opacity": "0.6",
+                "opacity": "0.6"
+            };
+
+            this.element
+                .css({ position: "relative" })
+                .append($('<div>').css(styles));
+        },
         refresh: function() {
             var that = this;
+            this.overlay();
             $.post(this.options.url, this.data, function(res) {
                 that.element.html(res);
             });

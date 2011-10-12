@@ -42,6 +42,7 @@ class Core_Grid extends Core_Grid_Abstract
                 $header = new stdClass();
                 $header->id = $columnId;
                 $header->name = $column['name'];
+                $header->type = $this->_getColumnType($columnId);
                 $header->isOrdered = isset($column['order']) && $column['order'] ? true : false;
                 $header->orderDirection = isset($column['order']) ? $column['order'] : '';
                 $this->_headers[] = $header;
@@ -49,20 +50,6 @@ class Core_Grid extends Core_Grid_Abstract
         }
 
         return $this->_headers;
-    }
-
-    /**
-     * get paginator
-     *
-     * @return Zend_Paginator
-     */
-    public function getPaginator()
-    {
-        if (empty($this->_paginator)) {
-            $this->_buildPaginator();
-        }
-
-        return $this->_paginator;
     }
 
     /**
@@ -112,6 +99,20 @@ class Core_Grid extends Core_Grid_Abstract
         }
 
         return $this->_data;
+    }
+
+    /**
+     * get paginator
+     *
+     * @return Zend_Paginator
+     */
+    public function getPaginator()
+    {
+        if (empty($this->_paginator)) {
+            $this->_buildPaginator();
+        }
+
+        return $this->_paginator;
     }
 
     /**

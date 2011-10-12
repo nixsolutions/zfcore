@@ -4,14 +4,22 @@
         <tr>
             <?php foreach ($this->grid->getHeaders() as $header): ?>
                 <?php
-                    $class = 'header';
+                    $attrs = array();
+                    $attrs['class'] = 'header';
                     if ($header->isOrdered) {
-                        $class .= $header->orderDirection == 'ASC' ? ' headerSortDown' : ' headerSortUp';
+                        $attrs['class'] .= $header->orderDirection == 'ASC' ? ' headerSortDown' : ' headerSortUp';
                     }
+                    if ($header->type === Core_Grid::TYPE_DATA) {
+                        $attrs['data-column'] = $header->id;
+                        $attrs['data-direction'] = $header->orderDirection;
+                    }
+                    $attributes = array();
+                    foreach ($attrs as $attr => $value) {
+                        $attributes[] = $attr . '="' . $value . '"';
+                    }
+                    $attributes = implode($attributes, ' ');
                 ?>
-                <th class="<?php echo $class ?>" data-column="<?php echo $header->id ?>" data-direction="<?php echo $header->orderDirection ?>">
-                    <?php echo $header->name ?>
-                </th>
+                <th <?php echo $attributes ?>><?php echo $header->name ?></th>
             <?php endforeach; ?>
         </tr>
     </thead>
