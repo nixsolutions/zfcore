@@ -90,6 +90,16 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     }
 
     /**
+     * clear before filter
+     *
+     * @return void
+     */
+    protected function _clearBefore()
+    {
+        $this->_before = array();
+    }
+
+    /**
      * pre-dispatch routines
      *
      * @return void
