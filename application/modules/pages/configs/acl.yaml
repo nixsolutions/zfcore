@@ -6,5 +6,3 @@ mvc:
       allow: admin
     management:
       allow: admin
-    management2:
-      allow: admin
