@@ -153,7 +153,7 @@ class Core_Grid extends Core_Grid_Abstract
             foreach ($this->_filters as $columnId => $filters) {
                 $index = $this->_getColumnIndex($columnId);
                 foreach ($filters as $filter) {
-                    $this->_select->having($index . ' LIKE ?', '%' . $filter . '%');
+                    $this->_select->having($index . ' LIKE ?', str_replace('*', '%', $filter));
                 }
             }
         }
