@@ -27,7 +27,10 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $this->_before('_loadModel', array('only' => array('edit', 'delete')));
 
         /** change view script path specification */
-        $this->_before('_changeViewScriptPathSpec', array('only' => array('index', 'grid', 'create', 'edit')));
+        $this->_after('_changeViewScriptPathSpec', array('only' => array('index', 'grid', 'create', 'edit')));
+
+        /** load grid */
+        $this->_beforeGridFilter('_loadGrid');
     }
 
     /**
@@ -37,7 +40,9 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function indexAction()
     {
-        $this->view->grid = $this->_getGrid();
+        /** init paginator before rendering, catch all exception in action */
+        $this->grid->getPaginator();
+        $this->view->grid = $this->grid;
     }
 
     /**
@@ -51,7 +56,9 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
             $this->_helper->layout->disableLayout();
         }
 
-        $this->view->grid = $this->_getGrid();
+        /** init paginator before rendering, catch all exception in action */
+        $this->grid->getPaginator();
+        $this->view->grid = $this->grid;
     }
 
     /**
@@ -106,20 +113,18 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     /**
      * load model
      *
-     * @return void|bool
+     * @return void
      */
     protected function _loadModel()
     {
         if (!$id = $this->_getParam('id')) {
             $this->_forwardNotFound();
-            return false;
         }
 
         $table = $this->_getTable();
 
         if (!$model = $table->getById($id)) {
             $this->_forwardNotFound();
-            return false;
         }
 
         $this->model = $model;
@@ -162,44 +167,68 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     abstract protected function _getEditForm();
 
     /**
-     * get grid
+     * load grid
      *
-     * @return Core_Grid
+     * @return void
      */
-    protected function _getGrid()
+    protected function _loadGrid()
     {
-        $table = $this->_getTable();
-        $cols = $table->info(Zend_Db_Table::COLS);
-
         $grid = new Core_Grid();
         $grid->setSelect($this->_getSource())
-            ->setOrder($this->_getParam('orderColumn', 'id'), $this->_getParam('orderDirection', 'asc'))
             ->setCurrentPageNumber($this->_getParam('page', 1))
             ->setItemCountPerPage(10);
+
+        if ($this->_getParam('orderColumn')) {
+            $grid->setOrder($this->_getParam('orderColumn'), $this->_getParam('orderDirection', 'asc'));
+        }
 
         if ($this->_getParam('filterColumn')) {
             $grid->setFilter($this->_getParam('filterColumn'), $this->_getParam('filterValue'));
         }
 
-        foreach ($cols as $col) {
-            $grid->addColumn($col, array(
+        $this->grid = $grid;
+    }
+
+    /**
+     * add all table columns to grid
+     *
+     * @return void
+     */
+    public function _addAllTableColumns()
+    {
+        foreach ($this->_getTable()->info(Zend_Db_Table::COLS) as $col) {
+            $this->grid->addColumn($col, array(
                 'name' => ucfirst($col),
                 'type' => Core_Grid::TYPE_DATA,
                 'index' => $col
             ));
         }
+    }
 
-        $grid->addColumn('edit', array(
+    /**
+     * add edit column to grid
+     *
+     * @return void
+     */
+    public function _addEditColumn()
+    {
+        $this->grid->addColumn('edit', array(
             'name' => 'Edit',
             'formatter' => array($this, 'editLinkFormatter')
         ));
+    }
 
-        $grid->addColumn('delete', array(
+    /**
+     * add delete column to grid
+     *
+     * @return void
+     */
+    public function _addDeleteColumn()
+    {
+        $this->grid->addColumn('delete', array(
             'name' => 'Delete',
             'formatter' => array($this, 'deleteLinkFormatter')
         ));
-
-        return $grid;
     }
 
     /**
@@ -265,5 +294,16 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     {
         $this->_viewRenderer->setViewScriptPathSpec(':controller/:action.:suffix');
         return $this;
+    }
+
+    /**
+     * before grid filter
+     *
+     * @param $function
+     * @return void
+     */
+    protected function _beforeGridFilter($function)
+    {
+        $this->_before($function, array('only' => array('index', 'grid')));
     }
 }

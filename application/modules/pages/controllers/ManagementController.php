@@ -9,6 +9,20 @@
 class Pages_ManagementController extends Core_Controller_Action_Crud
 {
     /**
+     * init controller
+     *
+     * @return void
+     */
+    public function init()
+    {
+        parent::init();
+
+        $this->_beforeGridFilter('_addAllTableColumns');
+        $this->_beforeGridFilter('_prepareGrid');
+        $this->_beforeGridFilter(array('_addEditColumn', '_addDeleteColumn'));
+    }
+
+    /**
      * get table
      *
      * @return Pages_Model_Page_Table
@@ -39,13 +53,14 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
-     * get grid
+     * custom grid preparation
      *
      * @return Core_Grid
      */
-    protected function _getGrid()
+    protected function _prepareGrid()
     {
-        return parent::_getGrid()
+        $this->grid
+            ->setDefaultOrder('title')
             ->removeColumn('pid')
             ->removeColumn('user_id');
     }
