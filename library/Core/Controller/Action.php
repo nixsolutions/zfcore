@@ -18,6 +18,13 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     protected $_before = array();
 
     /**
+     * after stack
+     *
+     * @var array
+     */
+    protected $_after = array();
+
+    /**
      * _isDashboard
      *
      * set required options for Dashboard controllers
@@ -51,15 +58,52 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     }
 
     /**
+     * add function to stack
+     *
+     * @param $function
+     * @param array $options
+     * @return void
+     */
+    protected function _after($function, $options = array())
+    {
+        $this->_after[] = array(
+            'function' => $function,
+            'options' => $options
+        );
+    }
+
+    /**
      * init before filter
      *
-     * @return bool
+     * @return void
      */
     protected function _initBefore()
     {
         $action = $this->getRequest()->getActionName();
+        $this->_execFunctions($this->_before, $action);
+    }
 
-        foreach ($this->_before as $item) {
+    /**
+     * init after filter
+     *
+     * @return void
+     */
+    protected function _initAfter()
+    {
+        $action = $this->getRequest()->getActionName();
+        $this->_execFunctions($this->_after, $action);
+    }
+
+    /**
+     * execute functions in stack
+     *
+     * @param $stack
+     * @param $action
+     * @return bool
+     */
+    protected function _execFunctions($stack, $action)
+    {
+        foreach ($stack as $item) {
 
             /** check if function is only for current action */
             if (!empty($item['options']['only'])) {
@@ -100,6 +144,16 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     }
 
     /**
+     * clear after filter
+     *
+     * @return void
+     */
+    protected function _clearAfter()
+    {
+        $this->_after = array();
+    }
+
+    /**
      * pre-dispatch routines
      *
      * @return void
@@ -108,6 +162,17 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     {
         parent::preDispatch();
         $this->_initBefore();
+    }
+
+    /**
+     * post-dispatch routines
+     *
+     * @return void
+     */
+    public function postDispatch()
+    {
+        parent::preDispatch();
+        $this->_initAfter();
     }
 
     /**
