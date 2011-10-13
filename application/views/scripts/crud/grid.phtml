@@ -7,9 +7,10 @@
                     $attrs = array();
                     $attrs['class'] = 'header';
                     if ($header->isOrdered) {
-                        $attrs['class'] .= $header->orderDirection == 'ASC' ? ' headerSortDown' : ' headerSortUp';
+                        $attrs['class'] .= $header->orderDirection == 'ASC' ? ' down' : ' up';
                     }
                     if ($header->type === Core_Grid::TYPE_DATA) {
+                        $attrs['class'] .= ' orderable';
                         $attrs['data-column'] = $header->id;
                         $attrs['data-direction'] = $header->orderDirection;
                     }
@@ -17,9 +18,8 @@
                     foreach ($attrs as $attr => $value) {
                         $attributes[] = $attr . '="' . $value . '"';
                     }
-                    $attributes = implode($attributes, ' ');
                 ?>
-                <th <?php echo $attributes ?>><?php echo $header->name ?></th>
+                <th <?php echo implode($attributes, ' ') ?>><?php echo $header->name ?></th>
             <?php endforeach; ?>
         </tr>
     </thead>

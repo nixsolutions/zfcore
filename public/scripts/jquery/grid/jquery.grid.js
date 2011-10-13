@@ -28,7 +28,7 @@
             });
 
             /** listen changing ordering */
-            this.element.delegate('th.header', 'click', function() {
+            this.element.delegate('th.orderable', 'click', function() {
                 var data = $(this).data();
                 if (!!data.column) {
                     data.direction = data.direction.toUpperCase() == 'ASC' ? 'DESC' : 'ASC';

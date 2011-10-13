@@ -61,7 +61,7 @@ table tbody tr:last-child td:last-child {
 table .header {
   cursor: pointer;
 }
-table .header:after {
+table .orderable:after {
   content: "";
   float: right;
   margin-top: 7px;
@@ -70,21 +70,21 @@ table .header:after {
   border-color: #000 transparent;
   visibility: hidden;
 }
-table .headerSortUp, table .headerSortDown {
+table .orderable:hover:after {
+  visibility: visible;
+}
+table .orderable.up, table .orderable.down {
   background-color: rgba(141, 192, 219, 0.25);
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
 }
-table .header:hover:after {
-  visibility: visible;
-}
-table .headerSortDown:after, table .headerSortDown:hover:after {
+table .orderable.down:after, table .orderable.down:hover:after {
   visibility: visible;
   filter: alpha(opacity=60);
   -khtml-opacity: 0.6;
   -moz-opacity: 0.6;
   opacity: 0.6;
 }
-table .headerSortUp:after {
+table .orderable.up:after {
   border-bottom: none;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
