@@ -35,7 +35,7 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
     /**
      * get create form
      *
-     * @return Zend_Form
+     * @return Pages_Form_Create
      */
     protected function _getCreateForm()
     {
@@ -45,7 +45,7 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
     /**
      * get edit form
      *
-     * @return Zend_Form
+     * @return Pages_Form_Edit
      */
     protected function _getEditForm()
     {
@@ -55,7 +55,7 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
     /**
      * custom grid preparation
      *
-     * @return Core_Grid
+     * @return void
      */
     protected function _prepareGrid()
     {
