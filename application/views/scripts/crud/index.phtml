@@ -11,7 +11,7 @@ foreach ($this->grid->getHeaders() as $header) {
 }
 
 ?>
-<p><a href="<?php echo $this->url(array('action' => 'create'), 'default') ?>" class="button"><?php echo $this->__('Add Page')?></a></p>
+<p><a href="<?php echo $this->url(array('action' => 'create'), 'default') ?>" class="button"><?php echo $this->__('Create')?></a></p>
 <p>
     <?php echo $this->formSelect('filter-column', null, null, $columns) ?>
     <input type="text" id="filter-value" />

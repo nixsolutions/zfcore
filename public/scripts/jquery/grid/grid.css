@@ -1,6 +1,6 @@
 table {
   width: 100%;
-  margin-bottom: 18px;
+  margin: 9px 0;
   padding: 0;
   border-collapse: separate;
   *border-collapse: collapse;
@@ -101,7 +101,7 @@ table .orderable.up:after {
 
 .pagination {
   height: 36px;
-  margin: 18px 0;
+  /*margin: 18px 0;*/
 }
 .pagination ul {
   float: left;
@@ -129,9 +129,16 @@ table .orderable.up:after {
   /* IE6-7 */
 
   text-decoration: none;
+  color: #666;
+  font-size: 13px;
 }
 .pagination a:hover, .pagination .active a {
-  background-color: #c7eefe;
+  /*background-color: #c7eefe;*/
+  background-color: rgba(141, 192, 219, 0.25);
+  color: #222;
+}
+.pagination .active a {
+    font-weight: bold;
 }
 .pagination .disabled a, .pagination .disabled a:hover {
   background-color: transparent;
