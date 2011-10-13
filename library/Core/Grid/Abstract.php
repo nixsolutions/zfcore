@@ -43,6 +43,13 @@ abstract class Core_Grid_Abstract
     protected $_orders = array();
 
     /**
+     * default orders
+     *
+     * @var array
+     */
+    protected $_defaultOrders = array();
+
+    /**
      * filters
      *
      * @var array
@@ -133,6 +140,19 @@ abstract class Core_Grid_Abstract
     public function setOrder($columnId, $direction = 'ASC')
     {
         $this->_orders[$columnId] = strtoupper($direction);
+        return $this;
+    }
+
+    /**
+     * set default ordering
+     *
+     * @param $columnId
+     * @param string $direction
+     * @return Core_Grid
+     */
+    public function setDefaultOrder($columnId, $direction = 'ASC')
+    {
+        $this->_defaultOrders[$columnId] = strtoupper($direction);
         return $this;
     }
 

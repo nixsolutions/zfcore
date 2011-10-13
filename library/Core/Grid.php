@@ -131,12 +131,21 @@ class Core_Grid extends Core_Grid_Abstract
             throw new Core_Exception('There are no any columns');
         }
 
-        /** ordering */
-        if ($this->_orders) {
-            foreach ($this->_orders as $columnId => $direction) {
-                $this->_select->order($this->_getColumnIndex($columnId) . ' ' . $direction);
-                $this->_columns[$columnId]['order'] = $direction;
+        /** default ordering */
+        if (empty($this->_orders)) {
+            if ($this->_defaultOrders) {
+                $this->_orders = $this->_defaultOrders;
+            } else {
+                /** order by first column if default order isn't set */
+                $columnId = reset(array_keys($this->_columns));
+                $this->setOrder($columnId);
             }
+        }
+
+        /** ordering */
+        foreach ($this->_orders as $columnId => $direction) {
+            $this->_select->order($this->_getColumnIndex($columnId) . ' ' . $direction);
+            $this->_columns[$columnId]['order'] = $direction;
         }
 
         /** filtering */
