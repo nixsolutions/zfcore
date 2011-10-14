@@ -18,8 +18,13 @@ class Mail_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter('_addAllTableColumns');
-        $this->_beforeGridFilter(array('_addEditColumn', '_addDeleteColumn'));
+        $this->_beforeGridFilter(array(
+
+             '_addAllTableColumns',
+             '_getCustomChanges',
+                                     '_addEditColumn',
+             '_addDeleteColumn'
+        ));
 
         /* is Dashboard Controller */
 //        $this->_isDashboard();
@@ -129,5 +134,15 @@ class Mail_ManagementController extends Core_Controller_Action_Crud
     {
         return new Mail_Form_Template_Edit();
     }
+
+    public function _getCustomChanges()
+    {
+        $this->grid
+            ->removeColumn('bodyHtml')
+            ->removeColumn('fromEmail')
+            ->removeColumn('fromName')
+        ;
+    }
+
 }
 
