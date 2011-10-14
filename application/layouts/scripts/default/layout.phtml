@@ -14,22 +14,7 @@
     <?php echo $this->headScript(); ?>
 </head>
 <body>
-    <?php if (0 != $this->FlashMessenger()->count() or $this->messages) :?>
-        <div id="messages" class="opacity shadow" style="display: none;">
-            <ul>
-            <?php
-                foreach ($this->FlashMessenger()->getMessages() as $message) :
-                      echo "<li>".$this->__($message)."</li>";
-                endforeach;
-            ?>
-            <?php
-                foreach ((array)$this->messages as $message) :
-                      echo "<li>".$this->__($message)."</li>";
-                endforeach;
-            ?>
-            </ul>
-        </div>
-    <?php endif; ?>
+    <?php echo $this->render('default/partial/messages.phtml') ?>
     <div class="body">
         <div class="header">
             <div class="cont_width">
