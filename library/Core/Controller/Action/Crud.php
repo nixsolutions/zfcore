@@ -40,8 +40,12 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function indexAction()
     {
-        /** init paginator before rendering, catch all exception in action */
-        $this->grid->getPaginator();
+        /**
+         * todo: do it better way
+         * init grid before rendering, catch all exception in action
+         */
+        $this->grid->getHeaders();
+        $this->grid->getData();
         $this->view->grid = $this->grid;
     }
 
@@ -56,8 +60,12 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
             $this->_helper->layout->disableLayout();
         }
 
-        /** init paginator before rendering, catch all exception in action */
-        $this->grid->getPaginator();
+        /**
+         * todo: do it better way
+         * init grid before rendering, catch all exception in action
+         */
+        $this->grid->getHeaders();
+        $this->grid->getData();
         $this->view->grid = $this->grid;
     }
 
