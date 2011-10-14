@@ -77,7 +77,7 @@ class Core_Grid extends Core_Grid_Abstract
                     if ($type === self::TYPE_DATA) {
                         $index = $this->_getColumnIndex($id);
 
-                        if (!isset($item[$index])) {
+                        if (!array_key_exists($index, $item)) {
                             throw new Core_Exception('Index "' . $index . '" does not exist in data source');
                         }
 
