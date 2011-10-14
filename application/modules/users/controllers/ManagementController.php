@@ -8,7 +8,7 @@
  *
  * @version  $Id: ManagementController.php 124 2010-04-21 16:57:01Z AntonShevchuk $
  */
-class Users_ManagementController extends Core_Controller_Action
+class Users_ManagementController extends Core_Controller_Action_Crud
 {
     /**
      * init invironment
@@ -21,7 +21,7 @@ class Users_ManagementController extends Core_Controller_Action
         parent::init();
 
         /* is Dashboard Controller */
-        $this->_isDashboard();
+//        $this->_isDashboard();
     }
 
     /**
@@ -29,6 +29,8 @@ class Users_ManagementController extends Core_Controller_Action
      */
     public function indexAction()
     {
+
+
         $table = new Users_Model_Users_Table();
 
         //$columns = $table->info(Zend_Db_Table::COLS);

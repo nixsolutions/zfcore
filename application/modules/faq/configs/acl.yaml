@@ -2,5 +2,5 @@ mvc:
   faq:
     index:
       allow: guest
-  management:
-    allow: admin
+    management:
+      allow: admin

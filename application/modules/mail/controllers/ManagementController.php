@@ -8,7 +8,7 @@
  *
  * @version  $Id: MailController.php 206 2010-10-20 10:55:55Z AntonShevchuk $
  */
-class Mail_ManagementController extends Core_Controller_Action_Scaffold
+class Mail_ManagementController extends Core_Controller_Action_Crud
 {
     /**
      * init environment
@@ -18,8 +18,11 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
         /* Initialize */
         parent::init();
 
+        $this->_beforeGridFilter('_addAllTableColumns');
+        $this->_beforeGridFilter(array('_addEditColumn', '_addDeleteColumn'));
+
         /* is Dashboard Controller */
-        $this->_isDashboard();
+//        $this->_isDashboard();
     }
 
     /**
@@ -29,34 +32,34 @@ class Mail_ManagementController extends Core_Controller_Action_Scaffold
      * @todo maybe create Datagrid config and put there all options
      * @see view
      */
-    public function indexAction()
-    {
-        $this->view->aOptions = array('maxLength' => 140);
-    }
+//    public function indexAction()
+//    {
+//        $this->view->aOptions = array('maxLength' => 140);
+//    }
 
     /**
      * Edit action
      */
-    public function editAction()
-    {
-        parent::editAction();
-    }
+//    public function editAction()
+//    {
+//        parent::editAction();
+//    }
 
     /**
      * delete Action
      */
-    public function deleteAction()
-    {
-        return $this->_forward('notfound', 'error', 'admin');
-    }
+//    public function deleteAction()
+//    {
+//        return $this->_forward('notfound', 'error', 'admin');
+//    }
 
     /**
      * create action
      */
-    public function createAction()
-    {
-         return $this->_forward('notfound', 'error', 'admin');
-    }
+//    public function createAction()
+//    {
+//         return $this->_forward('notfound', 'error', 'admin');
+//    }
 
     /**
      * send action
