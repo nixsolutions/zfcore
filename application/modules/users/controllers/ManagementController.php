@@ -20,61 +20,12 @@ class Users_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        /* is Dashboard Controller */
-//        $this->_isDashboard();
-    }
+        $this->_beforeGridFilter('_addAllTableColumns');
+        $this->_beforeGridFilter(array('_addEditColumn', '_addDeleteColumn'));
 
-    /**
-     * Show data grid
-     */
-    public function indexAction()
-    {
+        $this->columns = array('id', 'login', 'firstname', 'lastname', 'email', 'role', 'status');
 
-
-        $table = new Users_Model_Users_Table();
-
-        //$columns = $table->info(Zend_Db_Table::COLS);
-        $columns = array('id', 'login', 'firstname', 'lastname', 'email', 'role', 'status');
-
-        if ($this->_request->isXmlHttpRequest()) {
-            $data = $this->_helper->dataTables($table->select(), $columns);
-
-            $url = $this->_helper->url;
-            foreach ($data['aaData'] as &$rowData) {
-                $params = array('id' => $rowData['id']);
-
-                $edit = $url->url($params, 'usersedit');
-                $delete = $url->url($params, 'usersdelete');
-
-                $rowData['editUrl'] = '<a href="'.$edit.'">Edit</a>';
-                $rowData['deleteUrl'] = '<a href="'.$delete.'" class="delete" title="Are You Sure?">Delete</a>';
-            }
-            echo $this->_helper->json($data);
-        } else {
-            $this->view->columns = $columns;
-        }
-    }
-
-    /**
-     * Create user
-     */
-    public function createAction()
-    {
-        $form = new Users_Form_Users_Create();
-
-        if ($this->_request->isPost()
-            && $form->isValid($this->_getAllParams())) {
-
-            $users = new Users_Model_Users_Table();
-
-            $row = $users->createRow($form->getValues());
-            $row->save();
-
-            $this->_helper->flashMessenger('User Added Successfully!');
-
-            $this->_helper->redirector('index');
-        }
-        $this->view->form = $form;
+        $this->_after('_setDefaultScriptPath', array('only' => array('create', 'edit')));
     }
 
     /**
@@ -82,52 +33,8 @@ class Users_ManagementController extends Core_Controller_Action_Crud
      */
     public function editAction()
     {
-        if (!$id = $this->_getParam('id')) {
-            throw new Zend_Controller_Action_Exception('Page not found');
-        }
-
-        $users = new Users_Model_Users_Table();
-        if (!$row = $users->getById($id)) {
-            throw new Zend_Controller_Action_Exception('Page not found');
-        }
-
-        $form = new Users_Form_Users_Edit();
-        $form->setDefaults($row->toArray(true));
-
-        if ($this->_request->isPost()
-            && $form->isValid($this->_getAllParams())) {
-
-            $row->setFromArray($form->getValues());
-            $row->save();
-
-            $this->_helper->flashMessenger('User Updated Successfully!');
-
-            $this->_helper->redirector('index');
-        }
-        $this->view->id = $row->id;
-        $this->view->form = $form;
-
+        parent::editAction();
         $this->render('create');
-    }
-
-    /**
-     * Delete user
-     */
-    public function deleteAction()
-    {
-        if (!$id = $this->_getParam('id')) {
-            throw new Zend_Controller_Action_Exception('Page not found');
-        }
-
-        $users = new Users_Model_Users_Table();
-        if (!$row = $users->getById($id)) {
-            throw new Zend_Controller_Action_Exception('Page not found');
-        }
-        $row->delete();
-
-        $this->_helper->flashMessenger('User Deleted Successfully!');
-
-        $this->_helper->redirector('index');
     }
 
     /**
@@ -171,4 +78,56 @@ class Users_ManagementController extends Core_Controller_Action_Crud
         }
         echo $this->_helper->json($response);
     }
+
+    /**
+     * get table
+     *
+     * @return Pages_Model_Page_Table
+     */
+    protected function _getTable()
+    {
+        return new Users_Model_Users_Table();
+    }
+
+    /**
+     * get create form
+     *
+     * @return Pages_Form_Create
+     */
+    protected function _getCreateForm()
+    {
+        return new Users_Form_Users_Create();
+    }
+
+    /**
+     * get edit form
+     *
+     * @return Pages_Form_Edit
+     */
+    protected function _getEditForm()
+    {
+        return new Users_Form_Users_Edit();
+    }
+
+    protected function _getSource()
+    {
+        return $this->_getTable()->select()->from('users', $this->columns);
+    }
+
+    /**
+     * add all table columns to grid
+     *
+     * @return void
+     */
+    public function _addAllTableColumns()
+    {
+        foreach ($this->columns as $col) {
+            $this->grid->addColumn($col, array(
+                'name' => ucfirst($col),
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => $col
+            ));
+        }
+    }
+
 }

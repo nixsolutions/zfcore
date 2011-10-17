@@ -25,46 +25,7 @@ class Mail_ManagementController extends Core_Controller_Action_Crud
                                      '_addEditColumn',
              '_addDeleteColumn'
         ));
-
-        /* is Dashboard Controller */
-//        $this->_isDashboard();
     }
-
-    /**
-     * Index action
-     * Show All
-     *
-     * @todo maybe create Datagrid config and put there all options
-     * @see view
-     */
-//    public function indexAction()
-//    {
-//        $this->view->aOptions = array('maxLength' => 140);
-//    }
-
-    /**
-     * Edit action
-     */
-//    public function editAction()
-//    {
-//        parent::editAction();
-//    }
-
-    /**
-     * delete Action
-     */
-//    public function deleteAction()
-//    {
-//        return $this->_forward('notfound', 'error', 'admin');
-//    }
-
-    /**
-     * create action
-     */
-//    public function createAction()
-//    {
-//         return $this->_forward('notfound', 'error', 'admin');
-//    }
 
     /**
      * send action
