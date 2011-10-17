@@ -20,13 +20,15 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-
         $this->_beforeGridFilter(array(
              '_addAllTableColumns',
              '_prepareGrid',
              '_addCheckBoxColumn',
              '_addEditColumn',
-             '_addDeleteColumn'
+             '_addDeleteColumn',
+             '_addCreateButton',
+             '_addDeleteAllButton',
+             '_showFilter'
         ));
     }
 
@@ -34,32 +36,14 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
      * indexAction
      *
      */
-//    public function indexAction()
-//    {
-//
-//    }
+    public function indexAction()
+    {
+        $this->view->headScript()->appendFile(
+            $this->view->baseUrl('./modules/forum/scripts/management/index.js'
+        ));
 
-    /**
-     * createAction
-     *
-     * @return void
-     */
-//    public function createAction()
-//    {
-//        parent::createAction();
-//        $this->_setDefaultScriptPath();
-//    }
-
-    /**
-     * editAction
-     *
-     * @return void
-     */
-//    public function editAction()
-//    {
-//        parent::editAction();
-//        $this->_setDefaultScriptPath();
-//    }
+        parent::indexAction();
+    }
 
     /**
      * _getCreateForm
@@ -99,22 +83,34 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
         return new Forum_Model_Post_Table();
     }
 
+    /**
+     * change grid before render
+     *
+     * @return void
+     */
     protected function _prepareGrid()
     {
         $this->grid
+             ->removeColumn('categoryId')
+             ->removeColumn('userId')
+             ->removeColumn('views')
+             ->removeColumn('comments')
              ->removeColumn('body')
              ->addColumn('body', array(
                 'name' => ucfirst('body'),
                 'type' => Core_Grid::TYPE_DATA,
                 'index' => 'body',
                 'formatter' => array($this, 'shorterFormatter')
-             ))
-             ->removeColumn('categoryId')
-             ->removeColumn('userId')
-             ->removeColumn('views')
-             ->removeColumn('comments');
+             ));
     }
 
+    /**
+     * cut the message
+     *
+     * @param $value
+     * @param $row
+     * @return
+     */
     public function shorterFormatter($value, $row)
     {
         if (strlen($row['body']) >= 200) {
@@ -126,6 +122,21 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
         }
         return $row['body'];
     }
+
+    /**
+     * add create button
+     *
+     * @return void
+     */
+    protected function _addDeleteAllButton()
+    {
+        $link = '<a href="%s" class="button" id="delete-all-button">Delete All</a>';
+                $url = $this->getHelper('url')->url(array(
+            'action' => 'delete'
+        ), 'default');
+        $this->view->placeholder('grid_buttons')->create .= sprintf($link, $url);
+    }
+
 
 }
 

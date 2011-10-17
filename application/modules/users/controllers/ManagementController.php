@@ -21,7 +21,12 @@ class Users_ManagementController extends Core_Controller_Action_Crud
         parent::init();
 
         $this->_beforeGridFilter('_addAllTableColumns');
-        $this->_beforeGridFilter(array('_addEditColumn', '_addDeleteColumn'));
+        $this->_beforeGridFilter(array(
+             '_addEditColumn',
+             '_addDeleteColumn',
+             '_addCreateButton',
+             '_showFilter'
+        ));
 
         $this->columns = array('id', 'login', 'firstname', 'lastname', 'email', 'role', 'status');
 
@@ -129,5 +134,6 @@ class Users_ManagementController extends Core_Controller_Action_Crud
             ));
         }
     }
+
 
 }
