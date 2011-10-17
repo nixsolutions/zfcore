@@ -21,10 +21,13 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
         parent::init();
 
 
-
-        $this->_beforeGridFilter('_addAllTableColumns');
-//        $this->_beforeGridFilter('_prepareGrid');
-        $this->_beforeGridFilter(array('_addRadioColumn','_addEditColumn', '_addDeleteColumn'));
+        $this->_beforeGridFilter(array(
+             '_addAllTableColumns',
+             '_prepareGrid',
+             '_addCheckBoxColumn',
+             '_addEditColumn',
+             '_addDeleteColumn'
+        ));
     }
 
     /**
@@ -95,5 +98,34 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
     {
         return new Forum_Model_Post_Table();
     }
+
+    protected function _prepareGrid()
+    {
+        $this->grid
+             ->removeColumn('body')
+             ->addColumn('body', array(
+                'name' => ucfirst('body'),
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => 'body',
+                'formatter' => array($this, 'shorterFormatter')
+             ))
+             ->removeColumn('categoryId')
+             ->removeColumn('userId')
+             ->removeColumn('views')
+             ->removeColumn('comments');
+    }
+
+    public function shorterFormatter($value, $row)
+    {
+        if (strlen($row['body']) >= 200) {
+            if (false !== ($breakpoint = strpos($row['body'], ' ', 200))) {
+                if ($breakpoint < strlen($row['body']) - 1) {
+                    $row['body'] = substr($row['body'], 0, $breakpoint) . ' ...';
+                }
+            }
+        }
+        return $row['body'];
+    }
+
 }
 
