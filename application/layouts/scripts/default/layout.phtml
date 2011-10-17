@@ -1,105 +1,13 @@
 <?php echo $this->doctype() ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <?php echo $this->headMeta() ?>
-    <?php echo $this->headTitle() ?>
-    <base href="<?php echo $this->baseUrl();?>" />
-    <?php $this->headLink()
-               ->prependStylesheet($this->baseUrl('layouts/default/css/style.css'))
-               ->headLink(array('rel' => 'shortcut icon', 'href' => $this->baseUrl('/favicon.ico'), 'type' => 'image/x-icon'), 'PREPEND')?>
-    <?php $this->headScript()->prependFile($this->baseUrl('scripts/jquery/jquery.js?ver=1.4.2'));?>
-    <?php $this->headScript()->appendFile($this->baseUrl('layouts/default/scripts/ui.js'));?>
-    <?php echo $this->headLink(); ?>
-    <?php echo $this->headStyle(); ?>
-    <?php echo $this->headScript(); ?>
-</head>
+<?php echo $this->render('default/partial/head.phtml') ?>
 <body>
     <?php echo $this->render('default/partial/messages.phtml') ?>
     <div class="body">
-        <div class="header">
-            <div class="cont_width">
-                <div class="logo">
-                    <h1><a href="/" title="Homepage">Core</a></h1>
-                    <h2>Content Management Framework</h2>
-                </div>
-                <div class="menu small">
-                </div>
-                <div class="menu clearright">
-                <?php
-                $this->coreMenu()->setPartial(array('/default/partial/mainMenu.phtml', 'default'));
-                //echo $this->navigation()->coreMenu()->byId(0);
-                //echo $this->navigation()->coreMenu()->byLabel('Home');
-                echo $this->navigation()->coreMenu()/*->byId(0)*/->byLabel('Home')->setMinDepth(0)->setMaxDepth(50); ?>
-                    <br class="clear"/>
-               <?php
-
-          // echo $this->getMenu(13)->setMinDepth(0)->setMaxDepth(0); ?>
-                       <?php //echo $this->getMenu(12)->setMinDepth(1)->setMaxDepth(1); ?>
-                </div>
-            </div>
-            <div class="topgreen clear">
-                <div class="cont_width">
-                <?php
-
-                    /*$titleArr = $this->headTitle()->getIterator();
-                    $title = reset($titleArr);
-                    if (sizeof($titleArr) != 1) {
-                        echo $title;
-                    } else {*/
-                        $nav = $this->navigation()->coreMenu()->setMinDepth(1)->setMaxDepth(1)->findByActive('true');
-                        if ($nav) {
-                        //showing page title or smthn another from navigation
-                        //done only for 1st lev navigation
-                            echo $nav->getLabel();
-                        } else {
-                            echo 'home';
-                        }
-                    //}
-                    ?>
-                </div>
-            </div>
-            <div class="tophelp">
-                <div class="cont_width">
-                    <div class="simpleMenu">
-                        <br class="clear"/>
-                    </div>
-                    Here goes help text
-                </div>
-            </div>
-        </div>
-        <div class="content cont_width">
-            <?php echo $this->layout()->content ?>
-        </div>
+        <?php echo $this->render('default/partial/header.phtml') ?>
+        <div class="content cont_width"><?php echo $this->layout()->content ?></div>
         <div class="clear">&nbsp;</div>
-
-        <div class="footer">
-            <div class="cont_width">
-                <div class="footer_logo">
-                    &nbsp;
-                </div>
-                <div>
-                    <ul>
-                        <li>
-                        <h4>Home </h4>
-                        </li>
-                        <li>
-                        <?php
-                            //$this->navigation()->coreMenu()->setPartial(array('/default/partial/bottomMenu.phtml', 'default'));
-                            echo $this->coreMenu()->byId(1)->setMinDepth(0)->setMaxDepth(2);
-                            ?>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li><h4>Terms of use</h4></li>
-                        <li>Privacy policy</li>
-                        <li>Terms and conditions</li>
-                    </ul>
-                </div>
-                <div class="clear">
-                    &#169; Copyright <?php echo date('Y') ?> <a href="http://nixsolutions.com" title="NIX Solutions Ltd.">NIX Solutions Ltd.</a>
-                </div>
-            </div>
-        </div>
+        <?php echo $this->render('default/partial/footer.phtml') ?>
     </div>
 </body>
 </html>

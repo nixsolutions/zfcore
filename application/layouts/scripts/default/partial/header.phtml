@@ -1,0 +1,49 @@
+<div class="header">
+    <div class="cont_width">
+        <div class="logo">
+            <h1><a href="/" title="Homepage">Core</a></h1>
+            <h2>Content Management Framework</h2>
+        </div>
+        <div class="menu small"></div>
+        <div class="menu clearright">
+            <?php
+            $this->coreMenu()->setPartial(array('/default/partial/mainMenu.phtml', 'default'));
+            //echo $this->navigation()->coreMenu()->byId(0);
+            //echo $this->navigation()->coreMenu()->byLabel('Home');
+            echo $this->navigation()->coreMenu() /*->byId(0)*/->byLabel('Home')->setMinDepth(0)->setMaxDepth(50);
+            ?>
+            <br class="clear"/>
+            <?php // echo $this->getMenu(13)->setMinDepth(0)->setMaxDepth(0); ?>
+            <?php //echo $this->getMenu(12)->setMinDepth(1)->setMaxDepth(1); ?>
+        </div>
+    </div>
+    <div class="topgreen clear">
+        <div class="cont_width">
+            <?php
+
+                /*$titleArr = $this->headTitle()->getIterator();
+              $title = reset($titleArr);
+              if (sizeof($titleArr) != 1) {
+                  echo $title;
+              } else {*/
+                $nav = $this->navigation()->coreMenu()->setMinDepth(1)->setMaxDepth(1)->findByActive('true');
+                if ($nav) {
+                    //showing page title or smt another from navigation
+                    //done only for 1st lev navigation
+                    echo $nav->getLabel();
+                } else {
+                    echo 'home';
+                }
+                //}
+                ?>
+        </div>
+    </div>
+    <div class="tophelp">
+        <div class="cont_width">
+            <div class="simpleMenu">
+                <br class="clear"/>
+            </div>
+            Here goes help text
+        </div>
+    </div>
+</div>
