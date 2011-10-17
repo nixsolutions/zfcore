@@ -20,6 +20,7 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
         $this->_beforeGridFilter('_addAllTableColumns');
         $this->_beforeGridFilter('_prepareGrid');
         $this->_beforeGridFilter(array('_addEditColumn', '_addDeleteColumn'));
+        $this->_beforeGridFilter(array('_addCreateButton', '_showFilter'));
     }
 
     /**

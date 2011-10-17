@@ -47,6 +47,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $this->grid->getHeaders();
         $this->grid->getData();
         $this->view->grid = $this->grid;
+        $this->view->showFilter = empty($this->showFilter) ? false : true;
     }
 
     /**
@@ -298,6 +299,28 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     public function radioLinkFormatter($value, $row)
     {
         return '<input type="radio" name="id[' . $row['id'] . ']"/>';
+    }
+
+    /**
+     * add create button
+     *
+     * @return void
+     */
+    protected function _addCreateButton()
+    {
+        $link = '<a href="%s" class="button">Create</a>';
+        $url = $this->getHelper('url')->url(array('action' => 'create'), 'default');
+        $this->view->placeholder('grid_buttons')->create = sprintf($link, $url);
+    }
+
+    /**
+     * show filter
+     *
+     * @return void
+     */
+    protected function _showFilter()
+    {
+        $this->showFilter = true;
     }
 
     /**
