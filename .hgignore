@@ -9,3 +9,4 @@ library/Zend/
 .project
 .settings
 public/uploads
+application/configs/application.yaml
