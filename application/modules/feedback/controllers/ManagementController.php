@@ -8,25 +8,22 @@
  *
  * @version  $Id: MessageController.php 1564 2009-10-30 09:09:03Z secunda $
  */
-class Feedback_ManagementController extends Core_Controller_Action_Scaffold
+class Feedback_ManagementController extends Core_Controller_Action_Crud
 {
     public function init()
     {
        /* Initialize */
         parent::init();
 
-        /* is Dashboard Controller */
-        $this->_isDashboard();
+        $this->_beforeGridFilter(array(
+             '_addAllTableColumns',
+             '_addDeleteColumn',
+             '_showFilter'
+        ));
 
         $this->_helper->getHelper('AjaxContext')
                       ->addActionContext('get-mail-template', 'html')
                       ->initContext();
-    }
-
-    public function indexAction()
-    {
-        // see view script
-        // use dojox.grid.DataGrid
     }
 
     /**
