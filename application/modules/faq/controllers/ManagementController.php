@@ -6,10 +6,10 @@
  * @package    Faq
  * @subpackage Controller
  */
-class Faq_ManagementController extends Core_Controller_Action_Scaffold
+class Faq_ManagementController extends Core_Controller_Action_Crud
 {
     /**
-     * init invironment
+     * init controller
      *
      * @return void
      */
@@ -17,45 +17,20 @@ class Faq_ManagementController extends Core_Controller_Action_Scaffold
     {
         /* Initialize */
         parent::init();
-        
-        /* is Dashboard Controller */
-        $this->_isDashboard();
-    }
 
-    /**
-     * indexAction
-     */
-    public function indexAction()
-    {
+        /** init grid */
+        $this->_beforeGridFilter(array(
+             '_addAllTableColumns',
+             '_addDeleteColumn',
+             '_addEditColumn'
+        ));
 
-    }
-
-    /**
-     * createAction
-     *
-     * @return void
-     */
-    function createAction()
-    {
-        parent::createAction();
-        $this->_setDefaultScriptPath();
-    }
-
-    /**
-     * createAction
-     *
-     * @return void
-     */
-    function editAction()
-    {
-        parent::editAction();
-        $this->_setDefaultScriptPath();
     }
 
     /**
      * _getCreateForm
      *
-     * return create form for scaffolding
+     * return create form for crud
      *
      * @return  Zend_Dojo_Form
      */
@@ -67,7 +42,7 @@ class Faq_ManagementController extends Core_Controller_Action_Scaffold
     /**
      * _getEditForm
      *
-     * return edit form for scaffolding
+     * return edit form for crud
      *
      * @return  Zend_Dojo_Form
      */
@@ -81,7 +56,7 @@ class Faq_ManagementController extends Core_Controller_Action_Scaffold
     /**
      * _getTable
      *
-     * return manager for scaffolding
+     * return manager for crud
      *
      * @return  Core_Model_Abstract
      */

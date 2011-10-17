@@ -8,7 +8,7 @@
  * 
  * @version  $Id: ManagementController.php 48 2010-02-12 13:23:39Z AntonShevchuk $
  */
-class Forum_ManagementController extends Core_Controller_Action_Scaffold
+class Forum_ManagementController extends Core_Controller_Action_Crud
 {
     /**
      * init invironment
@@ -19,41 +19,44 @@ class Forum_ManagementController extends Core_Controller_Action_Scaffold
     {
         /* Initialize */
         parent::init();
-        
-        /* is Dashboard Controller */
-        $this->_isDashboard();
+
+
+
+        $this->_beforeGridFilter('_addAllTableColumns');
+//        $this->_beforeGridFilter('_prepareGrid');
+        $this->_beforeGridFilter(array('_addRadioColumn','_addEditColumn', '_addDeleteColumn'));
     }
 
     /**
      * indexAction
      *
      */
-    public function indexAction()
-    {
-
-    }
+//    public function indexAction()
+//    {
+//
+//    }
 
     /**
      * createAction
      *
      * @return void
      */
-    public function createAction()
-    {
-        parent::createAction();
-        $this->_setDefaultScriptPath();
-    }
+//    public function createAction()
+//    {
+//        parent::createAction();
+//        $this->_setDefaultScriptPath();
+//    }
 
     /**
      * editAction
      *
      * @return void
      */
-    public function editAction()
-    {
-        parent::editAction();
-        $this->_setDefaultScriptPath();
-    }
+//    public function editAction()
+//    {
+//        parent::editAction();
+//        $this->_setDefaultScriptPath();
+//    }
 
     /**
      * _getCreateForm

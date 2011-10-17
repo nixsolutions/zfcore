@@ -10,10 +10,10 @@
  *
  * @version  $Id$
  */
-class Options_ManagementController extends Core_Controller_Action_Scaffold
+class Options_ManagementController extends Core_Controller_Action_Crud
 {
     /**
-     * init invironment
+     * init controller
      *
      * @return void
      */
@@ -22,23 +22,14 @@ class Options_ManagementController extends Core_Controller_Action_Scaffold
         /* Initialize */
         parent::init();
 
-        /* is Dashboard Controller */
-        $this->_isDashboard();
-    }
-
-    /**
-     * indexAction
-     *
-     */
-    public function indexAction()
-    {
-
+        $this->_beforeGridFilter('_addAllTableColumns');
+        $this->_beforeGridFilter(array('_addEditColumn', '_addDeleteColumn'));
     }
 
     /**
      * _getCreateForm
      *
-     * return create form for scaffolding
+     * return create form for crud
      *
      * @return  Zend_Dojo_Form
      */
@@ -50,7 +41,7 @@ class Options_ManagementController extends Core_Controller_Action_Scaffold
     /**
      * _getEditForm
      *
-     * return edit form for scaffolding
+     * return edit form for crud
      *
      * @return  Zend_Dojo_Form
      */
@@ -62,7 +53,7 @@ class Options_ManagementController extends Core_Controller_Action_Scaffold
     /**
      * _getTable
      *
-     * return manager for scaffolding
+     * return manager for crud
      *
      * @return  Core_Model_Abstract
      */

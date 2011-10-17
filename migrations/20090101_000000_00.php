@@ -202,7 +202,7 @@ http://%host%/users/login/cancel-password-recovery/hash/%hash%/</a>'.
                           '<b>%password%</b>'.
                           '<br />'.
                           'With best regards,<br />'.
-                          '<a href="http://%host%/>%host% team</a>',
+                          '<a href="http://%host%/">%host% team</a>',
             'bodyText' =>  "You're ask to reset your password.\n\n".
                           "Your new password is:\n".
                           "%password%".
@@ -219,7 +219,7 @@ http://%host%/users/login/cancel-password-recovery/hash/%hash%/</a>'.
             'bodyHtml'    =>  'Thank you for your letter!'.
                           '<br />'.
                           'With best regards,<br />'.
-                          '<a href="http://%host%/>%host% team</a>',
+                          '<a href="http://%host%/">%host% team</a>',
             'bodyText' =>  "Thank you for your letter!".
                           "\n\n\n".
                           "With best regards,\n".

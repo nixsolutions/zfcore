@@ -1,7 +1,5 @@
 <?php
     $this->stylesheet()->controller();
-
-    $this->disableDojo = true;
 ?>
 <script type="text/javascript">
 	$(function(){
@@ -22,4 +20,6 @@
         $('#password').val(password).change();
 	}
 </script>
-<?php echo $this->aForm($this->form)->ajax(array('validateUrl' => $this->url(array('id' => $this->id), 'usersvalidate')))?>
+<?php
+    echo $this->aForm($this->form)->ajax(array('validateUrl' => $this->url(array('id' => $this->id), 'usersvalidate')));
+?>

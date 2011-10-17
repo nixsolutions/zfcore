@@ -240,6 +240,19 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     }
 
     /**
+     * add radio column to grid
+     *
+     * @return void
+     */
+    public function _addRadioColumn()
+    {
+        $this->grid->addColumn('radio', array(
+            'name' => 'Radio',
+            'formatter' => array($this, 'radioLinkFormatter')
+        ));
+    }
+
+    /**
      * edit link formatter
      *
      * @param $value
@@ -276,6 +289,18 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     }
 
     /**
+     * delete link formatter
+     *
+     * @param $value
+     * @param $row
+     * @return string
+     */
+    public function radioLinkFormatter($value, $row)
+    {
+        return '<input type="radio" name="id[' . $row['id'] . ']"/>';
+    }
+
+    /**
      * get table
      *
      * @abstract
@@ -300,7 +325,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _setDefaultScriptPath()
     {
-        $this->_viewRenderer->setViewScriptPathSpec(':controller/:action.:suffix');
+        $this->_viewRenderer->setViewScriptPathSpec('/:controller/:action.:suffix');
         return $this;
     }
 
