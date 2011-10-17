@@ -244,11 +244,11 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      *
      * @return void
      */
-    public function _addRadioColumn()
+    public function _addCheckBoxColumn()
     {
-        $this->grid->addColumn('radio', array(
-            'name' => 'Radio',
-            'formatter' => array($this, 'radioLinkFormatter')
+        $this->grid->addColumn('check', array(
+            'name' => 'Check',
+            'formatter' => array($this, 'checkBoxLinkFormatter')
         ));
     }
 
@@ -295,9 +295,9 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      * @param $row
      * @return string
      */
-    public function radioLinkFormatter($value, $row)
+    public function checkBoxLinkFormatter($value, $row)
     {
-        return '<input type="radio" name="id[' . $row['id'] . ']"/>';
+        return '<input type="checkbox" name="id[' . $row['id'] . ']"/>';
     }
 
     /**
