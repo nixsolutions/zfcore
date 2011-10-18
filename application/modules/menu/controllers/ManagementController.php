@@ -273,49 +273,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         return $moved;
     }
 
-
-    /**
-     * get actions by controller
-     * Enter description here ...
-     * @param string $module
-     * @param string $controller
-     */
-//    protected function _getActionsByController($module, $controller)
-//    {
-//        $instance = Zend_Controller_Front::getInstance();
-//        $modules = $instance->getControllerDirectory();
-//        require_once $modules[$module].'/'.ucfirst($controller).'Controller.php';
-//        return get_class_methods(ucfirst($module).'_'.$controller.'Controller');
-//    }
-
-    /**
-     * getActionsAction
-     */
-//    public function getActionsAction()
-//    {
-//        $module = $this->_getParam('m');
-//        $controller = $this->_getParam('c');
-//
-//        $result = false;
-//
-//        if ($controller && $module) {
-//
-//            $controllerActions = array();
-//            $methods = $this->_getActionsByController($module, $controller);
-//
-//            if (is_array($methods)) {
-//                foreach ($methods as $method) {
-//                    if (preg_match("/^([\w]*)Action$/", $method, $actions)) {
-//                        $action = strtolower(preg_replace("/([A-Z])/", "-$1", $actions[1]));
-//                        $controllerActions[] = array('name' => $action);
-//                    }
-//                }
-//                $result = $controllerActions;
-//            }
-//        }
-//        $this->view->items = $result;
-//    }
-
     /**
      * add up button
      *
