@@ -233,7 +233,7 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
     */
     public function _addReadColumn()
     {
-        $this->grid->addColumn('read', array(
+        $this->grid->setColumn('read', array(
             'name' => 'Read',
             'formatter' => array($this, 'readLinkFormatter')
         ));

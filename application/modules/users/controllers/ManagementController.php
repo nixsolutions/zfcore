@@ -127,7 +127,7 @@ class Users_ManagementController extends Core_Controller_Action_Crud
     public function _addAllTableColumns()
     {
         foreach ($this->columns as $col) {
-            $this->grid->addColumn($col, array(
+            $this->grid->setColumn($col, array(
                 'name' => ucfirst($col),
                 'type' => Core_Grid::TYPE_DATA,
                 'index' => $col

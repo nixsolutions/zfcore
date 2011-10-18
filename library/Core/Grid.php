@@ -63,7 +63,7 @@ class Core_Grid extends Core_Grid_Abstract
         if ($this->_data === null) {
             $items = $this->getPaginator()->getCurrentItems();
 
-            if ($items instanceof Zend_Db_Table_Rowset) {
+            if ($items instanceof Zend_Db_Table_Rowset_Abstract) {
                 $items = $items->toArray();
             }
 
@@ -137,8 +137,13 @@ class Core_Grid extends Core_Grid_Abstract
                 $this->_orders = $this->_defaultOrders;
             } else {
                 /** order by first column if default order isn't set */
-                $columnId = reset(array_keys($this->_columns));
-                $this->setOrder($columnId);
+
+                foreach($this->_columns as $key => $column){
+                    if(isset($column->type) && self::TYPE_DATA == $column->type) {
+                        $this->setOrder($key);
+                        break;
+                    }
+                }
             }
         }
 

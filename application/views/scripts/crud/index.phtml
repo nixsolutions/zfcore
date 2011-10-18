@@ -44,5 +44,41 @@ $(function() {
         $('#grid').data('plugin_grid').reset();
         return false;
     });
+
+    $('#selectAllCheckbox').deligate('click', (function(){
+        alert('click');
+    }));
+
+//  var selected = false;
+//        if(selected) {
+//            $('#grid').find("input[type=checkbox]:checked").each(function(){
+//                $(this).removeAttr("checked");
+//            });
+//        } else {
+//            $('#grid').find("input[type=checkbox]:checked").each(function(){
+//                $(this).attr("checked","checked");
+//            });
+//        }
+//        selected = !selected;
+
+    $('#delete-all-button').click(function() {
+        var url = this.href
+                , res = [];
+        if (confirm('Are you sure you want to delete this?')) {
+            $('#grid').find("input[type=checkbox]:checked").each(function() {
+                res.push(this.value);
+            });
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: {ids: res},
+                success: function() {
+                    $('#grid').data('plugin_grid').refresh();
+                }
+            });
+        }
+        return false;
+    });
+
 });
 </script>

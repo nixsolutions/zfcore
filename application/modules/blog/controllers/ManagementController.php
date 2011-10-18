@@ -8,7 +8,7 @@
  *
  * @version  $Id: ManagementController.php 48 2010-02-12 13:23:39Z AntonShevchuk $
  */
-class Blog_ManagementController extends Core_Controller_Action_Scaffold
+class Blog_ManagementController extends Core_Controller_Action_Crud
 {
     /**
      * init invironment
@@ -20,8 +20,17 @@ class Blog_ManagementController extends Core_Controller_Action_Scaffold
         /* Initialize */
         parent::init();
 
-        /* is Dashboard Controller */
-        $this->_isDashboard();
+        $this->_beforeGridFilter(array(
+             '_addAllTableColumns',
+             '_prepareGrid',
+             '_addCheckBoxColumn',
+             '_addEditColumn',
+             '_addDeleteColumn',
+             '_addCreateButton',
+             '_addDeleteAllButton',
+             '_showFilter'
+        ));
+
     }
 
     /**
@@ -30,29 +39,11 @@ class Blog_ManagementController extends Core_Controller_Action_Scaffold
      */
     public function indexAction()
     {
+        parent::indexAction();
 
-    }
-
-    /**
-     * createAction
-     *
-     * @return void
-     */
-    public function createAction()
-    {
-        parent::createAction();
-        $this->_setDefaultScriptPath();
-    }
-
-    /**
-     * editAction
-     *
-     * @return void
-     */
-    public function editAction()
-    {
-        parent::editAction();
-        $this->_setDefaultScriptPath();
+        $this->view->headScript()->appendFile(
+            $this->view->baseUrl('./modules/blog/scripts/management/index.js'
+        ));
     }
 
     /**
@@ -92,5 +83,59 @@ class Blog_ManagementController extends Core_Controller_Action_Scaffold
     {
         return new Blog_Model_Post_Table();
     }
+
+    protected function _prepareGrid()
+    {
+
+        $this->grid
+             ->removeColumn('body')
+             ->removeColumn('userId')
+             ->removeColumn('categoryId')
+             ->removeColumn('views')
+             ->removeColumn('replies')
+             ->removeColumn('created')
+             ->removeColumn('updated')
+             ->removeColumn('published')
+             ->setColumn('teaser', array(
+                'name' => ucfirst('teaser'),
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => 'teaser',
+                'formatter' => array($this, 'shorterFormatter')
+             ));
+    }
+
+    /**
+     * cut the message
+     *
+     * @param $value
+     * @param $row
+     * @return
+     */
+    public function shorterFormatter($value, $row)
+    {
+        if (strlen($row['teaser']) >= 200) {
+            if (false !== ($breakpoint = strpos($row['teaser'], ' ', 200))) {
+                if ($breakpoint < strlen($row['teaser']) - 1) {
+                    $row['teaser'] = substr($row['teaser'], 0, $breakpoint) . ' ...';
+                }
+            }
+        }
+        return $row['teaser'];
+    }
+
+    /**
+     * add create button
+     *
+     * @return void
+     */
+    protected function _addDeleteAllButton()
+    {
+        $link = '<a href="%s" class="button" id="delete-all-button">Delete All</a>';
+                $url = $this->getHelper('url')->url(array(
+            'action' => 'delete'
+        ), 'default');
+        $this->view->placeholder('grid_buttons')->create .= sprintf($link, $url);
+    }
+
 }
 

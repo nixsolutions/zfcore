@@ -9,7 +9,7 @@
                 $.ajax({
                   type: 'POST',
                   url: url,
-                  data: {id: /[\d]+/.exec( $(this).attr('name'))}
+                  data: {id: $(this).attr('value')}
                 });
             });
             $('#grid').data('plugin_grid').refresh();
@@ -25,12 +25,11 @@
                 $.ajax({
                   type: 'POST',
                   url: url,
-                  data: {id: /[\d]+/.exec( $(this).attr('name'))}
+                  data: {id: $(this).attr('value')}
                 });
             });
             $('#grid').data('plugin_grid').refresh();
             return false;
         });
-
     });
 })(jQuery);

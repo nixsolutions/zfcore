@@ -160,6 +160,24 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     }
 
     /**
+     * @return void
+     */
+    public function deleteAllAction()
+    {
+        $res = false;
+        if($ids = $this->_getParam('ids')){
+            $table = $this->_getTable();
+            foreach($ids as $id) {
+                if($model = $table->getById($id)) {
+                    $model->delete();
+                }
+            }
+            $res = true;
+        }
+        $this->_helper->json($res);
+    }
+
+    /**
      * get create form
      *
      * @abstract
@@ -206,7 +224,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     public function _addAllTableColumns()
     {
         foreach ($this->_getTable()->info(Zend_Db_Table::COLS) as $col) {
-            $this->grid->addColumn($col, array(
+            $this->grid->setColumn($col, array(
                 'name' => ucfirst($col),
                 'type' => Core_Grid::TYPE_DATA,
                 'index' => $col
@@ -221,7 +239,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function _addEditColumn()
     {
-        $this->grid->addColumn('edit', array(
+        $this->grid->setColumn('edit', array(
             'name' => 'Edit',
             'formatter' => array($this, 'editLinkFormatter')
         ));
@@ -234,7 +252,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function _addDeleteColumn()
     {
-        $this->grid->addColumn('delete', array(
+        $this->grid->setColumn('delete', array(
             'name' => 'Delete',
             'formatter' => array($this, 'deleteLinkFormatter')
         ));
@@ -247,8 +265,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function _addCheckBoxColumn()
     {
-        $this->grid->addColumn('check', array(
-            'name' => 'Check',
+        $this->grid->setColumn('check', array(
+            'name' => '<input type="checkbox" id="selectAllCheckbox"/>',
             'formatter' => array($this, 'checkBoxLinkFormatter')
         ));
     }
@@ -298,7 +316,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function checkBoxLinkFormatter($value, $row)
     {
-        return '<input type="checkbox" name="id[' . $row['id'] . ']"/>';
+        return '<input type="checkbox" name="id" value="' . $row['id'] . '"/>';
     }
 
     /**
@@ -312,6 +330,21 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $url = $this->getHelper('url')->url(array('action' => 'create'), 'default');
         $this->view->placeholder('grid_buttons')->create = sprintf($link, $url);
     }
+
+    /**
+     * add delete button
+     *
+     * @return void
+     */
+    protected function _addDeleteButton()
+    {
+        $link = '<a href="%s" class="button" id="delete-all-button">Delete All</a>';
+                $url = $this->getHelper('url')->url(array(
+            'action' => 'delete-all'
+        ), 'default');
+        $this->view->placeholder('grid_buttons')->deleteAll = sprintf($link, $url);
+    }
+
 
     /**
      * show filter
@@ -362,4 +395,6 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     {
         $this->_before($function, array('only' => array('index', 'grid')));
     }
+
+
 }

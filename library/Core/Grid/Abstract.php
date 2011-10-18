@@ -95,9 +95,16 @@ abstract class Core_Grid_Abstract
      * @param array $options
      * @return Core_Grid
      */
-    public function addColumn($columnId, array $options)
+    public function setColumn($columnId, array $options)
     {
-        $this->_columns[$columnId] = $options;
+        if(empty($this->_columns[$columnId])){
+            $this->_columns[$columnId] = $options;
+        } else {
+            $this->_columns[$columnId] = array_merge(
+                $this->_columns[$columnId],
+                $options
+            );
+        }
         return $this;
     }
 
