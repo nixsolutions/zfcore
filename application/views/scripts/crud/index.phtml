@@ -45,21 +45,20 @@ $(function() {
         return false;
     });
 
-    $('#selectAllCheckbox').deligate('click', (function(){
-        alert('click');
-    }));
+    var selected = false;
 
-//  var selected = false;
-//        if(selected) {
-//            $('#grid').find("input[type=checkbox]:checked").each(function(){
-//                $(this).removeAttr("checked");
-//            });
-//        } else {
-//            $('#grid').find("input[type=checkbox]:checked").each(function(){
-//                $(this).attr("checked","checked");
-//            });
-//        }
-//        selected = !selected;
+    $('#grid').delegate('#selectAllCheckbox', 'click', (function(){
+        if(selected) {
+            $('#grid').find("input[type=checkbox]").each(function(){
+                $(this).removeAttr("checked");
+            });
+        } else {
+            $('#grid').find("input[type=checkbox]").each(function(){
+                $(this).attr("checked","checked");
+            });
+        }
+        selected = !selected;
+    }));
 
     $('#delete-all-button').click(function() {
         var url = this.href

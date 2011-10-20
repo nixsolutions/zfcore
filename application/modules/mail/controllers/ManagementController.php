@@ -100,8 +100,7 @@ class Mail_ManagementController extends Core_Controller_Action_Crud
         $this->grid
             ->removeColumn('bodyHtml')
             ->removeColumn('fromEmail')
-            ->removeColumn('fromName')
-        ;
+            ->removeColumn('fromName');
     }
 
 }

@@ -85,12 +85,24 @@ class Core_Grid extends Core_Grid_Abstract
                     }
 
                     if (isset($column['formatter'])) {
-                        $function = '';
-                        $formatter = $column['formatter'];
-                        if (!is_callable($formatter, null, $function)) {
-                            throw new Core_Exception('"' . $function . '" is not callable');
+                        if(is_array($column['formatter'][1])){
+                            $obj = $column['formatter'][0];
+                            foreach($column['formatter'][1] as $func){
+                                $function = '';
+                                $formatter = array($obj, $func);
+                                if (!is_callable($formatter, null, $function)) {
+                                    throw new Core_Exception('"' . $function . '" is not callable');
+                                }
+                                $value = call_user_func($formatter, $value, $item, $column);
+                            }
+                        }else {
+                            $function = '';
+                            $formatter = $column['formatter'];
+                            if (!is_callable($formatter, null, $function)) {
+                                throw new Core_Exception('"' . $function . '" is not callable');
+                            }
+                            $value = call_user_func($formatter, $value, $item, $column);
                         }
-                        $value = call_user_func($formatter, $value, $item, $column);
                     }
                     $row[$id] = $value;
                 }

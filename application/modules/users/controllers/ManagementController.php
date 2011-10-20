@@ -20,15 +20,14 @@ class Users_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter('_addAllTableColumns');
         $this->_beforeGridFilter(array(
+             '_addAllTableColumns',
              '_addEditColumn',
+             '_prepare',
              '_addDeleteColumn',
              '_addCreateButton',
              '_showFilter'
         ));
-
-        $this->columns = array('id', 'login', 'firstname', 'lastname', 'email', 'role', 'status');
 
         $this->_after('_setDefaultScriptPath', array('only' => array('create', 'edit')));
     }
@@ -113,27 +112,22 @@ class Users_ManagementController extends Core_Controller_Action_Crud
     {
         return new Users_Form_Users_Edit();
     }
-
-    protected function _getSource()
+    protected function _prepare()
     {
-        return $this->_getTable()->select()->from('users', $this->columns);
+        $this->grid
+             ->removeColumn('password')
+             ->removeColumn('salt')
+             ->removeColumn('avatar')
+             ->removeColumn('created')
+             ->removeColumn('updated')
+             ->removeColumn('logined')
+             ->removeColumn('ip')
+             ->removeColumn('count')
+             ->removeColumn('hashCode')
+             ->removeColumn('inform')
+             ->removeColumn('fbUid')
+             ->removeColumn('twId')
+             ->removeColumn('gId');
     }
-
-    /**
-     * add all table columns to grid
-     *
-     * @return void
-     */
-    public function _addAllTableColumns()
-    {
-        foreach ($this->columns as $col) {
-            $this->grid->setColumn($col, array(
-                'name' => ucfirst($col),
-                'type' => Core_Grid::TYPE_DATA,
-                'index' => $col
-            ));
-        }
-    }
-
 
 }

@@ -319,6 +319,33 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         return '<input type="checkbox" name="id" value="' . $row['id'] . '"/>';
     }
 
+     /**
+      * @param $value
+      * @param $row
+      * @return string
+      */
+    public function trimFormatter($value, $row)
+    {
+        if (strlen($value) >= 200) {
+            if (false !== ($breakpoint = strpos($value, ' ', 200))) {
+                if ($breakpoint < strlen($value) - 1) {
+                    $value = substr($value, 0, $breakpoint) . ' ...';
+                }
+            }
+        }
+        return $value;
+    }
+
+    /**
+     * @param $value
+     * @param $row
+     * @return string
+     */
+    public function stripTagsFormatter($value, $row)
+    {
+        return strip_tags($value);
+    }
+
     /**
      * add create button
      *

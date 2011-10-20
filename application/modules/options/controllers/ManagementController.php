@@ -22,8 +22,7 @@ class Options_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter('_addAllTableColumns');
-        $this->_beforeGridFilter(array('_addEditColumn', '_addDeleteColumn'));
+        $this->_beforeGridFilter(array('_addAllTableColumns','_addEditColumn', '_addDeleteColumn'));
     }
 
     /**

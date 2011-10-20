@@ -17,9 +17,9 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         parent::init();
 
         $this->_beforeGridFilter(array(
+             '_addCheckBoxColumn',
              '_addAllTableColumns',
              '_prepareGrid',
-             '_addCheckBoxColumn',
              '_addEditColumn',
              '_addDeleteColumn',
              '_addCreateButton',
@@ -29,10 +29,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         ));
 
         $this->_after('_setDefaultScriptPath', array('only' => array('create', 'edit')));
-
-//        $this->_helper->contextSwitch()
-//                ->addActionContext('get-actions', 'json')
-//                ->initContext('json');
     }
 
     /**
@@ -85,90 +81,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         ));
         parent::indexAction();
     }
-
-    /**
-     * storeAction
-     *
-     * Get store action
-     *
-     * @access public
-     */
-//    public function storeAction()
-//    {
-//        $menuTable = new Menu_Model_Menu_Manager();
-//
-//        $start  = (int)$this->_getParam('start');
-//        $count  = (int)$this->_getParam('count');
-//        $sort   = $this->_getParam('sort', 'path');
-//        // sort data
-//        //   field  - ASC
-//        //   -field - DESC
-//        if ($sort && ltrim($sort, '-')
-//            && in_array(ltrim($sort, '-'), $this->_table->info(Zend_Db_Table::COLS))
-//        ) {
-//            if (strpos($sort, '-') === 0) {
-//                $order = ltrim($sort, '-') .' '. Zend_Db_Select::SQL_DESC;
-//            } else {
-//                $order = $sort  .' '.  Zend_Db_Select::SQL_ASC;
-//            }
-//        }
-//
-//        $select = $this->_table->select();
-//        $select->from(
-//            $this->_table->info(Zend_Db_Table::NAME),
-//            new Zend_Db_Expr('COUNT(*) as c')
-//        );
-//
-//        if ($total = $this->_table->fetchRow($select)) {
-//            $total = $total->c;
-//            $select = $this->_table->select();
-//            $select->from($this->_table->info(Zend_Db_Table::NAME));
-//
-//            if (isset($order)) {
-//                $select->order($order);
-//            }
-//            $select->limit($count, $start);
-//            $data = $this->_table->fetchAll($select);
-//        }
-//
-//        if ($total) {
-//            $primary = $this->_table->getPrimary();
-//            if (is_array($primary)) {
-//                $primary = current($primary);
-//            }
-//
-//            foreach ($data as $val) {
-//                $array[$val['parentId']][] =  $val;
-//            }
-//            $menuTable->buildTree($array, 0, 0, 2);
-//            //$menuTable->buildTreeGt($array, 0);
-//
-//            $parentArray = $menuTable->getParentArray();
-//
-//            $datas = $data->toArray();
-//
-//            $sortArray = array();
-//            foreach ($datas as $key => $val) {
-//                $datas[$key]['label'] = $parentArray[$val['id']];
-//                $position = 0;
-//                foreach ($parentArray as $parentKey => $value) {
-//
-//                    if ($parentKey == $val['id']) {
-//                        $sortArray[$position] = $datas[$key];
-//                    }
-//                    $position++;
-//                }
-//            }
-//            ksort($sortArray);
-//
-//            $data = new Zend_Dojo_Data($primary, $sortArray);
-//            $data->setMetadata('numRows', $total);
-//
-//            $this->_helper->json($data);
-//        } else {
-//            $this->_helper->json(false);
-//        }
-//    }
 
     public function createAction()
     {
@@ -231,27 +143,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         $this->view->editForm = $editForm;
         $this->view->javascript()->action();
     }
-
-//    public function deleteAction()
-//    {
-//        $id = $this->_getParam('id');
-//        $menuTable = new Menu_Model_Menu_Manager();
-//
-//        $deleted = false;
-//        if (empty($id) || empty($menuTable)) {
-//            $this->_helper->json($deleted);
-//            return false;
-//        }
-//
-//
-//        if (!empty($id)) {
-//            $deleted = $menuTable->removeById($id);
-//        }
-//        $this->_helper->json($deleted);
-//
-//        return $deleted;
-//    }
-
 
     public function moveAction()
     {

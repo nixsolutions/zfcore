@@ -98,13 +98,13 @@ abstract class Core_Grid_Abstract
     public function setColumn($columnId, array $options)
     {
         if(empty($this->_columns[$columnId])){
-            $this->_columns[$columnId] = $options;
-        } else {
-            $this->_columns[$columnId] = array_merge(
-                $this->_columns[$columnId],
-                $options
-            );
+            $this->_columns[$columnId] = array();
         }
+        $this->_columns[$columnId] = array_merge(
+            $this->_columns[$columnId],
+            $options
+        );
+
         return $this;
     }
 
