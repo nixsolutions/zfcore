@@ -19,13 +19,13 @@ class Categories_ManagementController extends Core_Controller_Action_Crud
         parent::init();
 
         $this->_beforeGridFilter(array(
+             '_addCheckBoxColumn',
              '_addAllTableColumns',
 //             '_prepareGrid',
-//             '_addCheckBoxColumn',
-//             '_addEditColumn',
-//             '_addDeleteColumn',
-//             '_addCreateButton',
-//             '_addDeleteAllButton',
+             '_addEditColumn',
+             '_addDeleteColumn',
+             '_addCreateButton',
+             '_addDeleteButton',
              '_showFilter'
         ));
 
@@ -51,16 +51,6 @@ class Categories_ManagementController extends Core_Controller_Action_Crud
 //        $this->_setDefaultScriptPath();
 //    }
 
-    /**
-     * createAction
-     *
-     * @return void
-     */
-//    function editAction()
-//    {
-//        parent::editAction();
-//        $this->_setDefaultScriptPath();
-//    }
 
     /**
      * _getCreateForm
@@ -100,19 +90,7 @@ class Categories_ManagementController extends Core_Controller_Action_Crud
         return new Categories_Model_Category_Table();
     }
 
-     /**
-     * add create button
-     *
-     * @return void
-     */
-    protected function _addDeleteAllButton()
-    {
-        $link = '<a href="%s" class="button" id="delete-all-button">Delete All</a>';
-                $url = $this->getHelper('url')->url(array(
-            'action' => 'delete'
-        ), 'default');
-        $this->view->placeholder('grid_buttons')->create .= sprintf($link, $url);
-    }
+
 
     /**
     * getDojoGrid

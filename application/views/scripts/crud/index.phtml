@@ -11,13 +11,15 @@ foreach ($this->grid->getHeaders() as $header) {
 }
 
 ?>
-<div class="grid-buttons"><?php echo $this->placeholder('grid_buttons') ?></div>
-<?php if ($this->showFilter): ?>
-<div class="grid-filter">
-    <?php echo $this->formSelect('filter-column', null, null, $columns) ?>
-    <input type="text" id="filter-value" />
-    <a href="#" id="filter-button" class="button"><?php echo $this->__('Ok')?></a>
-    <a href="#" id="filter-reset" class="button"><?php echo $this->__('Reset')?></a>
+<div class="filter-wrapper">
+    <span class="grid-buttons"><?php echo $this->placeholder('grid_buttons') ?></span>
+    <?php if ($this->showFilter): ?>
+    <span class="grid-filter">
+        <?php echo $this->formSelect('filter-column', null, null, $columns) ?>
+        <input type="text" id="filter-value" />
+        <a href="#" id="filter-button" class="button"><?php echo $this->__('Ok')?></a>
+        <a href="#" id="filter-reset" class="button"><?php echo $this->__('Reset')?></a>
+    </span>
 </div>
 <?php endif; ?>
 <div id="grid" data-url="<?php echo $this->url(array('action' => 'grid'), 'default') ?>"></div>

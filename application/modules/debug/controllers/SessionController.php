@@ -109,13 +109,13 @@ class Debug_SessionController extends Core_Controller_Action
             } else {
                 $this->_flashMessenger->addMessage('Failed!');
             }
-            
+
             $this->_helper->getHelper('redirector')->direct('index');
         } else {
             $this->view->createForm = $createForm;
             $this->_viewRenderer
                  ->setViewBasePathSpec('dashboard/scripts')
-                 ->setViewScriptPathSpec('scaffold/:action.:suffix'); 
+                 ->setViewScriptPathSpec('scaffold/:action.:suffix');
         }
         return $this;
     }

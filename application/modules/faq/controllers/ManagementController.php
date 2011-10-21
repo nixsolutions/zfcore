@@ -21,6 +21,7 @@ class Faq_ManagementController extends Core_Controller_Action_Crud
         /** init grid */
         $this->_beforeGridFilter(array(
              '_addAllTableColumns',
+             '_prepareGrid',
              '_addDeleteColumn',
              '_addEditColumn'
         ));
@@ -63,6 +64,20 @@ class Faq_ManagementController extends Core_Controller_Action_Crud
     protected function _getTable()
     {
         return new Faq_Model_Question_Table();
+    }
+
+    /**
+     * @return void
+     */
+    protected function _prepareGrid()
+    {
+        $this->grid
+             ->setColumn('question', array(
+               'formatter' => array($this, array('trimFormatter'))
+             ))
+             ->setColumn('answer', array(
+               'formatter' => array($this, array('trimFormatter'))
+             ));
     }
 }
 

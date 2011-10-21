@@ -21,13 +21,13 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
         parent::init();
 
         $this->_beforeGridFilter(array(
+             '_addCheckBoxColumn',
              '_addAllTableColumns',
              '_prepareGrid',
-             '_addCheckBoxColumn',
              '_addEditColumn',
              '_addDeleteColumn',
              '_addCreateButton',
-             '_addDeleteAllButton',
+             '_addDeleteButton',
              '_showFilter'
         ));
 
@@ -97,45 +97,10 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
              ->removeColumn('updated')
              ->removeColumn('published')
              ->setColumn('teaser', array(
-                'name' => ucfirst('teaser'),
-                'type' => Core_Grid::TYPE_DATA,
-                'index' => 'teaser',
-                'formatter' => array($this, 'shorterFormatter')
+                'formatter' => array($this, 'trimFormatter')
              ));
     }
 
-    /**
-     * cut the message
-     *
-     * @param $value
-     * @param $row
-     * @return
-     */
-    public function shorterFormatter($value, $row)
-    {
-        if (strlen($row['teaser']) >= 200) {
-            if (false !== ($breakpoint = strpos($row['teaser'], ' ', 200))) {
-                if ($breakpoint < strlen($row['teaser']) - 1) {
-                    $row['teaser'] = substr($row['teaser'], 0, $breakpoint) . ' ...';
-                }
-            }
-        }
-        return $row['teaser'];
-    }
-
-    /**
-     * add create button
-     *
-     * @return void
-     */
-    protected function _addDeleteAllButton()
-    {
-        $link = '<a href="%s" class="button" id="delete-all-button">Delete All</a>';
-                $url = $this->getHelper('url')->url(array(
-            'action' => 'delete'
-        ), 'default');
-        $this->view->placeholder('grid_buttons')->create .= sprintf($link, $url);
-    }
 
 }
 

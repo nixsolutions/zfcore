@@ -301,3 +301,17 @@ label {
 #sidebar .navigation ul li.active a {
                 background: transparent url('images/menu-current-arrow.gif') right center no-repeat !important;
                 }
+
+/* --- index page crud grid */
+grid-buttons{
+    float: left;
+}
+.grid-filter{
+    float: right;
+}
+#filter-column {
+    height: 25px;
+}
+#filter-value{
+    height: 22px;
+}

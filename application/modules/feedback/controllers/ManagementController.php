@@ -21,10 +21,6 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
              '_addDeleteColumn',
              '_showFilter'
         ));
-
-        $this->_helper->getHelper('AjaxContext')
-                      ->addActionContext('get-mail-template', 'html')
-                      ->initContext();
     }
 
     /**

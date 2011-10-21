@@ -177,6 +177,20 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $this->_helper->json($res);
     }
 
+     /**
+     * add create button
+     *
+     * @return void
+     */
+//    protected function _addDeleteAllButton()
+//    {
+//        $link = '<a href="%s" class="button" id="delete-all-button">Delete All</a>';
+//                $url = $this->getHelper('url')->url(array(
+//            'action' => 'delete'
+//        ), 'default');
+//        $this->view->placeholder('grid_buttons')->deleteAll = sprintf($link, $url);
+//    }
+
     /**
      * get create form
      *
