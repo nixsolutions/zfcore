@@ -71,7 +71,6 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
             ->setColumn('content', array(
                 'formatter' => array($this,
                     array('stripTagsFormatter' ,'trimFormatter'))
-             ))
-        ;
+            ));
     }
 }

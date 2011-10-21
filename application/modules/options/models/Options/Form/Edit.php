@@ -30,8 +30,8 @@ class Options_Model_Options_Form_Edit extends Options_Model_Options_Form_Create
 
     /**
      * Set values for EditForm
-     *
-     *
+
+     * @param $values
      * @return void
      */
     public function setValues($values)

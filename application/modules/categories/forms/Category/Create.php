@@ -8,7 +8,7 @@
  *
  * @version  $Id: Create.php 206 2010-10-20 10:55:55Z AntonShevchuk $
  */
-class Categories_Form_Category_Create extends Zend_Dojo_Form
+class Categories_Form_Category_Create extends Zend_Form
 {
     /**
      * Form initialization
@@ -33,14 +33,14 @@ class Categories_Form_Category_Create extends Zend_Dojo_Form
     /**
      * Create mail subject element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _title()
     {
-        $subject = new Zend_Dojo_Form_Element_ValidationTextBox('title');
+        $subject = new Zend_Form_Element_Text('title');
         $subject->setLabel('Title')
                 ->setRequired(true)
-                ->setTrim(true)
+//                ->setTrim(true)
                 ->setAttribs(array('style'=>'width:60%'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
@@ -49,13 +49,13 @@ class Categories_Form_Category_Create extends Zend_Dojo_Form
     /**
      * Create mail subject element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _alias()
     {
-        $subject = new Zend_Dojo_Form_Element_ValidationTextBox('alias');
+        $subject = new Zend_Form_Element_Text('alias');
         $subject->setLabel('Alias')
-                ->setTrim(true)
+//                ->setTrim(true)
                 ->setAttribs(array('style'=>'width:60%'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
@@ -71,11 +71,11 @@ class Categories_Form_Category_Create extends Zend_Dojo_Form
     /**
      * Create mail body element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _description()
     {
-        $body = new Zend_Dojo_Form_Element_Editor('description');
+        $body = new Core_Form_Element_Redactor('description');
         $body->setLabel('Description')
              ->setRequired(false)
              ->setAttribs(array('style'=>'width:60%'))
@@ -86,11 +86,11 @@ class Categories_Form_Category_Create extends Zend_Dojo_Form
     /**
      * Create mail body element (text)
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _parent()
     {
-        $element = new Zend_Dojo_Form_Element_FilteringSelect('parentId');
+        $element = new Zend_Form_Element_Select('parentId');
         $element->setLabel('Parent Category')
              ->setAttribs(array('style' => 'width:60%'))
              ->setRequired(false);
@@ -107,11 +107,11 @@ class Categories_Form_Category_Create extends Zend_Dojo_Form
     /**
      * Create submit element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _submit()
     {
-        $submit = new Zend_Dojo_Form_Element_SubmitButton('submit');
+        $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Save');
 
         return $submit;

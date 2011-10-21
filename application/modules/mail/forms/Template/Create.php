@@ -8,7 +8,7 @@
  *
  * @version  $Id: Create.php 206 2010-10-20 10:55:55Z AntonShevchuk $
  */
-class Mail_Form_Template_Create extends Zend_Dojo_Form
+class Mail_Form_Template_Create extends Zend_Form
 {
     /**
      * Form initialization
@@ -37,30 +37,26 @@ class Mail_Form_Template_Create extends Zend_Dojo_Form
     /**
      * Create mail alias element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_ValidationTextBox
      */
     protected function _alias()
     {
-        $alias = new Zend_Dojo_Form_Element_ValidationTextBox('alias');
+        $alias = new Zend_Form_Element_Text('alias');
         $alias->setLabel('Alias')
-              ->setIgnore(true)
-              ->setDijitParam('disabled', 'on')
               ->setAttribs(array('style'=>'width:60%'));
-
         return $alias;
     }
 
     /**
      * Create mail subject element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_ValidationTextBox
      */
     protected function _subject()
     {
-        $subject = new Zend_Dojo_Form_Element_ValidationTextBox('subject');
+        $subject = new Zend_Form_Element_Text('subject');
         $subject->setLabel('Subject')
                 ->setRequired(true)
-                ->setTrim(true)
                 ->setAttribs(array('style'=>'width:60%'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
@@ -70,28 +66,34 @@ class Mail_Form_Template_Create extends Zend_Dojo_Form
     /**
      * Create mail body element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_ValidationTextBox
      */
     protected function _body()
     {
-        $body = new Zend_Dojo_Form_Element_Editor('bodyHtml');
+        $body = new Core_Form_Element_Redactor('bodyHtml');
         $body->setLabel('Body')
              ->setRequired(true)
              ->setAttribs(array('style'=>'width:60%'))
-             ->addFilter('StringTrim');
+             ->addFilter('StringTrim')
+             ->setAttrib('redactor', array(
+                 'toolbar' => 'full',
+                 'image_upload' => $this->_getUploadImageUrl()
+             ));
+
         return $body;
     }
 
     /**
      * Create mail body element (text)
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_ValidationTextBox
      */
     protected function _altBody()
     {
-        $body = new Zend_Dojo_Form_Element_Textarea('bodyText');
+        $body = new Zend_Form_Element_Textarea('bodyText');
         $body->setLabel('Body (text)')
-             //->setRequired(true)
+             ->setAttrib('cols', 20)
+             ->setAttrib('rows', 20)
              ->setAttribs(array('style'=>'width:60%'))
              ->addFilter('StringTrim');
         return $body;
@@ -100,14 +102,13 @@ class Mail_Form_Template_Create extends Zend_Dojo_Form
     /**
      * Create mail description element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_ValidationTextBox
      */
     protected function _description()
     {
-        $desc = new Zend_Dojo_Form_Element_ValidationTextBox('description');
+        $desc = new Zend_Form_Element_Text('description');
         $desc->setLabel('Description')
              ->setRequired(false)
-             ->setTrim(true)
              ->setAttribs(array('style'=>'width:60%'))
              ->addFilter('StripTags')
              ->addFilter('StringTrim');
@@ -117,15 +118,14 @@ class Mail_Form_Template_Create extends Zend_Dojo_Form
     /**
      * Create fromName mail element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_ValidationTextBox
      */
     protected function _fromName()
     {
-        $fromName = new Zend_Dojo_Form_Element_ValidationTextBox('fromName');
+        $fromName = new Zend_Form_Element_Text('fromName');
         $fromName->setLabel('From Name')
                  ->setRequired(false)
                  ->setAttribs(array('style'=>'width:60%'))
-                 ->setTrim(true)
                  ->addFilter('StripTags')
                  ->addFilter('StringTrim');
 
@@ -135,16 +135,15 @@ class Mail_Form_Template_Create extends Zend_Dojo_Form
     /**
      * Create fromEmail email element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_ValidationTextBox
      */
     protected function _fromEmail()
     {
-        $fromEmail = new Zend_Dojo_Form_Element_ValidationTextBox('fromEmail');
+        $fromEmail = new Zend_Form_Element_Text('fromEmail');
         $fromEmail->setLabel('From Email')
                   ->setRequired(false)
                   ->setAttribs(array('style'=>'width:60%'))
-                  ->setTrim(true)
-                  ->setRegExp('[\w\.\-\_\d]+\@[\w\.\-\_\d]+\.\w+')
+                  ->addValidator('regex', false, array('[\w\.\-\_\d]+\@[\w\.\-\_\d]+\.\w+'))
                   ->setValue(null)
                   ->addValidator('StringLength', false, array(6))
                   ->addValidator('EmailAddress');
@@ -159,11 +158,10 @@ class Mail_Form_Template_Create extends Zend_Dojo_Form
      */
     protected function _toName()
     {
-        $toName = new Zend_Dojo_Form_Element_ValidationTextBox('toName');
+        $toName = new Zend_Form_Element_Text('toName');
         $toName->setLabel('To Name')
                ->setRequired(false)
                ->setAttribs(array('style'=>'width:60%'))
-               ->setTrim(true)
                ->addFilter('StripTags')
                ->addFilter('StringTrim');
 
@@ -173,16 +171,15 @@ class Mail_Form_Template_Create extends Zend_Dojo_Form
     /**
      * Create toEmail email element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_ValidationTextBox
      */
     protected function _toEmail()
     {
-        $toEmail = new Zend_Dojo_Form_Element_ValidationTextBox('toEmail');
+        $toEmail = new Zend_Form_Element_Text('toEmail');
         $toEmail->setLabel('To Email')
                 ->setRequired(false)
                 ->setAttribs(array('style'=>'width:60%'))
-                ->setTrim(true)
-                ->setRegExp('[\w\.\-\_\d]+\@[\w\.\-\_\d]+\.\w+')
+                ->addValidator('regex', false, array('[\w\.\-\_\d]+\@[\w\.\-\_\d]+\.\w+'))
                 ->setValue(null)
                 ->addValidator('StringLength', false, array(6))
                 ->addValidator('EmailAddress');
@@ -193,13 +190,28 @@ class Mail_Form_Template_Create extends Zend_Dojo_Form
     /**
      * Create submit element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_ValidationTextBox
      */
     protected function _submit()
     {
-        $submit = new Zend_Dojo_Form_Element_SubmitButton('submit');
+        $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Create');
 
         return $submit;
+    }
+
+    /**
+     * get upload image url
+     *
+     * @return string
+     */
+    protected function _getUploadImageUrl()
+    {
+        $helper = new Zend_View_Helper_Url();
+        return $helper->url(array(
+            'module' => 'pages',
+            'controller' => 'management',
+            'action' => 'upload'
+        ), 'default', true);
     }
 }

@@ -22,8 +22,8 @@ class Faq_ManagementController extends Core_Controller_Action_Crud
         $this->_beforeGridFilter(array(
              '_addAllTableColumns',
              '_prepareGrid',
-             '_addDeleteColumn',
-             '_addEditColumn'
+             '_addEditColumn',
+             '_addDeleteColumn'
         ));
 
     }

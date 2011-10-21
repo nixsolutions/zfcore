@@ -303,11 +303,11 @@ label {
                 }
 
 /* --- index page crud grid */
-grid-buttons{
-    float: left;
+.grid-buttons{
+    /*float: left;*/
 }
 .grid-filter{
-    float: right;
+    /*float: right;*/
 }
 #filter-column {
     height: 25px;
