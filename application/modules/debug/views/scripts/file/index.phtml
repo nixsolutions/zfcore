@@ -1,4 +1,6 @@
 <?php
+$this->enableDojo = true;
+
 //$this->headLink()->appendStylesheet($this->baseUrl('http://ajax.googleapis.com/ajax/libs/dojo/1.5/dijit/themes/claro/claro.css'));
 $this->dojo()->addStyleSheet($this->dojo()->getCdnBase() . $this->dojo()->getCdnVersion() . '/dojox/grid/resources/tundraGrid.css');
 $this->dojo()->requireModule('dojo.data.ItemFileReadStore');

@@ -33,6 +33,15 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
 
     }
 
+    public function postDispatch()
+    {
+        parent::postDispatch();
+
+        if ('create' == $this->_getParam('action') || 'edit' == $this->_getParam('action')) {
+            $this->_setDefaultScriptPath();
+        }
+    }
+
     /**
      * indexAction
      *

@@ -30,7 +30,7 @@ class Options_ManagementController extends Core_Controller_Action_Crud
      *
      * return create form for crud
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getCreateForm()
     {
@@ -42,7 +42,7 @@ class Options_ManagementController extends Core_Controller_Action_Crud
      *
      * return edit form for crud
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getEditForm()
     {

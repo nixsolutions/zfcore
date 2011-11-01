@@ -1,7 +1,7 @@
 <?php
 /**
  * Register user form
- * 
+ *
  * @category Application
  * @package Debug
  * @subpackage Options
@@ -20,10 +20,10 @@ class Options_Model_Options_Form_Edit extends Options_Model_Options_Form_Create
     public function init()
     {
         parent::init();
-        
+
         $this->setName('optionEditForm')
-             ->addElement(new Zend_Form_Element_Hidden('id')); 
-                
+             ->addElement(new Zend_Form_Element_Hidden('id'));
+
         return $this;
     }
 
@@ -49,11 +49,11 @@ class Options_Model_Options_Form_Edit extends Options_Model_Options_Form_Create
              ->setValue($values['type']);
 
     }
-    
+
     /**
      * Modify parent element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Submit
      */
     protected function _submit()
     {

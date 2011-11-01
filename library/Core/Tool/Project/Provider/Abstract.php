@@ -21,6 +21,7 @@ class Core_Tool_Project_Provider_Abstract
     {
         parent::initialize();
 
+        return ;
         // load Core Context
         $contextRegistry = Zend_Tool_Project_Context_Repository::getInstance();
         $contextRegistry->addContextsFromDirectory(
