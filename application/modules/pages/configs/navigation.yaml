@@ -14,9 +14,9 @@ staticpages:
       controller: management
       action: index
       route: default
-    browse:
-      label: Image Manager
+    uploads:
+      label: Uploads Manager
       module: pages
-      controller: images
-      action: manager
+      controller: uploads
+      action: index
       route: default
