@@ -48,6 +48,11 @@ class Debug_FileController extends Core_Controller_Action
                     'driver'        => 'LocalFileSystem',   // driver for accessing file system (REQUIRED)
                     'path'          => dirname(APPLICATION_PATH),// path to files (REQUIRED)
                     'accessControl' => array($this, 'access')    // disable and hide dot starting files (OPTIONAL)
+                ),
+                array(
+                    'driver'        => 'LocalFileSystem',   // driver for accessing file system (REQUIRED)
+                    'path'          => '/var/log',// path to files (REQUIRED)
+                    'accessControl' => array($this, 'access')    // disable and hide dot starting files (OPTIONAL)
                 )
             )
         );

@@ -14,12 +14,6 @@ debugmanagment:
       controller: file
       action: index
       route: default
-    logs:
-      label: Logs
-      module: debug
-      controller: logs
-      action: index
-      route: default    
     contrab:
       label: Crontab
       module: debug
