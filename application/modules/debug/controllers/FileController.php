@@ -5,7 +5,7 @@
  * @category   Application
  * @package    Debug
  * @subpackage Controller
- * 
+ *
  * @author Anna Pavlova <pavlova.anna@nixsolutions.com>
  *
  * @version  $Id$
@@ -15,98 +15,61 @@
 class Debug_FileController extends Core_Controller_Action
 {
     /**
-     * Init controller plugins
-     *
-     */
+    * Init
+    */
     public function init()
     {
-        /* Initialize action controller here */
-        parent::init();
-        /* is Dashboard Controller */
         $this->_isDashboard();
-
-        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
-        $this->_viewRenderer   = $this->_helper->getHelper('viewRenderer');
-
     }
 
-     /**
-     * indexAction
-     *
+    /**
+     * Index
      */
     public function indexAction()
     {
-
     }
 
     /**
-     * _setDefaultScriptPath
-     *
-     * @return  void
+     * Elfinder ajax connector action
      */
-    protected function _setDefaultBasePath()
+    public function connectorAction()
     {
-        $this->_viewRenderer->setViewBasePathSpec(':moduleDir/views');
-        return $this;
-    }
+        $this->_helper->layout->disableLayout();
 
-    /**
-     * _setDefaultScriptPath
-     *
-     * @return  void
-     */
-    protected function _setDefaultScriptPath()
-    {
-        $this->_viewRenderer->setViewScriptPathSpec(
-            ':controller/:action.:suffix'
+        include_once 'elFinder/elFinderConnector.class.php';
+        include_once 'elFinder/elFinder.class.php';
+        include_once 'elFinder/elFinderVolumeDriver.class.php';
+        include_once 'elFinder/elFinderVolumeLocalFileSystem.class.php';
+
+        $opts = array(
+            // 'debug' => true,
+            'roots' => array(
+                array(
+                    'driver'        => 'LocalFileSystem',   // driver for accessing file system (REQUIRED)
+                    'path'          => dirname(APPLICATION_PATH),// path to files (REQUIRED)
+                    'accessControl' => array($this, 'access')    // disable and hide dot starting files (OPTIONAL)
+                )
+            )
         );
-        return $this;
+
+        // run elFinder
+        $connector = new elFinderConnector(new elFinder($opts));
+        $connector->run();
     }
 
     /**
-     * loadAction
+     * Simple function to demonstrate how to control file access using "accessControl" callback.
+     * This method will disable accessing files/folders starting from  '.' (dot)
      *
-     * load file content for Ajax query
-     *
-     * @return  void
-     */
-    public function loadAction()
+     * @param  string  $attr  attribute name (read|write|locked|hidden)
+     * @param  string  $path  file path relative to volume root directory started with directory separator
+     * @return bool
+     **/
+    public function access($attr, $path, $data, $volume)
     {
-        $manager = new Debug_Model_File_Manager();
-        $files = $manager->createFileArray($this->_getParam('id'));
-
-        $this->_helper->json($files);
-
-        return $this;
-    }
-
-    /**
-     * lazyTreeAction
-     *
-     * get json data for Lazy Folder Tree
-     *
-     *
-     * @return  json data for Folder Tree
-     */
-    public function lazyAction()
-    {
-        $type = $this->_request->getParam('type', null);
-        $node = $this->_request->getParam('node', null);
-        $manager = new Debug_Model_File_Manager();
-
-        if (!empty($type)) {
-            $tree = $manager->createLazyTreeArray();
-        } 
-        if (!empty($node)) {
-            $tree = $manager->createLazyTreeArray($node);
-        }
-
-        if ($this->_request->getParam('format')) {
-            $this->_helper->json($tree);
-        } else {
-            $this->_helper->json(false);
-        }
-        return $this;
+        return strpos(basename($path), '.') === 0   // if file/folder begins with '.' (dot)
+            ? !($attr == 'read' || $attr == 'write')  // set read+write to false, other (locked+hidden) set to true
+            : ($attr == 'read' || $attr == 'write');  // else set read+write to true, locked+hidden to false
     }
 }
 
