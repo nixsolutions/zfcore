@@ -74,11 +74,7 @@ class Pages_Form_Create extends Zend_Form
      */
     protected function _getUploadImageUrl()
     {
-        $helper = new Zend_View_Helper_Url();
-        return $helper->url(array(
-            'module' => 'pages',
-            'controller' => 'management',
-            'action' => 'upload'
-        ), 'default', true);
+        return Zend_Controller_Front::getInstance()->getParam('bootstrap')
+                                                   ->getOption('uploadDir');
     }
 }
