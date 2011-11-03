@@ -135,8 +135,8 @@ class Core_Grid extends Core_Grid_Abstract
      */
     protected function _buildPaginator()
     {
-        if (empty($this->_select)) {
-            throw new Core_Exception('Select is not set');
+        if (!$this->_adapter instanceof Core_Grid_Adapter_AdapterInterface) {
+            throw new Core_Exception('Adapter is not set');
         }
 
         if (empty($this->_columns)) {
@@ -161,7 +161,7 @@ class Core_Grid extends Core_Grid_Abstract
 
         /** ordering */
         foreach ($this->_orders as $columnId => $direction) {
-            $this->_select->order($this->_getColumnIndex($columnId) . ' ' . $direction);
+            $this->_adapter->order($this->_getColumnIndex($columnId), $direction);
             $this->_columns[$columnId]['order'] = $direction;
         }
 
@@ -170,7 +170,7 @@ class Core_Grid extends Core_Grid_Abstract
             foreach ($this->_filters as $columnId => $filters) {
                 $index = $this->_getColumnIndex($columnId);
                 foreach ($filters as $filter) {
-                    $this->_select->having($index . ' LIKE ?', str_replace('*', '%', $filter));
+                    $this->_adapter->filter($index, $filter);
                 }
             }
         }
@@ -183,9 +183,9 @@ class Core_Grid extends Core_Grid_Abstract
             throw new Core_Exception('Current page is not set');
         }
 
-        $this->_paginator = Zend_Paginator::factory($this->_select)
-            ->setItemCountPerPage($this->_itemCountPerPage)
-            ->setCurrentPageNumber($this->_currentPageNumber);
+        $this->_paginator = Zend_Paginator::factory($this->_adapter->getSource())
+             ->setItemCountPerPage($this->_itemCountPerPage)
+             ->setCurrentPageNumber($this->_currentPageNumber);
     }
 
     /**

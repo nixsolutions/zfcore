@@ -23,9 +23,6 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $this->_viewRenderer = $this->_helper->getHelper('viewRenderer');
         $this->_redirector = $this->_helper->getHelper('redirector');
 
-        /** load model before editing and deleting */
-        $this->_before('_loadModel', array('only' => array('edit', 'delete')));
-
         /** change view script path specification */
         $this->_after('_changeViewScriptPathSpec', array('only' => array('index', 'grid', 'create', 'edit')));
 
@@ -101,16 +98,17 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function editAction()
     {
+        $model = $this->_loadModel();
+
         $form = $this->_getEditForm()
             ->setAction($this->view->url())
-            ->setDefaults($this->model->toArray(true));
+            ->setDefaults($model->toArray(true));
 
         if ($this->_request->isPost() &&
             $form->isValid($this->_getAllParams())
         ) {
-            $this->model
-                ->setFromArray($form->getValues())
-                ->save();
+            $model->setFromArray($form->getValues())
+                  ->save();
 
             $this->_flashMessenger->addMessage('Successfully');
             $this->_redirector->direct('index');
@@ -122,7 +120,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     /**
      * load model
      *
-     * @return void
+     * @return Zend_Db_Table_Row_Abstract
      */
     protected function _loadModel()
     {
@@ -136,7 +134,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
             $this->_forwardNotFound();
         }
 
-        $this->model = $model;
+        return $model;
     }
 
     /**
@@ -156,7 +154,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function deleteAction()
     {
-        $this->_helper->json($this->model->delete());
+        $model = $this->_loadModel();
+        $this->_helper->json($model->delete());
     }
 
     /**
@@ -215,7 +214,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     protected function _loadGrid()
     {
         $grid = new Core_Grid();
-        $grid->setSelect($this->_getSource())
+        $grid->setAdapter($this->_getSource())
             ->setCurrentPageNumber($this->_getParam('page', 1))
             ->setItemCountPerPage(10);
 
@@ -408,11 +407,11 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     /**
      * get source
      *
-     * @return Zend_Db_Select
+     * @return Core_Grid_Adapter_AdapterInterface
      */
     protected function _getSource()
     {
-        return $this->_getTable()->select();
+        return new Core_Grid_Adapter_Select($this->_getTable()->select());
     }
 
     /**
