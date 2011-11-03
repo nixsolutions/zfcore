@@ -12,7 +12,7 @@
  */
 
 
-class Debug_CrontabController extends Core_Controller_Action
+class Debug_CrontabController extends Core_Controller_Action_Crud
 {
     /**
      * Init controller plugins
@@ -20,23 +20,70 @@ class Debug_CrontabController extends Core_Controller_Action
      */
     public function init()
     {
-        /* Initialize action controller here */
         parent::init();
-        /* is Dashboard Controller */
-        $this->_isDashboard();
 
-        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
-        $this->_viewRenderer   = $this->_helper->getHelper('viewRenderer');
-
+        $this->_beforeGridFilter(array(
+             '_addAllTableColumns',
+             //'_prepareGrid',
+             '_addEditColumn',
+             '_addDeleteColumn',
+             '_addCreateButton',
+             '_showFilter'
+        ));
     }
 
-     /**
-     * indexAction
+    /**
+     * get source
      *
+     * @return Core_Grid_Adapter_AdapterInterface
      */
-    public function indexAction()
+    protected function _getSource()
     {
-        
+        $manager = new Debug_Model_Crontab_Manager();
+        return new Core_Grid_Adapter_Array($manager->createGritArray());
+    }
+
+    /**
+     * get table
+     *
+     * @return void
+     */
+    protected function _getTable()
+    {
+    }
+
+    /**
+     * add all columns to grid
+     *
+     * @return void
+     */
+    public function _addAllTableColumns()
+    {
+        $this->grid->setColumn('minute', array(
+            'name' => 'Minute',
+            'type' => Core_Grid::TYPE_DATA,
+            'index' => 'minute'
+        ))->setColumn('hour', array(
+            'name' => 'Hour',
+            'type' => Core_Grid::TYPE_DATA,
+            'index' => 'hour'
+        ))->setColumn('dayOfMonth', array(
+            'name' => 'Day of month',
+            'type' => Core_Grid::TYPE_DATA,
+            'index' => 'dayOfMonth'
+        ))->setColumn('month', array(
+            'name' => 'Month',
+            'type' => Core_Grid::TYPE_DATA,
+            'index' => 'month'
+        ))->setColumn('dayOfWeek', array(
+            'name' => 'Day of week',
+            'type' => Core_Grid::TYPE_DATA,
+            'index' => 'dayOfWeek'
+        ))->setColumn('command', array(
+            'name' => 'Command',
+            'type' => Core_Grid::TYPE_DATA,
+            'index' => 'command'
+        ));
     }
 
     /**
@@ -64,30 +111,6 @@ class Debug_CrontabController extends Core_Controller_Action
     }
 
     /**
-     * _setDefaultBasePath()
-     *
-     * @return  void
-     */
-    protected function _setDefaultBasePath()
-    {
-        $this->_viewRenderer->setViewBasePathSpec(':moduleDir/views');
-        return $this;
-    }
-
-    /**
-     * _setDefaultScriptPath
-     *
-     * @return  void
-     */
-    protected function _setDefaultScriptPath()
-    {
-        $this->_viewRenderer->setViewScriptPathSpec(
-            ':controller/:action.:suffix'
-        );
-        return $this;
-    }
-
-    /**
      * createAction
      *
      * create page instance
@@ -97,25 +120,20 @@ class Debug_CrontabController extends Core_Controller_Action
     public function createAction()
     {
         $manager = new Debug_Model_Crontab_Manager();
-        $createForm = $this->_getCreateForm()
-                           ->setAction($this->view->url());
+        $form = $this->_getCreateForm()->setAction($this->view->url());
 
         if ($this->_request->isPost() &&
-            $createForm->isValid($this->_getAllParams())) {
-            $form = $createForm->getValues();
-            if ($manager->createCrontabLine($form)) {
+            $form->isValid($this->_getAllParams())) {
+
+            if ($manager->save($form->getValues())) {
                 $this->_flashMessenger->addMessage('Successfully!');
             } else {
                 $this->_flashMessenger->addMessage('Failed!');
             }
 
-            $this->_helper->getHelper('redirector')->direct('index');
-        } else {
-            $this->view->createForm = $createForm;
-            $this->_viewRenderer
-                 ->setViewBasePathSpec('dashboard/scripts')
-                 ->setViewScriptPathSpec('scaffold/:action.:suffix'); 
+            $this->_helper->redirector('index');
         }
+        $this->view->form = $form;
     }
 
     /**
@@ -127,40 +145,25 @@ class Debug_CrontabController extends Core_Controller_Action
      */
     public function editAction()
     {
+        if (!$id = $this->_getParam('id')) {
+            throw new Zend_Controller_Action_Exception('Bad Request');
+        }
         $manager = new Debug_Model_Crontab_Manager();
-        $editForm = $this->_getEditForm()
-                         ->setAction($this->view->url());
+        $form = $this->_getEditForm()->setAction($this->view->url());
 
         if ($this->_request->isPost() &&
-            $editForm->isValid($this->_getAllParams())) {
+            $form->isValid($this->_getAllParams())) {
             // valid
-            if ($manager->editCrontabLine(
-                $this->_getParam('id'),
-                $editForm->getValues()
-            )) {
+            if ($manager->save($form->getValues(), $id)) {
                 $this->_flashMessenger->addMessage('Successfully!');
             } else {
                 $this->_flashMessenger->addMessage('Failed!');
             }
-            $this->_helper->getHelper('redirector')->direct('index');
-        } else {
-            // check if there is data in form
-            if ($this->_getParam('id', null)) {
-                $editForm->setValues(
-                    $manager->createCrontabFormArray(
-                        $this->_getParam('id', null)
-                    )
-                );
-            }                 
-             $this->view->editForm = $editForm;
+            $this->_helper->redirector('index');
         }
-
-        $dashboard = Zend_Controller_Front::getInstance()->
-                                                getModuleDirectory('dashboard');
-
-        $this->_viewRenderer
-             ->setViewBasePathSpec($dashboard.'/views')
-             ->setViewScriptPathSpec('scaffold/:action.:suffix'); //must be here
+        // check if there is data in form
+        $form->setDefaults($manager->getLineById($id));
+        $this->view->form = $form;
     }
 
 
@@ -173,59 +176,11 @@ class Debug_CrontabController extends Core_Controller_Action
      */
     public function deleteAction()
     {
-        $start  = $this->_getParam('start');
-        $count  = $this->_getParam('count');
-        $sort   = $this->_getParam('sort');
-        $field  = $this->_getParam('field');
-        $filter = $this->_getParam('filter');
-        
+        if (!$id = $this->_getParam('id')) {
+            throw new Zend_Controller_Action_Exception('Bad Request');
+        }
         $manager = new Debug_Model_Crontab_Manager();
-        $manager->deleteCrontabLine($this->_getParam('id'));
-        $crontabs = $manager->createGritArray(
-            $start, $count, $sort, $field, $filter
-        );
-        $total = $crontabs['total'];
-        if ($total>0) {
-            $data = new Zend_Dojo_Data("id", $crontabs['arr']);
-            $data->setMetadata('numRows', $total);
-
-            $this->_helper->json($data);
-        } else {
-            $this->_helper->json(false);
-        }
-    }
-
-    /**
-     * getDojoGrid
-     *
-     * get list of session variables
-     *
-     * @return  json
-     */
-    public function storeAction()
-    {
-        $start  = $this->_getParam('start');
-        $count  = $this->_getParam('count');
-        $sort   = $this->_getParam('sort');
-        $field  = $this->_getParam('field');
-        $filter = $this->_getParam('filter');
-
-        $manager = new Debug_Model_Crontab_Manager();
-        $crontabs = $manager->createGritArray(
-            $start, $count, $sort, $field, $filter
-        );
-        if (empty($crontabs['arr'])) {
-            return $this->_forward('notfound', 'error', 'admin');
-        }
-        $total = $crontabs['total'];
-        if ($total>0) {
-            $data = new Zend_Dojo_Data("id", $crontabs['arr']);
-            $data->setMetadata('numRows', $total);
-
-            $this->_helper->json($data);
-        } else {
-            $this->_helper->json(false);
-        }
+        $this->_helper->json($manager->delete($id));
     }
 }
 

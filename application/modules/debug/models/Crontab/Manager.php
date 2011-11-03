@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  *
  * @category Application
  * @package Model
@@ -58,8 +58,6 @@ class Debug_Model_Crontab_Manager extends Core_Model_Manager
                                            'command'
                                        );
 
-    private $_defaultOrderCol = 'command';
-
     const CRONTAB_FILE        = '/tmp/crontab.txt';
 
     const CRONTAB_FILE_HEAD   = 'SHELL=/bin/bash
@@ -81,10 +79,6 @@ HOME=/
      */
     public function _changeFormData($data = array())
     {
-        if (!is_array($data)) {
-            return $data;
-        }
-
         if ($key = array_search($data['month'], $this->_selectOptionsMonth)) {
             $data['month'] = $key;
         }
@@ -113,7 +107,7 @@ HOME=/
         $command = $this->_cronCommands['read'];
         exec($command, $output, $retval);
         if ($retval != 0) {
-            return null;
+            return array();
         }
         return $output;
     }
@@ -124,307 +118,132 @@ HOME=/
      * save the crontab file with given strings
      *
      * @param string $id
-     * @return null || true
+     * @return boolen
      *
      */
     private function _saveCrontabFile($crontabStr = '')
     {
-
-        if ($crontabStr == '') {
-            return null;
+        if (empty($crontabStr)) {
+            return false;
         }
 
         $file = self::CRONTAB_FILE;
         if (!$fp = @fopen($file, 'w')) {
-            return null;
+            return false;
         }
+
 
         $crontabStr = self::CRONTAB_FILE_HEAD . $crontabStr;
 
         if (fwrite($fp, $crontabStr) === FALSE) {
-            return null;
+            return false;
         }
 
         $command = $this->_cronCommands['save'] . $file;
         exec($command, $output, $retval);
+
         if ($retval != 0) {
-            return null;
+            return false;
         }
 
         return true;
     }
 
     /**
-     * delete sesion item
+     * Delete
      *
-     * @param string $id
-     * @return null || true
-     *      
+     * @param integer $id
+     * @return boolen
      */
-    public function deleteCrontabLine($id = null)
+    public function delete($id)
     {
-        if (is_null($id)) {
-            return null;
-        }
-
-        $crontabStr = '';
-        $lines = $this->createGritArray();
-        if (!empty($lines['arr'])) {
-            foreach ($lines['arr'] as $line) {
-                if ($id != $line['id']) {
-                     $crontabStr .= $line['minute']     . ' ' .
-                                    $line['hour']       . ' ' .
-                                    $line['dayOfMonth'] . ' ' .
-                                    $line['month']      . ' ' .
-                                    $line['dayOfWeek']  . ' ' .
-                                    $line['command']    . '
-';
-                }
+        $crontabs = array();
+        foreach ($this->createGritArray() as $line) {
+            if ($id != $line['id']) {
+                unset($line['id']);
+                $crontabs[] = join(' ', $line);
             }
         }
 
-        return $this->_saveCrontabFile($crontabStr);
+        return $this->_saveCrontabFile(join(PHP_EOL, $crontabs));
     }
     /**
      * createGritArray
      *
      * create array for Grit from Crantab file
-     * 
-     * @return null || array of Crontab data for Grid
+     *
+     * @return array of Crontab data for Grid
      *
      */
-    public function createGritArray($start = 0,
-                                    $count = 15,
-                                    $sort = false,
-                                    $field = false,
-                                    $filter = false)
+    public function createGritArray()
     {
-        $flagFilter = false;
-        $desc        = true;
         $crontabs    = array();
-        $tempArr     = array();
-        $orderCol    = '';
 
-        $cronLines = $this->_openCrontabFile();
-        if (!is_array($cronLines)) {
-            return null;
-        }
-
-        // sort data
-        //   field  - ASC
-        //   -field - DESC
-        if ($sort
-            && ltrim($sort, '-')
-            && in_array(ltrim($sort, '-'), $this->_cronCols)
-            ) {
-            if (strpos($sort, '-') === 0) {
-                $orderCol = ltrim($sort, '-');
-            } else {
-                $orderCol = $sort;
-                $desc = false;
-            }
-        }
-
-        // Use  filter
-        if ($field
-            && in_array($field, $this->_cronCols)
-            && $filter
-            && $filter != '*') {
-            $flagFilter = true;
-            $filter = str_replace('*', '(.*)', '/'. $filter .'/');
-        }
-
-        $i = 1;
-        foreach ($cronLines as $line) {
+        foreach ($this->_openCrontabFile() as $i => $line) {
             if (substr($line, 0, 1) != '#') {
-                $lineParts = explode(' ', $line);
-                if (!empty($lineParts)) {
-                    if (count($lineParts) == self::CRONTAB_COLUMN_NUMBER) {
-                        $lineArr = array(
-                                           'id'         => $i,
-                                           'minute'     => $lineParts[0],
-                                           'hour'       => $lineParts[1],
-                                           'dayOfMonth' => $lineParts[2],
-                                           'month'      => $lineParts[3],
-                                           'dayOfWeek'  => $lineParts[4],
-                                           'command'    => $lineParts[5],
-                                     );
+                $lineParts = explode(' ', $line, self::CRONTAB_COLUMN_NUMBER);
+                if (count($lineParts) == self::CRONTAB_COLUMN_NUMBER) {
+                    $lineArr = array(
+                        'id'         => ++$i,
+                        'minute'     => $lineParts[0],
+                        'hour'       => $lineParts[1],
+                        'dayOfMonth' => $lineParts[2],
+                        'month'      => $lineParts[3],
+                        'dayOfWeek'  => $lineParts[4],
+                        'command'    => $lineParts[5],
+                    );
 
-                        if ($flagFilter) {
-                            if (preg_match($filter, $lineArr[$field])) {
-                                if ($orderCol != '') {
-                                    $tempArr[$lineArr[$orderCol] .
-                                             $lineArr['id']] = $lineArr;
-                                } else {
-                                    $tempArr[$lineArr[$this->_defaultOrderCol] .
-                                             $lineArr['id']] = $lineArr;
-                                }
-                            }
-                        } else {
-                            if ($orderCol != '') {
-                                $tempArr[$lineArr[$orderCol] . 
-                                         $lineArr['id']] = $lineArr;
-                            } else {
-                                $tempArr[$lineArr[$this->_defaultOrderCol] .
-                                         $lineArr['id']] = $lineArr;
-                            }
-                        }
-
-                        unset($lineArr);
-                        $i++;
-                    }
+                    $crontabs[] = $lineArr;
                 }
             }
         }
-
-        if ($desc) {
-            ksort($tempArr);
-        } else {
-            krsort($tempArr);
-        }
-
-        $total = count($tempArr);
-        $i = 0;
-        foreach ($tempArr as $key => $line) {
-            if ($i >= $start && $i < $start+$count) {
-                $crontabs[$key] = $line;
-            }
-            $i ++;
-        }
-        unset($tempArr);
-
-        return array('arr' => $crontabs, 'total' => $total);
+        return $crontabs;
     }
 
     /**
-     * createCrontabFormArray
+     * Get line by id
      *
-     * create array from selected Crontab Line for Edit Form
-     *
-     * @param string $id
+     * @param integer $id
      * @return array
      */
-    public function createCrontabFormArray($id = null)
+    public function getLineById($id)
     {
-        if (is_null($id)) {
-                return null;
-        }
-
-        $crontabLineArr = array();
-        $lines = $this->createGritArray();
-        if (!empty($lines['arr'])) {
-            foreach ($lines['arr'] as $line) {
-                if ($id == $line['id']) {
-                    foreach ($this->_cronCols as $ind) {
-                        $crontabLineArr[$ind] = $line[$ind];
-                    }
-                }
+        foreach ($this->createGritArray() as $line) {
+            if ($id == $line['id']) {
+                return $line;
             }
         }
-        return $crontabLineArr;
+        return array();
     }
 
     /**
-     * createGritHead
+     * Save
      *
-     * create Head for Grit from Crantab file Head
-     *
-     * @return null || array of Crontab data for Grid Head
-     *
-     */
-    public function createGritHead()
-    {
-        $heads = array();
-        $lines = $this->_openCrontabFile();
-        if (!is_array($lines)) {
-            return null;
-        }
-
-        foreach ($lines as $line) {
-            if (!is_numeric(substr($line, 0, 1))) {
-                        $heads[] = $line;
-            }
-        }
-        return $heads;
-    }
-
-     /**
-     * create new line in Crontab File
-     *
-     * @param array $data
-     * @return null || true
+     * @param array   $data
+     * @param integer $id
+     * @return bool
      *
      */
-    public function createCrontabLine($data = array())
+    public function save(array $data, $id = null)
     {
-        if (!is_array($data)) {
-            return null;
-        }
-
-        $crontabStr = '';
         $data = $this->_changeFormData($data);
-        $lines = $this->createGritArray();
-        if (!empty($lines['arr'])) {
-            foreach ($lines['arr'] as $line) {
-                 $crontabStr .= $line['minute']     . ' ' .
-                                $line['hour']       . ' ' .
-                                $line['dayOfMonth'] . ' ' .
-                                $line['month']      . ' ' .
-                                $line['dayOfWeek']  . ' ' .
-                                $line['command']    . '
-';
+
+        $crontabs = array();
+
+        foreach ($this->createGritArray() as $line) {
+            //edit
+            if ($id == $line['id']) {
+                $line = $data;
             }
+
+            unset($line['id']);
+            $crontabs[] = join(' ', $line);
         }
-        $crontabStr .=  $data['minute']     . ' ' .
-                        $data['hour']       . ' ' .
-                        $data['dayOfMonth'] . ' ' .
-                        $data['month']      . ' ' .
-                        $data['dayOfWeek']  . ' ' .
-                        $data['command']    . '
-';
-        return $this->_saveCrontabFile($crontabStr);
+        //create
+        if (!$id) {
+            $crontabs[] = join(' ', $data);
+        }
+
+        return $this->_saveCrontabFile(join(PHP_EOL, $crontabs));
     }
-
-    /**
-     * editCrontabLine
-     *
-     * edit Crontab line by id
-     *
-     * @param string $id, array $data
-     * @return null || true
-     *
-     */
-    public function editCrontabLine($id = null, $data = array())
-    {
-        if (empty($id) || empty($data)) {
-                return null;
-        }
-
-        $data = $this->_changeFormData($data);
-        $crontabStr = '';
-        $lines = $this->createGritArray();
-        if (!empty($lines['arr'])) {
-            foreach ($lines['arr'] as $line) {
-                if ($id == $line['id']) {
-                    $crontabStr .=  $data['minute']     . ' ' .
-                                    $data['hour']       . ' ' .
-                                    $data['dayOfMonth'] . ' ' .
-                                    $data['month']      . ' ' .
-                                    $data['dayOfWeek']  . ' ' .
-                                    $data['command']    . '
-';
-                } else {
-                     $crontabStr .= $line['minute']     . ' ' .
-                                    $line['hour']       . ' ' .
-                                    $line['dayOfMonth'] . ' ' .
-                                    $line['month']      . ' ' .
-                                    $line['dayOfWeek']  . ' ' .
-                                    $line['command']    . '
-';
-                }
-            }
-        }
-        
-        return $this->_saveCrontabFile($crontabStr);
-    }   
 }

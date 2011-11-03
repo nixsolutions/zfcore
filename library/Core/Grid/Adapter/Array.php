@@ -28,7 +28,7 @@ class Core_Grid_Adapter_Array implements Core_Grid_Adapter_AdapterInterface
      */
     public function __construct($data)
     {
-        $this->_data = $data;
+        $this->_data = (array) $data;
     }
 
     /**
