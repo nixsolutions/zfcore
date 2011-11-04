@@ -12,11 +12,9 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 
-
 // Define path to public directory
 defined('PUBLIC_PATH')
-    || define('PUBLIC_PATH', realpath(dirname(__FILE__) . '/../public'));
-
+    || define('PUBLIC_PATH', dirname(__FILE__));
 
 // Ensure library/ is on include_path
 set_include_path(

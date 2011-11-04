@@ -29,11 +29,11 @@ abstract class Core_Grid_Abstract
     protected $_data = null;
 
     /**
-     * select
+     * adapter
      *
-     * @var Zend_Db_Select
+     * @var Core_Grid_Adapter_AdapterInterface
      */
-    protected $_select = null;
+    protected $_adapter = null;
 
     /**
      * orders
@@ -164,14 +164,14 @@ abstract class Core_Grid_Abstract
     }
 
     /**
-     * set select
+     * set adapter
      *
-     * @param Zend_Db_Select $select
+     * @param Core_Grid_Adapter_AdapterInterface $adapter
      * @return Core_Grid
      */
-    public function setSelect(Zend_Db_Select $select)
+    public function setAdapter(Core_Grid_Adapter_AdapterInterface $adapter)
     {
-        $this->_select = $select;
+        $this->_adapter = $adapter;
         return $this;
     }
 

@@ -199,7 +199,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
      */
     public function postDispatch()
     {
-        parent::preDispatch();
+        parent::postDispatch();
         $this->_initAfter();
     }
 

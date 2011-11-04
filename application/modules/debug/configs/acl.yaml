@@ -4,11 +4,5 @@ mvc:
       allow: admin
     file:
       allow: admin
-    logs:
-      allow: admin    
     crontab:
-      allow: admin
-    index:
-      allow: admin
-    error:
       allow: admin
