@@ -67,21 +67,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         return new Menu_Model_Menu_Table();
     }
 
-    /**
-     * indexAction
-     *
-     * Index action in Index Controller
-     *
-     * @access public
-     */
-    public function indexAction()
-    {
-        $this->view->headScript()->appendFile(
-            $this->view->baseUrl('./modules/menu/scripts/management/index.js'
-        ));
-        parent::indexAction();
-    }
-
     public function createAction()
     {
         $menuManager = new Menu_Model_Menu_Manager();
