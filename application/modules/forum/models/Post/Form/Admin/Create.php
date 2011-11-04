@@ -52,7 +52,7 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Form
     /**
      * Category Combobox
      *
-     * @return Zend_Dojo_Form_Element_ComboBox
+     * @return Zend_Form_Element_Select
      */
     protected function _category()
     {
@@ -76,7 +76,7 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Form
     /**
      * Status combobox
      *
-     * @return Zend_Dojo_Form_Element_ComboBox
+     * @return Zend_Form_Element_Select
      */
     protected function _status()
     {
