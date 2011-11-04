@@ -91,7 +91,7 @@ class Debug_CrontabController extends Core_Controller_Action_Crud
      *
      * return create form for scaffolding
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getCreateForm()
     {
@@ -103,7 +103,7 @@ class Debug_CrontabController extends Core_Controller_Action_Crud
      *
      * return edit form for scaffolding
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getEditForm()
     {

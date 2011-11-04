@@ -18,8 +18,8 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Form
     public function init()
     {
         $this->setName('feedbackForm')
-             ->setMethod(Zend_Dojo_Form::METHOD_POST)
-             ->setAttrib('enctype', Zend_Dojo_Form::ENCTYPE_MULTIPART);
+             ->setMethod(Zend_Form::METHOD_POST)
+             ->setEnctype(Zend_Form::ENCTYPE_MULTIPART);
 
         $this->addElements(
             array(
@@ -99,7 +99,7 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Form
     /**
      * Create feedback template element
      *
-     * @return object Zend_Dojo_Form_Element_ComboBox
+     * @return object Zend_Form_Element_Select
      */
     protected function _template()
     {
@@ -163,7 +163,6 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Form
         $element = new Zend_Form_Element_File('inputFile', array('ignore' => true));
         $element->setLabel('Attachment Image: ')
                 ->setRequired(false)
-                ->setAttribs(array('dojoType' => 'dojox.form.FileInput'))
                 // Deprecated:
                 //->setDestination(APPLICATION_PATH . '/../data/uploads')
                 // New method:
@@ -269,8 +268,7 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Form
         $element = new Zend_Form_Element_Hidden($name);
         $element->setRequired(false)
                 ->setValue($value)
-                ->addFilter('StripTags')
-                ->setDecorators(array(new Zend_Dojo_Form_Decorator_DijitElement()));
+                ->addFilter('StripTags');
 
         return $element;
     }

@@ -38,7 +38,7 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
         }
 
         // Настроить форму чтения сообщения
-        $form = new Feedback_Model_Feedback_Form_Reply();
+        $form = $this->_getCreateForm();
         $form->setAction($this->view->url(array('action'=>'reply')));
 
         // get template for reply
@@ -82,8 +82,7 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
             throw new Zend_Controller_Action_Exception('Page not found');
         }
 
-        $form = new Feedback_Model_Feedback_Form_Reply();
-
+        $form = $this->_getCreateForm();
         $form->setAction($this->view->url());
 
         // Проверить, если данные пришли из indexAction
@@ -179,11 +178,11 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
      *
      * return create form for scaffolding
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     public function _getCreateForm()
     {
-
+        return new Feedback_Model_Feedback_Form_Reply();
     }
 
     /**
@@ -191,11 +190,10 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
      *
      * return edit form for scaffolding
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     public function _getEditForm()
     {
-
     }
 
     /**

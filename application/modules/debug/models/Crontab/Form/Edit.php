@@ -57,7 +57,7 @@ class Debug_Model_Crontab_Form_Edit extends Debug_Model_Crontab_Form_Create
      * Modify parent element
      *
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Submit
      */
     protected function _submit()
     {
