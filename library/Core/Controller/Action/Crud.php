@@ -166,13 +166,10 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     {
         $res = false;
         if($ids = $this->_getParam('ids')){
-            $table = $this->_getTable();
-            foreach($ids as $id) {
-                if($model = $table->getById($id)) {
-                    $model->delete();
-                }
-            }
-            $res = true;
+            $this->_getTable()->delete(
+                $this->_getTable()->getAdapter()->quoteInto('id IN (?)', array_values($ids))
+            );
+            $res = true ;
         }
         $this->_helper->json($res);
     }

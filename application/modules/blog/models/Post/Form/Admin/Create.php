@@ -8,7 +8,7 @@
  *
  * @version  $Id: Login.php 1561 2009-10-16 13:31:31Z dark $
  */
-class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
+class Blog_Model_Post_Form_Admin_Create extends Zend_Form
 {
     /**
      * Form initialization
@@ -20,25 +20,38 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
         $this->setName('postForm');
         $this->setMethod('post');
 
-        $this->addElement(
-            'ValidationTextBox', 'title',
-            array(
-                'label'      => 'Title',
-                'required'   => true,
-                'attribs'    => array('style'=>'width:60%'),
-                'regExp'     => '^[\w\s\'",.\-_]+$',
-                'validators' => array(
-                    array(
-                        'regex',
-                        false,
-                        array('/^[\w\s\'",.\-_]+$/i', 'messages' => array (
-                            Zend_Validate_Regex::INVALID => 'Invalid title',
-                            Zend_Validate_Regex::NOT_MATCH  => 'Invalid title'
-                        ))
-                    ),
-                )
-            )
-        );
+
+        $title = new Zend_Form_Element_Text('title');
+        $title->setLabel('Title')
+            ->setRequired(true)
+            ->setAttribs(array('style'=>'width:60%'))
+            ->addValidator('regex',
+                false,
+                array('/^[\w\s\'",.\-_]+$/i', 'messages' => array (
+                    Zend_Validate_Regex::INVALID => 'Invalid title',
+                    Zend_Validate_Regex::NOT_MATCH  => 'Invalid title'
+                )));
+        $this->addElement($title);
+
+//        $this->addElement(
+//            'ValidationTextBox', 'title',
+//            array(
+//                'label'      => 'Title',
+//                'required'   => true,
+//                'attribs'    => array('style'=>'width:60%'),
+//                'regExp'     => '^[\w\s\'",.\-_]+$',
+//                'validators' => array(
+//                    array(
+//                        'regex',
+//                        false,
+//                        array('/^[\w\s\'",.\-_]+$/i', 'messages' => array (
+//                            Zend_Validate_Regex::INVALID => 'Invalid title',
+//                            Zend_Validate_Regex::NOT_MATCH  => 'Invalid title'
+//                        ))
+//                    ),
+//                )
+//            )
+//        );
 
         $this->addElement(
             'Editor', 'teaser',

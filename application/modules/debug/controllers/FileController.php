@@ -25,6 +25,9 @@ class Debug_FileController extends Core_Controller_Action
         /* is Dashboard Controller */
         $this->_isDashboard();
 
+        /* init dojo */
+        $this->_initDojo();
+
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
         $this->_viewRenderer   = $this->_helper->getHelper('viewRenderer');
 

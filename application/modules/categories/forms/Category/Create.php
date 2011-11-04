@@ -55,7 +55,6 @@ class Categories_Form_Category_Create extends Zend_Form
     {
         $subject = new Zend_Form_Element_Text('alias');
         $subject->setLabel('Alias')
-//                ->setTrim(true)
                 ->setAttribs(array('style'=>'width:60%'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')

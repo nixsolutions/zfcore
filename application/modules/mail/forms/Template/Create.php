@@ -37,7 +37,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create mail alias element
      *
-     * @return object Zend_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _alias()
     {
@@ -50,7 +50,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create mail subject element
      *
-     * @return object Zend_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _subject()
     {
@@ -66,7 +66,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create mail body element
      *
-     * @return object Zend_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _body()
     {
@@ -86,7 +86,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create mail body element (text)
      *
-     * @return object Zend_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _altBody()
     {
@@ -102,7 +102,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create mail description element
      *
-     * @return object Zend_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _description()
     {
@@ -118,7 +118,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create fromName mail element
      *
-     * @return object Zend_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _fromName()
     {
@@ -135,7 +135,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create fromEmail email element
      *
-     * @return object Zend_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _fromEmail()
     {
@@ -154,7 +154,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create toName mail element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Dojo_Form_Element_Text
      */
     protected function _toName()
     {
@@ -171,7 +171,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create toEmail email element
      *
-     * @return object Zend_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _toEmail()
     {
@@ -190,7 +190,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create submit element
      *
-     * @return object Zend_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _submit()
     {

@@ -30,10 +30,13 @@ class Debug_LogsController extends Core_Controller_Action
         /* is Dashboard Controller */
         $this->_isDashboard();
 
+        // load dojo
+        $this->_initDojo();
+
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
         $this->_viewRenderer   = $this->_helper->getHelper('viewRenderer');
 
-//        $this->_helper->AjaxContext()->addActionContext('add', 'json')->initContext('json');
+        $this->_helper->AjaxContext()->addActionContext('add', 'json')->initContext('json');
 
     }
 

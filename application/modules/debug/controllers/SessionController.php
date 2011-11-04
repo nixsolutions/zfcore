@@ -25,9 +25,11 @@ class Debug_SessionController extends Core_Controller_Action
         /* is Dashboard Controller */
         $this->_isDashboard();
 
+        /** load Dojo */
+        $this->_initDojo();
+
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
         $this->_viewRenderer   = $this->_helper->getHelper('viewRenderer');
-
     }
 
      /**
@@ -38,7 +40,6 @@ class Debug_SessionController extends Core_Controller_Action
     {
 
     }
-
 
     /**
      * _getCreateForm

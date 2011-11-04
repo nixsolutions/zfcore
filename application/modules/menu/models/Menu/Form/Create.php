@@ -1,10 +1,5 @@
 <?php
 /**
- * @see Zend_Dojo_Form
- */
-require_once 'Zend/Dojo/Form.php';
-
-/**
  * Menu_Model_Menu_Form_Create
  *
  * @category    Application
@@ -15,7 +10,7 @@ require_once 'Zend/Dojo/Form.php';
  * @author      Alexander Khaylo <alex.khaylo@gmail.com>
  * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
  */
-class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
+class Menu_Model_Menu_Form_Create extends Zend_Form
 {
 
     protected $_menuManager = null;
@@ -27,14 +22,14 @@ class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
         $this->setName('menuItemCreateForm');
         $this->setMethod('post');
 
-        $label = new Zend_Dojo_Form_Element_TextBox('label');
+        $label = new Zend_Form_Element_Text('label');
         $label->setLabel('Label')
               ->setRequired(true)
               ->addFilter('StripTags')
               ->addFilter('StringTrim')
               ->setAttribs(array('style'=>'width:30%;margin-bottom:10px;'));
 
-        $linkType = new Zend_Dojo_Form_Element_FilteringSelect('linkType');
+        $linkType = new Zend_Form_Element_Select('linkType');
         $linkType->setLabel('Type')
                  ->setRequired(true)
                  ->addFilter('StripTags')
@@ -47,7 +42,7 @@ class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
                  );
         $linkType->addMultiOptions(array(Menu_Model_Menu::TYPE_URI => 'Link', Menu_Model_Menu::TYPE_MVC => 'Route'));
 
-        $parent = new Zend_Dojo_Form_Element_FilteringSelect('parent');
+        $parent = new Zend_Form_Element_Select('parent');
         $parent->setLabel('Parent Menu Item')
                ->setRequired(true)
                ->addFilter('StripTags')
@@ -56,26 +51,26 @@ class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
         $parent->addMultiOptions($this->_menuManager->getMenuItemsForEditForm());
 
 
-        $title = new Zend_Dojo_Form_Element_TextBox('title');
+        $title = new Zend_Form_Element_Text('title');
         $title->setLabel('Title')
               ->addFilter('StripTags')
               ->addFilter('StringTrim')
               ->setAttribs(array('style'=>'width:30%;margin-bottom:5px;'));
 
-        $class = new Zend_Dojo_Form_Element_TextBox('class');
+        $class = new Zend_Form_Element_Text('class');
         $class->setLabel('Class')
               ->addFilter('StripTags')
               ->addFilter('StringTrim')
               ->setAttribs(array('style'=>'width:30%;margin-bottom:5px;'));
 
-        $visible = new Zend_Dojo_Form_Element_FilteringSelect('visible');
+        $visible = new Zend_Form_Element_Select('visible');
         $visible->setLabel('Visibility')
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->setAttribs(array('style'=>'margin-bottom:5px;'));
         $visible->addMultiOptions(array(1 => 'Visible', 0 => 'Hidden'));
 
-        $target = new Zend_Dojo_Form_Element_FilteringSelect('target');
+        $target = new Zend_Form_Element_Select('target');
         $target->setLabel('Target')
                ->setRequired(true)
                ->addFilter('StripTags')
@@ -91,7 +86,7 @@ class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
             )
         );
 
-        $route = new Zend_Dojo_Form_Element_ComboBox('route');
+        $route = new Zend_Form_Element_Select('route');
         $route->setLabel('Route')
               ->addFilter('StripTags')
               ->addFilter('StringTrim')
@@ -103,7 +98,7 @@ class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
               );
         $route->addMultiOptions($this->_menuManager->getNamesOfRoutes());
 
-        $uri = new Zend_Dojo_Form_Element_TextBox('uri');
+        $uri = new Zend_Form_Element_Text('uri');
         $uri->setLabel('URI')
             ->addFilter('StripTags')
             ->addFilter('StringTrim')
@@ -149,7 +144,7 @@ class Menu_Model_Menu_Form_Create extends Zend_Dojo_Form
 
     public function _submit()
     {
-            $submit = new Zend_Dojo_Form_Element_SubmitButton('submit');
+            $submit = new Zend_Form_Element_Submit('submit');
             $submit->setLabel('Create');
             return $submit;
     }

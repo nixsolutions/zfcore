@@ -8,7 +8,7 @@
  *
  * @version  $Id: Login.php 1561 2009-10-16 13:31:31Z dark $
  */
-class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
+class Forum_Model_Post_Form_Admin_Create extends Zend_Form
 {
     /**
      * Form initialization
@@ -20,61 +20,33 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
         $this->setName('postForm');
         $this->setMethod('post');
 
-        $this->addElement(
-            'ValidationTextBox', 'title',
-            array(
-                'label'      => 'Title',
-                'required'   => true,
-                'attribs'    => array('style'=>'width:60%'),
-                'regExp'     => '^[\w\s\'",.\-_]+$',
-                'validators' => array(
-                    array(
-                        'regex',
-                        false,
-                        array('/^[\w\s\'",.\-_]+$/i', 'messages' => array (
-                            Zend_Validate_Regex::INVALID => 'Invalid title',
-                            Zend_Validate_Regex::NOT_MATCH  => 'Invalid title'
-                        ))
-                    ),
-                )
-            )
-        );
+        $title = new Zend_Form_Element_Text('title');
+        $title->setLabel('Title')
+              ->setRequired(true)
+              ->setAttribs(array('style'=>'width:60%'))
+              ->addValidator('regex', false,
+                  array('/^[\w\s\'",.\-_]+$/i', 'messages' => array (
+                      Zend_Validate_Regex::INVALID => 'Invalid title',
+                      Zend_Validate_Regex::NOT_MATCH  => 'Invalid title'
+                  ))
+              );
+        $this->addElement($title);
 
-        $this->addElement(
-            'Editor', 'body',
-            array(
-                'label'      => 'Post',
-                'required'   => true,
-                'attribs'    => array('style' => 'width:100%;height:340px'),
-                'plugins'    => array('undo', 'redo', 'cut', 'copy', 'paste', '|',
-                                      'bold', 'italic', 'underline', 'strikethrough', '|',
-                                      'subscript', 'superscript', 'removeFormat', '|',
-                                      //'fontName', 'fontSize', 'formatBlock', 'foreColor', 'hiliteColor','|',
-                                      'indent', 'outdent', 'justifyCenter', 'justifyFull',
-                                      'justifyLeft', 'justifyRight', 'delete', '|',
-                                      'insertOrderedList', 'insertUnorderedList', 'insertHorizontalRule', '|',
-                                      //'LinkDialog', 'UploadImage', '|',
-                                      //'ImageManager',
-                                      'FullScreen', '|',
-                                      'ViewSource')
-            )
-        );
+        $body = new Core_Form_Element_Redactor('body');
+        $body->setLabel('Post')
+             ->setRequired(true)
+             ->setAttribs(array('style' => 'width:100%;height:340px'))
+        ;
 
+        $this->addElement($body);
         $this->addElement($this->_category());
-
         $this->addElement($this->_status());
 
-        $this->addElement(
-            'SubmitButton',
-            'submit',
-            array(
-                'label' => 'Save'
-            )
-        );
+        $submit = new Zend_Form_Element_Submit('submit');
+        $submit->setLabel('Save');
+        $this->addElement($submit);
 
         $this->addElement(new Zend_Form_Element_Hidden('pid'));
-
-        Zend_Dojo::enableForm($this);
     }
 
     /**
@@ -86,14 +58,17 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
     {
         $categories = new Forum_Model_Category_Manager();
 
-        $element = new Zend_Dojo_Form_Element_FilteringSelect('categoryId');
+        $options = array();
+        foreach ($categories->getAll() as $category) {
+             $options[$category->id] = $category->title;
+        }
+
+        $element = new Zend_Form_Element_Select('categoryId');
         $element->setLabel('Category')
                 ->setRequired(true)
+                ->addMultioptions($options)
                 ->setAttribs(array('style'=>'width:60%'));
 
-        foreach ($categories->getAll() as $category) {
-             $element->addMultiOption($category->id, $category->title);
-        }
 
         return $element;
     }
@@ -105,11 +80,11 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
      */
     protected function _status()
     {
-        $status = new Zend_Dojo_Form_Element_ComboBox('status');
+        $status = new Zend_Form_Element_Select('status');
         $status->setLabel('Status')
                ->setRequired(true)
                ->setAttribs(array('style'=>'width:60%'))
-               ->setMultiOptions(
+               ->addMultioptions(
                    array(
                        Forum_Model_Post::STATUS_ACTIVE  => Forum_Model_Post::STATUS_ACTIVE,
                        Forum_Model_Post::STATUS_CLOSED  => Forum_Model_Post::STATUS_CLOSED,

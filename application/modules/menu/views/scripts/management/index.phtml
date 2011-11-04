@@ -1,119 +1,119 @@
-<style>
-.move-it{
-    float:right;
-}
-</style>
+<!--<style>-->
+<!--.move-it{-->
+<!--    float:right;-->
+<!--}-->
+<!--</style>-->
 <?php
-$this->dojo()->addStyleSheet($this->dojo()->getCdnBase() . $this->dojo()->getCdnVersion() . '/dojox/grid/resources/tundraGrid.css')
-             ->requireModule('core.grid.Scaffold')
-             ->onLoadCaptureStart();
-?>
-function(){
-    var cells = [
-    {
-        name: "<?php $this->_e('Id')?>",
-        field: "id",
-        width: '30px',
-        canSort: false
-    },
-    {
-        name: "<?php $this->_e('Label')?>",
-        field: "label",
-        width: '200px',
-        canSort: false
-    },
-    {
-        name: "<?php $this->_e('Parent Id')?>",
-        field: "parentId",
-        width: '50px',
-        canSort: true
-    },
-    {
-        name: "<?php $this->_e('Order')?>",
-        field: "position",
-        width: '50px',
-        canSort: true
-    },
-
-    {
-        name: "<?php $this->_e('type')?>",
-        field: "type",
-        width: '50px',
-        canSort: false
-    },
-    {
-        name: "<?php $this->_e('Route')?>",
-        field: "route",
-        width: 'auto',
-        canSort: false
-    },
-    {
-        name: "<?php $this->_e('URI')?>",
-        field: "uri",
-        width: '200px',
-        canSort: false
-    }
-    ];
-
-    var datagrid = new core.grid.Scaffold(cells, 'gridContainer', '/menu/management', true, true, false, false, 50);
-
-    dojo.connect(dijit.byId("grid-up"), "onClick", function(){
-        var _self = datagrid;
-        var items = _self.grid.selection.getSelected();
-        if (items.length == 1) {
-            dojo.forEach(items, function(item){
-                dojo.xhrGet( {
-                    url:_self.url+"/move/to/up/id/"+item.i.id,
-                    load: function(result) {
-                        if (result == 'true') {
-                            _self.grid.render();
-                        }
-                    }
-                });
-            });
-        }
-    });
-
-    dojo.connect(dijit.byId("grid-down"), "onClick", function(){
-        var _self = datagrid;
-        var items = _self.grid.selection.getSelected();
-        if (items.length == 1) {
-            dojo.forEach(items, function(item){
-                dojo.xhrGet( {
-                    url:_self.url+"/move/to/down/id/"+item.i.id,
-                    load: function(result) {
-                        if (result == 'true') {
-                            _self.grid.render();
-                        }
-                    }
-                });
-            });
-        }
-    });
-}
-<?php $this->dojo()->onLoadCaptureEnd(); ?>
-<div class="gridContainer" id="gridContainer" style="height:300px;"></div>
-
+//$this->dojo()->addStyleSheet($this->dojo()->getCdnBase() . $this->dojo()->getCdnVersion() . '/dojox/grid/resources/tundraGrid.css')
+//             ->requireModule('core.grid.Scaffold')
+//             ->onLoadCaptureStart();
+//?>
+<!--function(){-->
+<!--    var cells = [-->
+<!--    {-->
+<!--        name: "--><?php //$this->_e('Id')?><!--",-->
+<!--        field: "id",-->
+<!--        width: '30px',-->
+<!--        canSort: false-->
+<!--    },-->
+<!--    {-->
+<!--        name: "--><?php //$this->_e('Label')?><!--",-->
+<!--        field: "label",-->
+<!--        width: '200px',-->
+<!--        canSort: false-->
+<!--    },-->
+<!--    {-->
+<!--        name: "--><?php //$this->_e('Parent Id')?><!--",-->
+<!--        field: "parentId",-->
+<!--        width: '50px',-->
+<!--        canSort: true-->
+<!--    },-->
+<!--    {-->
+<!--        name: "--><?php //$this->_e('Order')?><!--",-->
+<!--        field: "position",-->
+<!--        width: '50px',-->
+<!--        canSort: true-->
+<!--    },-->
+<!---->
+<!--    {-->
+<!--        name: "--><?php //$this->_e('type')?><!--",-->
+<!--        field: "type",-->
+<!--        width: '50px',-->
+<!--        canSort: false-->
+<!--    },-->
+<!--    {-->
+<!--        name: "--><?php //$this->_e('Route')?><!--",-->
+<!--        field: "route",-->
+<!--        width: 'auto',-->
+<!--        canSort: false-->
+<!--    },-->
+<!--    {-->
+<!--        name: "--><?php //$this->_e('URI')?><!--",-->
+<!--        field: "uri",-->
+<!--        width: '200px',-->
+<!--        canSort: false-->
+<!--    }-->
+<!--    ];-->
+<!---->
+<!--    var datagrid = new core.grid.Scaffold(cells, 'gridContainer', '/menu/management', true, true, false, false, 50);-->
+<!---->
+<!--    dojo.connect(dijit.byId("grid-up"), "onClick", function(){-->
+<!--        var _self = datagrid;-->
+<!--        var items = _self.grid.selection.getSelected();-->
+<!--        if (items.length == 1) {-->
+<!--            dojo.forEach(items, function(item){-->
+<!--                dojo.xhrGet( {-->
+<!--                    url:_self.url+"/move/to/up/id/"+item.i.id,-->
+<!--                    load: function(result) {-->
+<!--                        if (result == 'true') {-->
+<!--                            _self.grid.render();-->
+<!--                        }-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+<!---->
+<!--    dojo.connect(dijit.byId("grid-down"), "onClick", function(){-->
+<!--        var _self = datagrid;-->
+<!--        var items = _self.grid.selection.getSelected();-->
+<!--        if (items.length == 1) {-->
+<!--            dojo.forEach(items, function(item){-->
+<!--                dojo.xhrGet( {-->
+<!--                    url:_self.url+"/move/to/down/id/"+item.i.id,-->
+<!--                    load: function(result) {-->
+<!--                        if (result == 'true') {-->
+<!--                            _self.grid.render();-->
+<!--                        }-->
+<!--                    }-->
+<!--                });-->
+<!--            });-->
+<!--        }-->
+<!--    });-->
+<!--}-->
+<?php //$this->dojo()->onLoadCaptureEnd(); ?>
+<!--<div class="gridContainer" id="gridContainer" style="height:300px;"></div>-->
+<!---->
 <?php
-    echo $this->button('grid-new',
-                       $this->__('Create New'),
-                       array('jsid'      => 'grid-new',
-                             'baseClass' => 'gridButton'));
-    echo $this->button('grid-del',
-                       $this->__('Delete Selected'),
-                       array('jsid'      => 'grid-del',
-                             'baseClass' => 'gridButton'));
-?>
-
-<div class="move-it">
+//    echo $this->button('grid-new',
+//                       $this->__('Create New'),
+//                       array('jsid'      => 'grid-new',
+//                             'baseClass' => 'gridButton'));
+//    echo $this->button('grid-del',
+//                       $this->__('Delete Selected'),
+//                       array('jsid'      => 'grid-del',
+//                             'baseClass' => 'gridButton'));
+//?>
+<!---->
+<!--<div class="move-it">-->
 <?php
-    echo $this->button('grid-up',
-                       $this->__('Up'),
-                       array('jsid'      => 'grid-up',
-                             'baseClass' => 'gridButton'));
-    echo $this->button('grid-down',
-                       $this->__('Down'),
-                       array('jsid'      => 'grid-down',
-                             'baseClass' => 'gridButton'));
-?>
-</div>
+//    echo $this->button('grid-up',
+//                       $this->__('Up'),
+//                       array('jsid'      => 'grid-up',
+//                             'baseClass' => 'gridButton'));
+//    echo $this->button('grid-down',
+//                       $this->__('Down'),
+//                       array('jsid'      => 'grid-down',
+//                             'baseClass' => 'gridButton'));
+//?>
+<!--</div>-->

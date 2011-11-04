@@ -34,8 +34,8 @@ class Pages_Form_Create extends Zend_Form
         $content = new Core_Form_Element_Redactor('content');
         $content->setLabel('Content:')
             ->setRequired(true)
-            ->setAttrib('cols', 50)
-            ->setAttrib('rows', 50)
+            ->setAttrib('cols', 100)
+            ->setAttrib('rows', 25)
             ->setAttrib('redactor', array(
                 'toolbar' => 'full',
                 'image_upload' => $this->_getUploadImageUrl()

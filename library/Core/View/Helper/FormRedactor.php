@@ -79,6 +79,6 @@ class Core_View_Helper_FormRedactor extends Zend_View_Helper_FormTextarea
             ->appendScript('(function($){$(function(){$("#' . $id . '").redactor(' . $options . ');});})(jQuery)');
 
         /** render text area */
-        return $this->formTextarea($name, $value = null, $attribs = null);
+        return $this->formTextarea($name, $value, $attribs );
     }
 }

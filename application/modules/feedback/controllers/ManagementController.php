@@ -8,19 +8,28 @@
  *
  * @version  $Id: MessageController.php 1564 2009-10-30 09:09:03Z secunda $
  */
-class Feedback_ManagementController extends Core_Controller_Action_Crud
+class Feedback_ManagementController extends Core_Controller_Action_Scaffold
 {
     public function init()
     {
        /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter(array(
-             '_addAllTableColumns',
-             '_addReadColumn',
-             '_addDeleteColumn',
-             '_showFilter'
-        ));
+        /* is Dashboard Controller */
+        $this->_isDashboard();
+
+        /** init dojo */
+        $this->_initDojo();
+
+        $this->_helper->getHelper('AjaxContext')
+                      ->addActionContext('get-mail-template', 'html')
+                      ->initContext();
+    }
+
+    public function indexAction()
+    {
+        // see view script
+        // use dojox.grid.DataGrid
     }
 
     /**
@@ -221,37 +230,4 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
     {
 
     }
-
-    /**
-    * add edit column to grid
-    *
-    * @return void
-    */
-    public function _addReadColumn()
-    {
-        $this->grid->setColumn('read', array(
-            'name' => 'Read',
-            'formatter' => array($this, 'readLinkFormatter')
-        ));
-    }
-
-    /**
-     * edit link formatter
-     *
-     * @param $value
-     * @param $row
-     * @return string
-     */
-    public function readLinkFormatter($value, $row)
-    {
-        $link = '<a href="%s" class="read">Read</a>';
-        $url = $this->getHelper('url')->url(array(
-            'action' => 'read',
-            'id' => $row['id']
-        ), 'default');
-
-        return sprintf($link, $url);
-    }
-
-
 }
