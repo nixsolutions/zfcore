@@ -85,7 +85,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         /**
          * FIXME:
          * <code>
-         *   resources.view.helperPath.Zend_Dojo_View_Helper = "Zend/Dojo/View/Helper/"
          *   resources.view.helperPath.Core_View_Helper = "Core/View/Helper"
          *   resources.view.filterPath.Core_View_Filter = "Core/View/Filter"
          * </code>

@@ -24,7 +24,7 @@ class Mail_Form_Template_Edit extends Mail_Form_Template_Create
     /**
      * Create submit element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Submit
      */
     protected function _submit()
     {

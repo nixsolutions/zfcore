@@ -1,20 +1,3 @@
-<?php
-if (isset($this->form)) {
-    $this->dojo()->addStyleSheet($this->dojo()->getCdnBase() . $this->dojo()->getCdnVersion() . '/dojox/form/resources/FileInput.css')
-                 ->requireModule('dojox.form.FileInput');
-    $this->javascript()->controller();
-    $this->stylesheet()->controller();
-
-    $this->dojo()
-         ->requireModule('dijit.form.Button')
-         ->requireModule('dojox.layout.FloatingPane')
-         ->requireModule('dojox.editor.plugins.Preview')
-         ->requireModule('dijit._editor.plugins.FullScreen')
-         ->requireModule('dijit._editor.plugins.ViewSource')
-         ->requireModule('core.editor.plugins.ImageManager')
-         ;
-?>
-
 <div id="formRead">
     <dl>
         <dt class="label subject"><?php echo $this->__('Subject') ?></dt>
@@ -30,19 +13,10 @@ if (isset($this->form)) {
         <dd class="value body"><?php echo $this->mail->message; ?></dd>
     </dl>
 </div>
-<br>
-<div id="controls">
-<?php
-    echo $this->button('button-reply',
-                       $this->__('Reply'),
-                       array('jsid'      => 'button-reply',
-                             'baseClass' => 'controlsButton'));
-?>
-</div>
 
-<div id="formReply" style="display:none;">
-<?php 
-        echo $this->form;
-    }
-?>
+<br />
+
+<h3><?php echo $this->__('Reply')?></h3>
+<div id="formReply">
+    <?php echo $this->form;?>
 </div>

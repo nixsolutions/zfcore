@@ -10,25 +10,24 @@ $this->headScript()
     ->appendFile('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js')
     ->appendFile($this->baseUrl('/layouts/dashboard/scripts/ui.js'));
 
-//if (file_exists(realpath(APPLICATION_PATH . '/../public/scripts/dojo/dojo.js'))) {
-//    $this->dojo()->setLocalPath($this->baseUrl('/scripts/dojo/dojo.js'));
-//} else {
-//    $this->dojo()
-//        ->enable()
-//        ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
-//        ->setCdnDojoPath(Zend_Dojo::CDN_DOJO_PATH_GOOGLE)
-//        ->registerModulePath('core', $this->baseUrl('/scripts/core'))
-//        ->setCdnVersion('1.6.0');
-//}
-//
-//$this->dojo()
-//    ->requireModule('dojo.parser')
-//    ->requireModule('dojo.fx')
-//    ->requireModule('dojo.data.ItemFileReadStore')
-//    ->requireModule('dijit.form.FilteringSelect')
-//    /** use dojo theme tundra */
-//    ->addStyleSheetModule('dijit.themes.tundra')
-//    ->setDjConfig(array('isDebug' => false, 'parseOnLoad' => true, 'baseUrl' => './'));
+if (file_exists(realpath(APPLICATION_PATH . '/../public/scripts/dojo/dojo.js'))) {
+    $this->dojo()->setLocalPath($this->baseUrl('/scripts/dojo/dojo.js'));
+} else {
+    $this->dojo()
+        ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
+        ->setCdnDojoPath(Zend_Dojo::CDN_DOJO_PATH_GOOGLE)
+        ->registerModulePath('core', $this->baseUrl('/scripts/core'))
+        ->setCdnVersion('1.6.0');
+}
+
+$this->dojo()
+    ->requireModule('dojo.parser')
+    ->requireModule('dojo.fx')
+    ->requireModule('dojo.data.ItemFileReadStore')
+    ->requireModule('dijit.form.FilteringSelect')
+    /** use dojo theme tundra */
+    ->addStyleSheetModule('dijit.themes.tundra')
+    ->setDjConfig(array('isDebug' => false, 'parseOnLoad' => true, 'baseUrl' => './'));
 
 ?>
 <head>
@@ -38,5 +37,5 @@ $this->headScript()
     <?php echo $this->headStyle() ?>
     <?php echo $this->headScript() ?>
     <base href="<?php echo $this->baseUrl() ?>"/>
-<!--    --><?php //if (!$this->disableDojo) echo $this->dojo(); ?>
+<!--    --><?php if ($this->enableDojo) echo $this->dojo(); ?>
 </head>

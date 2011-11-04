@@ -33,19 +33,19 @@ class Faq_ManagementController extends Core_Controller_Action_Crud
      *
      * return create form for crud
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getCreateForm()
     {
         return new Faq_Model_Question_Form_Create();
     }
-    
+
     /**
      * _getEditForm
      *
      * return edit form for crud
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getEditForm()
     {

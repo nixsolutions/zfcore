@@ -15,6 +15,7 @@ production:
   autoloadernamespaces:
     - Core
     - Facebook
+  uploadDir: uploads
   resources:
     frontController:
       moduleDirectory: APPLICATION_PATH/modules

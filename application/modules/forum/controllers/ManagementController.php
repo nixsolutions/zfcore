@@ -5,7 +5,7 @@
  * @category   Application
  * @package    Users
  * @subpackage Controller
- * 
+ *
  * @version  $Id: ManagementController.php 48 2010-02-12 13:23:39Z AntonShevchuk $
  */
 class Forum_ManagementController extends Core_Controller_Action_Crud
@@ -31,7 +31,16 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
              '_showFilter'
         ));
     }
-    
+
+    public function postDispatch()
+    {
+        parent::postDispatch();
+
+        if ('create' == $this->_getParam('action') || 'edit' == $this->_getParam('action')) {
+            $this->_setDefaultScriptPath();
+        }
+    }
+
     /**
      * _getCreateForm
      *
@@ -43,7 +52,7 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
     {
         return new Forum_Model_Post_Form_Admin_Create();
     }
-    
+
     /**
      * _getEditForm
      *
