@@ -32,21 +32,12 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
         ));
     }
 
-    public function postDispatch()
-    {
-        parent::postDispatch();
-
-        if ('create' == $this->_getParam('action') || 'edit' == $this->_getParam('action')) {
-            $this->_setDefaultScriptPath();
-        }
-    }
-
     /**
      * _getCreateForm
      *
      * return create form for scaffolding
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getCreateForm()
     {
@@ -58,7 +49,7 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
      *
      * return edit form for scaffolding
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getEditForm()
     {

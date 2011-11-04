@@ -8,7 +8,7 @@
  *
  * @version  $Id: Login.php 1561 2009-10-16 13:31:31Z dark $
  */
-class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
+class Blog_Model_Post_Form_Admin_Create extends Zend_Form
 {
     /**
      * Form initialization
@@ -21,12 +21,11 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
         $this->setMethod('post');
 
         $this->addElement(
-            'ValidationTextBox', 'title',
+            'Text', 'title',
             array(
                 'label'      => 'Title',
                 'required'   => true,
                 'attribs'    => array('style'=>'width:60%'),
-                'regExp'     => '^[\w\s\'",.\-_]+$',
                 'validators' => array(
                     array(
                         'regex',
@@ -41,46 +40,27 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
         );
 
         $this->addElement(
-            'Editor', 'teaser',
-            array(
-                'label'      => 'Teaser',
-                'required'   => true,
-                'attribs'    => array('style' => 'width:100%;height:100px'),
-                'plugins'    => array('undo', 'redo', 'cut', 'copy', 'paste', '|',
-                                      'bold', 'italic', 'underline', 'strikethrough', '|',
-                                      'subscript', 'superscript', 'removeFormat', '|',
-                                      //'fontName', 'fontSize', 'formatBlock', 'foreColor', 'hiliteColor','|',
-                                      'indent', 'outdent', 'justifyCenter', 'justifyFull',
-                                      'justifyLeft', 'justifyRight', 'delete', '|',
-                                      'insertOrderedList', 'insertUnorderedList', 'insertHorizontalRule', '|',
-                                      //'LinkDialog', 'UploadImage', '|',
-                                      //'ImageManager',
-                                      'FullScreen', '|',
-                                      'ViewSource')
+            new Core_Form_Element_Redactor('teaser',
+                array(
+                    'label'      => 'Teaser',
+                    'required'   => true,
+                    'attribs'    => array('style' => 'width:100%;height:100px'),
+                )
             )
         );
 
         $this->addElement(
-            'Editor', 'body',
-            array(
-                'label'      => 'Text',
-                'required'   => true,
-                'attribs'    => array('style' => 'width:100%;height:340px'),
-                'plugins'    => array('undo', 'redo', 'cut', 'copy', 'paste', '|',
-                                      'bold', 'italic', 'underline', 'strikethrough', '|',
-                                      'subscript', 'superscript', 'removeFormat', '|',
-                                      //'fontName', 'fontSize', 'formatBlock', 'foreColor', 'hiliteColor','|',
-                                      'indent', 'outdent', 'justifyCenter', 'justifyFull',
-                                      'justifyLeft', 'justifyRight', 'delete', '|',
-                                      'insertOrderedList', 'insertUnorderedList', 'insertHorizontalRule', '|',
-                                      //'LinkDialog', 'UploadImage', '|',
-                                      //'ImageManager',
-                                      'FullScreen', '|',
-                                      'ViewSource')
+            new Core_Form_Element_Redactor('body',
+                array(
+                    'label'      => 'Text',
+                    'required'   => true,
+                    'attribs'    => array('style' => 'width:100%;height:340px')
+                )
             )
         );
+
         $this->addElement(
-            'DateTextBox', 'published',
+            'Text', 'published',
             array(
                 'label'      => 'Published Date',
                 'required'   => true
@@ -94,7 +74,7 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
         $this->addElement($this->_user());
 
         $this->addElement(
-            'SubmitButton',
+            'Submit',
             'submit',
             array(
                 'label' => 'Save'
@@ -102,20 +82,18 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
         );
 
         $this->addElement(new Zend_Form_Element_Hidden('pid'));
-
-        Zend_Dojo::enableForm($this);
     }
 
     /**
      * Category Combobox
      *
-     * @return Zend_Dojo_Form_Element_ComboBox
+     * @return Zend_Form_Element_Select
      */
     protected function _category()
     {
         $categories = new Blog_Model_Category_Manager();
 
-        $element = new Zend_Dojo_Form_Element_FilteringSelect('categoryId');
+        $element = new Zend_Form_Element_Select('categoryId');
         $element->setLabel('Category')
                 ->setRequired(true)
                 ->setAttribs(array('style'=>'width:60%'));
@@ -128,13 +106,13 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
     }
 
     /**
-     * Status Combobox
+     * Status
      *
-     * @return Zend_Dojo_Form_Element_ComboBox
+     * @return Zend_Form_Element_Select
      */
     protected function _status()
     {
-        $element = new Zend_Dojo_Form_Element_FilteringSelect('status');
+        $element = new Zend_Form_Element_Select('status');
         $element->setLabel('Status')->setRequired(true)
                 ->setAttribs(array('style'=>'width:60%'));
 
@@ -146,13 +124,13 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Dojo_Form
     }
 
     /**
-     * User Combobox
+     * User
      *
-     * @return Zend_Dojo_Form_Element_ComboBox
+     * @return Zend_Form_Element_Select
      */
     protected function _user()
     {
-        $element = new Zend_Dojo_Form_Element_FilteringSelect('userId');
+        $element = new Zend_Form_Element_Select('userId');
         $element->setLabel('Author')->setRequired(true)
         ->setAttribs(array('style'=>'width:60%'));
 

@@ -5,16 +5,16 @@ require_once 'Zend/View/Helper/FormTextarea.php';
 
 /**
  * Helper to generate a "Redactor" element
- * 
+ *
  * @category Core
  * @package  Core_View_Helper_FormRedactor
  *
  * <code>
- * 
+ *
  * required jQuery.js
- * 
+ *
  * using as form element:
- * 
+ *
  * $comment = new Core_Form_Element_Redactor('comment', array(
  *    'label' => 'Your comment:',
  *    'cols'  => '50',
@@ -24,7 +24,7 @@ require_once 'Zend/View/Helper/FormTextarea.php';
  *    'redactor' => array(...)
  * ));
  * $form->addElement($comment);
- * 
+ *
  * $form->addElement('redactor', 'comment', array(
  *    'label' => 'Your comment:',
  *    'cols'  => '50',
@@ -33,9 +33,9 @@ require_once 'Zend/View/Helper/FormTextarea.php';
  *    'filters' => array('StringTrim'),
  *    'redactor' => array(..)
  * ));
- * 
+ *
  * using as view helper:
- * 
+ *
  * echo $view->formRedactor('comment', 'ula la', array(
  *    'label' => 'Your comment:',
  *    'cols'  => '50',
@@ -44,7 +44,7 @@ require_once 'Zend/View/Helper/FormTextarea.php';
  * ));
  *
  * </code>
- * 
+ *
  */
 class Core_View_Helper_FormRedactor extends Zend_View_Helper_FormTextarea
 {
@@ -79,6 +79,6 @@ class Core_View_Helper_FormRedactor extends Zend_View_Helper_FormTextarea
             ->appendScript('(function($){$(function(){$("#' . $id . '").redactor(' . $options . ');});})(jQuery)');
 
         /** render text area */
-        return $this->formTextarea($name, $value = null, $attribs = null);
+        return $this->formTextarea($name, $value, $attribs);
     }
 }

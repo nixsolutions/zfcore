@@ -84,8 +84,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
             $table->createRow($form->getValues())
                 ->save();
 
-            $this->_flashMessenger->addMessage('Successfully');
-            $this->_redirector->direct('index');
+            $this->_helper->flashMessenger('Successfully');
+            $this->_helper->redirector('index');
         }
 
         $this->view->form = $form;
@@ -102,7 +102,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
 
         $form = $this->_getEditForm()
             ->setAction($this->view->url())
-            ->setDefaults($model->toArray(true));
+            ->setDefaults($model->toArray());
 
         if ($this->_request->isPost() &&
             $form->isValid($this->_getAllParams())
@@ -110,8 +110,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
             $model->setFromArray($form->getValues())
                   ->save();
 
-            $this->_flashMessenger->addMessage('Successfully');
-            $this->_redirector->direct('index');
+            $this->_helper->flashMessenger('Successfully');
+            $this->_helper->redirector('index');
         }
 
         $this->view->form = $form;
