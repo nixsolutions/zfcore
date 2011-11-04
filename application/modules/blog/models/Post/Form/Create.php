@@ -92,7 +92,7 @@ class Blog_Model_Post_Form_Create extends Zend_Form
     /**
      * Status Combobox
      *
-     * @return Zend_Dojo_Form_Element_ComboBox
+     * @return Zend_Form_Element_Select
      */
     protected function _status()
     {

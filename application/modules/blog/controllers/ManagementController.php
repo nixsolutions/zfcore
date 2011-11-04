@@ -30,16 +30,6 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
              '_addDeleteButton',
              '_showFilter'
         ));
-
-    }
-
-    public function postDispatch()
-    {
-        parent::postDispatch();
-
-        if ('create' == $this->_getParam('action') || 'edit' == $this->_getParam('action')) {
-            $this->_setDefaultScriptPath();
-        }
     }
 
     /**
@@ -51,8 +41,8 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
         parent::indexAction();
 
         $this->view->headScript()->appendFile(
-            $this->view->baseUrl('./modules/blog/scripts/management/index.js'
-        ));
+            $this->view->baseUrl('./modules/blog/scripts/management/index.js')
+        );
     }
 
     /**
@@ -60,7 +50,7 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
      *
      * return create form for scaffolding
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getCreateForm()
     {
@@ -72,7 +62,7 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
      *
      * return edit form for scaffolding
      *
-     * @return  Zend_Dojo_Form
+     * @return  Zend_Form
      */
     protected function _getEditForm()
     {
