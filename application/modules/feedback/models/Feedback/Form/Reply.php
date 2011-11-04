@@ -8,7 +8,7 @@
  *
  * @version  $Id: Reply.php 1561 2009-10-16 13:31:31Z dark $
  */
-class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
+class Feedback_Model_Feedback_Form_Reply extends Zend_Form
 {
     /**
      * Form initialization
@@ -44,15 +44,14 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
     /**
      * Create feedback sender element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _sender()
     {
-        $element = new Zend_Dojo_Form_Element_ValidationTextBox('sender');
+        $element = new Zend_Form_Element_Text('sender');
         $element->setLabel('Sender')
                 ->setRequired(false)
                 ->setAttribs(array('style' => 'width:60%'))
-                ->setTrim(true)
                 ->addValidator('StringLength', false, array('max' => '255'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
@@ -63,16 +62,14 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
     /**
      * Create feedback email element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _email()
     {
-        $element = new Zend_Dojo_Form_Element_ValidationTextBox('email');
+        $element = new Zend_Form_Element_Text('email');
         $element->setLabel('Email')
                 ->setRequired(false)
                 ->setAttribs(array('style' => 'width:60%'))
-                ->setTrim(true)
-                ->setRegExp('[\w\.\-\_\d]+\@[\w\.\-\_\d]+\.\w+')
                 ->addValidator('StringLength', false, array('max' => '80'))
                 ->addValidator('EmailAddress')
                 ->addFilter('StripTags')
@@ -84,15 +81,14 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
     /**
      * Create feedback subject element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _subject()
     {
-        $element = new Zend_Dojo_Form_Element_ValidationTextBox('subject');
+        $element = new Zend_Form_Element_Text('subject');
         $element->setLabel('Subject')
                 ->setRequired(false)
                 ->setAttribs(array('style' => 'width:60%'))
-                ->setTrim(true)
                 ->addValidator('StringLength', false, array('max' => '255'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
@@ -112,7 +108,7 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
         foreach ($table->fetchAll() as $template) {
             $options[$template->id] = $template->description;
         }
-        $element = new Zend_Dojo_Form_Element_ComboBox('template');
+        $element = new Zend_Form_Element_Select('template');
         $element->setLabel('By Template')
                 ->setAttribs(array('style' => 'width:60%'))
                 ->setRequired(false)
@@ -123,11 +119,11 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
     /**
      * Create feedback body element
      *
-     * @return object Zend_Dojo_Form_Element_Editor
+     * @return object Core_Form_Element_Redactor
      */
     protected function _body()
     {
-        $element = new Zend_Dojo_Form_Element_Editor(
+        $element = new Core_Form_Element_Redactor(
             'message',
             array(
                  'styleSheets'   => array('/layouts/default/css/style.css'),
@@ -184,18 +180,17 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
     /**
      * Create feedback copy element
      *
-     * @return object Zend_Dojo_Form_Element_CheckBox
+     * @return object Zend_Form_Element_Checkbox
      */
     protected function _copy()
     {
-        $element = new Zend_Dojo_Form_Element_CheckBox('saveCopy');
+        $element = new Zend_Form_Element_Checkbox('saveCopy');
         $element->setLabel('Save copy message')
                 ->setRequired(false)
                 ->setValue('0')
                 ->addFilter('StripTags')
                 ->setDecorators(
                     array(
-                        new Zend_Dojo_Form_Decorator_DijitElement(),
                         new Zend_Form_Decorator_Label(array('placement' => Zend_Form_Decorator_Abstract::APPEND)),
                         new Zend_Form_Decorator_HtmlTag(array('tag' => 'dd')),
                     )
@@ -208,15 +203,14 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
     /**
      * Create fromName mail element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _fromName()
     {
-        $fromName = new Zend_Dojo_Form_Element_ValidationTextBox('fromName');
+        $fromName = new Zend_Form_Element_Text('fromName');
         $fromName->setLabel('From Name')
                  ->setRequired(false)
                  ->setAttribs(array('style'=>'width:60%'))
-                 ->setTrim(true)
                  ->addFilter('StripTags')
                  ->addFilter('StringTrim');
 
@@ -227,16 +221,14 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
     /**
      * Create fromEmail email element
      *
-     * @return object Zend_Dojo_Form_Element_ValidationTextBox
+     * @return object Zend_Form_Element_Text
      */
     protected function _fromEmail()
     {
-        $fromEmail = new Zend_Dojo_Form_Element_ValidationTextBox('fromEmail');
+        $fromEmail = new Zend_Form_Element_Text('fromEmail');
         $fromEmail->setLabel('From Email')
                   ->setRequired(false)
                   ->setAttribs(array('style'=>'width:60%'))
-                  ->setTrim(true)
-                  ->setRegExp('[\w\.\-\_\d]+\@[\w\.\-\_\d]+\.\w+')
                   ->setValue(null)
                   ->addValidator('StringLength', false, array(6))
                   ->addValidator('EmailAddress');
@@ -251,18 +243,17 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Dojo_Form
      * @param string $label
      * @param string $type
      * @param string $name
-     * @return object Zend_Dojo_Form_Element_Button
+     * @return object Zend_Form_Element_Button
      */
     protected function _button($label = 'Button', $type = 'button', $name = '')
     {
         if (!strlen($name)) {
             $name = str_replace(' ', '-', strtolower($label));
         }
-        $element = new Zend_Dojo_Form_Element_Button($name);
+        $element = new Zend_Form_Element_Button($name);
         $element->setLabel($label)
                 ->setRequired(false)
-                ->setAttribs(array('type' => $type))
-                ->setDecorators(array(new Zend_Dojo_Form_Decorator_DijitElement()));
+                ->setAttribs(array('type' => $type));
 
         return $element;
     }
