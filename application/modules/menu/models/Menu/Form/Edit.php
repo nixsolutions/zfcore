@@ -17,12 +17,12 @@ require_once 'Zend/Dojo/Form.php';
  */
 class Menu_Model_Menu_Form_Edit extends Menu_Model_Menu_Form_Create
 {
-        public function init()
-        {
-            parent::init();
-            $this->setName('menuItemEditForm');
-            return $this;
-        }
+    public function init()
+    {
+        parent::init();
+        $this->setName('menuItemEditForm');
+        return $this;
+    }
 
     public function _submit()
     {

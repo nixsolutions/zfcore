@@ -33,13 +33,7 @@ class Menu_Model_Menu_Form_Create extends Zend_Form
         $linkType->setLabel('Type')
                  ->setRequired(true)
                  ->addFilter('StripTags')
-                 ->addFilter('StringTrim')
-                 ->setAttribs(
-                     array(
-                         'style'=>'margin-bottom:5px;',
-                         'onChange' => "changedLinkType(document.getElementById('linkType'));"
-                     )
-                 );
+                 ->addFilter('StringTrim');
         $linkType->addMultiOptions(array(Menu_Model_Menu::TYPE_URI => 'Link', Menu_Model_Menu::TYPE_MVC => 'Route'));
 
         $parent = new Zend_Form_Element_Select('parent');
@@ -107,23 +101,10 @@ class Menu_Model_Menu_Form_Create extends Zend_Form
         $itemId = new Zend_Form_Element_Hidden('id');
         $itemId->addFilter('StripTags')->addFilter('StringTrim');
 
-        $id = Zend_Controller_Front::getInstance()->getRequest()->getParam('id', null);
 
-        if (!empty($id)) {
-            $menuRow = $this->_menuManager->getRowById($id);
-            if ($menuRow instanceof Zend_Db_Table_Row_Abstract) {
-                $label->setValue($menuRow->getLabel());
-                $parent->setValue($menuRow->getParent());
-                $title->setValue($menuRow->getTitle());
-                $class->setValue($menuRow->getClass());
-                $target->setValue($menuRow->getTarget());
-                $route->setValue($menuRow->getRoute());
-                $uri->setValue($menuRow->getUri());
-                $visible->setValue($menuRow->getVisible());
-                $linkType->setValue($menuRow->getLinkType());
-                $itemId->setValue($id);
-            }
-        }
+        $getModules = new Zend_Form_Element_Hidden('getModules');
+        $getControllers = new Zend_Form_Element_Hidden('getControllers');
+        $getActions = new Zend_Form_Element_Hidden('getActions');
 
         $this->addElements(
             array(
@@ -132,11 +113,14 @@ class Menu_Model_Menu_Form_Create extends Zend_Form
                 $title,
                 $class,
                 $target,
+                $visible,
                 $linkType,
                 $route,
                 $uri,
-                $visible,
-                $this->_submit()
+                $this->_submit(),
+                $getModules,
+                $getControllers,
+                $getActions
             )
         );
         return $this;
