@@ -27,8 +27,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
              '_addDownButton',
              '_showFilter'
         ));
-
-//        $this->_after('_setDefaultScriptPath', array('only' => array('edit')));
     }
 
     /**
@@ -77,6 +75,14 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
+     * @return void
+     */
+    public function indexAction() {
+        parent::indexAction();
+        $this->view->javascript()->action();
+    }
+
+    /**
      * _getTable
      *
      * return manager for crud
@@ -106,8 +112,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         }
         $this->view->form = $createForm;
         $this->view->javascript()->action();
-//        Zend_Debug::dump($this->_getTable()->getById(67)->toArray());
-
     }
 
     public function editAction()
@@ -142,117 +146,29 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
             $this->_helper->getHelper('redirector')->direct('index');
         }
 
-//        $this->view->menu = $row;
-//        $this->view->routes = $routes;
         $this->view->form = $this->_getEditForm()->setDefaults($row->toArray());
-//        $this->view->form = $this->_getEditForm(); //->setDefaults($row->toArray());
-
         $this->view->headScript()->appendFile(
             $this->view->baseUrl('/modules/menu/scripts/management/create.js')
-        ); //javascript()->action();
-    }
-
-    public function moveAction()
-    {
-        $this->_helper->layout->disableLayout();
-        $id = (int)$this->_getParam('id');
-        $to = $this->_getParam('to');
-        $moved = false;
-        if (empty($id) || empty($to)) {
-            $this->_helper->json($moved);
-            return false;
-        }
-
-        if (!empty($id)) {
-            $moved = $this->_getTable()->moveToById($id, $to);
-        }
-        $this->_helper->json($moved);
-
-        return $moved;
+        );
     }
 
     /**
-     * storeAction
+     * move selected menus UP or DOWN
      *
-     * Get store action
-     *
-     * @access public
+     * @return void
      */
-    public function storeAction()
+    public function moveAction()
     {
-        $menuTable = new Menu_Model_Menu_Manager();
-
-        $start = (int)$this->_getParam('start');
-        $count = (int)$this->_getParam('count');
-        $sort = $this->_getParam('sort', 'path');
-        // sort data
-        //   field  - ASC
-        //   -field - DESC
-        if ($sort && ltrim($sort, '-')
-            && in_array(ltrim($sort, '-'), $this->_table->info(Zend_Db_Table::COLS))
-        ) {
-            if (strpos($sort, '-') === 0) {
-                $order = ltrim($sort, '-') . ' ' . Zend_Db_Select::SQL_DESC;
-            } else {
-                $order = $sort . ' ' . Zend_Db_Select::SQL_ASC;
+        $ids = (int)$this->_getParam('ids');
+        $to = $this->_getParam('to');
+        $manager = new Menu_Model_Menu_Manager();
+        $res = '';
+        if ($ids && $to) {
+            foreach($ids as $id) {
+                $res = $manager->moveToById($id, $to);
             }
         }
-
-        $select = $this->_table->select();
-        $select->from(
-            $this->_table->info(Zend_Db_Table::NAME),
-            new Zend_Db_Expr('COUNT(*) as c')
-        );
-
-        if ($total = $this->_table->fetchRow($select)) {
-            $total = $total->c;
-            $select = $this->_table->select();
-            $select->from($this->_table->info(Zend_Db_Table::NAME));
-
-            if (isset($order)) {
-                $select->order($order);
-            }
-            $select->limit($count, $start);
-            $data = $this->_table->fetchAll($select);
-        }
-
-        if ($total) {
-            $primary = $this->_table->getPrimary();
-            if (is_array($primary)) {
-                $primary = current($primary);
-            }
-
-            foreach ($data as $val) {
-                $array[$val['parentId']][] = $val;
-            }
-            $menuTable->buildTree($array, 0, 0, 2);
-            //$menuTable->buildTreeGt($array, 0);
-
-            $parentArray = $menuTable->getParentArray();
-
-            $datas = $data->toArray();
-
-            $sortArray = array();
-            foreach ($datas as $key => $val) {
-                $datas[$key]['label'] = $parentArray[$val['id']];
-                $position = 0;
-                foreach ($parentArray as $parentKey => $value) {
-
-                    if ($parentKey == $val['id']) {
-                        $sortArray[$position] = $datas[$key];
-                    }
-                    $position++;
-                }
-            }
-            ksort($sortArray);
-
-            $data = new Zend_Dojo_Data($primary, $sortArray);
-            $data->setMetadata('numRows', $total);
-
-            $this->_helper->json($data);
-        } else {
-            $this->_helper->json(false);
-        }
+        $this->_helper->json($res);
     }
 
     /**
@@ -288,6 +204,7 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         $controllers = array('');
         $instance = Zend_Controller_Front::getInstance();
         $modules = $instance->getControllerDirectory();
+        
         if ($module = $this->_getParam('m')) {
             if ($handle = opendir($modules[$module])) {
                 while ( false !== ($file = readdir($handle))) {
@@ -308,14 +225,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
      */
     public function getModulesAction()
     {
-//        $modules = array('');
-//        if ($handle = opendir(APPLICATION_PATH . '/modules/')) {
-//            while ( false !== ($file = readdir($handle))) {
-//                if(!in_array($file, array('.', '..'))) {
-//                    $modules[] = strtolower($file);
-//                }
-//            }
-//        }
         $instance = Zend_Controller_Front::getInstance();
         $modules = $instance->getControllerDirectory();
         $this->_helper->json(array_keys($modules));
