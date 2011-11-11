@@ -1,0 +1,7 @@
+asset_build:
+  type: Zend_Controller_Router_Route
+  route: assets/builds/:file
+  defaults:
+    module: asset
+    controller: index
+    action: build

@@ -101,14 +101,79 @@ class Core_Asset
         return $this;
     }
 
+    /**
+     * set adapter
+     *
+     * @param $adapter
+     * @return Core_Asset
+     */
     public function setAdapter($adapter)
     {
+        if (is_string($adapter)) {
+            $class = $adapter;
+            $adapter = new $class();
+        } elseif (is_array($adapter)) {
+            $options = $adapter;
+            if (empty($options['class'])) {
+                throw new Core_Exception('Adapter class is not set');
+            }
+            $class = $options['class'];
+            unset($options['class']);
 
+            $adapter = new $class($options);
+        }
+
+        if (!$adapter instanceof Core_Asset_Adapter_Abstract) {
+            throw new Core_Exception('Adapter is not instance of Core_Asset_Adapter_Abstract');
+        }
+
+        $this->_adapter = $adapter;
+        return $this;
     }
 
-    public function build()
+    /**
+     * get adapter
+     *
+     * @throws Core_Exception
+     * @return Core_Asset_Adapter_Abstract
+     */
+    public function getAdapter()
     {
+        if (null === $this->_adapter) {
+            throw new Core_Exception('Adapter is not set');
+        }
 
+        return $this->_adapter;
+    }
+
+    /**
+     * build javascript files
+     *
+     * @return void
+     */
+    public function buildJavascripts()
+    {
+        $this->_checkBuildFile($this->getJavascriptBuild());
+
+        $this->getAdapter()->buildJavascripts(
+            $this->getJavascripts(),
+            $this->getJavascriptBuild()
+        );
+    }
+
+    /**
+     * build stylesheet files
+     *
+     * @return void
+     */
+    public function buildStylesheets()
+    {
+        $this->_checkBuildFile($this->getStylesheetBuild());
+
+        $this->getAdapter()->buildStylesheets(
+            $this->getStylesheets(),
+            $this->getStylesheetBuild()
+        );
     }
 
     /**
@@ -208,6 +273,26 @@ class Core_Asset
         }
 
         return $this->_files;
+    }
+
+    /**
+     * check build file
+     *
+     * @throws Core_Exception
+     * @param string $file
+     * @return void
+     */
+    protected function _checkBuildFile($file)
+    {
+        $dir = dirname($file);
+
+        if (!is_dir($dir)) {
+            throw new Core_Exception('"' . $dir . '" is not directory');
+        }
+
+        if (!is_writable($dir)) {
+            throw new Core_Exception('"' . $dir . '" is not writable');
+        }
     }
 
     /**
