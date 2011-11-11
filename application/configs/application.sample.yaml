@@ -121,6 +121,9 @@ production:
       defaultFrom:
         email: zfc@nixsolutions.com
         name: ZFCore Webmaster
+    asset:
+      dir: PUBLIC_PATH/assets/
+      buildDir: PUBLIC_PATH/assets/builds/
   view:
     title: ZFCore
     doctype: HTML5
