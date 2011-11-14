@@ -5,11 +5,11 @@
 
     /** run module */
     util.run = function() {
-        if (!core['module']) {
+        if (!core['modules']) {
             return false;
         }
 
-        var root = core['module']
+        var root = core['modules']
           , module
           , i
           , l;
