@@ -20,20 +20,30 @@ class Core_View_Helper_Asset extends Zend_View_Helper_Abstract
         $asset = Zend_Registry::get('Core_Asset');
 
         if (APPLICATION_ENV == 'production') {
-            $url = str_replace(PUBLIC_PATH, '', $asset->getJavascriptBuild());
-            $this->view->headScript()->appendFile($this->view->baseUrl($url));
+            $this->view->headScript()
+                ->appendFile($this->_normalizeUrl($asset->getJavascriptBuild()));
 
-            $url = str_replace(PUBLIC_PATH, '', $asset->getStylesheetBuild());
-            $this->view->headLink()->appendStylesheet($this->view->baseUrl($url));
+            $this->view->headLink()
+                ->appendStylesheet($this->_normalizeUrl($asset->getStylesheetBuild()));
         } else {
             foreach ($asset->getJavascripts() as $file) {
-                $url = str_replace(PUBLIC_PATH, '', $file);
-                $this->view->headScript()->appendFile($this->view->baseUrl($url));
+                $this->view->headScript()->appendFile($this->_normalizeUrl($file));
             }
             foreach ($asset->getStylesheets() as $file) {
-                $url = str_replace(PUBLIC_PATH, '', $file);
-                $this->view->headLink()->appendStylesheet($this->view->baseUrl($url));
+                $this->view->headLink()->appendStylesheet($this->_normalizeUrl($file));
             }
         }
+    }
+
+    /**
+     * normalize url
+     * reduce public path and add base url
+     *
+     * @param string $url
+     * @return string
+     */
+    protected function _normalizeUrl($url)
+    {
+        return $this->view->baseUrl(str_replace(PUBLIC_PATH, '', $url));
     }
 }
