@@ -102,6 +102,20 @@ class Core_Asset
     }
 
     /**
+     * get build dir
+     *
+     * @return string
+     */
+    public function getBuildDir()
+    {
+        if (null === $this->_buildDir) {
+            throw new Core_Exception('Build dir is not set');
+        }
+
+        return $this->_buildDir;
+    }
+
+    /**
      * set adapter
      *
      * @param $adapter
@@ -225,10 +239,7 @@ class Core_Asset
     public function getJavascriptBuild()
     {
         if (null === $this->_javascriptBuild) {
-            if (null === $this->_buildDir) {
-                throw new Core_Exception('Build dir is not set');
-            }
-            $this->_javascriptBuild = rtrim($this->_buildDir, '/') . '/'
+            $this->_javascriptBuild = rtrim($this->getBuildDir(), '/') . '/'
                                     . 'build-' . Core_Version::getVersion() . '.js';
         }
         return $this->_javascriptBuild;
@@ -243,10 +254,7 @@ class Core_Asset
     public function getStylesheetBuild()
     {
         if (null === $this->_stylesheetBuild) {
-            if (null === $this->_buildDir) {
-                throw new Core_Exception('Build dir is not set');
-            }
-            $this->_stylesheetBuild = rtrim($this->_buildDir, '/') . '/'
+            $this->_stylesheetBuild = rtrim($this->getBuildDir(), '/') . '/'
                                     . 'build-' . Core_Version::getVersion() . '.css';
         }
         return $this->_stylesheetBuild;
@@ -270,6 +278,14 @@ class Core_Asset
             }
 
             $this->_files = array_reverse(self::recursiveScanDir($this->_dir));
+
+            /** reduce build files */
+            $buildDir = realpath($this->getBuildDir());
+            foreach ($this->_files as $i => $file) {
+                if (strpos($file, $buildDir) !== false) {
+                    unset($this->_files[$i]);
+                }
+            }
         }
 
         return $this->_files;
@@ -305,7 +321,7 @@ class Core_Asset
     static public function recursiveScanDir($path)
     {
         $files = array();
-        foreach (scandir($path) as $item) {
+        foreach (scandir(realpath($path)) as $item) {
             if (in_array($item, array('.', '..'))) {
                 continue;
             }
