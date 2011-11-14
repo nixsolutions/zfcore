@@ -463,4 +463,7 @@ form dd input:active {
     border: #999 solid 1px;
 }
 
+.errors {
+    color: #f00;
+}
 /*/Form*/
