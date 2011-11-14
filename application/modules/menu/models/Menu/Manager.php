@@ -332,7 +332,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     {
         $where = $this->getDbTable()->getAdapter()->quoteInto('id = ?', $id);
         if ($this->getDbTable()->delete($where)) {
-            //update child if deleted paren
+            //update child if deleted parent
             $where = $this->getDbTable()->getAdapter()->quoteInto('parentId = ?', $id);
             $this->getDbTable()->update(array('parentId'  => 0), $where);
             return true;
