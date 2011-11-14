@@ -12,14 +12,12 @@
     $(function() {
         /** move selected rows up */
         $('#up-button').click(function() {
-            alert('s');
-            move(this.url);
+            move(this.href);
             return false;
         });
         /** move selected items down */
         $('#down-button').click(function() {
-            alert('s');
-            move(this.url);
+            move(this.href);
             return false;
         });
     });

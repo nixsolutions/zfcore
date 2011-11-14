@@ -94,6 +94,11 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         return new Menu_Model_Menu_Table();
     }
 
+    /**
+     * create new menu item
+     *
+     * @return void
+     */
     public function createAction()
     {
         $menuManager = new Menu_Model_Menu_Manager();
@@ -114,6 +119,11 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         $this->view->javascript()->action();
     }
 
+    /**
+     * edit current item
+     *
+     * @return void
+     */
     public function editAction()
     {
         $id = (int)$this->_getParam('id');
@@ -159,7 +169,7 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
      */
     public function moveAction()
     {
-        $ids = (int)$this->_getParam('ids');
+        $ids = (array)$this->_getParam('ids');
         $to = $this->_getParam('to');
         $manager = new Menu_Model_Menu_Manager();
         $res = '';
