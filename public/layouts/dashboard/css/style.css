@@ -144,41 +144,20 @@ label {
     font-weight:700;
     padding-left:4px;
 }
-.zend_form_dojo dd{
+.zend_form dd{
     padding:4px 2px;
 }
 
-.zend_form_dojo input{
+.zend_form input{
     padding:1px;
 }
 
-.zend_form_dojo .errors{
-	color:#f55;
-	font-weight:900;
+.zend_form .errors{
+    color:#f55;
+    font-weight:900;
 }
 
 /*/Forms*/
-
-/*Datagrid*/
-.gridControl {
-    padding:4px 0;
-}
-.gridButton .dijitButtonNode {
-    /*margin:0 1px !important;
-	padding: 0px !important;
-	height:19px !important;
-	font-size:0.8em;*/
-}
-.gridButtonHover .dijitButtonNode {
-	
-}
-.gridButtonFocused .dijitButtonNode {
-	
-}
-.gridButtonActive .dijitButtonNode {
-	
-}
-/*/Datagrid*/
 
 /********************************      Basic Structure      ********************************/
 
@@ -281,7 +260,7 @@ label {
                 list-style: none;
                 margin: 0;
                 text-align: right;
-				padding: 0;
+                padding: 0;
                 }
 
 #sidebar .navigation ul li a {
