@@ -1,22 +1,22 @@
-.faq .faq-contents {
+.m-faq .faq-contents {
     background-color: #F9F9F9;
     border: 1px solid #AAAAAA;
     padding: 10px;
 }
 
-.faq .faq-questions {
+.m-faq .faq-questions {
     margin-top: 10px;
     margin-bottom: 25px;
 }
 
-.faq .faq-question {
+.m-faq .faq-question {
     font-size: large;
     font-weight: bold;
     padding-top: 10px;
     padding-bottom: 10px;
 }
 
-.faq .faq-answer {
+.m-faq .faq-answer {
     font-size: medium;
     padding-left: 25px;
 }

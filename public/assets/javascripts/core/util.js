@@ -39,7 +39,9 @@
 
     /** init current module */
     util.init = function() {
-        var module = $('body').attr('class').split(' ');
+        var module = $.map($('body').attr('class').split(' '), function(e) {
+            return e.split('-')[1];
+        });
         util.run('base');
         util.run.apply(util, module);
         util.finalize();

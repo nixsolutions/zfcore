@@ -1,8 +1,8 @@
-.blog .pagination {
+.m-blog .pagination {
     margin: 15px
 }
 
-.blog .commentlist > li.comment {
+.m-blog .commentlist > li.comment {
     background: none repeat scroll 0 0 #F6F6F6;
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
@@ -11,19 +11,19 @@
     position: relative;
 }
 
-.blog .commentlist > li:before {
+.m-blog .commentlist > li:before {
     content: url("../images/blog/comment-arrow.png");
     left: -21px;
     position: absolute;
 }
 
-.blog .commentlist {
+.m-blog .commentlist {
     list-style: none outside none;
     margin: 20px auto;
     width: 68.9%;
 }
 
-.blog .commentlist .avatar {
+.m-blog .commentlist .avatar {
     border-radius: 3px 3px 3px 3px;
     box-shadow: 0 1px 2px #CCCCCC;
     left: -107px;
@@ -32,7 +32,7 @@
     top: 0;
 }
 
-.blog article {
+.m-blog article {
     margin-top: 10px;
     margin-bottom: 10px;
 }

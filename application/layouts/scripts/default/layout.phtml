@@ -2,9 +2,9 @@
 
 $request = Zend_Controller_Front::getInstance()->getRequest();
 $class = array();
-$class[] = $request->getModuleName();
-$class[] = $request->getControllerName();
-$class[] = $request->getActionName();
+$class[] = 'm-' . $request->getModuleName();
+$class[] = 'c-' . $request->getControllerName();
+$class[] = 'a-' . $request->getActionName();
 
 ?>
 <?php echo $this->doctype() ?>

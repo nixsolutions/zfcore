@@ -1,6 +1,15 @@
+<?php
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$class = array();
+$class[] = 'm-' . $request->getModuleName();
+$class[] = 'c-' . $request->getControllerName();
+$class[] = 'a-' . $request->getActionName();
+
+?>
 <?php echo $this->doctype() ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <body class="tundra">
+    <body class="<?php echo implode(' ', $class) ?>">
         <?php echo $this->render('dashboard/partial/head.phtml') ?>
         <!-- Wrapper for the radial gradient background -->
         <div id="body-wrapper">

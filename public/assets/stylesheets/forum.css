@@ -1,12 +1,12 @@
-.forum .pagination {
+.m-forum .pagination {
     margin: 15px
 }
 
-.forum article {
+.m-forum article {
     margin-bottom: 10px;
 }
 
-.forum .comment {
+.m-forum .comment {
     background: none repeat scroll 0 0 #F6F6F6;
     border: 1px solid #DDDDDD;
     border-radius: 3px 3px 3px 3px;
@@ -15,13 +15,13 @@
     position: relative;
 }
 
-.forum .commentlist > li:before {
+.m-forum .commentlist > li:before {
     content: url("../images/forum/comment-arrow.png");
     left: -21px;
     position: absolute;
 }
 
-.forum .comment .avatar {
+.m-forum .comment .avatar {
     border-radius: 3px 3px 3px 3px;
     box-shadow: 0 1px 2px #CCCCCC;
     left: -107px;
@@ -30,7 +30,7 @@
     top: 0;
 }
 
-.forum table {
+.m-forum table {
     background: none repeat scroll 0 0 #EEEEEE;
     border: 1px solid #DDDDDD;
     border-radius: 4px 4px 4px 4px;
@@ -40,7 +40,7 @@
     width: 100%;
 }
 
-.forum td, .forum th {
+.m-forum td, .m-forum th {
     border: 1px solid #DDDDDD;
     color: #333333;
     font-size: 90%;
@@ -48,27 +48,27 @@
     vertical-align: middle;
 }
 
-.forum th {
+.m-forum th {
     height: 30px;
 }
 
-.forum td {
+.m-forum td {
     padding: 5px;
     height: 60px;
 }
 
-.forum .category-level-2 td:first-child {
+.m-forum .category-level-2 td:first-child {
     padding-left: 20px;
 }
 
-.forum .category-level-3 td:first-child {
+.m-forum .category-level-3 td:first-child {
     padding-left: 40px;
 }
 
-.forum .category-level-4 td:first-child {
+.m-forum .category-level-4 td:first-child {
     padding-left: 60px;
 }
 
-.forum .category-level-5 td:first-child {
+.m-forum .category-level-5 td:first-child {
     padding-left: 80px;
 }
