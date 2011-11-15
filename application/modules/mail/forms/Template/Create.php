@@ -143,7 +143,6 @@ class Mail_Form_Template_Create extends Zend_Form
         $fromEmail->setLabel('From Email')
                   ->setRequired(false)
                   ->setAttribs(array('style'=>'width:60%'))
-                  ->addValidator('regex', false, array('[\w\.\-\_\d]+\@[\w\.\-\_\d]+\.\w+'))
                   ->setValue(null)
                   ->addValidator('StringLength', false, array(6))
                   ->addValidator('EmailAddress');
@@ -179,7 +178,6 @@ class Mail_Form_Template_Create extends Zend_Form
         $toEmail->setLabel('To Email')
                 ->setRequired(false)
                 ->setAttribs(array('style'=>'width:60%'))
-                ->addValidator('regex', false, array('[\w\.\-\_\d]+\@[\w\.\-\_\d]+\.\w+'))
                 ->setValue(null)
                 ->addValidator('StringLength', false, array(6))
                 ->addValidator('EmailAddress');
