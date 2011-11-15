@@ -33,19 +33,6 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
-     * indexAction
-     *
-     */
-    public function indexAction()
-    {
-        parent::indexAction();
-
-        $this->view->headScript()->appendFile(
-            $this->view->baseUrl('./modules/blog/scripts/management/index.js')
-        );
-    }
-
-    /**
      * _getCreateForm
      *
      * return create form for scaffolding
