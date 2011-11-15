@@ -13,6 +13,11 @@ class Core_Asset
     protected $_dir = null;
 
     /**
+     * @var array
+     */
+    protected $_exclude = array();
+
+    /**
      * @var string
      */
     protected $_buildDir = null;
@@ -86,6 +91,18 @@ class Core_Asset
     public function setDir($dir)
     {
         $this->_dir = $dir;
+        return $this;
+    }
+
+    /**
+     * set exclude
+     *
+     * @param $exclude
+     * @return Core_Asset
+     */
+    public function setExclude($exclude)
+    {
+        $this->_exclude = array_merge($this->_exclude, (array) $exclude);
         return $this;
     }
 
@@ -279,11 +296,14 @@ class Core_Asset
 
             $this->_files = array_reverse(self::recursiveScanDir($this->_dir));
 
-            /** reduce build files */
-            $buildDir = realpath($this->getBuildDir());
+            /** reduce excluded and build files */
+            $excludes = $this->_exclude;
+            $excludes[] = $this->getBuildDir();
             foreach ($this->_files as $i => $file) {
-                if (strpos($file, $buildDir) !== false) {
-                    unset($this->_files[$i]);
+                foreach ($excludes as $exclude) {
+                    if (strpos($file, realpath($exclude)) !== false) {
+                        unset($this->_files[$i]);
+                    }
                 }
             }
         }
@@ -334,7 +354,6 @@ class Core_Asset
             }
         }
 
-        $files = array_reverse($files);
         return $files;
     }
 }
