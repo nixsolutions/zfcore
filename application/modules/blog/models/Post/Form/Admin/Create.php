@@ -20,7 +20,6 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Form
         $this->setName('postForm');
         $this->setMethod('post');
 
-
         $title = new Zend_Form_Element_Text('title');
         $title->setLabel('Title')
             ->setRequired(true)
@@ -33,94 +32,22 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Form
                 )));
         $this->addElement($title);
 
-//        $this->addElement(
-//            'ValidationTextBox', 'title',
-//            array(
-//                'label'      => 'Title',
-//                'required'   => true,
-//                'attribs'    => array('style'=>'width:60%'),
-//                'regExp'     => '^[\w\s\'",.\-_]+$',
-//                'validators' => array(
-//                    array(
-//                        'regex',
-//                        false,
-//                        array('/^[\w\s\'",.\-_]+$/i', 'messages' => array (
-//                            Zend_Validate_Regex::INVALID => 'Invalid title',
-//                            Zend_Validate_Regex::NOT_MATCH  => 'Invalid title'
-//                        ))
-//                    ),
-//                )
-//            )
-//        );
-
-
         $teaser = new Core_Form_Element_Redactor('teaser');
         $teaser->setLabel('Teaser')
             ->setAttribs(array('style' => 'width:100%;height:100px'));
         $this->addElement($teaser);
-
-//        $this->addElement(
-//            'Editor', 'teaser',
-//            array(
-//                'label'      => 'Teaser',
-//                'required'   => true,
-//                'attribs'    => array('style' => 'width:100%;height:100px'),
-//                'plugins'    => array('undo', 'redo', 'cut', 'copy', 'paste', '|',
-//                                      'bold', 'italic', 'underline', 'strikethrough', '|',
-//                                      'subscript', 'superscript', 'removeFormat', '|',
-//                                      //'fontName', 'fontSize', 'formatBlock', 'foreColor', 'hiliteColor','|',
-//                                      'indent', 'outdent', 'justifyCenter', 'justifyFull',
-//                                      'justifyLeft', 'justifyRight', 'delete', '|',
-//                                      'insertOrderedList', 'insertUnorderedList', 'insertHorizontalRule', '|',
-//                                      //'LinkDialog', 'UploadImage', '|',
-//                                      //'ImageManager',
-//                                      'FullScreen', '|',
-//                                      'ViewSource')
-//            )
-//        );
-
         $teaser = new Core_Form_Element_Redactor('body');
         $teaser->setLabel('Text')
             ->setAttribs(array('style' => 'width:100%;height:340px'));
         $this->addElement($teaser);
-
-//        $this->addElement(
-//            'Editor', 'body',
-//            array(
-//                'label'      => 'Text',
-//                'required'   => true,
-//                'attribs'    => array('style' => 'width:100%;height:340px'),
-//                'plugins'    => array('undo', 'redo', 'cut', 'copy', 'paste', '|',
-//                                      'bold', 'italic', 'underline', 'strikethrough', '|',
-//                                      'subscript', 'superscript', 'removeFormat', '|',
-//                                      //'fontName', 'fontSize', 'formatBlock', 'foreColor', 'hiliteColor','|',
-//                                      'indent', 'outdent', 'justifyCenter', 'justifyFull',
-//                                      'justifyLeft', 'justifyRight', 'delete', '|',
-//                                      'insertOrderedList', 'insertUnorderedList', 'insertHorizontalRule', '|',
-//                                      //'LinkDialog', 'UploadImage', '|',
-//                                      //'ImageManager',
-//                                      'FullScreen', '|',
-//                                      'ViewSource')
-//            )
-//        );
 
         $published = new Zend_Form_Element_Text('published');
         $published->setLabel('Published Date')
             ->setRequired(true);
         $this->addElement($published);
 
-//        $this->addElement(
-//            'DateTextBox', 'published',
-//            array(
-//                'label'      => 'Published Date',
-//                'required'   => true
-//            )
-//        );
-
         $this->addElement($this->_category());
-
         $this->addElement($this->_status());
-
         $this->addElement($this->_user());
 
 
@@ -128,17 +55,7 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Form
         $submit->setLabel('Save');
         $this->addElement($submit);
 
-//        $this->addElement(
-//            'SubmitButton',
-//            'submit',
-//            array(
-//                'label' => 'Save'
-//            )
-//        );
-
         $this->addElement(new Zend_Form_Element_Hidden('pid'));
-
-//        Zend_Dojo::enableForm($this);
     }
 
     /**

@@ -154,7 +154,7 @@ class Mail_Form_Template_Create extends Zend_Form
     /**
      * Create toName mail element
      *
-     * @return object Zend_Dojo_Form_Element_Text
+     * @return object Zend_Form_Element_Text
      */
     protected function _toName()
     {

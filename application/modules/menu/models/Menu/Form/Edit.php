@@ -1,10 +1,5 @@
 <?php
 /**
- * @see Zend_Dojo_Form
- */
-require_once 'Zend/Dojo/Form.php';
-
-/**
  * Menu_Model_Menu_Form_Edit
  *
  * @category    Application
@@ -26,6 +21,6 @@ class Menu_Model_Menu_Form_Edit extends Menu_Model_Menu_Form_Create
 
     public function _submit()
     {
-            return parent::_submit()->setLabel('Save');
+        return parent::_submit()->setLabel('Save');
     }
 }
