@@ -50,4 +50,21 @@ class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
 
         return $this;
     }
+
+    /**
+     * add elfinder
+     *
+     * @return Application_View_Helper_Plugins
+     */
+    public function elfinder()
+    {
+        $this->view->headLink()
+            ->appendStylesheet($this->view->baseUrl('scripts/jquery/elfinder/css/elfinder.full.css'))
+            ->appendStylesheet($this->view->baseUrl('scripts/jquery/elfinder/css/theme.css'));
+
+        $this->view->headScript()
+            ->appendFile($this->view->baseUrl('scripts/jquery/elfinder/js/elfinder.full.js'));
+
+        return $this;
+    }
 }

@@ -1,16 +1,14 @@
 <?php
-    echo $this->headLink()->appendStylesheet($this->baseUrl('scripts/jquery/elfinder/css/elfinder.full.css'))
-                          ->appendStylesheet($this->baseUrl('scripts/jquery/elfinder/css/theme.css'));
 
-    echo $this->headScript()->appendFile($this->baseUrl('scripts/jquery/elfinder/js/elfinder.full.js'))
+$this->plugins()->elfinder();
+
 ?>
-
 <script type="text/javascript" charset="utf-8">
-    $(function() {
-        var f1 = $('#uploads').elfinder({
-            url : '<?php echo $this->url(array('action' => 'connector'), 'default')?>'
-        }).elfinder('instance');
-    })
+$(function() {
+    $('#uploads').elfinder({
+        url : '<?php echo $this->url(array('action' => 'connector'), 'default')?>'
+    }).elfinder('instance');
+});
 </script>
 
 <div id="uploads">Initializing ...</div>
