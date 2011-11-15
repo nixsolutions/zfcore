@@ -40,37 +40,6 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     }
 
     /**
-     * Init dojo for current page only
-     *
-     * @return Core_Controller_Action
-     */
-    protected function _initDojo()
-    {
-        // init Dojo Toolkit
-        $this->view->addHelperPath('Zend/Dojo/View/Helper/', 'Zend_Dojo_View_Helper');
-
-        // setup dojo
-        $this->view->dojo()
-            ->enable()
-            ->setCdnBase(Zend_Dojo::CDN_BASE_GOOGLE)
-            ->setCdnDojoPath(Zend_Dojo::CDN_DOJO_PATH_GOOGLE)
-            ->registerModulePath('core', $this->view->baseUrl('/scripts/core'))
-            ->setCdnVersion('1.6.0')
-            ->requireModule('dojo.parser')
-            ->requireModule('dojo.fx')
-            ->requireModule('dojo.data.ItemFileReadStore')
-            ->requireModule('dijit.form.FilteringSelect')
-            /** use dojo theme tundra */
-            ->addStyleSheetModule('dijit.themes.tundra')
-            ->setDjConfig(array('isDebug' => false, 'parseOnLoad' => true, 'baseUrl' => './'));
-
-        $this->view->initDojo = true;
-
-        return $this;
-    }
-
-
-    /**
      * add function to stack
      *
      * @param $function
