@@ -10,7 +10,7 @@ $class[] = $request->getActionName();
 <?php echo $this->doctype() ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <?php echo $this->render('default/partial/head.phtml') ?>
-<body class="<?php echo implode('-', $class) ?>">
+<body class="<?php echo implode(' ', $class) ?>">
     <?php echo $this->render('default/partial/messages.phtml') ?>
     <div class="body">
         <?php echo $this->render('default/partial/header.phtml') ?>

@@ -1,11 +1,11 @@
-<?php 
-    $this->stylesheet()->module();
-    $this->javascript()->module();
-    $jsTranslate = array(
-        'hide' => $this->__('hide'),
-        'show' => $this->__('show'),
-    );
-    $this->headScript()->appendScript('var translate = ' . json_encode($jsTranslate) . ';');
+<?php
+
+$jsTranslate = array(
+    'hide' => $this->__('hide'),
+    'show' => $this->__('show'),
+);
+$this->headScript()->appendScript('var translate = ' . Zend_Json::encode($jsTranslate) . ';');
+
 ?>
 <div class="faq-contents">
     <div>

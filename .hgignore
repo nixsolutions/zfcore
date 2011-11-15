@@ -10,3 +10,4 @@ library/Zend/
 .settings
 public/uploads
 application/configs/application.yaml
+public/assets/builds
