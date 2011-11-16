@@ -1,7 +1,7 @@
 <?php
 
 /**
- * append assets
+ * prepend assets
  *
  * @category Core
  * @package  Core_View
@@ -10,7 +10,7 @@
 class Core_View_Helper_Asset extends Zend_View_Helper_Abstract
 {
     /**
-     * append assets
+     * prepend assets
      *
      * @throws Core_Exception
      * @param string $package
@@ -28,16 +28,16 @@ class Core_View_Helper_Asset extends Zend_View_Helper_Abstract
 
             if (APPLICATION_ENV == 'production') {
                 $this->view->headScript()
-                    ->appendFile($this->_normalizeUrl($asset->getJavascriptBuild()));
+                    ->prependFile($this->_normalizeUrl($asset->getJavascriptBuild()));
 
                 $this->view->headLink()
-                    ->appendStylesheet($this->_normalizeUrl($asset->getStylesheetBuild()));
+                    ->prependStylesheet($this->_normalizeUrl($asset->getStylesheetBuild()));
             } else {
                 foreach ($asset->getJavascripts() as $file) {
-                    $this->view->headScript()->appendFile($this->_normalizeUrl($file));
+                    $this->view->headScript()->prependFile($this->_normalizeUrl($file));
                 }
                 foreach ($asset->getStylesheets() as $file) {
-                    $this->view->headLink()->appendStylesheet($this->_normalizeUrl($file));
+                    $this->view->headLink()->prependStylesheet($this->_normalizeUrl($file));
                 }
             }
         }

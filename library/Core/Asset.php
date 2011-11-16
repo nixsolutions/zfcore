@@ -86,15 +86,15 @@ class Core_Asset
      * set include
      *
      * @param $include
-     * @param bool $prepend
+     * @param bool $append
      * @return Core_Asset
      */
-    public function setInclude($include, $prepend = false)
+    public function setInclude($include, $append = false)
     {
-        if ($prepend) {
-            $this->_includes = array_merge((array) $include, $this->_includes);
-        } else {
+        if ($append) {
             $this->_includes = array_merge($this->_includes, (array) $include);
+        } else {
+            $this->_includes = array_merge((array) $include, $this->_includes);
         }
         return $this;
     }
@@ -340,7 +340,7 @@ class Core_Asset
                 if (is_file($include)) {
                     $this->_files[] = $include;
                 } elseif (is_dir($include)) {
-                    $this->_files = array_merge($this->_files, array_reverse(self::recursiveScanDir($include)));
+                    $this->_files = array_merge($this->_files, self::recursiveScanDir($include));
                 } else {
                     throw new Core_Exception('Cannot get access to "' . $include . '". No such file or directory');
                 }
