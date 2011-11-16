@@ -1,6 +1,4 @@
 <?php
-/** add grid plugin */
-$this->plugins()->grid();
 
 $columns = array();
 foreach ($this->grid->getHeaders() as $header) {
@@ -10,9 +8,7 @@ foreach ($this->grid->getHeaders() as $header) {
 }
 ?>
 <div class="filter-wrapper">
-
     <span class="grid-buttons"><?php echo $this->placeholder('grid_buttons') ?></span>
-
     <span class="grid-filter">
         <?php if ($this->showFilter): ?>
             <?php echo $this->formSelect('filter-column', null, null, $columns) ?>
@@ -21,7 +17,6 @@ foreach ($this->grid->getHeaders() as $header) {
             <a href="#" id="filter-reset" class="button"><?php echo $this->__('Reset')?></a>
            <?php endif; ?>
     </span>
-
 </div>
 <div id="grid" data-url="<?php echo $this->url(array('action' => 'grid'), 'default') ?>"></div>
 <script>
@@ -48,16 +43,14 @@ $(function() {
         return false;
     });
 
-    $('#grid').delegate('#selectAllCheckbox', 'click', (function(){
-        'checked' == $(this).attr('checked')
-            ? $('#grid').find("input").attr("checked", "checked")
-            : $('#grid').find("input").removeAttr("checked");
-
+    $('#grid').delegate('#selectAllCheckbox', 'click', (function() {
+        this.checked ? $('#grid').find(':checkbox').attr('checked', 'checked')
+                     : $('#grid').find(':checkbox').removeAttr('checked');
     }));
 
     $('#delete-all-button').click(function() {
         var url = this.href
-                , res = [];
+          , res = [];
         if (confirm('Are you sure you want to delete this?')) {
             $('#grid').find("input:checked").each(function() {
                 res.push(this.value);
@@ -65,13 +58,12 @@ $(function() {
             if(!res.length) {
                 alert('No row selected');
             } else {
-                $.post(url, {ids: res}, function() {
+                $.post(url, { ids: res }, function() {
                     $('#grid').data('plugin_grid').refresh();
                 });
             }
         }
         return false;
     });
-
 });
 </script>

@@ -20,22 +20,6 @@ class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
     }
 
     /**
-     * add grid
-     *
-     * @return Application_View_Helper_Plugins
-     */
-    public function grid()
-    {
-        $this->view->headScript()
-            ->appendFile($this->view->baseUrl('/scripts/jquery/grid/jquery.grid.js'));
-
-        $this->view->headLink()
-            ->appendStylesheet($this->view->baseUrl('/scripts/jquery/grid/grid.css'));
-
-        return $this;
-    }
-
-    /**
      * add redactor
      *
      * @return Application_View_Helper_Plugins
