@@ -217,7 +217,7 @@ p span {
 .header .logo {
     float: left;
     width: 400px;
-    background: transparent url(../images/base/zf-logo.png) no-repeat scroll 0 8px;
+    background: transparent url(../images/zf-logo.png) no-repeat scroll 0 8px;
 }
 
 .header .menu {
@@ -280,7 +280,7 @@ p span {
 }
 
 .menu .navigation li.active {
-    background: transparent url(../images/base/menu-active.jpg) bottom center no-repeat;
+    background: transparent url(../images/menu-active.jpg) bottom center no-repeat;
 }
 
 .menu .navigation li.active a {
@@ -296,7 +296,7 @@ p span {
     font-size: 22pt;
     padding: 3px 8px;
     position: relative;
-    background: #5b9a0e url(../images/base/navigation.jpg) repeat-x scroll 0% 0%;
+    background: #5b9a0e url(../images/navigation.jpg) repeat-x scroll 0% 0%;
     border: 0px;
     margin: 0;
     line-height: 1.6;
@@ -326,7 +326,7 @@ p span {
 }
 
 .footer .cont_width {
-    background: transparent url(../images/base/footer-bg.jpg) no-repeat scroll 50% 0;
+    background: transparent url(../images/footer-bg.jpg) no-repeat scroll 50% 0;
     color: #FFF;
     min-height: 303px;
     font-family: Arial, sans-serif;
@@ -334,7 +334,7 @@ p span {
 }
 
 .footer_logo {
-    background: transparent url(../images/base/zf-footer-logo.png) no-repeat scroll 50% 50%;
+    background: transparent url(../images/zf-footer-logo.png) no-repeat scroll 50% 50%;
     float: left;
     width: 240px;
     height: 200px;
@@ -346,7 +346,7 @@ p span {
     min-height: 170px;
     margin: 22px 0 0 0;
     padding: 0 0 0 22px;
-    background: url(../images/base/footer-separator.jpg) 0 0 no-repeat;
+    background: url(../images/footer-separator.jpg) 0 0 no-repeat;
     font-size: 10pt;
 }
 

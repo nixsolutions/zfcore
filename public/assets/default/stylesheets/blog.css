@@ -12,7 +12,7 @@
 }
 
 .m-blog .commentlist > li:before {
-    content: url("../images/blog/comment-arrow.png");
+    content: url("../images/comment-arrow.png");
     left: -21px;
     position: absolute;
 }

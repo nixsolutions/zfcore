@@ -1,18 +1,17 @@
 <?php
 
-$this->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'), 'PREPEND')
-    ->prependStylesheet($this->baseUrl('/layouts/dashboard/css/style.css'))
-    //->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/smoothness/jquery-ui.css')
-    ->appendStylesheet($this->baseUrl('layouts/dashboard/css/jquery/jquery-ui.css'));
+$this->headLink(array(
+    'rel' => 'favicon',
+    'href' => $this->baseUrl('/favicon.ico'),
+    'type' => 'image/x-icon'
+));
 
-$this->headScript()
-    ->prependFile('http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
-    ->appendFile('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/jquery-ui.min.js')
-    ->appendFile($this->baseUrl('/layouts/dashboard/scripts/ui.js'));
+$this->asset('dashboard');
+
 ?>
 <head>
     <?php echo $this->headMeta() ?>
-    <?php echo $this->headTitle($this->__(' Admin Panel'))->setSeparator(': ') ?>
+    <?php echo $this->headTitle($this->__('Admin Panel'))->setSeparator(': ') ?>
     <?php echo $this->headLink() ?>
     <?php echo $this->headStyle() ?>
     <?php echo $this->headScript() ?>

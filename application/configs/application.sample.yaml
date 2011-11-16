@@ -122,9 +122,19 @@ production:
         email: zfc@nixsolutions.com
         name: ZFCore Webmaster
     asset:
-      dir: PUBLIC_PATH/assets/
-      buildDir: PUBLIC_PATH/assets/builds/
       adapter: Core_Asset_Adapter_Simple
+      packages:
+        base:
+          include: PUBLIC_PATH/assets/base/
+          buildDir: PUBLIC_PATH/assets/base/builds/
+        default:
+          include: PUBLIC_PATH/assets/default/
+          buildDir: PUBLIC_PATH/assets/default/builds/
+          extend: base
+        dashboard:
+          include: PUBLIC_PATH/assets/dashboard/
+          buildDir: PUBLIC_PATH/assets/dashboard/builds/
+          extend: base
   view:
     title: ZFCore
     doctype: HTML5

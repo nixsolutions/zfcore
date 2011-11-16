@@ -12,25 +12,33 @@ class Core_View_Helper_Asset extends Zend_View_Helper_Abstract
     /**
      * append assets
      *
+     * @throws Core_Exception
+     * @param string $package
      * @return void
      */
-    public function asset()
+    public function asset($package)
     {
-        /** @var $asset Core_Asset */
-        $asset = Zend_Registry::get('Core_Asset');
-
-        if (APPLICATION_ENV == 'production') {
-            $this->view->headScript()
-                ->appendFile($this->_normalizeUrl($asset->getJavascriptBuild()));
-
-            $this->view->headLink()
-                ->appendStylesheet($this->_normalizeUrl($asset->getStylesheetBuild()));
-        } else {
-            foreach ($asset->getJavascripts() as $file) {
-                $this->view->headScript()->appendFile($this->_normalizeUrl($file));
+        if ($assets = Zend_Registry::get('assets')) {
+            if (empty($assets[$package])) {
+                throw new Core_Exception('"' . $package . '" not found');
             }
-            foreach ($asset->getStylesheets() as $file) {
-                $this->view->headLink()->appendStylesheet($this->_normalizeUrl($file));
+
+            /** @var $asset Core_Asset */
+            $asset = $assets[$package];
+
+            if (APPLICATION_ENV == 'production') {
+                $this->view->headScript()
+                    ->appendFile($this->_normalizeUrl($asset->getJavascriptBuild()));
+
+                $this->view->headLink()
+                    ->appendStylesheet($this->_normalizeUrl($asset->getStylesheetBuild()));
+            } else {
+                foreach ($asset->getJavascripts() as $file) {
+                    $this->view->headScript()->appendFile($this->_normalizeUrl($file));
+                }
+                foreach ($asset->getStylesheets() as $file) {
+                    $this->view->headLink()->appendStylesheet($this->_normalizeUrl($file));
+                }
             }
         }
     }

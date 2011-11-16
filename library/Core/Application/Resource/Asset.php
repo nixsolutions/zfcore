@@ -5,34 +5,39 @@
  * @category Core
  * @package  Core_Application
  * @subpackage Resource
- *
- * <code>
- * configuration
- *
- * using simple adapter
- * resources:
- *   asset:
- *     dir: PUBLIC_PATH/assets/
- *     buildDir: PUBLIC_PATH/assets/builds/
- *     adapter: Core_Asset_Adapter_Simple
- *
- * using yui compressor adapter
- * resources:
- *   asset:
- *     dir: PUBLIC_PATH/assets/
- *     buildDir: PUBLIC_PATH/assets/builds/
- *     adapter:
- *       class: Core_Asset_Adapter_YuiCompressor
- *       jarPath: APPLICATION_PATH/../data/yuicompressor-2.4.6.jar
- * </code>
  */
 class Core_Application_Resource_Asset extends Zend_Application_Resource_ResourceAbstract
 {
     public function init()
     {
-        $asset = new Core_Asset($this->getOptions());
+        $options = $this->getOptions();
 
-        Zend_Registry::set('Core_Asset', $asset);
-        return $asset;
+        $assets = array();
+        foreach ($options['packages'] as $package => $config) {
+
+            /** use parent adapter options if package ones are empty */
+            if (empty($config['adapter']) &&
+                !empty($options['adapter'])
+            ) {
+                $config['adapter'] = $options['adapter'];
+            }
+
+            /** extend */
+            if (!empty($config['extend'])) {
+                $config['extend'] = (array) $config['extend'];
+                foreach ($config['extend'] as &$extend) {
+                    if (empty($assets[$extend])) {
+                        throw new Core_Exception('Package "' . $extend . '" not found');
+                    }
+
+                    $extend = $assets[$extend];
+                }
+            }
+
+            $assets[$package] = new Core_Asset($config);
+        }
+
+        Zend_Registry::set('assets', $assets);
+        return $assets;
     }
 }

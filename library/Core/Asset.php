@@ -8,14 +8,14 @@
 class Core_Asset
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $_dir = null;
+    protected $_includes = array();
 
     /**
      * @var array
      */
-    protected $_exclude = array();
+    protected $_excludes = array();
 
     /**
      * @var string
@@ -48,7 +48,7 @@ class Core_Asset
     protected $_stylesheetBuild = null;
 
     /**
-     * @var null
+     * @var Core_Asset_Adapter_Abstract
      */
     protected $_adapter = null;
 
@@ -83,14 +83,49 @@ class Core_Asset
     }
 
     /**
-     * set dir
+     * set include
      *
-     * @param $dir
+     * @param $include
+     * @param bool $prepend
      * @return Core_Asset
      */
-    public function setDir($dir)
+    public function setInclude($include, $prepend = false)
     {
-        $this->_dir = $dir;
+        if ($prepend) {
+            $this->_includes = array_merge((array) $include, $this->_includes);
+        } else {
+            $this->_includes = array_merge($this->_includes, (array) $include);
+        }
+        return $this;
+    }
+
+    /**
+     * get include
+     *
+     * @return array
+     */
+    public function getInclude()
+    {
+        return $this->_includes;
+    }
+
+    /**
+     * set extend
+     *
+     * @param $assets
+     * @return Core_Asset
+     */
+    public function setExtend($assets)
+    {
+        $assets = array_reverse((array) $assets);
+        foreach ($assets as $asset) {
+            $this->setInclude($asset->getInclude(), true);
+        }
+
+        foreach ($assets as $asset) {
+            $this->setExclude($asset->getExclude());
+        }
+
         return $this;
     }
 
@@ -102,8 +137,18 @@ class Core_Asset
      */
     public function setExclude($exclude)
     {
-        $this->_exclude = array_merge($this->_exclude, (array) $exclude);
+        $this->_excludes = array_merge($this->_excludes, (array) $exclude);
         return $this;
+    }
+
+    /**
+     * get exclude
+     *
+     * @return array
+     */
+    public function getExclude()
+    {
+        return array_merge($this->_excludes, (array) $this->getBuildDir());
     }
 
     /**
@@ -286,19 +331,23 @@ class Core_Asset
     protected function _getFiles()
     {
         if (null === $this->_files) {
-            if (null === $this->_dir) {
-                throw new Core_Exception('Asset Dir is not set');
+            if (!$this->_includes) {
+                throw new Core_Exception('Include list is empty');
             }
 
-            if (!is_dir($this->_dir)) {
-                throw new Core_Exception('"' . $this->_dir . '" is not directory');
+            $this->_files = array();
+            foreach ($this->_includes as $include) {
+                if (is_file($include)) {
+                    $this->_files[] = $include;
+                } elseif (is_dir($include)) {
+                    $this->_files = array_merge($this->_files, array_reverse(self::recursiveScanDir($include)));
+                } else {
+                    throw new Core_Exception('Cannot get access to "' . $include . '". No such file or directory');
+                }
             }
-
-            $this->_files = array_reverse(self::recursiveScanDir($this->_dir));
 
             /** reduce excluded and build files */
-            $excludes = $this->_exclude;
-            $excludes[] = $this->getBuildDir();
+            $excludes = $this->getExclude();
             foreach ($this->_files as $i => $file) {
                 foreach ($excludes as $exclude) {
                     if (strpos($file, realpath($exclude)) !== false) {
@@ -341,12 +390,13 @@ class Core_Asset
     static public function recursiveScanDir($path)
     {
         $files = array();
-        foreach (scandir(realpath($path)) as $item) {
+        $path = realpath($path);
+        foreach (scandir($path) as $item) {
             if (in_array($item, array('.', '..'))) {
                 continue;
             }
 
-            $itemPath = rtrim($path, '/') . '/' . $item;
+            $itemPath = $path . '/' . $item;
             if (is_file($itemPath)) {
                 $files[] = $itemPath;
             } elseif (is_dir($itemPath)) {
