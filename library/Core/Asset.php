@@ -267,7 +267,7 @@ class Core_Asset
                     $files[] = $file;
                 }
             }
-            $this->_javascripts = $files;
+            $this->_javascripts = array_reverse($files);
         }
         return $this->_javascripts;
     }
@@ -287,7 +287,7 @@ class Core_Asset
                     $files[] = $file;
                 }
             }
-            $this->_stylesheets = $files;
+            $this->_stylesheets = array_reverse($files);
         }
         return $this->_stylesheets;
     }
