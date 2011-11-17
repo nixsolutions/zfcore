@@ -19,14 +19,9 @@ class Core_Asset_Adapter_YuiCompressor extends Core_Asset_Adapter_Abstract
      */
     public function buildJavascripts(array $files, $destination)
     {
-        /**
-         * yui can't compress source file
-         * also it uses extension to detect type of compressing
-         */
-        $tempFile = str_replace('js', 'tmp.js', $destination);
-        $this->_combine($files, $tempFile);
-        $this->_compress($tempFile, $destination);
-        unlink($tempFile);
+        foreach ($files as $file) {
+            $this->_compress($file, $destination);
+        }
     }
 
     /**
@@ -38,14 +33,9 @@ class Core_Asset_Adapter_YuiCompressor extends Core_Asset_Adapter_Abstract
      */
     public function buildStylesheets(array $files, $destination)
     {
-        /**
-         * yui can't compress source file
-         * also it uses extension to detect type of compressing
-         */
-        $tempFile = str_replace('css', 'tmp.css', $destination);
-        $this->_combine($files, $tempFile);
-        $this->_compress($tempFile, $destination);
-        unlink($tempFile);
+        foreach ($files as $file) {
+            $this->_compress($file, $destination);
+        }
     }
 
     /**
@@ -111,7 +101,7 @@ class Core_Asset_Adapter_YuiCompressor extends Core_Asset_Adapter_Abstract
             throw new Core_Exception('Input file "' . $input . '" does not exist');
         }
 
-        $cmd = sprintf('java -jar %s %s -o %s', $this->_jarPath, $input, $output);
+        $cmd = sprintf('java -jar %s %s >> %s', $this->_jarPath, $input, $output);
         exec($cmd);
 
         if (!is_file($output)) {
