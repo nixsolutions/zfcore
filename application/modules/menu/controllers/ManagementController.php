@@ -75,14 +75,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
-     * @return void
-     */
-    public function indexAction() {
-        parent::indexAction();
-        $this->view->javascript()->action();
-    }
-
-    /**
      * _getTable
      *
      * return manager for crud
@@ -116,7 +108,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
             }
         }
         $this->view->form = $createForm;
-        $this->view->javascript()->action();
     }
 
     /**
@@ -157,9 +148,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         }
 
         $this->view->form = $this->_getEditForm()->setDefaults($row->toArray());
-        $this->view->headScript()->appendFile(
-            $this->view->baseUrl('/modules/menu/scripts/management/create.js')
-        );
     }
 
     /**
