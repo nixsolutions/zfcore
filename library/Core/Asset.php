@@ -232,7 +232,7 @@ class Core_Asset
         $this->_checkBuildFile($this->getJavascriptBuild());
 
         $this->getAdapter()->buildJavascripts(
-            $this->getJavascripts(),
+            array_reverse($this->getJavascripts()),
             $this->getJavascriptBuild()
         );
     }
@@ -247,7 +247,7 @@ class Core_Asset
         $this->_checkBuildFile($this->getStylesheetBuild());
 
         $this->getAdapter()->buildStylesheets(
-            $this->getStylesheets(),
+            array_reverse($this->getStylesheets()),
             $this->getStylesheetBuild()
         );
     }
@@ -267,7 +267,7 @@ class Core_Asset
                     $files[] = $file;
                 }
             }
-            $this->_javascripts = array_reverse($files);
+            $this->_javascripts = $files;
         }
         return $this->_javascripts;
     }
@@ -287,7 +287,7 @@ class Core_Asset
                     $files[] = $file;
                 }
             }
-            $this->_stylesheets = array_reverse($files);
+            $this->_stylesheets = $files;
         }
         return $this->_stylesheets;
     }
