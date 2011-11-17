@@ -19,8 +19,8 @@
             if (!!root[module]) {
                 if (typeof root[module]['init'] === 'function') {
                     root[module]['init']();
-                    root = root[module];
                 }
+                root = root[module];
             } else {
                 break;
             }
