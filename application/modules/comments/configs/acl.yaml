@@ -1,0 +1,8 @@
+mvc:
+  comments:
+    add:
+      allow: guest
+    list:
+      allow: guest
+    management:
+      allow: admin

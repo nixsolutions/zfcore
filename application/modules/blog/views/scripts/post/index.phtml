@@ -16,4 +16,12 @@
   </footer>
 </article>
 
-<?php echo $this->action('index', 'comment', 'blog', array('postId' => $this->row->id));?>
+<?php echo $this->action(
+    'index', 
+    'index', 
+    'comments', 
+    array(
+        'postId' => $this->row->id,
+        'categoryAlias' => Blog_Model_Category_Manager::CATEGORY_ALIAS
+    )
+) ?>

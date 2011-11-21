@@ -1,0 +1,46 @@
+<?php if ($this->rowset->count()): ?>
+    <div id="comments">
+        <?php foreach($this->rowset as $row): ?>
+            <ul class="commentlist">
+                <li id="li-comment-<?php echo $row->id ?>" class="comment">
+                    
+                    <?php if ($row->avatar):?>
+                        <img src="<?php echo $this->baseUrl($row->avatar)?>"
+                             alt="<?php echo $this->__('Avatar for')?> <?php echo $row->getUserName() ?>"
+                             title="<?php echo $this->__('Avatar for')?> <?php echo $row->getUserName() ?>"
+                             class="avatar"/>
+                    <?php else:?>
+                        <?php echo $this->gravatar($row->email, array(), array('title' => $this->__('Avatar for') . ' '  . ($row->getUserName()), 'class' => 'avatar'))?>
+                    <?php endif;?>
+                    
+                    
+                    <article class="comment" id="comment-1">
+                        <?php echo ucfirst($row->login)?> <?php echo $this->__('on')?> <?php echo $this->date($row->created)?>
+                        <span class="says"><?php echo $this->__('said')?>:</span>
+
+                        <p><?php echo $row->body ?></p>
+                    </article>
+                </li>
+            </ul>
+        <?php endforeach;?>
+    </div>
+<?php endif;?>
+
+<?php $user = $this->user();?>
+
+
+    <ul class="commentlist">
+        <li class="comment">
+        <?php if ($user):?>
+            <?php if ($user->avatar):?>
+                <img src="<?php echo $this->baseUrl($user->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>" class="avatar"/>
+            <?php else: ?>
+                <?php echo $this->gravatar($user->email, array(), array('title' => $this->__('Avatar for') . ' '  . $user->getName(), 'class' => 'avatar')) ?>
+            <?php endif?>
+        <?php else : ?>
+                <div class="unknown-user"></div>
+        <?php endif;?>
+
+        <?php echo $this->form;?>
+        </li>
+    </ul>

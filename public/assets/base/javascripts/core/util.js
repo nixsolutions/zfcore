@@ -16,6 +16,7 @@
 
         for (i = 0, l = arguments.length; i < l; i++) {
             module = arguments[i];
+            
             if (!!root[module]) {
                 if (typeof root[module]['init'] === 'function') {
                     root[module]['init']();
