@@ -107,6 +107,9 @@
             <arg line="down migration pages" />
         </exec>
         <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration users" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
             <arg line="down migration" />
         </exec>
     </target>
@@ -132,6 +135,9 @@
         </exec>
         <exec dir="${basedir}/bin" executable="./zfc.sh">
             <arg line="up migration pages" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration users" />
         </exec>
     </target>
 
