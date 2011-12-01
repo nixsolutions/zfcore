@@ -21,18 +21,18 @@
         <!--Configuration-->
         <copy file="${basedir}/application/configs/application.sample.yaml" todir="${basedir}/application/configs/application.yaml" />
     </target>
-    <target name="phpdoc">
+    <!--<target name="phpdoc">
         <exec dir="${basedir}" executable="phpdoc" failonerror="false">
             <arg line="-t build/docs
-                  --directory '${basedir}/application,${basedir}/library/Core'
+                  - -directory '${basedir}/application,${basedir}/library/Core'
                   -ti 'ZFCore Docs'
-                  --parseprivate on
-                  --undocumentedelements on
-                  --output HTML:Smarty:PHP
-                  --ignore '*.phtml'
-                  --sourcecode on"/>
+                  - -parseprivate on
+                  - -undocumentedelements on
+                  - -output HTML:Smarty:PHP
+                  - -ignore '*.phtml'
+                  - -sourcecode on"/>
         </exec>
-    </target>
+    </target>-->
     <target name="phploc">
         <exec dir="${basedir}" executable="phploc">
             <arg line="--log-csv ${basedir}/build/logs/phploc.csv" />
