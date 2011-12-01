@@ -79,7 +79,7 @@
                 --output ${basedir}/build/phpcb" />
         </exec>
     </target>
-    <target name="build" depends="clean, prepare, phpdoc, phploc, phpmd, phpcs, phpcpd, pdepend, phpcb, phpunit"/>
+    <target name="build" depends="clean, prepare, phploc, phpmd, phpcs, phpcpd, pdepend, phpcb, phpunit"/>
 
     <target name="update-source">
         <exec dir="${basedir}" executable="hg">
