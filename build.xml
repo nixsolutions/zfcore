@@ -19,7 +19,7 @@
         <mkdir dir="${basedir}/public/uploads/"/>
         
         <!--Configuration-->
-        <copy file="${basedir}/application/configs/application.sample.yaml" todir="${basedir}/application/configs/application.yaml" />
+        <move file="${basedir}/application/configs/application.sample.yaml" todir="${basedir}/application/configs/application.yaml" />
     </target>
     <!--<target name="phpdoc">
         <exec dir="${basedir}" executable="phpdoc" failonerror="false">
