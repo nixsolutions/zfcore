@@ -19,7 +19,7 @@
         <mkdir dir="${basedir}/public/uploads/"/>
         
         <!--Configuration-->
-        <move file="${basedir}/application/configs/application.sample.yaml" todir="${basedir}/application/configs/application.yaml" />
+        <copy file="${basedir}/application/configs/application.sample.yaml" todir="${basedir}/application/configs/application.yaml" />
     </target>
     <target name="phpdoc">
         <exec dir="${basedir}" executable="phpdoc" failonerror="false">
@@ -83,10 +83,10 @@
 
     <target name="update-source">
         <exec dir="${basedir}" executable="hg">
-            <arg line="pull"></arg>
+            <arg line="pull" />
         </exec>
         <exec dir="${basedir}" executable="hg">
-            <arg line="update"></arg>
+            <arg line="update" />
         </exec>
     </target>
 
