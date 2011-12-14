@@ -4,7 +4,7 @@
 </h3>
 <ul class="commentlist">
     <li class="comment">
-        <img src="<?php echo $this->baseUrl($this->author->avatar)?>"
+        <img src="<?php echo $this->avatar($this->author->avatar, $this->author->email)?>"
              alt="<?php echo $this->__('Avatar for')?> <?php echo $this->author->login?>"
              title="<?php echo $this->__('Avatar for')?> <?php echo $this->author->login?>"
              class="avatar"/>
@@ -29,7 +29,7 @@
     </li>
     <?php foreach($this->paginator as $i => $row): ?>
         <li class="comment">
-            <img src="<?php echo $this->baseUrl($row->avatar)?>"
+            <img src="<?php echo $this->avatar($row->avatar, $row->email)?>"
                  alt="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>"
                  title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>"
                  class="avatar"/>

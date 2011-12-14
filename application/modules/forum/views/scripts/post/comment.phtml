@@ -1,11 +1,8 @@
 <?php $user = $this->user();?>
 <ul class="commentlist">
     <li class="comment">
-        <?php if ($user->avatar):?>
-            <img src="<?php echo $this->baseUrl($user->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>" class="avatar"/>
-        <?php else:?>
-            <?php echo $this->gravatar($user->email, array(), array('title' => $this->__('Avatar for') . ' '  . $user->getName(), 'class' => 'avatar'))?>
-        <?php endif;?>
+        <img src="<?php echo $this->avatar($user)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>" class="avatar"/>
+
         <?php echo $this->form;?>
 
     </li>

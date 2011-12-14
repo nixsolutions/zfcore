@@ -3,7 +3,7 @@
         <?php foreach($this->rowset as $row): ?>
             <ul class="commentlist">
                 <li id="li-comment-1" class="comment">
-                    <img src="<?php echo $this->baseUrl($row->avatar)?>"
+                    <img src="<?php echo $this->avatar($row->avatar, $row->email)?>"
                          alt="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>"
                          title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>"
                          class="avatar"/>
@@ -25,11 +25,7 @@
     <ul class="commentlist">
         <li id="li-comment-1" class="comment">
 
-            <?php if ($user->avatar):?>
-                <img src="<?php echo $this->baseUrl($user->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>" class="avatar"/>
-            <?php else:?>
-                <?php echo $this->gravatar($user->email, array(), array('title' => $this->__('Avatar for') . ' '  . $user->getName(), 'class' => 'avatar'))?>
-            <?php endif;?>
+            <img src="<?php echo $this->avatar($user)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>" class="avatar"/>
 
             <?php echo $this->form;?>
         </li>
