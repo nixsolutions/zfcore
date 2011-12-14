@@ -115,10 +115,10 @@ class Core_Db_Table_Abstract extends Zend_Db_Table_Abstract
      */
     private function __parseQuery($query)
     {
-        if (preg_match_all('/[^A-Z](And|Or)[A-Z]/', $query, $matches)) {
+        if (preg_match_all('/[A-Z][^A-Z]+/', $query, $matches)) {
             return array_map('strtolower', $matches['0']);
         }
-        return array(strtolower($query));
+        return false;
     }
 
     /**
