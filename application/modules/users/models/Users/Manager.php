@@ -57,11 +57,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
     {
         if ($this->authenticate($data['login'], $data['password'])) {
             $user = $this->getDbTable()->getByLogin($data['login']);
-
-            $user->logined = date('Y-m-d H:i:s');
-            $user->ip      = $this->_getIpFromRequest();
-            $user->count++;
-            $user->save();
+            $user->login();
 
             if (!empty($data['remember'])) {
                 Zend_Session::rememberMe(60*60*24*14);
@@ -93,7 +89,6 @@ class Users_Model_Users_Manager extends Core_Model_Manager
                 'role'     => Users_Model_User::ROLE_USER,
                 'status'   => Users_Model_User::STATUS_REGISTER,
                 'hashCode' => md5($data['login'] . uniqid()),
-                'ip'       => $this->_getIpFromRequest()
             )
         );
         $user = $this->getDbTable()->createRow($data);
@@ -259,12 +254,5 @@ class Users_Model_Users_Manager extends Core_Model_Manager
         }
 
         return $this->getDbTable()->fetchAll($select)->toArray();
-    }
-
-    private function _getIpFromRequest()
-    {
-        return (!empty($_SERVER["REMOTE_ADDR"]))
-            ? $_SERVER["REMOTE_ADDR"]
-            : "0.0.0.0";
     }
 }

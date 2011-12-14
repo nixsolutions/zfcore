@@ -103,41 +103,31 @@ class Helper_Google extends Zend_Controller_Action_Helper_Abstract
     }
 
     /**
-     * Login
+     * Get info
      *
+     * @return ArrayObject
      */
-    public function login()
+    public function getInfo()
     {
         if ($token = $this->getToken()) {
             $client = $token->getHttpClient($this->getConfig());
             $client->setUri('https://www-opensocial.googleusercontent.com/api/people/@me/@self');
             $client->setMethod(Zend_Http_Client::GET);
-            $response = $client->request();
 
-            $info = Zend_Json::decode($response->getBody());
+            $data = Zend_Json::decode($client->request()->getBody());
+
+            $info = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+            $info->login     = $data['entry']['displayName'];
+            $info->firstname = $data['entry']['name']['givenName'];
+            $info->lastname  = $data['entry']['name']['familyName'];
+            $info->gId       = $data['entry']['id'];
 
             $client->setUri('https://www.googleapis.com/userinfo/email');
-            $response = $client->request();
-            $emailData = explode('&',$response->getBody());
-            $email = substr($emailData['0'], 6);
+            $emailData = explode('&', $client->request()->getBody());
 
-            $users = new Users_Model_Users_Table();
-            if (!$row = $users->getByEmail($email)) {
-                $row = $users->createRow();
-                $row->email = $email;
-                $row->login = $info['entry']['displayName'];
-                $row->firstname = $info['entry']['name']['givenName'];
-                $row->lastname = $info['entry']['name']['familyName'];
-                $row->role = Users_Model_User::ROLE_USER;
-                $row->status = Users_Model_User::STATUS_ACTIVE;
-            }
-            $row->gId = $info['entry']['id'];
-            $row->logined = date('Y-m-d H:i:s');
-            $row->ip = $this->getRequest()->getClientIp();
-            $row->count++;
-            $row->save();
+            $info->email = substr($emailData['0'], 6);
 
-            $row->login();
+            return $info;
         } else {
             $consumer = $this->getClient();
             // fetch a request token

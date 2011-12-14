@@ -115,27 +115,20 @@ class Helper_Twitter extends Zend_Controller_Action_Helper_Abstract
     }
 
     /**
-     * Login
+     * Get info
      *
+     * @return ArrayObject
      */
-    public function login()
+    public function getInfo()
     {
         if ($token = $this->getToken()) {
-            $users = new Users_Model_Users_Table();
-            if (!$row = $users->getByTwid($token->getParam('user_id'))) {
-                $row = $users->createRow();
-                $row->twId = $token->getParam('user_id');
-                $row->login = $token->getParam('screen_name');
-                $row->firstname = $row->login;
-                $row->role = Users_Model_User::ROLE_USER;
-                $row->status = Users_Model_User::STATUS_ACTIVE;
-            }
-            $row->logined = date('Y-m-d H:i:s');
-            $row->ip = $this->getRequest()->getClientIp();
-            $row->count++;
-            $row->save();
 
-            $row->login();
+            $info = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+            $info->twId      = $token->getParam('user_id');
+            $info->login     = $token->getParam('screen_name');
+            $info->firstname = $info->login;
+
+            return $info;
         } else {
             $consumer = $this->getClient();
             // fetch a request token
