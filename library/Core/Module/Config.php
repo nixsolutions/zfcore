@@ -72,6 +72,8 @@ class Core_Module_Config
         $this->_modules    = array_keys(Zend_Controller_Front::getInstance()->getControllerDirectory());
         $this->_modulesDir = dirname(Zend_Controller_Front::getInstance()->getModuleDirectory());
         $this->_configsDir = APPLICATION_PATH . '/configs/';
+
+        sort($this->_modules);
     }
 
     /**

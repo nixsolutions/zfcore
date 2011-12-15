@@ -4,8 +4,9 @@
 		button.attr('onclick', "generate(6); return false;")
 			  .html('&nbsp;<?php echo $this->__('Generate')?>')
 			  .attr('href', 'javascript:void(0)');
-		$('#password').after(button)//.button();
-	})
+		$('#password').after(button); //.button();
+	});
+
 	function generate(length)
 	{
 		var str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

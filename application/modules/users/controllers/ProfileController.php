@@ -30,9 +30,15 @@ class Users_ProfileController extends Core_Controller_Action
             throw new Zend_Controller_Action_Exception('Page not found');
         }
 
-        $users = new Users_Model_Users_Table();
-        if (!$row = $users->getById($id)) {
-            throw new Zend_Controller_Action_Exception('Page not found');
+        $identity = Zend_Auth::getInstance()->getIdentity();
+
+        if ($id == $identity->id) {
+            $row = $identity;
+        } else {
+            $users = new Users_Model_Users_Table();
+            if (!$row = $users->getById($id)) {
+                throw new Zend_Controller_Action_Exception('Page not found');
+            }
         }
 
         $this->view->row = $row;
@@ -56,7 +62,7 @@ class Users_ProfileController extends Core_Controller_Action
             $row->setFromArray($form->getValues());
             $row->save();
 
-            $row->login();
+            $row->login(false);
 
             $this->_helper->flashMessenger('Profile Updated');
             $this->_helper->redirector('index');

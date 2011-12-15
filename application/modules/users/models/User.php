@@ -188,12 +188,20 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     /**
      * Login user
      *
+     * @param boolen $update
      * @return Users_Model_User
      */
-    public function login()
+    public function login($update = true)
     {
-        Zend_Auth::getInstance()->getStorage()->write($this);
+        if ($update) {
+            $request = Zend_Controller_Front::getInstance()->getRequest();
+            $this->logined = date('Y-m-d H:i:s');
+            $this->ip = $request->getClientIp();
+            $this->count++;
+            $this->save();
+        }
 
+        Zend_Auth::getInstance()->getStorage()->write($this);
         return $this;
     }
 
@@ -228,6 +236,9 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
      */
     protected function _insert()
     {
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+        $this->ip = $request->getClientIp();
+
         $this->created = date('Y-m-d H:i:s');
         $this->_update();
     }

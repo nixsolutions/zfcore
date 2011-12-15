@@ -56,29 +56,22 @@ class Helper_Facebook extends Zend_Controller_Action_Helper_Abstract
     }
 
     /**
-     * Login
+     * Get info
      *
+     * @return ArrayObject
      */
-    public function login()
+    public function getInfo()
     {
+        $info = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
+
         $user = $this->getClient()->api("/me");
 
-        $users = new Users_Model_Users_Table();
-        if (!$row = $users->getByEmail($user['email'])) {
-            $row = $users->createRow();
-            $row->login = $user['username'];
-            $row->email = $user['email'];
-            $row->firstname = $user['first_name'];
-            $row->lastname = $user['last_name'];
-            $row->role = Users_Model_User::ROLE_USER;
-            $row->status = Users_Model_User::STATUS_ACTIVE;
-        }
-        $row->fbUid = $user['id'];
-        $row->logined = date('Y-m-d H:i:s');
-        $row->ip = $this->getRequest()->getClientIp();
-        $row->count++;
-        $row->save();
+        $info->login     = $user['username'];
+        $info->email     = $user['email'];
+        $info->firstname = $user['first_name'];
+        $info->lastname  = $user['last_name'];
+        $info->fbUid     = $user['id'];
 
-        $row->login();
+        return $info;
     }
 }

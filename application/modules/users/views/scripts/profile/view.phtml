@@ -7,11 +7,7 @@
 </h1>
 <div>
     <div class="left">
-        <?php if ($this->row->avatar):?>
-            <img src="<?php echo $this->baseUrl($this->row->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $this->row->login?>"/>
-        <?php else:?>
-            <?php echo $this->gravatar($this->row->email, array(), array('title' => $this->__('Avatar for') . ' '  .$this->row->login))?>
-        <?php endif;?>
+        <img src="<?php echo $this->avatar($this->row)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $this->row->login?>"/>
     </div>
     <div class="left">
         <dl>

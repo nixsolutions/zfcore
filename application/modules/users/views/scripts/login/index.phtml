@@ -13,26 +13,16 @@
                                          'action'=>'forget-password'),
                                    'forgetPassword'); ?>"><?php echo $this->__('Forget Password')?></a> |
 
-    <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'google'));?>">
+    <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'google'), 'default');?>">
         <?php echo $this->__('Sign in with Google')?>
     </a> |
-    <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'twitter'));?>">
-        <img src="<?php echo $this->baseUrl('/layouts/default/css/images/twitter-darker.png')?>" alt="<?php echo $this->__('Sign in with Twitter')?>"/>
+    <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'twitter'), 'default');?>">
+        <?php echo $this->__('Sign in with Twitter')?>
     </a> |
     <?php echo $this->fbConnect()->login(
         $this->__('Login with Facebook'),
         array('email', 'user_checkins'),
-        'onConnect()'
+        $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'facebook'), 'default')
     );?>
 </p>
-<script type="text/javascript">
-function onConnect() {
-	FB.getLoginStatus(function(response) {
-		if (response.session) {
-			location = '<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'facebook'));?>';
-		}
-	});
-}
-</script>
-
 </div>

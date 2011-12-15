@@ -17,19 +17,22 @@
         <mkdir dir="${basedir}/data/uploads/"/>
         <mkdir dir="${basedir}/public/images/captcha/"/>
         <mkdir dir="${basedir}/public/uploads/"/>
+        
+        <!--Configuration-->
+        <move file="${basedir}/application/configs/application.sample.yaml" todir="${basedir}/application/configs/application.yaml" />
     </target>
-    <target name="phpdoc">
+    <!--<target name="phpdoc">
         <exec dir="${basedir}" executable="phpdoc" failonerror="false">
             <arg line="-t build/docs
-    			  --directory '${basedir}/application,${basedir}/library/Core'
-    			  -ti 'ZFCore Docs'
-    			  --parseprivate on
-    			  --undocumentedelements on
-    			  --output HTML:Smarty:PHP
-    			  --ignore '*.phtml'
-    			  --sourcecode on"/>
+                  - -directory '${basedir}/application,${basedir}/library/Core'
+                  -ti 'ZFCore Docs'
+                  - -parseprivate on
+                  - -undocumentedelements on
+                  - -output HTML:Smarty:PHP
+                  - -ignore '*.phtml'
+                  - -sourcecode on"/>
         </exec>
-    </target>
+    </target>-->
     <target name="phploc">
         <exec dir="${basedir}" executable="phploc">
             <arg line="--log-csv ${basedir}/build/logs/phploc.csv" />
@@ -52,8 +55,8 @@
     </target>
     <target name="pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
         <exec dir="${basedir}" executable="pdepend" failonerror="true">
-	    <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
-	    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
+        <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
+        <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
             <arg line="--ignore=bin,migrations,public"/>
             <arg line="."/>
@@ -76,5 +79,107 @@
                 --output ${basedir}/build/phpcb" />
         </exec>
     </target>
-    <target name="build" depends="clean, prepare, phpdoc, phploc, phpmd, phpcs, phpcpd, pdepend, phpcb, phpunit"/>
+    <target name="build" depends="clean, prepare, phploc, phpmd, phpcs, phpcpd, pdepend, phpcb, phpunit"/>
+
+    <target name="update-source">
+        <exec dir="${basedir}" executable="hg">
+            <arg line="pull" />
+        </exec>
+        <exec dir="${basedir}" executable="hg">
+            <arg line="update" />
+        </exec>
+    </target>
+
+    <target name="clean-db">
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration blog" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration faq" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration feedback" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration forum" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration menu" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration pages" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration users" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="down migration" />
+        </exec>
+    </target>
+
+    <target name="recreate-db" depends="clean-db">
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration blog" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration faq" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration feedback" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration forum" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration menu" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration pages" />
+        </exec>
+        <exec dir="${basedir}/bin" executable="./zfc.sh">
+            <arg line="up migration users" />
+        </exec>
+    </target>
+
+    <target name="load-test-data" depends="recreate-db">
+        <!-- Add here any test data (may be provided with custom migrations) -->
+    </target>
+
+    <target name="show-maintanance-page">
+        
+        <copy file="${basedir}/public/robots.txt"
+              tofile="${basedir}/public/original-robots.txt"
+              overwrite="true" failonerror="false" />
+
+        <copy file="${basedir}/public/maintenance-robots.txt"
+              tofile="${basedir}/public/robots.txt"
+              overwrite="true" />
+
+        <copy file="${basedir}/public/.htaccess"
+              tofile="${basedir}/public/original.htaccess" 
+              overwrite="true" />
+
+        <copy file="${basedir}/public/maintenance.htaccess"
+              tofile="${basedir}/public/.htaccess" 
+              overwrite="true" />
+
+    </target>
+
+    <target name="remove-maintanance-page">
+
+        <copy file="${basedir}/public/original.htaccess" 
+              tofile="${basedir}/public/.htaccess"
+              overwrite="true" />
+
+        <copy file="${basedir}/public/original-robots.txt" 
+              tofile="${basedir}/public/robots.txt"
+              overwrite="true" failonerror="false" />
+              
+    </target>
+
+    <target name="reset-demo" depends="show-maintanance-page,update-source,load-test-data,remove-maintanance-page"/>
+
 </project>

@@ -28,29 +28,9 @@ production:
       params:
         prefixdefaultmodule: true
         displayExceptions: false
-        
       actionhelperpaths:
         Helper: APPLICATION_PATH/helpers
-
       plugins:
-        translate:
-          class: Core_Controller_Plugin_Translate
-          stackindex: 20
-          options:
-            default: en
-            locales:
-              ru: ru_RU
-              ua: uk_UA
-              en: en_GB
-              us: en_US
-            adapter: gettext
-            content: APPLICATION_PATH/../data/languages/
-            scan: filename
-            disableNotices: on
-            logUntranslated: off
-            logMessage: Undefined message '%message%' in '%locale%'
-            logPath: APPLICATION_PATH/../data/logs/lang.log
-
         acl:
           class: Core_Controller_Plugin_Acl
           stackindex: 30
@@ -63,14 +43,6 @@ production:
               action: denied
             role: guest
             cache: on
-            
-        routes:
-          class: Core_Controller_Plugin_Routes
-          stackindex: 40
-          options:
-            config: routes
-            cache: on
-
         navigation:
           class: Core_Controller_Plugin_Navigation
           stackindex: 50
@@ -79,6 +51,18 @@ production:
             section: dashboard
             cache: on
             
+    router:
+      config: routes
+      cache: on
+    translate: 
+      locale: en
+      adapter: gettext
+      content: APPLICATION_PATH/../data/languages/
+      scan: filename
+      disableNotices: on
+      logUntranslated: off
+      logMessage: Undefined message '%message%' in '%locale%'
+      logPath: APPLICATION_PATH/../data/logs/lang.log
     modules:
     db:
       adapter: pdo_mysql
@@ -139,7 +123,6 @@ production:
     title: ZFCore
     doctype: HTML5
     encoding: UTF-8
-
 testing:
   _extends: production
   phpSettings:
@@ -158,14 +141,12 @@ testing:
         acl:
           options:
             allowAll: off
-
 development:
   _extends: production
   phpSettings:
     display_startup_errors: true
     display_errors: true
     error_reporting: E_ALL|E_STRICT
-
   resources:
     frontController:
       plugins:

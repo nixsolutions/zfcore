@@ -27,6 +27,11 @@ class Application_View_Helper_FbConnect extends Zend_View_Helper_Abstract
     protected $_status = true;
 
     /**
+    * @var boolen
+    */
+    protected $_oauth = true;
+
+    /**
      * @var boolen
      */
     protected $_loaded = false;
@@ -34,11 +39,12 @@ class Application_View_Helper_FbConnect extends Zend_View_Helper_Abstract
     /**
      * Set defaults
      *
-     * @param boolen  $status
-     * @param boolen  $xfbml
+     * @param boolen $status
+     * @param boolen $xfbml
+     * @param boolen $oauth
      * @return Application_View_Helper_FbConnect
      */
-    public function fbConnect($status = null, $xfbml = null)
+    public function fbConnect($status = null, $xfbml = null, $oauth = null)
     {
         if (!$this->_appId) {
             $config = Zend_Registry::get('fbConfig');
@@ -51,6 +57,9 @@ class Application_View_Helper_FbConnect extends Zend_View_Helper_Abstract
         if (null !== $xfbml) {
             $this->_xfbml = $xfbml;
         }
+        if (null !== $oauth) {
+            $this->_oauth = $oauth;
+        }
 
         return $this;
     }
@@ -60,17 +69,21 @@ class Application_View_Helper_FbConnect extends Zend_View_Helper_Abstract
      *
      * @param string $label
      * @param array  $perms
-     * @param string $onLogin
+     * @param string $uri
+     * @param array  $params
      * @return Application_View_Helper_FbConnect
      */
-    public function login($label = 'Login with Facebook', array $perms = array('email', 'user_checkins'), $onLogin = '')
+    public function login($label = 'Login with Facebook', array $perms = array('email', 'user_checkins'), $uri = '', array $params = array())
     {
+        $params['next'] = $uri;
+        $params['req_perms'] = join(',', $perms);
+
+        $facebook = new Facebook_Facebook(Zend_Registry::get('fbConfig'));
         ?>
 
-        <fb:login-button onlogin="<?php echo $onLogin?>" perms="<?php echo join(',', $perms)?>"><?php echo $label?></fb:login-button>
+		<a href="<?php echo $facebook->getLoginUrl($params)?>"><?php echo $label?></a>
 
         <?php
-
         return $this;
     }
 
@@ -78,18 +91,16 @@ class Application_View_Helper_FbConnect extends Zend_View_Helper_Abstract
      * Draw registration form
      *
      * @param array  $fields
-     * @param string $callback
+     * @param string $uri
      * @return Application_View_Helper_FbConnect
      */
-    public function register(array $fields, $callback = '')
+    public function register(array $fields, $uri = '')
     {
-        if ($callback) {
-            $callback = urlencode($callback);
-        }
         ?>
 
-        <fb:registration fields="<?php echo Zend_Json::encode($fields)?>"
-                         redirect-uri="<?php echo $callback?>"></fb:registration>
+        <div class="fb-registration"
+             data-fields="<?php echo Zend_Json::encode($fields)?>"
+             data-redirect-uri="<?php echo $uri?>"></div>
 
         <?php
 
@@ -105,16 +116,23 @@ class Application_View_Helper_FbConnect extends Zend_View_Helper_Abstract
     {
         if (!$this->_loaded) {
             ?>
-
-            <div id="fb-root"></div>
-            <script type="text/javascript" src="http://connect.facebook.net/en_US/all.js"></script>
-            <script type="text/javascript">
-                FB.init({
-                    appId: '<?php echo $this->_appId?>',
-                    cookie: <?php echo ($this->_cookie) ? 'true' : 'false'?>,
-                    status: <?php echo ($this->_status) ? 'true' : 'false'?>,
-                    xfbml: <?php echo ($this->_xfbml) ? 'true' : 'false'?>
-                });
+             <div id="fb-root"></div>
+             <script type="text/javascript">
+                window.fbAsyncInit = function() {
+                    FB.init({
+                        appId: '<?php echo $this->_appId?>',
+                        cookie: <?php echo ($this->_cookie) ? 'true' : 'false'?>,
+                        status: <?php echo ($this->_status) ? 'true' : 'false'?>,
+                        xfbml: <?php echo ($this->_xfbml) ? 'true' : 'false'?>,
+                        oauth: <?php echo ($this->_oauth) ? 'true' : 'false'?>
+                    });
+                };
+                (function(d){
+                    var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+                    js = d.createElement('script'); js.id = id; js.async = true;
+                    js.src = "//connect.facebook.net/en_US/all.js";
+                    d.getElementsByTagName('head')[0].appendChild(js);
+                  }(document));
             </script>
 
             <?php
