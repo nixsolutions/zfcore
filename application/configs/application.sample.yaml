@@ -51,7 +51,7 @@ production:
             section: dashboard
             cache: on
             
-    routes:
+    router:
       config: routes
       cache: on
     translate: 
