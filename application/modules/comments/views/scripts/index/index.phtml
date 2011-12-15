@@ -1,3 +1,5 @@
+<?php $this->plugins()->fancybox(); ?>
+
 <?php if ($this->rowset->count()): ?>
     <div id="comments">
         <?php foreach($this->rowset as $row): ?>
@@ -19,6 +21,11 @@
                         <span class="says"><?php echo $this->__('said')?>:</span>
 
                         <p><?php echo $row->body ?></p>
+                        
+                        <div>
+                            <input type="button" value="Reply" class="reply" data-commentId="<?php echo $row->id ?>" />
+                            <input type="button" value="Subscribe" data-commentId="<?php echo $row->id ?>" />
+                        </div>
                     </article>
                 </li>
             </ul>
@@ -40,7 +47,24 @@
         <?php else : ?>
                 <div class="unknown-user"></div>
         <?php endif;?>
-
+       
         <?php echo $this->form;?>
         </li>
     </ul>
+
+<div style="display: none;">
+    <div id="commentsLoginForm">
+        <?php echo $this->loginForm ?>
+
+        <p class="small">
+            <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'twitter'));?>">
+            <img src="<?php echo $this->baseUrl('/layouts/default/css/images/twitter-darker.png')?>" alt="<?php echo $this->__('Sign in with Twitter')?>"/>
+            </a> |
+            <?php echo $this->fbConnect()->login(
+                $this->__('Login with Facebook'),
+                array('email', 'user_checkins'),
+                'onConnect()'
+            );?>
+        </p>
+    </div>
+</div>

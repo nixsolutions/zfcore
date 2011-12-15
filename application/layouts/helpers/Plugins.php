@@ -51,4 +51,20 @@ class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
 
         return $this;
     }
+    
+    /**
+     * Add fancybox plugin
+     * 
+     * @return Application_View_Helper_Plugins
+     */
+    public function fancybox()
+    {
+        $this->view->headLink()
+            ->appendStylesheet($this->view->baseUrl('scripts/jquery/fancybox/css/fancybox.css'));
+
+        $this->view->headScript()
+            ->appendFile($this->view->baseUrl('scripts/jquery/fancybox/js/fancybox.pack.js'));
+
+        return $this;
+    }
 }

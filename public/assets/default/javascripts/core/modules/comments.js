@@ -1,9 +1,43 @@
 $(function() {
     
     var _container = jQuery('div#comments ul')
+        , SubmitForm
         , Comment
-        , CommentForm;
+        , CommentForm
+        , ReplyForm
+        , LoginForm;
 
+    /**
+     * Submit form
+     */
+    SubmitForm = function(form, options) {
+        if (!(this instanceof SubmitForm)) {
+            return new SubmitForm(form, options);
+        }
+        
+        this.form = form;
+    }
+    
+    SubmitForm.prototype.init = function () {
+        var self = this;
+        
+        this.form.submit(function(e) {
+            e.preventDefault();
+            
+            self.submit();
+        });
+    }
+    
+    SubmitForm.prototype.startLoading = function () {
+        this.submitButton = this.form.find('input[type="submit"], button[type="submit"]');
+        
+        this.submitButton.attr('disabled', true);
+    }
+    
+    SubmitForm.prototype.stopLoading = function () {
+        this.submitButton.attr('disabled', false);
+    }
+    
     /**
      * Implements comment rendering
      */
@@ -54,19 +88,12 @@ $(function() {
             return new CommentForm(form, options);
         }
 
-        var _self = this;
-
-        this.form = form;
+        jQuery.extend(this, new SubmitForm(form, options));
 
         // mixin options
         this.options = jQuery.extend(this.options, options);
 
-        // prevent default submit event and execute the self submit method
-        form.submit(function(e) {
-            e.preventDefault();
-
-            _self.submit();
-        });
+        this.init();
 
         return this;
     }
@@ -75,17 +102,82 @@ $(function() {
      * Simple validation and posting comment
      */
     CommentForm.prototype.submit = function(e) {
-        console.log('S!');
+        jQuery('<a>', {
+            'href': '#commentsLoginForm'
+        }).fancybox({
+            overlayShow: true
+        }).click();
     }
+    
+    LoginForm = function(form, options) {
+        if (!(typeof this !== 'LoginForm')) {
+            return new LoginForm(form, options);
+        }
+        
+        jQuery.extend(this, new SubmitForm(form, options));
+        
+        // mixin options
+        this.options = jQuery.extend(this.options, options);
+        
+        this.init();
+    }
+    
+    LoginForm.prototype.submit = function(e) {
+        jQuery.when(this.signIn()).then(function() {
+            console.log('submit!');
+        });
+    }
+    
+    LoginForm.prototype.signIn = function() {
+        var dfrd = new jQuery.Deferred()
+            , self = this;
+        
+        this.startLoading();
+        
+        setTimeout(function() {
+            self.stopLoading();
+            
+            dfrd.resolve(1);
+        }, 2000);
+        
+        return dfrd.promise();
+    }
+    
+    ReplyForm = function(form, options) {
+        if (!(typeof this !== 'ReplyForm')) {
+            return new ReplyForm(form, options);
+        }
+        
+        jQuery.extend(this, new SubmitForm(form, options));
+        
+        // mixin options
+        this.options = jQuery.extend(this.options, options);
+        
+        this.init();
+    }
+
+    /**
+     * Prepare reply form
+     */
+    function prepareReply(element) {
+        console.log('e', element, jQuery(element).attr('data-commentId'));
+    }
+
+    jQuery('div#comments').find('.reply').click(function(e) {
+        e.preventDefault();
+        
+        prepareReply(this);
+    });
 
     /**** Main "constructor" ****/
 
     var form = new CommentForm(
-        jQuery('.comment form').first()
-    );
-
-    console.log(jQuery('.comment form'));
-     
-    
+        jQuery('.comment > form').first()
+    );  
         
+//    new LoginForm(
+//        jQuery('#userLoginForm')
+//    );
+        
+    
 });
