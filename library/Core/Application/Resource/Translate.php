@@ -8,49 +8,20 @@ class Core_Application_Resource_Translate
      */
     public function init()
     {
+        //return;
+        if (!isset($this->_options['content'], $this->_options['data'])) {
+
+            $this->getBootstrap()->bootstrap('Modules');
+
+            $this->_options['content'] = Translate_Model_Translate::getTranslationPath();
+            $this->_options['adapter'] = Translate_Model_Translate::ADAPTER;
+        }
         $translate = $this->getTranslate();
-        $bootstrap = $this->getBootstrap();
+        $front = $this->getBootstrap()->bootstrap('frontController')
+                                      ->getResource('frontController');
 
-        if (!empty($this->_options['locale'])) {
-            $locale = $this->_options['locale'];
-        }
 
-        if (!empty($_COOKIE['locale'])) {
-            $locale = $_COOKIE['locale'];
-        } elseif ($bootstrap->hasResource('Locale')) {
-            $locale = $bootstrap->bootstrap("Locale")
-                                ->getResource('Locale')->getLanguage();
-        }
-        if (empty($_COOKIE['locale'])) {
-            setcookie('locale', $locale, time()+60*60*24*30);
-        }
-
-        $router = $bootstrap->bootstrap('Router')->getResource('Router');
-        $langRoute = new Zend_Controller_Router_Route(
-            ':locale',
-            array(
-                'locale' => $locale
-            ),
-            array('locale' => '^[a-z]{2}$')
-        );
-
-        $router->addDefaultRoutes();
-
-        foreach ($router->getRoutes() as $name => $route) {
-            $router->removeRoute($name);
-
-            if ('default' == $name) {
-                $router->addRoute($name . 'Default', $route);
-            }
-
-            $router->addRoute($name, $langRoute->chain($route));
-
-            if ($route instanceof Zend_Controller_Router_Route_Regex
-                || $route instanceof Zend_Controller_Router_Route_Static) {
-                $router->addRoute($name . 'Default', $route);
-            }
-
-        }
+        $front->registerPlugin(new Core_Controller_Plugin_Translate($translate));
 
         return $translate;
     }

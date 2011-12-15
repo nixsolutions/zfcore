@@ -1,0 +1,22 @@
+translate-managment:
+  label: Translate
+  uri:
+  pages:
+    create:
+      label: Create New Translation
+      module: translate
+      controller: management
+      action: create
+      route: default
+    edit:
+      label: Edit Translations
+      module: translate
+      controller: management
+      action: index
+      route: default
+    build:
+      label: Build Translations
+      module: translate
+      controller: management
+      action: build
+      route: default
