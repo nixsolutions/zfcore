@@ -17,6 +17,7 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
      */
     public function init()
     {
+        $this->setAction('/comments/add');
         $this->setMethod('post');
 
         $this->addElement(
@@ -65,6 +66,9 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
                 'label' => 'Add comment',
             )
         );
+        
+        $this->addAlias()
+             ->addReturnUrl();
     }
     
     public function setUser($user)
@@ -74,5 +78,41 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
             
             $this->getElement('submit')->setLabel('Add comment as ...');
         }
+    }
+    
+    protected function addAlias()
+    {
+        $element = new Zend_Form_Element_Hidden('alias');
+        $element->setRequired(true)
+            ->setDecorators(array('ViewHelper'));
+        
+        $this->addElement($element);
+        
+        return $this;
+    }
+    
+    protected function addReturnUrl()
+    {
+        $element = new Zend_Form_Element_Hidden('returnUrl');
+        $element->setRequired(true)
+            ->setDecorators(array('ViewHelper'));
+        
+        $this->addElement($element);
+        
+        return $this;
+    }
+    
+    public function setAlias($alias)
+    {
+        $this->getElement('alias')->setValue($alias);
+        
+        return $this;
+    }
+    
+    public function setReturnUrl($url)
+    {
+        $this->getElement('returnUrl')->setValue($url);
+        
+        return $this;
     }
 }

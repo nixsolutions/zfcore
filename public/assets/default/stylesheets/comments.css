@@ -30,6 +30,13 @@
 
 .comment article {
     margin: 0px;
+    position: relative;
+}
+
+.comment article .actions {
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 
 .comment .unknown-user {

@@ -11,15 +11,13 @@
 class Comments_Model_Comment_Manager extends Core_Model_Manager
 {
     /**
-     * Get comments for some post and category
+     * Get comments by alias
      *
-     * @param integer $postId
      * @param string $alias
      * @return array
      */
-    public function findAll($postId, $alias)
+    public function findAll($alias)
     {
-        $categoriesTable = new Categories_Model_Category_Table();
         $users = new Users_Model_Users_Table();
 
         $select = $this->getDbTable()->select(true);
@@ -29,7 +27,6 @@ class Comments_Model_Comment_Manager extends Core_Model_Manager
                'userId = u.id',
                array('login', 'avatar', 'email', 'firstname', 'lastname')
             )
-            ->where('postId = ?', $postId)
             ->where('alias = ?', $alias);
         
         return $this->getDbTable()->fetchAll($select);

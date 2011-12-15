@@ -16,12 +16,4 @@
   </footer>
 </article>
 
-<?php echo $this->action(
-    'index', 
-    'index', 
-    'comments', 
-    array(
-        'postId' => $this->row->id,
-        'alias' => Blog_Model_Category_Manager::CATEGORY_ALIAS
-    )
-) ?>
+<?php echo $this->getComments('blog-post-' . $this->row->id) ?>

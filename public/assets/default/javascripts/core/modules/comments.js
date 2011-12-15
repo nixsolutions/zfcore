@@ -102,11 +102,25 @@ $(function() {
      * Simple validation and posting comment
      */
     CommentForm.prototype.submit = function(e) {
-        jQuery('<a>', {
-            'href': '#commentsLoginForm'
-        }).fancybox({
-            overlayShow: true
-        }).click();
+        jQuery.when(this.add()).then(function(response) {
+            console.log('r', response);
+        });
+        
+    }
+    
+    CommentForm.prototype.add = function(e) {
+        var dfrd = new jQuery.Deferred()
+            , self = this;
+        
+        this.startLoading();
+        
+        setTimeout(function() {
+            self.stopLoading();
+            
+            dfrd.resolve(1);
+        }, 2000);
+        
+        return dfrd.promise();
     }
     
     LoginForm = function(form, options) {
@@ -171,9 +185,9 @@ $(function() {
 
     /**** Main "constructor" ****/
 
-    var form = new CommentForm(
-        jQuery('.comment > form').first()
-    );  
+//    var form = new CommentForm(
+//        jQuery('.comment > form').first()
+//    );  
         
 //    new LoginForm(
 //        jQuery('#userLoginForm')

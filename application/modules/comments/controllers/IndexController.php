@@ -12,20 +12,22 @@ class Comments_IndexController extends Core_Controller_Action
 {
     public function indexAction()
     {
-        $postId = (int) $this->_getParam('postId', 0);
+        $returnUrl = $this->_getParam('returnUrl');
         $alias = $this->_getParam('alias');
         
-        if (!$postId || !$alias) {
+        if (!$alias) {
             throw new Zend_Controller_Action_Exception('Page not found');
         }
         
         $manager = new Comments_Model_Comment_Manager();
-        $this->view->rowset = $manager->findAll($postId, $alias);
+        $this->view->rowset = $manager->findAll($alias);
         $this->view->form = new Comments_Model_Comment_Form_Create();
         
         $user = $this->view->user();
         
         $this->view->form->setUser($user);
+        $this->view->form->setAlias($alias);
+        $this->view->form->setReturnUrl($returnUrl);
         
         if (!$user) {
             $this->view->loginForm = new Users_Model_Users_Form_Login();
