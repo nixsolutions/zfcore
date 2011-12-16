@@ -41,7 +41,7 @@ class Core_Application_Resource_Router
             $router->addConfig($this->_getConfig());
 
             // add locale chain if using translate
-            if ($this->getBootstrap()->hasResource('Translate')) {
+            if ($this->getBootstrap()->hasPluginResource('Translate')) {
                 $locale = new Zend_Controller_Router_Route(
                     ':locale',
                     array(),

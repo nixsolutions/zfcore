@@ -56,14 +56,13 @@ production:
       cache: on
     translate: 
       locale: en
-      adapter: gettext
-      content: APPLICATION_PATH/../data/languages/
       scan: filename
       disableNotices: on
       logUntranslated: off
       logMessage: Undefined message '%message%' in '%locale%'
       logPath: APPLICATION_PATH/../data/logs/lang.log
-    modules:
+    locale: on
+    modules: on
     db:
       adapter: pdo_mysql
       params:
