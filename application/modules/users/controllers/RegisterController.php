@@ -41,7 +41,7 @@ class Users_RegisterController extends Core_Controller_Action
                         'check your email and confirm your registration';
                     $this->_flashMessenger->addMessage($message);
 
-                    $this->_redirect('/');
+                    $this->_helper->redirector(false, false, false);
                 } else {
                     $message = 'Something goes wrong. ' .
                         'Please fill the registration form again';
@@ -70,7 +70,7 @@ class Users_RegisterController extends Core_Controller_Action
                          . 'Please log in now';
                 $this->_flashMessenger->addMessage($message);
 
-                $this->_redirect('/login');
+                $this->_helper->redirector->gotoRoute(array(), 'login');
             } else {
                 $message = 'The user with specified data not found! '.
                     'Possibly you\'re already confirmed your registration';
@@ -78,7 +78,7 @@ class Users_RegisterController extends Core_Controller_Action
                 $this->_flashMessenger->addMessage($message);
             }
         }
-        $this->_redirect('/');
+        $this->_helper->redirector(false, false, false);
     }
 
     /**
@@ -107,7 +107,7 @@ class Users_RegisterController extends Core_Controller_Action
 
                     $this->_flashMessenger->addMessage($message);
 
-                    $this->_redirect('/login');
+                    $this->_helper->redirector->gotoRoute(array(), 'login');
                 }
             }
             $this->_flashMessenger->addMessage('Your email is not registered');

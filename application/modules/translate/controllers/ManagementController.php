@@ -79,7 +79,10 @@ class Translate_ManagementController extends Core_Controller_Action_Crud
             if (!isset($translations[$row->locale])) {
                 $translations[$row->locale] = array();
             }
-            $translations[$row->locale][$row->key] = $row->value;
+            if (!isset($translations[$row->locale][$row->module])) {
+                $translations[$row->locale][$row->module] = array();
+            }
+            $translations[$row->locale][$row->module][$row->key] = $row->value;
         }
         foreach ($translations as $locale => $translation) {
             Translate_Model_Translate::setTranslation($translation, $locale);

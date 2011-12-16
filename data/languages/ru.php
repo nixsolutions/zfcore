@@ -1,3 +1,6 @@
 <?php return array (
-  'Admin panel' => 'Панель Администратора',
+  'default' => 
+  array (
+    'Admin panel' => 'Панель Администратора',
+  ),
 );

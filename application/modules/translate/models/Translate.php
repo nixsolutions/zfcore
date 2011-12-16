@@ -9,7 +9,7 @@
  */
 class Translate_Model_Translate extends Core_Db_Table_Row_Abstract
 {
-    const ADAPTER = 'Zend_Translate_Adapter_Array';
+    const ADAPTER = 'Core_Translate_ModularAdapter_Array';
 
 
     public static function getTranslation($locale)

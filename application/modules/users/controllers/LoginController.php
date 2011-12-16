@@ -85,7 +85,7 @@ class Users_LoginController extends Core_Controller_Action
 
             $this->_helper->flashMessenger
                  ->addMessage('Incorect request recover password');
-            $this->_redirect('/login');
+            $this->_helper->redirector->gotoRoute(array(), 'login');
         }
 
         $reset = $this->_manager->clearHash($hash);
@@ -95,7 +95,7 @@ class Users_LoginController extends Core_Controller_Action
             $message = 'Incorrect password recovery request.';
         }
         $this->_flashMessenger->addMessage($message);
-        $this->_redirect('/login');
+        $this->_helper->redirector->gotoRoute(array(), 'login');
     }
 
     /**
@@ -116,7 +116,7 @@ class Users_LoginController extends Core_Controller_Action
                     $message = 'Incorrect password recovery request.';
                 }
                 $this->_flashMessenger->addMessage($message);
-                $this->_redirect('/login');
+                $this->_helper->redirector->gotoRoute(array(), 'login');
             } else {
                 $message = array_merge(
                     $form->getMessages('passw'),
@@ -136,7 +136,7 @@ class Users_LoginController extends Core_Controller_Action
     {
         $this->_manager->logout();
         $this->_helper->flashMessenger->addMessage('Logout successfull');
-        $this->_redirect('/');
+        $this->_helper->redirector(false, false, false);
     }
 
     /**
@@ -190,7 +190,7 @@ class Users_LoginController extends Core_Controller_Action
         $namespace->unsetAll();
 
         $this->_helper->flashMessenger->addMessage('Now You\'re Logging!');
-        $this->_redirect('/');
+        $this->_helper->redirector(false, false, false);
     }
 
     /**
