@@ -45,13 +45,17 @@ class Core_Translate_ModularAdapter_Array extends Zend_Translate_Adapter_Array
      *                                       locale identifier, @see Zend_Locale for more information
      * @return string
      */
-    public function translate($messageId, $locale = null, $module = 'default')
+    public function translate($messageId, $locale = null, $module = null)
     {
+        if (!$module) {
+            $module = 'default';
+        }
         if ($locale === null) {
             $locale = $this->_options['locale'];
         }
 
         $plural = null;
+        $number = null;
         if (is_array($messageId)) {
             if (count($messageId) > 2) {
                 $number = array_pop($messageId);
@@ -99,33 +103,24 @@ class Core_Translate_ModularAdapter_Array extends Zend_Translate_Adapter_Array
         }
 
         $locale = (string) $locale;
-        if ((is_string($messageId) || is_int($messageId)) && isset($this->_translate[$locale][$module][$messageId])) {
-            // return original translation
-            if ($plural === null) {
-                $this->_routed = array();
-                return $this->_translate[$locale][$module][$messageId];
-            }
+        if ((is_string($messageId) || is_int($messageId))
+            && (isset($this->_translate[$locale][$module][$messageId]) || isset($this->_translate[$locale]['default'][$messageId]))) {
 
-            $rule = Zend_Translate_Plural::getPlural($number, $locale);
-            if (isset($this->_translate[$locale][$module][$plural[0]][$rule])) {
-                $this->_routed = array();
-                return $this->_translate[$locale][$module][$plural[0]][$rule];
+            // return original translation
+            $result = $this->_getTranslatedMessage($messageId, $locale, $module, $plural, $number);
+            if (false !== $result) {
+                return $result;
             }
         } else if (strlen($locale) != 2) {
             // faster than creating a new locale and separate the leading part
             $locale = substr($locale, 0, -strlen(strrchr($locale, '_')));
 
-            if ((is_string($messageId) || is_int($messageId)) && isset($this->_translate[$locale][$module][$messageId])) {
+            if ((is_string($messageId) || is_int($messageId))
+                && (isset($this->_translate[$locale][$module][$messageId]) || isset($this->_translate[$locale]['default'][$messageId]))) {
                 // return regionless translation (en_US -> en)
-                if ($plural === null) {
-                    $this->_routed = array();
-                    return $this->_translate[$locale][$module][$messageId];
-                }
-
-                $rule = Zend_Translate_Plural::getPlural($number, $locale);
-                if (isset($this->_translate[$locale][$module][$plural[0]][$rule])) {
-                    $this->_routed = array();
-                    return $this->_translate[$locale][$module][$plural[0]][$rule];
+                $result = $this->_getTranslatedMessage($messageId, $locale, $module, $plural, $number);
+                if (false !== $result) {
+                    return $result;
                 }
             }
         }
@@ -151,5 +146,37 @@ class Core_Translate_ModularAdapter_Array extends Zend_Translate_Adapter_Array
         }
 
         return $plural[$rule];
+    }
+
+    /**
+     * Get translated message
+     *
+     * @param string  $messageId
+     * @param string  $locale
+     * @param string  $module
+     * @param string  $plural
+     * @param integer $number
+     * @return string|false
+     */
+    protected function _getTranslatedMessage($messageId, $locale, $module, $plural, $number)
+    {
+        if ($plural === null) {
+            $this->_routed = array();
+            if (isset($this->_translate[$locale][$module][$messageId])) {
+                return $this->_translate[$locale][$module][$messageId];
+            }
+            return $this->_translate[$locale]['default'][$messageId];
+        }
+
+        $rule = Zend_Translate_Plural::getPlural($number, $locale);
+        if (isset($this->_translate[$locale][$module][$plural[0]][$rule])) {
+            $this->_routed = array();
+            return $this->_translate[$locale][$module][$plural[0]][$rule];
+        }
+        if (isset($this->_translate[$locale]['default'][$plural[0]][$rule])) {
+            $this->_routed = array();
+            return $this->_translate[$locale]['default'][$plural[0]][$rule];
+        }
+        return false;
     }
 }
