@@ -106,7 +106,7 @@
         </exec>
     </target>
     
-    <target name="build" depends="prepare, phploc, phpmd, phpcs, phpcpd, pdepend, phpunit"/>
+    <target name="build" depends="prepare, phploc, phpmd, phpcs, phpcpd, pdepend, phpunit, phpcb"/>
 
     <target name="update-source" depends="prepare">
         <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log">
