@@ -72,8 +72,8 @@ class Translate_Form_Translate_Create extends Zend_Form
 
     protected function _module()
     {
-        $element = new Zend_Form_Element_Select('name');
-        $element->setLabel('Key');
+        $element = new Zend_Form_Element_Select('module');
+        $element->setLabel('Module');
         $element->setRequired(true)->setAttrib('style', 'width:100%');
 
         $modules = array_keys(Zend_Controller_Front::getInstance()->getControllerDirectory());

@@ -1,0 +1,61 @@
+<?php if ($this->grid->getData()): ?>
+<table cols="<?php echo count($this->grid->getHeaders()) ?>" class="zebra-striped">
+    <thead>
+        <tr>
+            <?php foreach ($this->grid->getHeaders() as $header): ?>
+                <?php
+                    $attrs = array();
+                    $attrs['class'] = 'header';
+                    if ($header->isOrdered) {
+                        $attrs['class'] .= $header->orderDirection == 'ASC' ? ' down' : ' up';
+                    }
+                    if ($header->type === Core_Grid::TYPE_DATA) {
+                        $attrs['class'] .= ' orderable';
+                        $attrs['data-column'] = $header->id;
+                        $attrs['data-direction'] = $header->orderDirection;
+                    }
+                    $attributes = array();
+                    foreach ($attrs as $attr => $value) {
+                        $attributes[] = $attr . '="' . $value . '"';
+                    }
+                ?>
+                <th <?php echo implode($attributes, ' ') ?>><?php echo $header->name ?></th>
+            <?php endforeach; ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->grid->getData() as $i => $row): ?>
+        <tr>
+            <?php foreach ($row as $column => $value):?>
+                <td>
+                    <?php if ('delete' == $column):?>
+                        <?php echo $value?>
+                    <?php elseif ('id' == $column):?>
+                        <input type="hidden" name="rowset[<?php echo $i?>][id]" value="<?php echo $value?>"/>
+                        <?php echo $value?>
+                    <?php elseif ('locale' == $column || 'module' == $column):?>
+                        <select name="rowset[<?php echo $i?>][<?php echo $column?>]" style="width: 100%" >
+                            <?php foreach ($this->form->getElement($column)->getMultiOptions() as $key => $option):?>
+                                <option value="<?php echo $key?>" <?php if ($key == $value):?>selected="selected"<?php endif?>><?php echo $option?></option>
+                            <?php endforeach;?>
+                        </select>
+                    <?php else:?>
+                        <input type="text" name="rowset[<?php echo $i?>][<?php echo $column?>]" value="<?php echo $value ?>" style="width: 100%"/>
+                    <?php endif?>
+                </td>
+            <?php endforeach; ?>
+        </tr>
+        <?php endforeach; ?>
+        <?php for ($i = $this->grid->getItemCountPerPage() - count($this->grid->getData()); $i > 0; $i--): ?>
+        <tr>
+            <?php for ($j = count($this->grid->getHeaders()); $j > 0; $j--): ?>
+                <td>&nbsp;</td>
+            <?php endfor; ?>
+        </tr>
+        <?php endfor; ?>
+    </tbody>
+</table>
+<?php echo $this->paginationControl($this->grid->getPaginator(), 'Sliding', 'crud/paginator.phtml') ?>
+<?php else: ?>
+    <p>Result is empty</p>
+<?php endif; ?>

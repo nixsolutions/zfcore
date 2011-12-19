@@ -21,12 +21,9 @@ class Translate_ManagementController extends Core_Controller_Action_Crud
         parent::init();
 
         $this->_beforeGridFilter(array(
-             '_addCheckBoxColumn',
              '_addAllTableColumns',
-             '_addEditColumn',
-             '_addDeleteColumn',
              '_addCreateButton',
-             '_addDeleteButton',
+             '_addDeleteColumn',
              '_showFilter'
         ));
     }
@@ -41,6 +38,22 @@ class Translate_ManagementController extends Core_Controller_Action_Crud
     protected function _getCreateForm()
     {
         return new Translate_Form_Translate_Create();
+    }
+
+    /**
+     * Save action
+     */
+    public function saveAction()
+    {
+        $table = new Translate_Model_Translate_Table();
+        foreach ($this->_getParam('rowset') as $rowData) {
+            if ($row = $table->getById($rowData['id'])) {
+                $row->setFromArray($rowData)->save();
+            }
+        }
+
+        $this->_helper->flashMessenger('Updated');
+        $this->_helper->redirector('index');
     }
 
     /**
@@ -90,6 +103,28 @@ class Translate_ManagementController extends Core_Controller_Action_Crud
 
         $this->_helper->flashMessenger('Build successful');
         $this->_helper->redirector('index');
+    }
+
+    /**
+     * Grid action
+     */
+    public function gridAction()
+    {
+        parent::gridAction();
+
+        $this->view->form = new Translate_Form_Translate_Create();
+    }
+
+    /**
+     * @see Core_Controller_Action::postDispatch()
+     */
+    public function postDispatch()
+    {
+        parent::postDispatch();
+
+        if ('grid' == $this->_getParam('action') || 'index' == $this->_getParam('action')) {
+            $this->_setDefaultScriptPath();
+        }
     }
 }
 
