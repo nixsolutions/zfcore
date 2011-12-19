@@ -26,15 +26,15 @@
 
         <!--Requirements-->
         <mkdir dir="${basedir}/data/cache"/>
-        <chmod file="${basedir}/data/cache" perm="777"/>
+        <chmod dir="${basedir}/data/cache" perm="777"/>
         <mkdir dir="${basedir}/data/logs"/>
-        <chmod file="${basedir}/data/logs" perm="777"/>
+        <chmod dir="${basedir}/data/logs" perm="777"/>
         <mkdir dir="${basedir}/data/session"/>
-        <chmod file="${basedir}/data/session" perm="777"/>
+        <chmod dir="${basedir}/data/session" perm="777"/>
         <mkdir dir="${basedir}/public/images/captcha"/>
-        <chmod file="${basedir}public/images/captcha" perm="777"/>
+        <chmod dir="${basedir}/public/images/captcha" perm="777"/>
         <mkdir dir="${basedir}/public/uploads"/>
-        <chmod file="${basedir}/public/uploads" perm="777"/>
+        <chmod dir="${basedir}/public/uploads" perm="777"/>
         
         <!--Configuration-->
         <copy file="${appDir}/configs/application.sample.yaml" tofile="${appDir}/configs/application.yaml" />
