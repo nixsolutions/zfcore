@@ -3,19 +3,19 @@ translate-managment:
   uri:
   pages:
     create:
-      label: Create New Translation
+      label: Create
       module: translate
       controller: management
       action: create
       route: default
     edit:
-      label: Edit Translations
+      label: Edit
       module: translate
       controller: management
       action: index
       route: default
     build:
-      label: Build Translations
+      label: Build
       module: translate
       controller: management
       action: build
