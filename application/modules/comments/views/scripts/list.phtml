@@ -1,0 +1,29 @@
+<div id="comments">
+    <ul class="commentlist">
+        <?php if ($this->paginator) : ?>
+        <li>
+            <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+        </li>
+        <?php endif; ?>
+        
+        <?php echo $this->partial('template/' . $this->template . '.phtml', 'comments', array('paginator' => $this->paginator, 'user' => $this->user)) ?>
+        
+        <?php if ($this->paginator) : ?>
+        <li>
+            <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
+        </li>
+        <?php endif; ?>
+        
+        <?php if ($this->user):?>
+            <li class="comment">
+            <?php if ($this->user->avatar):?>
+                <img src="<?php echo $this->baseUrl($this->user->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $this->user->login?>" class="avatar"/>
+            <?php else: ?>
+                <?php echo $this->gravatar($this->user->email, array(), array('title' => $this->__('Avatar for') . ' '  . $this->user->getName(), 'class' => 'avatar')) ?>
+            <?php endif?>
+                
+            <?php echo $this->form;?>
+            </li>
+        <?php endif;?>
+    </ul>
+</div>

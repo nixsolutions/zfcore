@@ -1,14 +1,14 @@
 <?php
 /**
- * Comments_ManagementController for Comments module
+ * Comments_AliasesController for Comments module
  *
  * @category   Application
  * @package    Comments
  * @subpackage Controller
  *
- * @version  $Id: ManagementController.php 2011-11-21 11:59:34Z pavel.machekhin $
+ * @version  $Id: AliasesController.php 2011-11-21 11:59:34Z pavel.machekhin $
  */
-class Comments_ManagementController extends Core_Controller_Action_Crud
+class Comments_AliasesController extends Core_Controller_Action_Crud
 {
     /**
      * init invironment
@@ -40,7 +40,7 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getTable()
     {
-        return new Comments_Model_Comment_Table();
+        return new Comments_Model_CommentAlias_Table();
     }
     
     /**
@@ -50,7 +50,7 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getCreateForm()
     {
-        return new Comments_Model_Comment_Form_Create();
+        return new Comments_Model_CommentAlias_Form_Create();
     }
 
     /**
@@ -60,6 +60,6 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getEditForm()
     {
-        return new Comments_Model_Comment_Form_Create();
+        return new Comments_Model_CommentAlias_Form_Edit();
     }
 }

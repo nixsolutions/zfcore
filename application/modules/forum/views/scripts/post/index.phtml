@@ -24,31 +24,11 @@
             <div style="position:relative;"><?php echo $this->post->body; ?></div>
         </article>
     </li>
-    <li>
-        <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
-    </li>
-    <?php foreach($this->paginator as $i => $row): ?>
-        <li class="comment">
-            <img src="<?php echo $this->avatar($row->avatar, $row->email)?>"
-                 alt="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>"
-                 title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>"
-                 class="avatar"/>
-            <article id="comment-<?php echo $i = $i+2?>">
-               <header>
-                   <div class="right">#<a href="#comment-<?php echo $i?>"><?php echo $i?></a></div>
-                   <h5><?php echo $row->title; ?></h5>
-                   <?php echo $this->author->login; ?>
-                   <?php echo $this->__('at')?>
-                   <?php echo $this->date($row->created); ?>
-               </header>
-               <br />
-               <div style="position:relative;"><?php echo $row->body; ?></div>
-            </article>
-        </li>
-    <?php endforeach;?>
-    <li>
-        <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
-    </li>
 </ul>
 
-<?php if ($this->user()) echo $this->action('comment', 'post', 'forum', array('postId' => $this->post->id));?>
+<?php echo $this->getComments('forum-post', 
+    array(
+        'key' => $this->post->id,
+        'template' => 'forum'
+    )
+) ?>

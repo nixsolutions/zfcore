@@ -41,6 +41,7 @@ class Blog_PostController extends Core_Controller_Action
         /** update count view */
         $row->incViews();
         $this->view->row = $row;
+        $this->view->page = $this->_getParam('page');
     }
 
     /**

@@ -1,9 +1,8 @@
-<?php $user = $this->user();?>
+<?php $this->user = $this->user();?>
 <ul class="commentlist">
     <li class="comment">
-        <img src="<?php echo $this->avatar($user)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>" class="avatar"/>
-
+        <img src="<?php echo $this->avatar($this->user)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $this->user->login?>" class="avatar"/>
+        
         <?php echo $this->form;?>
-
     </li>
 </ul>

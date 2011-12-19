@@ -3,7 +3,7 @@
         <?php foreach($this->rowset as $row): ?>
             <ul class="commentlist">
                 <li id="li-comment-1" class="comment">
-                    <img src="<?php echo $this->avatar($row->avatar, $row->email)?>"
+                    <img src="<?php echo $this->baseUrl($row->avatar)?>"
                          alt="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>"
                          title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>"
                          class="avatar"/>
@@ -19,13 +19,17 @@
     </div>
 <?php endif;?>
 
-<?php $user = $this->user();?>
+<?php $this->user = $this->user();?>
 
-<?php if ($user):?>
+<?php if ($this->user):?>
     <ul class="commentlist">
         <li id="li-comment-1" class="comment">
 
-            <img src="<?php echo $this->avatar($user)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>" class="avatar"/>
+            <?php if ($this->user->avatar):?>
+                <img src="<?php echo $this->baseUrl($this->user->avatar)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $this->user->login?>" class="avatar"/>
+            <?php else:?>
+                <?php echo $this->gravatar($this->user->email, array(), array('title' => $this->__('Avatar for') . ' '  . $this->user->getName(), 'class' => 'avatar'))?>
+            <?php endif;?>
 
             <?php echo $this->form;?>
         </li>

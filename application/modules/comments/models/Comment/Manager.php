@@ -11,24 +11,30 @@
 class Comments_Model_Comment_Manager extends Core_Model_Manager
 {
     /**
-     * Get comments by alias
+     * Get comments by alias row
      *
-     * @param string $alias
+     * @param Comments_Model_CommentAlias $commentAlias
      * @return array
      */
-    public function findAll($alias)
+    public function getSelect(Comments_Model_CommentAlias $commentAlias, $key = 0)
     {
         $users = new Users_Model_Users_Table();
 
         $select = $this->getDbTable()->select(true);
         $select->setIntegrityCheck(false)
-           ->joinLeft(
-               array('u' => $users->info('name')),
-               'userId = u.id',
-               array('login', 'avatar', 'email', 'firstname', 'lastname')
+            ->joinLeft(
+                array(
+                    'u' => $users->info('name')
+                ), 
+                'userId = u.id', 
+                array('login', 'avatar', 'email', 'firstname', 'lastname')
             )
-            ->where('alias = ?', $alias);
+            ->where('aliasId = ?', $commentAlias->id);
         
-        return $this->getDbTable()->fetchAll($select);
+        if ($commentAlias->isKeyRequired()) {
+            $select->where('comments.key = ?', $key);
+        }
+        
+        return $select;
     }
 }

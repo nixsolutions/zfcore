@@ -16,4 +16,9 @@
   </footer>
 </article>
 
-<?php echo $this->getComments('blog-post-' . $this->row->id) ?>
+<?php echo $this->getComments('blog-post', 
+    array(
+        'key' => $this->row->id,
+        'template' => 'blog'
+    )
+) ?>

@@ -1,0 +1,17 @@
+<li id="li-comment-<?php echo $row->id ?>" class="comment">
+
+    <img src="<?php echo $this->avatar($row->avatar, $row->email)?>" 
+            alt="<?php echo $this->__('Avatar for')?> <?php echo $row->getUserName() ?>"
+            title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>" class="avatar"/>
+
+    <article class="comment" id="comment-<?php echo $row->id ?>">
+        <?php echo ucfirst($row->login)?> <?php echo $this->__('on')?> <?php echo $this->date($row->created)?>
+        <span class="says"><?php echo $this->__('said')?>:</span>
+
+        <p><?php echo $row->body ?></p>
+
+        <!--<div class="actions">
+            <input type="button" value="Reply" class="reply" data-commentId="<?php echo $row->id ?>" />
+        </div>-->
+    </article>
+</li>

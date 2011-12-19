@@ -6,5 +6,6 @@ mvc:
       allow: guest
     list:
       allow: guest
+    aliases:
     management:
       allow: admin

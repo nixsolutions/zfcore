@@ -1,8 +1,8 @@
 <h1><?php echo $this->__('Edit Profile')?></h1>
 <div>
     <div class="left">
-        <?php $user = $this->user();?>
-        <img src="<?php echo $this->avatar($user)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $user->login?>"/>
+        <?php $this->user = $this->user();?>
+        <img src="<?php echo $this->avatar($this->user)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $this->user->login?>"/>
     </div>
     <div class="left">
         <?php echo $this->form; ?>

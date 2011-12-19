@@ -20,55 +20,16 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         $this->setAction('/comments/add');
         $this->setMethod('post');
 
-        $this->addElement(
-            'textarea', 'body',
+        $this->addElements(
             array(
-                'label'      => 'Your comment:',
-                'cols'       => '50',
-                'rows'       => '5',
-                'required'   => true,
-                'filters'    => array('StringTrim', 'HtmlEntities'),
-                'validators' => array(
-                    array('validator' => 'StringLength', 'options' => array(1, 250))
-                )
+                $this->_title(),
+                $this->_body(),
+                $this->_alias(),
+                $this->_returnUrl(),
+                $this->_key(),
+                $this->_submit()
             )
         );
-        /*
-        // TinyMCE if you need
-        $comment = new Core_Form_Element_TinyMCE(
-            'comment', array(
-                'label' => 'Your comment:',
-                'cols'  => '50',
-                'rows'  => '5',
-                'required' => true,
-                'filters' => array('StringTrim'),
-                'tinyMCE' => array(
-                    'mode' => "textareas",
-                    'theme' => "simple",
-                ),
-            )
-        );
-        $this->addElement($comment);
-        */
-
-        $this->addElement(
-            'submit',
-            'submit',
-            array(
-                'label' => 'Add comment',
-            )
-        );
-        
-        $this->addElement(
-            'submit',
-            'submit',
-            array(
-                'label' => 'Add comment',
-            )
-        );
-        
-        $this->addAlias()
-             ->addReturnUrl();
     }
     
     public function setUser($user)
@@ -80,26 +41,84 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         }
     }
     
-    protected function addAlias()
+    protected function _title()
+    {
+        $this->addElement(
+            'text', 'title',
+            array(
+                'order'      => 10,
+                'label'      => 'Comment title:',
+                'cols'       => '50',
+                'rows'       => '5',
+                'required'   => true,
+                'filters'    => array('StringTrim', 'HtmlEntities'),
+                'validators' => array(
+                    array('validator' => 'StringLength', 'options' => array(1, 250))
+                )
+            )
+        );
+        
+        return $this;
+    }
+    
+    protected function _body()
+    {
+        $element = new Zend_Form_Element_Textarea(
+            'body',
+            array(
+                'order'      => 20,
+                'label'      => 'Your comment:',
+                'cols'       => '50',
+                'rows'       => '5',
+                'required'   => true,
+                'filters'    => array('StringTrim', 'HtmlEntities'),
+                'validators' => array(
+                    array('validator' => 'StringLength', 'options' => array(1, 250))
+                )
+            )
+        );
+        
+        return $element;
+    }
+    
+    protected function _alias()
     {
         $element = new Zend_Form_Element_Hidden('alias');
         $element->setRequired(true)
             ->setDecorators(array('ViewHelper'));
         
-        $this->addElement($element);
-        
-        return $this;
+        return $element;
     }
     
-    protected function addReturnUrl()
+    protected function _returnUrl()
     {
         $element = new Zend_Form_Element_Hidden('returnUrl');
         $element->setRequired(true)
             ->setDecorators(array('ViewHelper'));
         
-        $this->addElement($element);
+        return $element;
+    }
+    
+    protected function _key()
+    {
+        $element = new Zend_Form_Element_Hidden('key');
+        $element->setRequired(true)
+            ->setDecorators(array('ViewHelper'));
         
-        return $this;
+        return $element;
+    }
+    
+    protected function _submit()
+    {
+        $element = new Zend_Form_Element_Submit(
+            'submit',
+            array(
+                'order' => 30,
+                'label' => 'Add comment',
+            )
+        );
+        
+        return $element;
     }
     
     public function setAlias($alias)
@@ -112,6 +131,20 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
     public function setReturnUrl($url)
     {
         $this->getElement('returnUrl')->setValue($url);
+        
+        return $this;
+    }
+    
+    public function setKey($key)
+    {
+        $this->getElement('key')->setValue($key);
+        
+        return $this;
+    }
+    
+    public function removeTitleElement()
+    {
+        $this->removeElement('title');
         
         return $this;
     }
