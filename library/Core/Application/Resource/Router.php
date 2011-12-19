@@ -51,18 +51,11 @@ class Core_Application_Resource_Router
                 $router->addDefaultRoutes();
 
                 foreach ($router->getRoutes() as $name => $route) {
-                    $router->removeRoute($name);
-
-                    if ('default' == $name) {
-                        $router->addRoute($name . 'Default', $route);
-                    }
-
-                    $router->addRoute($name, $locale->chain($route));
-
-                    if ($route instanceof Zend_Controller_Router_Route_Regex
-                        || $route instanceof Zend_Controller_Router_Route_Static) {
-                        $router->addRoute($name . 'Default', $route);
-                    }
+                    //rename existing routes
+                    $router->removeRoute($name)
+                           ->addRoute($name . 'Default', $route)
+                           //add chained routes
+                           ->addRoute($name, $locale->chain($route));
                 }
             }
         }
