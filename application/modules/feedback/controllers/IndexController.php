@@ -5,7 +5,7 @@
  * @category   Application
  * @package    Dashboard
  * @subpackage Controller
- * 
+ *
  * @version  $Id$
  */
 class Feedback_IndexController extends Core_Controller_Action
@@ -19,7 +19,7 @@ class Feedback_IndexController extends Core_Controller_Action
         $contactusForm->setAction($this->view->url(array('action' => 'send')));
         $this->view->contactusForm = $contactusForm;
     }
-    
+
     /**
      * Send message
      */
@@ -52,7 +52,7 @@ class Feedback_IndexController extends Core_Controller_Action
                 $this->view->messages = $message;
             }
         } else {
-            $this->_redirect($this->view->url(array('action' => 'index')));
+            $this->_helper->redirector('index');
         }
     }
 }

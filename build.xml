@@ -1,25 +1,43 @@
 <project name="ZFCore" default="build">
+    
+    <property name="appDir"   value="${basedir}/application" />
+    <property name="coreDir"  value="${basedir}/library" />
+    <property name="buildDir" value="${basedir}/build" />
+    <property name="logsDir"  value="${buildDir}/logs" />
+    
+    
     <target name="clean">
-        <delete dir="${basedir}/build"/>
+        <delete dir="${buildDir}"/>
+        <delete dir="${basedir}/data/cache"/>
+        <delete dir="${basedir}/data/logs"/>
+        <delete dir="${basedir}/data/session"/>
     </target>
-    <target name="prepare">
-        <mkdir dir="${basedir}/build/logs"/>
-        <mkdir dir="${basedir}/build/logs/clover"/>
-        <mkdir dir="${basedir}/build/docs"/>
-        <mkdir dir="${basedir}/build/coverage"/>
-        <mkdir dir="${basedir}/build/phpcb"/>
-        <mkdir dir="${basedir}/build/pdepend"/>
+    <target name="prepare" depends="clean">
+        <mkdir dir="${buildDir}"/>
+        
+        <mkdir dir="${logsDir}" />
+        
+        <mkdir dir="${buildDir}/logs"/>
+        <mkdir dir="${buildDir}/logs/clover"/>
+        <mkdir dir="${buildDir}/docs"/>
+        <mkdir dir="${buildDir}/coverage"/>
+        <mkdir dir="${buildDir}/phpcb"/>
+        <mkdir dir="${buildDir}/pdepend"/>
 
         <!--Requirements-->
-        <mkdir dir="${basedir}/data/cache/"/>
-        <mkdir dir="${basedir}/data/logs/"/>
-        <mkdir dir="${basedir}/data/session/"/>
-        <mkdir dir="${basedir}/data/uploads/"/>
-        <mkdir dir="${basedir}/public/images/captcha/"/>
-        <mkdir dir="${basedir}/public/uploads/"/>
+        <mkdir dir="${basedir}/data/cache"/>
+        <chmod file="${basedir}/data/cache" perm="777"/>
+        <mkdir dir="${basedir}/data/logs"/>
+        <chmod file="${basedir}/data/logs" perm="777"/>
+        <mkdir dir="${basedir}/data/session"/>
+        <chmod file="${basedir}/data/session" perm="777"/>
+        <mkdir dir="${basedir}/public/images/captcha"/>
+        <chmod file="${basedir}public/images/captcha" perm="777"/>
+        <mkdir dir="${basedir}/public/uploads"/>
+        <chmod file="${basedir}/public/uploads" perm="777"/>
         
         <!--Configuration-->
-        <move file="${basedir}/application/configs/application.sample.yaml" todir="${basedir}/application/configs/application.yaml" />
+        <copy file="${appDir}/configs/application.sample.yaml" tofile="${appDir}/configs/application.yaml" />
     </target>
     <!--<target name="phpdoc">
         <exec dir="${basedir}" executable="phpdoc" failonerror="false">
@@ -33,59 +51,73 @@
                   - -sourcecode on"/>
         </exec>
     </target>-->
-    <target name="phploc">
-        <exec dir="${basedir}" executable="phploc">
-            <arg line="--log-csv ${basedir}/build/logs/phploc.csv" />
+    <target name="phploc" depends="prepare">
+        <exec dir="${basedir}" executable="phploc" output="${logsDir}/phploc.log">
+            <arg line="--count-tests" />
+            <arg line="--log-csv ${logsDir}/phploc.csv" />
             <arg line="." />
         </exec>
     </target>
-    <target name="phpcpd">
-        <exec dir="${basedir}" executable="phpcpd" failonerror="false">
-            <arg line="--log-pmd build/logs/phpcpd.xml
-                  --exclude bin
-                  --exclude migrations
-                  --exclude public
-                   ."/>
+    <target name="phpcpd" depends="prepare">
+        <exec dir="${basedir}" executable="phpcpd" failonerror="false" output="${logsDir}/phpcpd.log">
+            <arg line="--log-pmd ${logsDir}/phpcpd.xml" />
+            <arg line="${appDir}" />
+            <arg line="${coreDir}" />
         </exec>
     </target>
-    <target name="phpmd">
-        <exec dir="${basedir}" executable="phpmd" failonerror="false">
-            <arg line=". xml codesize,unusedcode,naming --reportfile '${basedir}/build/logs/pmd.xml' --exclude 'bin,migrations,public'"/>
+    <target name="phpmd" depends="prepare">
+        <exec dir="${basedir}" executable="phpmd" failonerror="false" output="${logsDir}/phpmd.log">
+            <arg line="${basedir}" />
+            <arg line="xml" />
+            <arg line="naming,unusedcode,codesize" />
+            <arg line="--reportfile ${logsDir}/pmd.xml" />
+            <arg line="--exclude bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests" />
         </exec>
     </target>
-    <target name="pdepend" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
-        <exec dir="${basedir}" executable="pdepend" failonerror="true">
-        <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
-        <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
-            <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-            <arg line="--ignore=bin,migrations,public"/>
+    
+    
+    <target name="pdepend" depends="prepare" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
+        <exec dir="${basedir}" executable="pdepend" failonerror="false" output="${logsDir}/pdepend.log">
+            <arg line="--jdepend-xml=${logsDir}/jdepend.xml" />
+            <arg line="--jdepend-chart=${buildDir}/pdepend/dependencies.svg" />
+            <arg line="--overview-pyramid=${buildDir}/pdepend/overview-pyramid.svg" />
+            <arg line="--exclude=bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests"/>
+            <arg line="${basedir}"/>
+        </exec>
+    </target>
+
+    <target name="phpcs" depends="prepare">
+        <exec dir="${basedir}" executable="phpcs" failonerror="false" output="${logsDir}/phpcs.log">
+            <arg line="--report=checkstyle"/>
+            <arg line="--extensions=php"/>
+            <arg line="--standard=Zend ."/>
+            <arg line="--report-file=${logsDir}/checkstyle.xml" />
+            <arg line="${appDir}"/>
+            <arg line="${coreDir}"/>
+        </exec>
+    </target>
+    <target name="phpunit" depends="prepare">
+        <exec dir="${basedir}/tests" executable="phpunit" failonerror="false" output="${logsDir}/phpunit.log">
+            <arg line="--log-junit '${logsDir}/junit.xml'"/>
+            <arg line="--coverage-clover '${logsDir}/clover.xml'"/>
+            <arg line="--coverage-html '${logsDir}/clover'"/>
             <arg line="."/>
         </exec>
     </target>
-
-    <target name="phpcs">
-        <exec dir="${basedir}" executable="phpcs" output="${basedir}/build/logs/checkstyle.xml" failonerror="false">
-            <arg line="--report=checkstyle --extensions=php --ignore=bin,migrations,public --standard=Zend ."/>
-        </exec>
-    </target>
-    <target name="phpunit">
-        <exec dir="${basedir}/tests" executable="phpunit" failonerror="false">
-            <arg line="--configuration phpunit.xml --log-junit ${basedir}/build/logs/junit.xml --coverage-clover ${basedir}/build/logs/clover.xml --coverage-html ${basedir}/build/logs/clover/ ."/>
-        </exec>
-    </target>
     <target name="phpcb" depends="phpcpd, phpmd, phpcs">
-        <exec executable="phpcb">
-            <arg line="--log ${basedir}/build/logs
-                --output ${basedir}/build/phpcb" />
+        <exec executable="phpcb" output="${logsDir}/phpcb.log">
+            <arg line="--log ${logsDir}" />
+            <arg line="--output ${buildDir}/phpcb" />
         </exec>
     </target>
-    <target name="build" depends="clean, prepare, phploc, phpmd, phpcs, phpcpd, pdepend, phpcb, phpunit"/>
+    
+    <target name="build" depends="prepare, phploc, phpmd, phpcs, phpcpd, pdepend, phpunit, phpcb"/>
 
-    <target name="update-source">
-        <exec dir="${basedir}" executable="hg">
+    <target name="update-source" depends="prepare">
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log">
             <arg line="pull" />
         </exec>
-        <exec dir="${basedir}" executable="hg">
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log">
             <arg line="update" />
         </exec>
     </target>

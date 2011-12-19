@@ -37,12 +37,27 @@ class Core_Application_Resource_Router
     public function init()
     {
         if (null === $this->_router) {
-            $this->getRouter();
+            $router = $this->getRouter(); // returns $this->_router
+            $router->addConfig($this->_getConfig());
 
-            $this->getBootstrap()->bootstrap('modules');
+            // add locale chain if using translate
+            if ($this->getBootstrap()->hasPluginResource('Translate')) {
+                $locale = new Zend_Controller_Router_Route(
+                    ':locale',
+                    array(),
+                    array('locale' => '^[a-z]{2}$')
+                );
 
-            $this->_router = Zend_Controller_Front::getInstance()->getRouter();
-            $this->_router->addConfig($this->_getConfig());
+                $router->addDefaultRoutes();
+
+                foreach ($router->getRoutes() as $name => $route) {
+                    //rename existing routes
+                    $router->removeRoute($name)
+                           ->addRoute($name . 'Default', $route)
+                           //add chained routes
+                           ->addRoute($name, $locale->chain($route));
+                }
+            }
         }
         return $this->_router;
     }

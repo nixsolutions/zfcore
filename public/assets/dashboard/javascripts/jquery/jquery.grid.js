@@ -38,7 +38,7 @@
 
             /** draw grid */
             this.refresh();
-            this.element.disableSelection();
+            //this.element.disableSelection();
         },
         page: function(page) {
             this.data.page = page;
