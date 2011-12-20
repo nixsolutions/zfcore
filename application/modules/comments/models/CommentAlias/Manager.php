@@ -19,7 +19,7 @@ class Comments_Model_CommentAlias_Manager extends Core_Model_Manager
      * Get by alias
      *
      * @param string $alias
-     * @return Zend_Db_Table_Row_Abstract
+     * @return Comments_Model_CommentAlias
      */
     public function getByAlias($alias)
     {

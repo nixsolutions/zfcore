@@ -96,7 +96,7 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Submit('submit');
         $element->setLabel('Save');
-        $element->setOrder(999);
+        $element->setOrder(100);
 
         return $element;
     }

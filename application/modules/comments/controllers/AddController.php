@@ -38,13 +38,28 @@ class Comments_AddController extends Core_Controller_Action
             ) {
                 $row = $commentsTable->createRow($form->getValues());
                 $row->aliasId = $alias->id;
+                $row->status = Comments_Model_Comment::STATUS_ACTIVE;
+                
+                if ($alias->isPreModerationRequired()) {
+                    $row->status = Comments_Model_Comment::STATUS_REVIEW;
+                }
+                
                 $row->save();
                 
-                $this->_helper->flashMessenger->addMessage(
-                    'Comment added successfully'
-                );
+                switch ($row->status) {
+                    case Comments_Model_Comment::STATUS_REVIEW:
+                        $this->_helper->flashMessenger->addMessage(
+                            'Comment added successfully and awaiting pre-moderation.'
+                        );
+                        break;
+                    default:
+                        $this->_helper->flashMessenger->addMessage(
+                            'Comment added successfully'
+                        );
+                        break;
+                }
                 
-                $this->_redirect($form->getElement('returnUrl')->getValue());
+                $this->_redirect($form->getValue('returnUrl'));
             }
             $this->view->user = $this->view->user();
             $this->view->form = $form;

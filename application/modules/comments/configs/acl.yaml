@@ -1,10 +1,6 @@
 mvc:
   comments:
-    index:
-      allow: guest
     add:
-      allow: guest
-    list:
       allow: guest
     aliases:
     management:

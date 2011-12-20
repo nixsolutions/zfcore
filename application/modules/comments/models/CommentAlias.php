@@ -54,4 +54,9 @@ class Comments_Model_CommentAlias extends Core_Db_Table_Row_Abstract
     {
         return in_array('paginatorEnabled', $this->getOptions());
     }
+    
+    public function isPreModerationRequired()
+    {
+        return in_array('preModerationRequired', $this->getOptions());
+    }
 }

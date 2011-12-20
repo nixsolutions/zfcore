@@ -10,6 +10,10 @@
  */
 class Comments_Model_Comment extends Core_Db_Table_Row_Abstract
 {
+    const STATUS_ACTIVE = 'active';
+    const STATUS_REVIEW = 'review';
+    const STATUS_DELETED = 'deleted';
+    
     /**
      * Allows pre-insert logic to be applied to row.
      * Subclasses may override this method.

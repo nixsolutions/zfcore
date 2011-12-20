@@ -36,6 +36,7 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
         
         $alias = $aliasManager->getByAlias($aliasKey);
         $page = $request->getParam('page');
+        $userId = ($user) ? $user['id'] : 0;
         
         $this->_checkOptions($options);
         
@@ -51,7 +52,7 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
             throw new Zend_Controller_Action_Exception('Missed key parameter');
         }
         
-        $paginator = Zend_Paginator::factory($manager->getSelect($alias, $this->key));
+        $paginator = Zend_Paginator::factory($manager->getSelect($alias, $userId, $this->key));
 
         if ($alias->isPaginatorEnabled()) {
             $paginator->setItemCountPerPage($alias->countPerPage);

@@ -23,7 +23,7 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
         $this->_beforeGridFilter(array(
              '_addCheckBoxColumn',
              '_addAllTableColumns',
-//             '_prepareGrid',
+             '_addShowCommentsColumn',
              '_addEditColumn',
              '_addDeleteColumn',
              '_addCreateButton',
@@ -61,5 +61,37 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
     protected function _getEditForm()
     {
         return new Comments_Model_CommentAlias_Form_Edit();
+    }
+    
+    /**
+     * add edit column to grid
+     *
+     * @return void
+     */
+    public function _addShowCommentsColumn()
+    {
+        $this->grid->setColumn('show', array(
+            'name' => 'Show',
+            'formatter' => array($this, 'showCommentsFormatter')
+        ));
+    }
+
+    /**
+     * edit link formatter
+     *
+     * @param $value
+     * @param $row
+     * @return string
+     */
+    public function showCommentsFormatter($value, $row)
+    {
+        $link = '<a href="%s" class="Show">Show</a>';
+        $url = $this->getHelper('url')->url(array(
+            'controller' => 'management',
+            'action' => 'index',
+            'alias' => $row['id']
+        ), 'default');
+
+        return sprintf($link, $url);
     }
 }

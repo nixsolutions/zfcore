@@ -1,6 +1,5 @@
 <?php foreach($this->paginator as $i => $row) : ?>
     <li id="li-comment-<?php echo $row->id ?>" class="comment">
-
         <img src="<?php echo $this->avatar($row->avatar, $row->email)?>" 
                 alt="<?php echo $this->__('Avatar for')?> <?php echo $row->getUserName() ?>"
                 title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>" class="avatar"/>
@@ -8,6 +7,9 @@
         <article id="comment-<?php echo $i = $i+2?>">
             <header>
                 <div class="right">#<a href="#comment-<?php echo $i?>"><?php echo $i?></a></div>
+                
+                <?php echo $this->status($row) ?>
+                
                 <h5><?php echo $row->title; ?></h5>
                 <?php echo $this->user->login; ?>
                 <?php echo $this->__('at')?>
