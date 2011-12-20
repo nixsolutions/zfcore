@@ -3,23 +3,13 @@
  * ErrorController for default module
  *
  * @category   Application
- * @package    Default
+ * @package    Users
  * @subpackage Controller
  *
  * @version  $Id: ErrorController.php 185 2010-08-09 14:14:47Z AntonShevchuk $
  */
-class ErrorController extends Core_Controller_Action
+class Users_ErrorController extends Core_Controller_Action
 {
-    /**
-     * Init controller plugins
-     *
-     */
-    public function init()
-    {
-        /* Initialize action controller here */
-        parent::init();
-    }
-
     /**
      * errorAction
      *

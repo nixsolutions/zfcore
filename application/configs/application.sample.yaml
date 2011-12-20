@@ -22,7 +22,7 @@ production:
       moduleControllerDirectoryName: controllers
       defaultControllerName: index
       defaultAction: index
-      defaultModule: default
+      defaultModule: users
       baseurl: /
       env: APPLICATION_ENV
       params:
@@ -50,11 +50,10 @@ production:
             config: navigation
             section: dashboard
             cache: on
-            
     router:
       config: routes
       cache: on
-    translate: 
+    translate:
       locale: en
       scan: filename
       disableNotices: on
@@ -80,7 +79,7 @@ production:
     auth: on
     registry:
       fbConfig:
-        appId:  
+        appId: 
         secret: 
         cookie: on
       twitterConfig:
@@ -150,7 +149,7 @@ development:
     frontController:
       plugins:
         debug:
-          class:Core_Controller_Plugin_Debug
+          class: Core_Controller_Plugin_Debug
     db:
       params:
         profiler:
