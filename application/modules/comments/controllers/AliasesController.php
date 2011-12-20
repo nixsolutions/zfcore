@@ -11,15 +11,15 @@
 class Comments_AliasesController extends Core_Controller_Action_Crud
 {
     /**
-     * init invironment
+     * Initialize
      *
      * @return void
      */
     public function init()
     {
-        /* Initialize */
         parent::init();
 
+        // setup the grid
         $this->_beforeGridFilter(array(
              '_addCheckBoxColumn',
              '_addAllTableColumns',
@@ -34,9 +34,9 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
     }
     
     /**
-     * Get table
+     * Declare the DB table
      *
-     * @return Pages_Model_Page_Table
+     * @return Comments_Model_CommentAlias_Table
      */
     protected function _getTable()
     {
@@ -44,7 +44,7 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
     }
     
     /**
-     * get create form
+     * Declare create form
      *
      * @return Comments_Model_Comment_Form_Create
      */
@@ -54,7 +54,7 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
     }
 
     /**
-     * get edit form
+     * Declare edit form
      *
      * @return Comments_Model_Comment_Form_Create
      */
@@ -64,7 +64,7 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
     }
     
     /**
-     * add edit column to grid
+     * Add a "show" column to the grid
      *
      * @return void
      */
@@ -77,7 +77,7 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
     }
 
     /**
-     * edit link formatter
+     * Formatter for the "show" column value
      *
      * @param $value
      * @param $row

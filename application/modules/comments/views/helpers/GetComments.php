@@ -63,7 +63,6 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
         }
 
         $form = new Comments_Model_Comment_Form_Create();
-        $form->setUser($user);
         $form->setAlias($aliasKey);
         $form->setKey($this->key);
         $form->setReturnUrl($this->view->url());

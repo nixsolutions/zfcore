@@ -1,6 +1,6 @@
 <?php
 /**
- * This is the table class for the comments_aliases table.
+ * This is the table class for the comment_aliases table.
  *
  * @category Application
  * @package Comments

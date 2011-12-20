@@ -32,19 +32,14 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         );
     }
     
-    public function setUser($user)
-    {
-        if (!$user) {
-            $this->setAction('/login');
-            
-            $this->getElement('submit')->setLabel('Add comment as ...');
-        }
-    }
-    
+    /**
+     * Create title element
+     *
+     * @return Zend_Form_Element_Text
+     */
     protected function _title()
     {
-        $this->addElement(
-            'text', 'title',
+        $element = new Zend_Form_Element_Text('title',
             array(
                 'order'      => 10,
                 'label'      => 'Comment title:',
@@ -58,9 +53,14 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
             )
         );
         
-        return $this;
+        return $element;
     }
     
+    /**
+     * Create body element
+     *
+     * @return Zend_Form_Element_Textarea
+     */
     protected function _body()
     {
         $element = new Zend_Form_Element_Textarea(
@@ -81,6 +81,11 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         return $element;
     }
     
+    /**
+     * Create alias element
+     *
+     * @return Zend_Form_Element_Hidden
+     */
     protected function _alias()
     {
         $element = new Zend_Form_Element_Hidden('alias');
@@ -90,6 +95,11 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         return $element;
     }
     
+    /**
+     * Create returnUrl element
+     *
+     * @return Zend_Form_Element_Hidden
+     */
     protected function _returnUrl()
     {
         $element = new Zend_Form_Element_Hidden('returnUrl');
@@ -99,6 +109,11 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         return $element;
     }
     
+    /**
+     * Create key element
+     *
+     * @return Zend_Form_Element_Hidden
+     */
     protected function _key()
     {
         $element = new Zend_Form_Element_Hidden('key');
@@ -108,6 +123,11 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         return $element;
     }
     
+    /**
+     * Create submit element
+     *
+     * @return Zend_Form_Element_Submit
+     */
     protected function _submit()
     {
         $element = new Zend_Form_Element_Submit(
@@ -121,6 +141,12 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         return $element;
     }
     
+    /**
+     * Set the value for the `alias` element
+     * 
+     * @param string $alias
+     * @return Comments_Model_Comment_Form_Create 
+     */
     public function setAlias($alias)
     {
         $this->getElement('alias')->setValue($alias);
@@ -128,6 +154,12 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         return $this;
     }
     
+    /**
+     * Set the value for the `returnUrl` element
+     * 
+     * @param string $url
+     * @return Comments_Model_Comment_Form_Create 
+     */
     public function setReturnUrl($url)
     {
         $this->getElement('returnUrl')->setValue($url);
@@ -135,6 +167,12 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         return $this;
     }
     
+    /**
+     * Set the value for the `key` element
+     * 
+     * @param string $key
+     * @return Comments_Model_Comment_Form_Create 
+     */
     public function setKey($key)
     {
         $this->getElement('key')->setValue($key);
@@ -142,6 +180,11 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
         return $this;
     }
     
+    /**
+     * Remove `title` element
+     * 
+     * @return Comments_Model_Comment_Form_Create 
+     */
     public function removeTitleElement()
     {
         $this->removeElement('title');

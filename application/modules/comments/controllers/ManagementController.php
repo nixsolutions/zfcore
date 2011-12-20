@@ -11,21 +11,27 @@
 class Comments_ManagementController extends Core_Controller_Action_Crud
 {
     /**
-     * init invironment
+     * @var Comments_Model_CommentAlias
+     */
+    protected $alias;
+    
+    /**
+     * Initialize
      *
      * @return void
      */
     public function init()
     {
-        /* Initialize */
         parent::init();
 
         $aliasManager = new Comments_Model_CommentAlias_Manager();
         
+        // get the Alias by the requested param
         $this->alias = $aliasManager->getDbTable()
             ->find($this->getRequest()->getParam('alias'))
             ->current();
         
+        // setup the grid
         $this->_beforeGridFilter(array(
              '_addCheckBoxColumn',
              '_addAllTableColumns',
@@ -33,7 +39,6 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
              '_addEditColumn',
              '_addDeleteColumn',
              '_addBackButton',
-//             '_addCreateButton',
              '_addDeleteButton',
              '_showFilter'
         ));
@@ -41,19 +46,23 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
     }
     
     /**
-     * get source
+     * Declare the source used to fetch the comments
      *
      * @return Core_Grid_Adapter_AdapterInterface
      */
     protected function _getSource()
     {
-        return new Core_Grid_Adapter_Select($this->_getTable()->select()->where('aliasId = ?', $this->alias->id));
+        return new Core_Grid_Adapter_Select(
+            $this->_getTable()
+                ->select()
+                ->where('aliasId = ?', $this->alias->id)
+        );
     }
     
     /**
-     * Get table
+     * Declare DB table
      *
-     * @return Pages_Model_Page_Table
+     * @return Comments_Model_Comment_Table
      */
     protected function _getTable()
     {
@@ -61,7 +70,7 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
     }
     
     /**
-     * get create form
+     * Declare create form
      *
      * @return Comments_Model_Comment_Form_Create
      */
@@ -71,12 +80,14 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
-     * get edit form
+     * Declare edit form
      *
-     * @return Comments_Model_Comment_Form_Create
+     * @return Comments_Model_Comment_Form_Edit
      */
     protected function _getEditForm()
     {
+        // init form according to the CommentAlias options
+        
         $form = new Comments_Model_Comment_Form_Edit();
         
         if ($this->alias && !$this->alias->isTitleDisplayed()) {
@@ -88,6 +99,11 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
         return $form;
     }
     
+    /**
+     * Prepare grid - remove not needed columns
+     * 
+     * @return void
+     */
     protected function _prepare()
     {
         $this->grid->removeColumn('aliasId');
@@ -98,7 +114,7 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
     }
     
     /**
-     * add create button
+     * Add "back" button
      *
      * @return void
      */
@@ -118,28 +134,34 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
     }
     
     /**
-     * edit
+     * Edit comment action
      *
      * @return void
      */
     public function editAction()
     {
+        // load model
         $model = $this->_loadModel();
 
+        // init form
         $form = $this->_getEditForm()
             ->setAction($this->view->url())
             ->setDefaults($model->toArray());
 
+        // validate form by the POST request params
         if ($this->_request->isPost() &&
             $form->isValid($this->_getAllParams())
         ) {
+            // update the model
             $model->setFromArray($form->getValues())
                   ->save();
-
+            
+            // redirect to the URL that was setted to the form element
             $this->_helper->flashMessenger('Successfully');
             $this->_redirect($form->getValue('returnUrl'));
         }
         
+        // set the view variables
         $this->view->backUrl = $this->view->url(
             array(
                 'module' => 'comments', 

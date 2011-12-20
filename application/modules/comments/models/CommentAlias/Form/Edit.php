@@ -15,6 +15,7 @@ class Comments_Model_CommentAlias_Form_Edit extends Comments_Model_CommentAlias_
      */
     public function setDefaults($defaults)
     {
+        // exclude the current row from the Db_NoRecordExists validator
         if (isset($defaults['alias'])) {
             $this->getElement('alias')
                 ->getValidator('Db_NoRecordExists')
@@ -23,6 +24,7 @@ class Comments_Model_CommentAlias_Form_Edit extends Comments_Model_CommentAlias_
                 );
         }
         
+        // decode the options from the string to array
         if (isset($defaults['options'])) {
             $this->getElement('options')
                 ->setValue(

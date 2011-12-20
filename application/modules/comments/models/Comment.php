@@ -15,8 +15,7 @@ class Comments_Model_Comment extends Core_Db_Table_Row_Abstract
     const STATUS_DELETED = 'deleted';
     
     /**
-     * Allows pre-insert logic to be applied to row.
-     * Subclasses may override this method.
+     * Magic method to set some row fields
      *
      * @return  void
      */
@@ -32,29 +31,12 @@ class Comments_Model_Comment extends Core_Db_Table_Row_Abstract
     }
 
     /**
-     * Allows pre-update logic to be applied to row.
-     * Subclasses may override this method.
+     * Magic method to update some row fields
      *
      * @return void
      */
     public function _update()
     {
         $this->updated = date("Y-m-d h:i:s");
-    }
-    
-    /**
-     * Get user name
-     *
-     * @return string | null
-     */
-    public function getUserName()
-    {
-        if ($this->firstname && $this->lastname) {
-            return $this->firstname . ' ' . $this->lastname;
-        } else if ($this->login) {
-            return $this->login;
-        } else {
-            return null;
-        }
     }
 }

@@ -11,10 +11,10 @@
 class Comments_Model_Comment_Manager extends Core_Model_Manager
 {
     /**
-     * Get comments by alias row
+     * Get comments select by commentAlias row
      *
      * @param Comments_Model_CommentAlias $commentAlias
-     * @return array
+     * @return Zend_Db_Select
      */
     public function getSelect(Comments_Model_CommentAlias $commentAlias, $userId, $key = 0)
     {
@@ -30,6 +30,8 @@ class Comments_Model_Comment_Manager extends Core_Model_Manager
                 array('login', 'avatar', 'email', 'firstname', 'lastname')
             )
             ->where('aliasId = ?', $commentAlias->id)
+            // select all "active" comments
+            // and "not active" by the current user
             ->where(
                 'comments.status = "' . Comments_Model_Comment::STATUS_ACTIVE . '"'
                 . ' OR (comments.status != "' . Comments_Model_Comment::STATUS_ACTIVE . '"'
@@ -40,7 +42,6 @@ class Comments_Model_Comment_Manager extends Core_Model_Manager
         }
         
         $select->order('created ASC');
-        Zend_Debug::dump($select->__toString());
         
         return $select;
     }

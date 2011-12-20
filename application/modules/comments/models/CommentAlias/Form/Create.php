@@ -31,7 +31,7 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
     }
     
     /**
-     * Create user login element
+     * Create alias element
      *
      * @return Zend_Form_Element_Text
      */
@@ -52,6 +52,11 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
         return $element;
     }
         
+    /**
+     * Create options element
+     *
+     * @return Zend_Form_Element_MultiCheckbox
+     */
     protected function _options()
     {
         $element = new Zend_Form_Element_MultiCheckbox(
@@ -71,7 +76,7 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
     }
     
     /**
-     * Create user login element
+     * Create countPerPage element
      *
      * @return Zend_Form_Element_Text
      */
