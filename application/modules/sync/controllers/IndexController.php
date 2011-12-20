@@ -6,8 +6,8 @@
  * @category   Application
  * @package    Sync
  * @subpackage Controller
- * 
- * @version  
+ *
+ * @version
  */
 class Sync_IndexController extends Core_Controller_Action
 {
@@ -52,7 +52,7 @@ class Sync_IndexController extends Core_Controller_Action
 
             $params = $this->getRequest()->getPost();
 
-            $security 
+            $security
                 = isset($params['security']) ? $params['security'] : array();
             $updated
                 = isset($params['updated']) ? $params['updated'] : 0;
@@ -68,7 +68,7 @@ class Sync_IndexController extends Core_Controller_Action
 
             $this->view->data = $data;
         } else {
-            $this->_forward('notfound', 'error', 'default');
+            $this->_forward('notfound', 'error', 'users');
             return;
         }
     }
@@ -122,9 +122,9 @@ class Sync_IndexController extends Core_Controller_Action
 
     /**
      * Setter method for variable $_config
-     * 
+     *
      * @param Zend_Config $value
-     * @return Sync_IndexController 
+     * @return Sync_IndexController
      */
     public function setConfig(Zend_Config $value)
     {

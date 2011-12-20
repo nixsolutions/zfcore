@@ -15,11 +15,6 @@ require_once 'Zend/Config.php';
 class Core_Config_Yaml extends Zend_Config
 {
     /**
-     * Attribute name that indicates what section a config extends from
-     */
-    const EXTENDS_NAME = "_extends";
-
-    /**
      * Whether to skip extends or not
      *
      * @var boolean
@@ -199,13 +194,13 @@ class Core_Config_Yaml extends Zend_Config
 
         $thisSection  = $data[$section];
 
-        if (is_array($thisSection) && isset($thisSection[self::EXTENDS_NAME])) {
-            $this->_assertValidExtend($section, $thisSection[self::EXTENDS_NAME]);
+        if (is_array($thisSection) && isset($thisSection[Zend_Config_Yaml::EXTENDS_NAME])) {
+            $this->_assertValidExtend($section, $thisSection[Zend_Config_Yaml::EXTENDS_NAME]);
 
             if (!$this->_skipExtends) {
-                $config = $this->_processExtends($data, $thisSection[self::EXTENDS_NAME], $config);
+                $config = $this->_processExtends($data, $thisSection[Zend_Config_Yaml::EXTENDS_NAME], $config);
             }
-            unset($thisSection[self::EXTENDS_NAME]);
+            unset($thisSection[Zend_Config_Yaml::EXTENDS_NAME]);
         }
 
         $config = $this->_arrayMergeRecursive($config, $thisSection);
@@ -354,6 +349,11 @@ class Core_Config_Yaml extends Zend_Config
     protected function _getConstants()
     {
         $constants = array_keys(get_defined_constants());
+
+        //prevent replacing TRUE/FALSE/NULL
+        $constants = array_flip($constants);
+        unset($constants['TRUE'], $constants['FALSE'], $constants['NULL']);
+        $constants = array_flip($constants);
 
         rsort($constants, SORT_STRING);
         return $constants;
