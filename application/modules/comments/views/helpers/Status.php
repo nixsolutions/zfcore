@@ -1,5 +1,7 @@
 <?php
 /**
+ * Display the warning text to user when comment is not active.
+ * 
  * @author Pavel Machekhin
  */
 class Comments_View_Helper_Status extends Zend_View_Helper_Abstract
@@ -7,14 +9,9 @@ class Comments_View_Helper_Status extends Zend_View_Helper_Abstract
     /**
      * Display the comment status.
      * 
-     * @param string $aliasKey
-     * @param array $options
-     * @param integer | mixed $page
-     * @return type
-     * @throws Zend_Controller_Action_Exception 
+     * @param Comments_Model_Comment $comment
+     * @return string 
      */
-    
-    
     public function status(Comments_Model_Comment $comment)
     {
         $text = '';

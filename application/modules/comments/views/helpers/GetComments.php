@@ -16,8 +16,8 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
      * Load the comments by the unique alias.
      * 
      * Options:
-     *      - enablePaginator
-     *      - page
+     *      - template
+     *      - key
      * 
      * @param string $aliasKey
      * @param array $options
@@ -40,20 +40,19 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
         
         $this->_checkOptions($options);
         
-        if (!$aliasKey) {
+        // throws Exception when aliasKey is missed or wrong
+        if (!$aliasKey || !$alias) {
             throw new Zend_Controller_Action_Exception('Page not found');
         }
         
-        if (!$alias) {
-            throw new Zend_Controller_Action_Exception('Comment alias not found');
-        }
-        
+        // throw Exception when key required and missed
         if (!$this->key && $alias->isKeyRequired()) {
             throw new Zend_Controller_Action_Exception('Missed key parameter');
         }
         
         $paginator = Zend_Paginator::factory($manager->getSelect($alias, $userId, $this->key));
 
+        // set paginator options
         if ($alias->isPaginatorEnabled()) {
             $paginator->setItemCountPerPage($alias->countPerPage);
             $paginator->setCurrentPageNumber($page);
@@ -62,6 +61,7 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
             $paginator->setItemCountPerPage(9999);
         }
 
+        // init form
         $form = new Comments_Model_Comment_Form_Create();
         $form->setAlias($aliasKey);
         $form->setKey($this->key);
@@ -83,6 +83,12 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
         );
     }
     
+    /**
+     * Check the stack of options
+     * 
+     * @param type $options 
+     * @return void
+     */
     private function _checkOptions($options = array())
     {
         if (isset($options['template'])) {
