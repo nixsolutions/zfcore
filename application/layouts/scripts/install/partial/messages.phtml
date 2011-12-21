@@ -1,0 +1,13 @@
+<?php if ($this->FlashMessenger()->count() || $this->messages): ?>
+<div id="messages" class="opacity shadow" style="display:none">
+    <ul>
+        <?php foreach ($this->FlashMessenger()->getMessages() as $message): ?>
+            <li><?php echo $this->__($message) ?></li>
+        <?php endforeach; ?>
+
+        <?php foreach ((array)$this->messages as $message): ?>
+            <li><?php echo $this->__($message) ?></li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php endif; ?>

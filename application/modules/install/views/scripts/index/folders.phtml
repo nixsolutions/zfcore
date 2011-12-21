@@ -1,0 +1,12 @@
+<?php if ($this->unwritable):?>
+    <h3><?php echo $this->__('Grant writable permitions to folders below')?>:</h3>
+
+    <h5><?php echo $this->__('Run `chmod 777 [pathtofolder]`')?></h5>
+    <ul>
+        <?php foreach ($this->unwritable as $folder):?>
+            <li><p><?php echo $folder?></p></li>
+        <?php endforeach;?>
+    </ul>
+<?php elseif ('db' == $this->next):?>
+    <a href="<?php echo $this->url(array(), 'install-index-database')?>">Configure Database</a>
+<?php endif?>
