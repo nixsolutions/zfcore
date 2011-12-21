@@ -1,7 +1,7 @@
 production:
   phpSettings:
-    display_startup_errors: false
-    display_errors: false
+    display_startup_errors: off
+    display_errors: off
     date:
       timezone: Europe/Kiev
   includePaths:
@@ -22,12 +22,12 @@ production:
       moduleControllerDirectoryName: controllers
       defaultControllerName: index
       defaultAction: index
-      defaultModule: default
+      defaultModule: users
       baseurl: /
       env: APPLICATION_ENV
       params:
-        prefixdefaultmodule: true
-        displayExceptions: false
+        prefixDefaultModule: on
+        displayExceptions: off
       actionhelperpaths:
         Helper: APPLICATION_PATH/helpers
       plugins:
@@ -38,7 +38,7 @@ production:
             config: acl
             allowAll: on
             denied:
-              module: default
+              module: users
               controller: error
               action: denied
             role: guest
@@ -50,11 +50,10 @@ production:
             config: navigation
             section: dashboard
             cache: on
-            
     router:
       config: routes
       cache: on
-    translate: 
+    translate:
       locale: en
       scan: filename
       disableNotices: on
@@ -71,18 +70,18 @@ production:
         password: zfc
         dbname: p_zfc
         charset: utf8
-      isDefaultTableAdapter: true
+      isDefaultTableAdapter: on
     layout:
       layout: default/layout
       layoutPath: APPLICATION_PATH/layouts/scripts/
     session:
       save_path: APPLICATION_PATH/../data/session
-    auth: true
+    auth: on
     registry:
       fbConfig:
-        appId:  
+        appId: 
         secret: 
-        cookie: true
+        cookie: on
       twitterConfig:
         callbackUrl: /users/login/oauth/type/twitter
         siteUrl: http://twitter.com/oauth
@@ -125,8 +124,8 @@ production:
 testing:
   _extends: production
   phpSettings:
-    display_startup_errors: true
-    display_errors: true
+    display_startup_errors: on
+    display_errors: on
   resources:
     db:
       params:
@@ -134,7 +133,7 @@ testing:
         username: d_unittest
         password: unittest
         dbname: p_zfc_test
-        persistent: true
+        persistent: on
     frontController:
       plugins:
         acl:
@@ -143,16 +142,16 @@ testing:
 development:
   _extends: production
   phpSettings:
-    display_startup_errors: true
-    display_errors: true
+    display_startup_errors: on
+    display_errors: on
     error_reporting: E_ALL|E_STRICT
   resources:
     frontController:
       plugins:
         debug:
-          class:Core_Controller_Plugin_Debug
+          class: Core_Controller_Plugin_Debug
     db:
       params:
         profiler:
-          enabled: true
+          enabled: on
           class: Zend_Db_Profiler_Firebug

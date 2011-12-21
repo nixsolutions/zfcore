@@ -63,6 +63,7 @@ try {
     );
 
     if (!$result = $cache->load('application')) {
+        require_once 'Zend/Config/Yaml.php';
         require_once 'Core/Config/Yaml.php';
 
         $config = new Core_Config_Yaml(

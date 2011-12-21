@@ -179,6 +179,6 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
      */
     protected function _forwardNotFound()
     {
-        $this->_forward('notfound', 'error', 'default');
+        $this->_forward('notfound', 'error', 'users');
     }
 }
