@@ -167,10 +167,23 @@ production:
           options:
             cache_dir: APPLICATION_PATH/../data/cache
             file_name_prefix: APPLICATION_ENV_metadata
-  view:
-    title: ZFCore
-    doctype: HTML5
-    encoding: UTF-8
+    view:
+      title: ZFCore
+      doctype: HTML5
+      charset: UTF-8
+      encoding: UTF-8
+      contentType: text/html; charset=UTF-8
+      meta:
+        httpEquiv:
+          Content-Language: en-US
+      helperPath:
+        Core_View_Helper: Core/View/Helper
+        Application_View_Helper: APPLICATION_PATH/layouts/helpers
+      filterPath:
+        Core_View_Filter: Core/View/Filter
+        Application_View_Filter: APPLICATION_PATH/layouts/filters
+      scriptPath:
+        - APPLICATION_PATH/views/scripts
 testing:
   _extends: production
   phpSettings:

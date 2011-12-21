@@ -1,6 +1,0 @@
-install-index-database:
-  route: install/database
-  defaults:
-    module: install
-    controller: index
-    action: database

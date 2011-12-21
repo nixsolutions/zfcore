@@ -21,10 +21,10 @@ class Install_IndexController extends Core_Controller_Action
      * @var array
      */
     protected $_folders = array(
-        '/../data/cache',
-        '/../data/session',
-        '/../data/languages',
-        '/../data/logs'
+        Install_Model_Install::CACHE_DIR,
+        Install_Model_Install::LANGUAGES_DIR,
+        Install_Model_Install::LOGS_DIR,
+        Install_Model_Install::SESSION_DIR,
     );
 
     protected $_config = '/configs/application.yaml';
@@ -47,7 +47,10 @@ class Install_IndexController extends Core_Controller_Action
         );
 
         $this->_store = new Zend_Session_Namespace(self::SESSION_KEY);
-        $this->_store->config = $config;
+
+        if (!$this->_store->config) {
+            $this->_store->config = $config;
+        }
     }
 
     /**
@@ -95,7 +98,7 @@ class Install_IndexController extends Core_Controller_Action
         } else {
 
             $config = $this->_store->config->production->resources;
-            $config->session->save_path = APPLICATION_PATH . "/../data/session";
+            $config->session->save_path = APPLICATION_PATH . Install_Model_Install::SESSION_DIR;
 
             $this->_store->progress['folders'] = true;
             $this->_helper->redirector('index');
@@ -192,6 +195,7 @@ class Install_IndexController extends Core_Controller_Action
      */
     public function migrationsAction()
     {
+        //TODO remove apply migrations
         $this->_store->progress['migrations'] = true;
 
         return $this->_forward('index');

@@ -68,11 +68,8 @@ try {
             require_once 'Zend/Config/Yaml.php';
             require_once 'Core/Config/Yaml.php';
 
-            $config = new Core_Config_Yaml(
-                APPLICATION_PATH . '/configs/application.yaml',
-                APPLICATION_ENV
-            );
-            $result = $config->toArray();
+            $result = new Core_Config_Yaml($config, APPLICATION_ENV);
+            $result = $result->toArray();
             $cache->save($result, 'application');
         }
         $config = $result;

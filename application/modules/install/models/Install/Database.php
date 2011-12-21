@@ -1,7 +1,14 @@
 <?php
-
+/**
+ * Install_Model_Install_Database
+ *
+ * @author sm
+ */
 class Install_Model_Install_Database
 {
+    /**
+     * @var array
+     */
     protected $_adapters = array(
         'pdo_sqlsrv'  => 'Pdo Mssql',
         'pdo_mssql'   => 'Pdo Mssql',
@@ -22,6 +29,9 @@ class Install_Model_Install_Database
         'mysqli'      => 'Mysqli',
     );
 
+    /**
+     * @var array
+     */
     protected $_extensions = array(
         'pdo_sybase',
         'pdo_mssql',
