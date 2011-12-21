@@ -26,7 +26,7 @@ production:
       baseurl: /
       env: APPLICATION_ENV
       params:
-        prefixdefaultmodule: on
+        prefixDefaultModule: on
         displayExceptions: off
       actionhelperpaths:
         Helper: APPLICATION_PATH/helpers
