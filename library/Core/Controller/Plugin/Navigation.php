@@ -51,9 +51,9 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
     /**
      * cache using
      *
-     * @var boolean
+     * @var string
      */
-    protected $_cache = true;
+    protected $_cache;
 
     /**
      * Constructor

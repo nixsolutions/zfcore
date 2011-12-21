@@ -43,41 +43,47 @@ function errorHandler() {
 require_once 'Zend/Application.php';
 
 try {
-    require_once 'Zend/Cache.php';
+    $config = APPLICATION_PATH . '/configs/application.yaml';
 
-    $frontendOptions = array("lifetime" => 60*60*24,
-                             "automatic_serialization" => true,
-                             "automatic_cleaning_factor" => 1,
-                             "ignore_user_abort" => true);
+    if (realpath($config)) {
+        require_once 'Zend/Cache.php';
+        $frontendOptions = array("lifetime" => 60*60*24,
+                                 "automatic_serialization" => true,
+                                 "automatic_cleaning_factor" => 1,
+                                 "ignore_user_abort" => true);
 
-    $backendOptions  = array("file_name_prefix" => APPLICATION_ENV . "_config",
-                             "cache_dir" =>  APPLICATION_PATH ."/../data/cache",
-                             "cache_file_umask" => 0644);
+        $backendOptions  = array("file_name_prefix" => APPLICATION_ENV . "_config",
+                                 "cache_dir" =>  APPLICATION_PATH ."/../data/cache",
+                                 "cache_file_umask" => 0644);
 
-    // getting a Zend_Cache_Core object
-    $cache = Zend_Cache::factory(
-        'Core',
-        'File',
-        $frontendOptions,
-        $backendOptions
-    );
-
-    if (!$result = $cache->load('application')) {
-        require_once 'Zend/Config/Yaml.php';
-        require_once 'Core/Config/Yaml.php';
-
-        $config = new Core_Config_Yaml(
-            APPLICATION_PATH . '/configs/application.yaml',
-            APPLICATION_ENV
+        // getting a Zend_Cache_Core object
+        $cache = Zend_Cache::factory(
+            'Core',
+            'File',
+            $frontendOptions,
+            $backendOptions
         );
-        $result = $config->toArray();
-        $cache->save($result, 'application');
+
+        if (!$result = $cache->load('application')) {
+            require_once 'Zend/Config/Yaml.php';
+            require_once 'Core/Config/Yaml.php';
+
+            $config = new Core_Config_Yaml(
+                APPLICATION_PATH . '/configs/application.yaml',
+                APPLICATION_ENV
+            );
+            $result = $config->toArray();
+            $cache->save($result, 'application');
+        }
+        $config = $result;
+    } else {
+        $config .= '.dist';
     }
 
     // Create application, bootstrap, and run
     $application = new Zend_Application(
         APPLICATION_ENV,
-        $result
+        $config
     );
 
     $application->bootstrap()

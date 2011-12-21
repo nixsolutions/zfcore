@@ -90,31 +90,6 @@ class Core_Module_Config
     }
 
     /**
-     * _getCache
-     *
-     * @return  array
-     */
-    protected function _getCache()
-    {
-        $frontendOptions = array("lifetime" => 3600,
-                                 "automatic_serialization" => true,
-                                 "automatic_cleaning_factor" => 1,
-                                 "ignore_user_abort" => true);
-
-        $backendOptions  = array("file_name_prefix" => APPLICATION_ENV . "_config",
-                                 "cache_dir" =>  APPLICATION_PATH ."/../data/cache",
-                                 "cache_file_umask" => 0644);
-
-        // getting a Zend_Cache_Core object
-        return Zend_Cache::factory(
-            'Core',
-            'File',
-            $frontendOptions,
-            $backendOptions
-        );
-    }
-
-    /**
      * getConfig
      *
      * return configs from all modules merged with main
@@ -124,22 +99,32 @@ class Core_Module_Config
      * @param   string $filename  Configuration file name w/out extension
      * @param   string $section   Section name
      * @param   int    $order     Order of load main config
-     * @param   bool   $cache     Use cache
+     * @param   string $cache     cache name
      * @return  array  $result
      */
     public static function getConfig($filename,
                                      $section = null,
                                      $order = Core_Module_Config::MAIN_ORDER_FIRST,
-                                     $cache = true)
+                                     $cache)
     {
         $moduleConfig = Core_Module_Config::getInstance();
 
         if ($cache) {
-            $cache = $moduleConfig->_getCache();
+            if (!$cache instanceof Zend_Cache_Core) {
+                $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
 
+                if ($bootstrap && $bootstrap->hasPluginResource('CacheManager')) {
+                    $manager = $bootstrap->getResource('CacheManager');
+                    $cache = $manager->getCache($cache);
+                } else {
+                    $cache = null;
+                }
+            }
+        }
+        if ($cache) {
             if (!$result = $cache->load($filename.$section)) {
                 $result = $moduleConfig->_getYamlConfig($filename, $section, $order);
-                $cache->save($result, $filename.$section);
+                $cache->save($result, $filename . $section);
             }
         } else {
             $result = $moduleConfig->_getYamlConfig($filename, $section, $order);

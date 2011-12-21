@@ -22,7 +22,7 @@ production:
       moduleControllerDirectoryName: controllers
       defaultControllerName: index
       defaultAction: index
-      defaultModule: users
+      defaultModule: install
       baseurl: /
       env: APPLICATION_ENV
       params:
@@ -62,21 +62,9 @@ production:
       logPath: APPLICATION_PATH/../data/logs/lang.log
     locale: on
     modules: on
-    db:
-      adapter: pdo_mysql
-      params:
-        host: hippo.nixsolutions.com
-        username: p_zfc
-        password: zfc
-        dbname: p_zfc
-        charset: utf8
-      isDefaultTableAdapter: on
-      defaultMetadataCache: database
     layout:
-      layout: default/layout
+      layout: install/layout
       layoutPath: APPLICATION_PATH/layouts/scripts/
-    session:
-      save_path: APPLICATION_PATH/../data/session
     auth: on
     registry:
       fbConfig:
@@ -96,6 +84,8 @@ production:
         accessTokenUrl: https://www.google.com/accounts/OAuthGetAccessToken
         consumerKey: 
         consumerSecret: 
+    session:
+      save_path: APPLICATION_PATH/../data/session
     mail:
       transport:
         type: Zend_Mail_Transport_Smtp
@@ -118,55 +108,55 @@ production:
           include: PUBLIC_PATH/assets/dashboard/
           buildDir: PUBLIC_PATH/assets/dashboard/builds/
           extend: base
-    cachemanager:
-      database:
-        frontend:
-          name: Core
-          options:
-            lifetime: 7200
-            cache_id_prefix: meta
-            automatic_serialization: true
-        backend:
-          name: File
-          options:
-            cache_dir: APPLICATION_PATH/../data/cache
-            file_name_prefix: APPLICATION_ENV_metadata
-      router:
-        frontend:
-          name: Core
-          options:
-            lifetime: 7200
-            cache_id_prefix: meta
-            automatic_serialization: true
-        backend:
-          name: File
-          options:
-            cache_dir: APPLICATION_PATH/../data/cache
-            file_name_prefix: APPLICATION_ENV_metadata
-      acl:
-        frontend:
-          name: Core
-          options:
-            lifetime: 7200
-            cache_id_prefix: meta
-            automatic_serialization: true
-        backend:
-          name: File
-          options:
-            cache_dir: APPLICATION_PATH/../data/cache
-            file_name_prefix: APPLICATION_ENV_metadata
-      navigation:
-        frontend:
-          name: Core
-          options:
-            lifetime: 7200
-            cache_id_prefix: meta
-            automatic_serialization: true
-        backend:
-          name: File
-          options:
-            cache_dir: APPLICATION_PATH/../data/cache
-            file_name_prefix: APPLICATION_ENV_metadata
+#    cachemanager:
+#      database:
+#        frontend:
+#          name: Core
+#          options:
+#            lifetime: 7200
+#            cache_id_prefix: meta
+#            automatic_serialization: true
+#        backend:
+#          name: File
+#          options:
+#            cache_dir: APPLICATION_PATH/../data/cache
+#            file_name_prefix: APPLICATION_ENV_metadata
+#      router:
+#        frontend:
+#          name: Core
+#          options:
+#            lifetime: 7200
+#            cache_id_prefix: meta
+#            automatic_serialization: true
+#        backend:
+#          name: File
+#          options:
+#            cache_dir: APPLICATION_PATH/../data/cache
+#            file_name_prefix: APPLICATION_ENV_metadata
+#      acl:
+#        frontend:
+#          name: Core
+#          options:
+#            lifetime: 7200
+#            cache_id_prefix: meta
+#            automatic_serialization: true
+#        backend:
+#          name: File
+#          options:
+#            cache_dir: APPLICATION_PATH/../data/cache
+#            file_name_prefix: APPLICATION_ENV_metadata
+#      navigation:
+#        frontend:
+#          name: Core
+#          options:
+#            lifetime: 7200
+#            cache_id_prefix: meta
+#            automatic_serialization: true
+#        backend:
+#          name: File
+#          options:
+#            cache_dir: APPLICATION_PATH/../data/cache
+#            file_name_prefix: APPLICATION_ENV_metadata
   view:
     title: ZFCore
     doctype: HTML5

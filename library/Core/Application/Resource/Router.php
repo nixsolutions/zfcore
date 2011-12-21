@@ -69,6 +69,18 @@ class Core_Application_Resource_Router
      */
     protected function _getConfig()
     {
+        $bootstrap = $this->getBootstrap();
+
+        $cache = false;
+        if (!empty($this->_options['cache'])) {
+            if ($bootstrap->hasPluginResource('CacheManager')) {
+                $manager = $bootstrap->bootstrap('CacheManager')
+                                     ->getResource('CacheManager');
+
+                $cache = $manager->getCache($this->_options['cache']);
+            }
+        }
+
         $config = empty($this->_options['config']) ? $this->_config : $this->_options['config'];
 
         return new Zend_Config(
@@ -76,7 +88,7 @@ class Core_Application_Resource_Router
                 $config,
                 null,
                 Core_Module_Config::MAIN_ORDER_LAST,
-                empty($this->_options['cache']) ? false : true
+                $cache
             )
         );
     }

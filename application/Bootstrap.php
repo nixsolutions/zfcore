@@ -10,61 +10,6 @@
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
     /**
-     * @return Zend_Application_Module_Autoloader
-     */
-    protected function _initAutoload()
-    {
-//        $autoloader = Zend_Loader_Autoloader::getInstance();
-//        $autoloader->registerNamespace('Core');
-//        $autoloader->suppressNotFoundWarnings(false);
-        $moduleLoader = new Zend_Application_Module_Autoloader(
-            array(
-                'namespace' => '',
-                'basePath'  => APPLICATION_PATH
-            )
-        );
-        return $moduleLoader;
-    }
-
-    /**
-     * @return Bootstrap
-     */
-    protected function _initCache()
-    {
-        // Db_Table metadata cache initialiazation
-        $this->bootstrap('db');
-
-        $cacheFrontendOptions = array(
-            'automatic_serialization' => true,
-            'cache_id_prefix'         => 'meta',
-            'lifetime'                => 3600,
-        );
-        $cacheBackendOptions = array(
-            'cache_dir'        => APPLICATION_PATH . '/../data/cache',
-            'file_name_prefix' => APPLICATION_ENV  . '_metadata',
-        );
-        $cache = Zend_Cache::factory(
-            'Core',
-            'File',
-            $cacheFrontendOptions,
-            $cacheBackendOptions
-        );
-
-        Zend_Db_Table_Abstract::setDefaultMetadataCache($cache);
-
-        /**
-         * set Include File Cache
-         */
-//        $classFileIncCache = APPLICATION_PATH . '/../data/cache/loader.php';
-//
-//        if (file_exists($classFileIncCache)) include_once $classFileIncCache;
-//
-//        Zend_Loader_PluginLoader::setIncludeFileCache($classFileIncCache);
-        return $this;
-    }
-
-
-    /**
      *
      * @return Zend_View
      */
