@@ -38,7 +38,7 @@ production:
             config: acl
             allowAll: on
             denied:
-              module: default
+              module: users
               controller: error
               action: denied
             role: guest
