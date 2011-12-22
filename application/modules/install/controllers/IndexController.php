@@ -63,8 +63,9 @@ class Install_IndexController extends Core_Controller_Action
                 'folders'    => false,
                 'settings'   => false,
                 'database'   => false,
-                'migrations' => false,
                 'mail'       => false,
+                'confirm'    => false,
+                'migrations' => false,
                 'finish'     => false
             );
         }
@@ -119,7 +120,7 @@ class Install_IndexController extends Core_Controller_Action
 
             $config->phpSettings->date->timezone = $form->getValue('timezone');
             $config->resources->frontController->baseUrl = $form->getValue('baseUrl');
-            $config->view->title = $form->getValue('title');
+            $config->resources->view->title = $form->getValue('title');
             $config->uploadDir = $form->getValue('uploadDir');
 
             $this->_store->progress['settings'] = true;
@@ -166,18 +167,23 @@ class Install_IndexController extends Core_Controller_Action
         if ($this->_request->isPost()
             && $form->isValid($this->_getAllParams())) {
 
-            $db = Zend_Db::factory($form->getValue('adapter'), $form->getValues());
+            $config = array(
+                'adapter' => $form->getValue('adapter'),
+                'params' => array(
+                    'host'     => $form->getValue('host'),
+                    'username' => $form->getValue('username'),
+                    'password' => $form->getValue('password'),
+                    'dbname'   => $form->getValue('dbname'),
+                    'charset'  => $form->getValue('charset')
+                )
+            );
+            $config = new Zend_Config($config);
+
+            $db = Zend_Db::factory($config);
             try {
                 $db->getConnection();
 
-                $config = $this->_store->config->production->resources->db;
-
-                $config->adapter = $form->getValue('adapter');
-                $config->params->host = $form->getValue('host');
-                $config->params->username = $form->getValue('username');
-                $config->params->password = $form->getValue('password');
-                $config->params->dbname = $form->getValue('dbname');
-                $config->params->charset = $form->getValue('charset');
+                $this->_store->config->production->resources->db = $config;
 
                 $this->_store->progress['database'] = true;
                 $this->_helper->redirector('index');
@@ -195,10 +201,57 @@ class Install_IndexController extends Core_Controller_Action
      */
     public function migrationsAction()
     {
-        //TODO remove apply migrations
+        $config = $this->_store->config->production->resources->db;
+
+        $db = Zend_Db::factory($config);
+        Zend_Db_Table_Abstract::setDefaultAdapter($db);
+
+        $options = array(
+            'projectDirectoryPath' => APPLICATION_PATH . '/..',
+            'modulesDirectoryPath' => APPLICATION_PATH . '/../modules',
+        );
+
+        $manager = new Core_Migration_Manager($options);
+
+        $manager->up();
+
+        $this->_helper->flashMessenger('Migrations rolled up');
         $this->_store->progress['migrations'] = true;
 
-        return $this->_forward('index');
+        $this->_store->progress['migrations'] = true;
+        $this->_helper->redirector('index');
+    }
+
+    /**
+     * Confirm Action
+     */
+    public function confirmAction()
+    {
+        $form = new Install_Form_Install_Confirm();
+
+        if (!$this->_store->confirmCode
+           || !is_file($this->_store->confirmFile)) {
+
+            $model = new Install_Model_Install();
+            $this->_store->confirmCode = $model->generateCode();
+
+            $this->_store->confirmFile = $model->saveCode($this->_store->confirmCode);
+        }
+        $form->setToken($this->_store->confirmCode);
+
+        if ($this->_request->isPost()
+            && $form->isValid($this->_getAllParams())) {
+
+            @unlink($this->_store->confirmFile);
+
+            $this->_store->progress['confirm'] = true;
+
+            $this->_store->progress['confirm'] = true;
+            $this->_helper->redirector('index');
+        }
+
+        $this->view->filename = $this->_store->confirmFile;
+        $this->view->form = $form;
     }
 
     /**
