@@ -38,7 +38,7 @@ class Install_Model_Install
 
         file_put_contents(
             $filename,
-            '<?php /*' . PHP_EOL . PHP_EOL . $code
+            '<?php /*' . PHP_EOL . PHP_EOL . $code . PHP_EOL
         );
         return $filename;
     }

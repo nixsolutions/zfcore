@@ -36,52 +36,46 @@ class Install_IndexController extends Core_Controller_Action
     {
         $this->_helper->layout->setLayout('install/layout');
 
-        $config = new Core_Config_Yaml(
-            APPLICATION_PATH . $this->_config . '.dist',
-            null,
-            array(
-                'allowModifications' => true,
-                'ignoreConstants' => true,
-                'skipExtends' => true
-            )
-        );
-
         $this->_store = new Zend_Session_Namespace(self::SESSION_KEY);
 
         if (!$this->_store->config) {
-            $this->_store->config = $config;
+            $this->_store->config = new Core_Config_Yaml(
+                APPLICATION_PATH . $this->_config . '.dist',
+                null,
+                array(
+                    'allowModifications' => true,
+                    'ignoreConstants' => true,
+                    'skipExtends' => true
+                )
+            );
         }
+
+        if (!$this->_store->progress) {
+            $this->_store->progress = array(
+                'install-index-settings'   => false,
+                'install-index-api'        => false,
+                'install-index-database'   => false,
+                'install-index-mail'       => false,
+                'install-index-confirm'    => false,
+                'install-index-migrations' => false
+            );
+        }
+
+        $this->view->pages = array(
+            'install-index-settings'   => 'Settings',
+            'install-index-api'        => 'Api',
+            'install-index-database'   => 'Database',
+            'install-index-mail'       => 'Mail',
+            'install-index-confirm'    => 'Confirm',
+        );
+
+        $this->view->progress = $this->_store->progress;
     }
 
     /**
      * Index action
      */
     public function indexAction()
-    {
-        if (!$this->_store->progress) {
-            $this->_store->progress = array(
-                'folders'    => false,
-                'settings'   => false,
-                'database'   => false,
-                'mail'       => false,
-                'confirm'    => false,
-                'migrations' => false,
-                'finish'     => false
-            );
-        }
-
-        foreach ($this->_store->progress as $action => $status) {
-            if (false == $status) {
-                return $this->_forward($action);
-            }
-        }
-
-    }
-
-    /**
-     * Folders action
-     */
-    public function foldersAction()
     {
         $unwritable = array();
         foreach ($this->_folders as $folder) {
@@ -97,12 +91,16 @@ class Install_IndexController extends Core_Controller_Action
         if (!empty($unwritable)) {
             $this->view->unwritable = $unwritable;
         } else {
-
             $config = $this->_store->config->production->resources;
             $config->session->save_path = APPLICATION_PATH . Install_Model_Install::SESSION_DIR;
 
-            $this->_store->progress['folders'] = true;
-            $this->_helper->redirector('index');
+            foreach ($this->_store->progress as $route => $status) {
+                if (!$status) {
+                    $this->_store->progress[$route] = null;
+                    $this->_helper->redirector->gotoRoute(array(), $route);
+                }
+            }
+            $this->_helper->redirector->gotoRoute(array(), 'install-index-finish');
         }
     }
 
@@ -111,22 +109,62 @@ class Install_IndexController extends Core_Controller_Action
      */
     public function settingsAction()
     {
-        $form = new Install_Form_Install_Settings();
+        $form = new Install_Form_Settings_Basic();
+
+        $config = $this->_store->config->production;
+
+        $form->setDefault('timezone', $config->phpSettings->date->timezone);
+        $form->setDefault('baseUrl', $config->resources->frontController->baseUrl);
+        $form->setDefault('title', $config->resources->view->title);
+        $form->setDefault('uploadDir', $config->uploadDir);
 
         if ($this->_request->isPost()
             && $form->isValid($this->_getAllParams())) {
-
-            $config = $this->_store->config->production;
 
             $config->phpSettings->date->timezone = $form->getValue('timezone');
             $config->resources->frontController->baseUrl = $form->getValue('baseUrl');
             $config->resources->view->title = $form->getValue('title');
             $config->uploadDir = $form->getValue('uploadDir');
 
-            $this->_store->progress['settings'] = true;
+            $this->_store->progress['install-index-settings'] = true;
             $this->_helper->redirector('index');
         }
+        $this->view->form = $form;
+    }
 
+    /**
+     * Api action
+     */
+    public function apiAction()
+    {
+        $form = new Install_Form_Settings_Api();
+
+        $config = $this->_store->config->production->resources->registry;
+
+        $form->setDefault('appId', $config->fbConfig->appId);
+        $form->setDefault('secret', $config->fbConfig->secret);
+
+        $form->setDefault('twitterKey', $config->twitterConfig->consumerKey);
+        $form->setDefault('twitterSecret', $config->twitterConfig->consumerSecret);
+
+        $form->setDefault('googleKey', $config->googleConfig->consumerKey);
+        $form->setDefault('googleSecret', $config->googleConfig->consumerSecret);
+
+        if ($this->_request->isPost()
+            && $form->isValid($this->_getAllParams())) {
+
+            $config->fbConfig->appId  = $form->getValue('appId');
+            $config->fbConfig->secret = $form->getValue('secret');
+
+            $config->twitterConfig->consumerKey    = $form->getValue('twitterKey');
+            $config->twitterConfig->consumerSecret = $form->getValue('twitterSecret');
+
+            $config->googleConfig->consumerKey    = $form->getValue('googleKey');
+            $config->googleConfig->consumerSecret = $form->getValue('googleSecret');
+
+            $this->_store->progress['install-index-api'] = true;
+            $this->_helper->redirector('index');
+        }
         $this->view->form = $form;
     }
 
@@ -136,24 +174,40 @@ class Install_IndexController extends Core_Controller_Action
      */
     public function mailAction()
     {
-        $form = new Install_Form_Install_Mail();
+        $form = new Install_Form_Settings_Mail();
 
-        if ($this->_request->isPost()
-        && $form->isValid($this->_getAllParams())) {
+        $config = $this->_store->config->production->resources->mail;
 
-            $config = $this->_store->config->production->resources->mail;
-
-            $config->transport->type = $form->getValue('type');
-            $config->transport->host = $form->getValue('host');
-            $config->transport->post = $form->getValue('post');
-
-            $config->transport->defaultFrom->email = $form->getValue('email');
-            $config->transport->defaultFrom->name = $form->getValue('name');
-
-            $this->_store->progress['mail'] = true;
-            $this->_helper->redirector('index');
+        if ($config->transport) {
+            $form->setDefault('type', $config->transport->type);
+            $form->setDefault('host', $config->transport->host);
+            $form->setDefault('port', $config->transport->port);
+        }
+        if ($config->transport) {
+            $form->setDefault('email', $config->defaultFrom->email);
+            $form->setDefault('name', $config->defaultFrom->name);
         }
 
+        if ($this->_request->isPost()
+            && $form->isValid($this->_getAllParams())) {
+
+            $config = array(
+                'transport' => array(
+                    'type' => $form->getValue('type'),
+                    'host' => $form->getValue('host'),
+                    'port' => $form->getValue('port')
+                ),
+                'defaultFrom' => array(
+                    'email' => $form->getValue('email'),
+                    'name' => $form->getValue('name')
+                )
+            );
+            $config = new Zend_Config($config);
+            $this->_store->config->production->resources->mail = $config;
+
+            $this->_store->progress['install-index-mail'] = true;
+            $this->_helper->redirector('index');
+        }
         $this->view->form = $form;
     }
 
@@ -162,7 +216,17 @@ class Install_IndexController extends Core_Controller_Action
      */
     public function databaseAction()
     {
-        $form = new Install_Form_Install_Database();
+        $form = new Install_Form_Settings_Database();
+
+        if ($config = $this->_store->config->production->resources->db) {
+            $form->setDefault('adapter', $config->adapter);
+
+            $form->setDefault('host', $config->params->host);
+            $form->setDefault('username', $config->params->username);
+            $form->setDefault('password', $config->params->password);
+            $form->setDefault('dbname', $config->params->dbname);
+            $form->setDefault('charset', $config->params->charset);
+        }
 
         if ($this->_request->isPost()
             && $form->isValid($this->_getAllParams())) {
@@ -185,7 +249,7 @@ class Install_IndexController extends Core_Controller_Action
 
                 $this->_store->config->production->resources->db = $config;
 
-                $this->_store->progress['database'] = true;
+                $this->_store->progress['install-index-database'] = true;
                 $this->_helper->redirector('index');
 
             } catch (Zend_Db_Adapter_Exception $e) {
@@ -216,9 +280,7 @@ class Install_IndexController extends Core_Controller_Action
         $manager->up();
 
         $this->_helper->flashMessenger('Migrations rolled up');
-        $this->_store->progress['migrations'] = true;
-
-        $this->_store->progress['migrations'] = true;
+        $this->_store->progress['install-index-migrations'] = true;
         $this->_helper->redirector('index');
     }
 
@@ -244,9 +306,7 @@ class Install_IndexController extends Core_Controller_Action
 
             @unlink($this->_store->confirmFile);
 
-            $this->_store->progress['confirm'] = true;
-
-            $this->_store->progress['confirm'] = true;
+            $this->_store->progress['install-index-confirm'] = true;
             $this->_helper->redirector('index');
         }
 

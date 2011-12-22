@@ -23,7 +23,7 @@ production:
       defaultControllerName: index
       defaultAction: index
       defaultModule: users
-      baseurl: /
+      baseUrl: /
       env: APPLICATION_ENV
       params:
         prefixDefaultModule: on

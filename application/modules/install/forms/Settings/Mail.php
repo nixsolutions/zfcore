@@ -8,7 +8,7 @@
  *
  * @version  $Id$
  */
-class Install_Form_Install_Mail extends Zend_Form
+class Install_Form_Settings_Mail extends Zend_Form
 {
     /**
      * Form initialization

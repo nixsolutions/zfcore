@@ -8,7 +8,7 @@
  *
  * @version  $Id$
  */
-class Install_Form_Install_Database extends Zend_Form
+class Install_Form_Settings_Database extends Zend_Form
 {
     /**
      * Form initialization
