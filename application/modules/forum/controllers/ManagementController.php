@@ -81,7 +81,6 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
              ->removeColumn('categoryId')
              ->removeColumn('userId')
              ->removeColumn('views')
-             ->removeColumn('comments')
              ->setColumn('body', array(
                 'formatter' => array($this, array('trimFormatter'))
              ));

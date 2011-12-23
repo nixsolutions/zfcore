@@ -30,7 +30,6 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
              '_addDeleteButton',
              '_showFilter'
         ));
-
     }
     
     /**

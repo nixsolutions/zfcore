@@ -35,16 +35,6 @@ class Forum_PostController extends Core_Controller_Action
         /** update count view */
         $post->incViews();
         $this->view->post = $post;
-
-        $comments = new Forum_Model_Comment_Table();
-        $select = $comments->getCommentsSelect($post->id);
-
-        $paginator = Zend_Paginator::factory($select);
-
-        $paginator->setItemCountPerPage(20);
-        $paginator->setCurrentPageNumber($this->_getParam('page'));
-
-        $this->view->paginator = $paginator;
     }
 
     /**
@@ -72,43 +62,6 @@ class Forum_PostController extends Core_Controller_Action
         $paginator->setCurrentPageNumber($this->_getParam('page'));
 
         $this->view->paginator = $paginator;
-    }
-
-    /**
-     * Create comment
-     *
-     */
-    public function commentAction()
-    {
-        if (!$postId = $this->_getParam('postId')) {
-            throw new Zend_Controller_Action_Exception('Page not found');
-        }
-        $posts = new Forum_Model_Post_Table();
-        if (!$post = $posts->getById($postId)) {
-            throw new Zend_Controller_Action_Exception('Post not found');
-        }
-
-        if (Zend_Auth::getInstance()->hasIdentity()) {
-            $form = new Forum_Model_Comment_Form_Create();
-
-            if ($this->getRequest()->isPost()
-                && $form->isValid($this->_getAllParams())) {
-
-                $table = new Forum_Model_Comment_Table();
-                $row = $table->createRow($form->getValues());
-                $row->postId = $post->id;
-                $row->save();
-
-                $post->incComments();
-
-                $this->_helper->flashMessenger->addMessage(
-                    'Comment added successfully'
-                );
-                $this->_helper->redirector
-                     ->gotoRoute(array('id' => $post->id), 'forumpost');
-            }
-            $this->view->form = $form;
-        }
     }
 
     /**

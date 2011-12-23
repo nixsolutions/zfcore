@@ -10,4 +10,10 @@
  */
 class Blog_Model_Post_Manager extends Core_Model_Manager
 {
+    public function getSelect()
+    {
+        $select = $this->getDbTable()->select();
+        
+        return $select;
+    }
 }

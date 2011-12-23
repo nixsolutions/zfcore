@@ -28,13 +28,6 @@ forumpostedit:
    module: forum
    controller: post
    action: edit
-forumcomment:
- route: forum/post/comment/*
- defaults:
-   module: forum
-   controller: post
-   action: comment
-   
 forumrss:
  route: forum/rss/*
  defaults:

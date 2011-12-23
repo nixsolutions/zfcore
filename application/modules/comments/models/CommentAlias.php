@@ -82,4 +82,14 @@ class Comments_Model_CommentAlias extends Core_Db_Table_Row_Abstract
     {
         return in_array('preModerationRequired', $this->getOptions());
     }
+    
+    /**
+     * Check if "isRelatedTableDefined" is set
+     * 
+     * @return boolean
+     */    
+    public function isRelatedTableDefined()
+    {
+        return !empty($this->relatedTable);
+    }
 }

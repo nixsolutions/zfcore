@@ -7,7 +7,7 @@
         <div class="menu small"></div>
         <div class="menu clearright">
             <?php
-            $this->coreMenu()->setPartial(array('/default/partial/mainMenu.phtml', 'default'));
+            $this->coreMenu()->setPartial(array('/default/partial/mainMenu.phtml', 'users'));
             //echo $this->navigation()->coreMenu()->byId(0);
             //echo $this->navigation()->coreMenu()->byLabel('Home');
             echo $this->navigation()->coreMenu() /*->byId(0)*/->byLabel('Home')->setMinDepth(0)->setMaxDepth(50);

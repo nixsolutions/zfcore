@@ -31,8 +31,7 @@ class Blog_Model_Post_Table extends Core_Db_Table_Abstract
     {
         $users = new Users_Model_Users_Table();
         $categories = new Categories_Model_Category_Table();
-        $comments = new Blog_Model_Comment_Table();
-
+        
         $select = $this->select()->setIntegrityCheck(false);
         $select->from(array('p' => $this->_name), array('*'))
                ->joinLeft(
@@ -44,11 +43,6 @@ class Blog_Model_Post_Table extends Core_Db_Table_Abstract
                     array('c' => $categories->info('name')),
                     'c.id = p.categoryId',
                     array('categoryTitle' => 'title', 'categoryAlias' => 'alias')
-                )
-                ->joinLeft(
-                    array('com' => $comments->info('name')),
-                    'p.id = com.postId',
-                    array('comments' => new Zend_Db_Expr('COUNT(com.id)'))
                 )
                 ->group('p.id')
                 ->where('p.status=?', Blog_Model_Post::STATUS_PUBLISHED)

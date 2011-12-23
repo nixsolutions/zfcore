@@ -1,7 +1,8 @@
 <?php foreach($this->paginator as $i => $row) : ?>
     <li id="li-comment-<?php echo $row->id ?>" class="comment">
+        
         <img src="<?php echo $this->avatar($row->avatar, $row->email)?>" 
-                alt="<?php echo $this->__('Avatar for')?> <?php echo $row->getUserName() ?>"
+                alt="<?php echo $this->__('Avatar for')?> <?php echo $row->firstname . ' ' . $row->lastname ?>"
                 title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>" class="avatar"/>
 
         <article class="comment" id="comment-<?php echo $row->id ?>">

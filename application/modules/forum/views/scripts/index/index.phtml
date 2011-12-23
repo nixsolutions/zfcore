@@ -13,6 +13,7 @@
     </tr>
   </thead>
   <tbody>
+      
     <?php if ($this->categories->count()): ?>
         <?php foreach($this->categories as $row): ?>
             <tr class="category category-level-<?php echo $row->level?>">
@@ -41,7 +42,9 @@
                   <?php endif;?>
               </td>
               <td align="center"><?php echo ($post) ? $post->postsCount : 0?></td>
-              <td align="center"><?php echo ($post) ? $post->commentsCount : 0?></td>
+              <td align="center">
+                  <?php echo $this->commentsCounter($post->categoryId, 'forum-post', $this->posts, 'categoryId') ?>
+              </td>
               <td align="center"><?php echo ($post) ? $post->viewsCount : 0?></td>
             </tr>
         <?php endforeach;?>

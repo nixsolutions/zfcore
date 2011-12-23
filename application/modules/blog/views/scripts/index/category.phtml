@@ -22,7 +22,7 @@
               <?php echo $row->login?> <?php echo $this->__('in')?>
               <a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategory') ?>"><?php echo $row->categoryTitle?></a>
               |
-              <a href="<?php echo $url?>"><?php echo $this->__('Comments')?> (<?php echo $row->comments ?>)</a>
+              <a href="<?php echo $url?>"><?php echo $this->__('Comments')?> (<span><?php echo $this->commentsCounter($row->id, 'blog-post', $this->paginator->getCurrentItems()->toArray(), 'id') ?></span>)</a>
           </div>
         </article>
         <?php endforeach;?>

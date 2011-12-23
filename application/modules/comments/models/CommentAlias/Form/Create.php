@@ -25,6 +25,7 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
                 $this->_alias(),
                 $this->_options(),
                 $this->_countPerPage(),
+                $this->_relatedTable(),
                 $this->_submit()
             )
         );
@@ -93,6 +94,28 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
     }
     
     /**
+     * Create relatedTable element
+     *
+     * @return Zend_Form_Element_Text
+     */
+    protected function _relatedTable()
+    {
+        $element = new Zend_Form_Element_Text('relatedTable');
+        $element->setLabel('Related table')
+                 ->setRequired(false)
+                 ->setFilters(array('StringTrim', 'StringToLower'))
+                 ->addValidator(
+                     'Db_NoRecordExists',
+                     false,
+                     array(
+                         array('table' => 'comment_aliases', 'field' => 'relatedTable')
+                     )
+                 );;
+
+        return $element;
+    }
+    
+    /**
      * Create submit element
      *
      * @return Zend_Form_Element_Submit
@@ -104,5 +127,55 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
         $element->setOrder(100);
 
         return $element;
+    }
+    
+    /**
+     *
+     * @param string $tableName 
+     */
+    protected function _validateRelatedTable($tableName)
+    {
+        $adapter = Zend_Db_Table_Abstract::getDefaultAdapter();
+        
+        try {
+        
+            try {
+                $result = $adapter->describeTable($tableName);
+
+                if (!isset($result['comments'])) {
+                    throw new Zend_Form_Exception('Column `comments` is not exist in this table');
+                }
+
+                return true;
+            
+            } catch (Zend_Form_Exception $e) {
+                throw new Zend_Form_Exception($e->getMessage());
+            } catch (Exception $e) {
+                throw new Zend_Form_Exception("Table `$tableName` is not exist");
+            }
+        } catch (Zend_Form_Exception $e) {
+            $this->getElement('relatedTable')->addError($e->getMessage());
+            
+            return false;
+        } catch (Exception $e) {
+            $this->getElement('relatedTable')->addError('Unknown error');
+            
+            return false;
+        }
+    }
+    
+    public function isValid($data)
+    {
+        $valid = parent::isValid($data);
+        
+        if (!empty($data['relatedTable'])) {
+            $relatedTableValid = $this->_validateRelatedTable($data['relatedTable']);
+            
+            if (!$relatedTableValid) {
+                $valid = false;
+            }
+        }
+        
+        return $valid;
     }
 }

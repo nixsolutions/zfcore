@@ -41,8 +41,7 @@ class Forum_Model_Post_Table extends Core_Db_Table_Abstract
         $select->columns(
             array(
                 'postsCount' => new Zend_Db_Expr('COUNT(p.id)'),
-                'viewsCount' => new Zend_Db_Expr('SUM(views)'),
-                'commentsCount' => new Zend_Db_Expr('SUM(comments)'),
+                'viewsCount' => new Zend_Db_Expr('SUM(views)')
             )
         );
 
@@ -62,24 +61,15 @@ class Forum_Model_Post_Table extends Core_Db_Table_Abstract
     public function getPostsSelect($categoryId = null)
     {
         $users = new Users_Model_Users_Table();
-        $comments = new Forum_Model_Comment_Table();
-
+        
         $select = $this->select()->from(array('p' => $this->_name), array('*'));
         $select->setIntegrityCheck(false)
             ->joinLeft(
             array('u' => $users->info('name')),
             'userId=u.id',
             array('author' =>'login')
-        )->joinLeft(
-            array('c' => $comments->info('name')),
-            'p.id=c.postId',
-            array('commentCreated' =>'created')
-        )->joinLeft(
-            array('u2' => $users->info('name')),
-            'c.userId=u2.id',
-            array('commentAuthor' =>'login')
         );
-        $select->order(array('p.created DESC', 'c.created DESC'));
+        $select->order('p.created DESC');
         $select->group('p.id');
         $select->where('p.status=?', Forum_Model_Post::STATUS_ACTIVE);
 

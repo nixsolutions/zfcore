@@ -134,8 +134,6 @@ class Forum_RssController extends Core_Controller_Action
      */
     public function postAction()
     {
-        $limit = 10;
-
         if (!$postId = $this->_getParam('id')) {
             throw new Zend_Controller_Action_Exception('Page not found');
         }
@@ -165,29 +163,7 @@ class Forum_RssController extends Core_Controller_Action
             )
         );
 
-        $comments = new Forum_Model_Comment_Table();
-        $select = $comments->getCommentsSelect($row->id);
-        $select->order('created DESC');
-        $select->limit($limit);
-
         $feed->setDateModified(time());
-        foreach ($comments->fetchAll($select) as $i => $row) {
-            if (0 == $i) {
-                $feed->setDateModified(strtotime($row->updated));
-            }
-            $postUrl = $url->url(array('id' => $row->id), 'forumpost');
-
-            $entry = $feed->createEntry();
-            $entry->setTitle($row->title);
-            $entry->setLink($serverUrl . $postUrl);
-            $entry->addAuthor($row->login, null, null);
-
-            $entry->setDateModified(strtotime($row->updated));
-            $entry->setDateCreated(strtotime($row->created));
-            $entry->setDescription($row->body);
-
-            $feed->addEntry($entry);
-        }
 
         echo $feed->export('atom');
     }

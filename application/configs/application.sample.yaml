@@ -79,7 +79,7 @@ production:
     auth: on
     registry:
       fbConfig:
-        appId: 
+        appId:
         secret: 
         cookie: on
       twitterConfig:

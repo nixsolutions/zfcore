@@ -56,6 +56,7 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
             $this->_getTable()
                 ->select()
                 ->where('aliasId = ?', $this->alias->id)
+                ->order('created DESC')
         );
     }
     

@@ -24,6 +24,14 @@ class Comments_Model_CommentAlias_Form_Edit extends Comments_Model_CommentAlias_
                 );
         }
         
+        if (isset($defaults['relatedTable'])) {
+            $this->getElement('relatedTable')
+                ->getValidator('Db_NoRecordExists')
+                ->setExclude(
+                    array('field' => 'relatedTable', 'value' => $defaults['relatedTable'])
+                );
+        }
+        
         // decode the options from the string to array
         if (isset($defaults['options'])) {
             $this->getElement('options')

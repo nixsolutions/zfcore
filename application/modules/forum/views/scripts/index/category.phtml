@@ -52,7 +52,7 @@
                       <?php endif;?>
                   </td>
                   <th><?php echo ($post) ? $post->postsCount : 0?></th>
-                  <th><?php echo ($post) ? $post->commentsCount : 0?></th>
+                  <?php echo $this->commentsCounter($post->categoryId, 'forum-post', $this->posts, 'categoryId') ?>
                   <th><?php echo ($post) ? $post->viewsCount : 0?></th>
                 </tr>
             <?php endforeach;?>
@@ -70,7 +70,7 @@
       <thead>
         <tr>
           <th><?php echo $this->__('Post Title')?></th>
-          <th width="170"><?php echo $this->__('Last Comment')?></th>
+          <th width="150"><?php echo $this->__('Created')?></th>
           <th width="60"><?php echo $this->__('Comments')?></th>
           <th width="60"><?php echo $this->__('Views')?></th>
         </tr>
@@ -87,11 +87,11 @@
                     <?php echo $this->__('by')?> <?php echo $row->author;?>
                   </td>
                   <td align="center">
-                      <?php echo $this->date($row->commentCreated?$row->commentCreated:$row->created)?>
-                      <?php echo $this->__('by')?>
-                      <?php echo $row->commentAuthor?$row->commentAuthor:$row->author?>
+                      <?php echo $this->date($row->created)?>
                   </td>
-                  <td align="center"><?php echo $row->comments?></td>
+                  <td align="center">
+                      <?php echo $this->commentsCounter($row->id, 'forum-post', $this->paginator->getCurrentItems()->toArray(), 'id') ?>
+                  </td>
                   <td align="center"><?php echo $row->views?></td>
                 </tr>
             <?php endforeach;?>

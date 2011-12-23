@@ -81,25 +81,6 @@ class Forum_Model_Post extends Core_Db_Table_Row_Abstract
     }
 
     /**
-     * Inc comments
-     *
-     * @param integer $count
-     * @return Forum_Model_Post
-     */
-    public function incComments($count = 1)
-    {
-        if ($this->isReadOnly()) {
-            $row = $this->getTable()->find($this->_getPrimaryKey());
-        } else {
-            $row = $this;
-        }
-        $row->comments += $count;
-        $row->save();
-
-        return $this;
-    }
-
-    /**
      * Get teaser
      *
      * @param integer $length
