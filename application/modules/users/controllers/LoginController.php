@@ -72,6 +72,15 @@ class Users_LoginController extends Core_Controller_Action
             }
             $this->view->messages = $message;
         }
+        if (Zend_Registry::isRegistered('fbConfig')) {
+            $this->view->facebook = true;
+        }
+        if (Zend_Registry::isRegistered('twitterConfig')) {
+            $this->view->twitter = true;
+        }
+        if (Zend_Registry::isRegistered('googleConfig')) {
+            $this->view->google = true;
+        }
         $this->view->form = $form;
     }
 

@@ -11,18 +11,29 @@
     <a href="<?php echo $this->url(array('module' => 'users',
                                          'controller'=>'register',
                                          'action'=>'forget-password'),
-                                   'forgetPassword'); ?>"><?php echo $this->__('Forget Password')?></a> |
+                                   'forgetPassword'); ?>"><?php echo $this->__('Forget Password')?></a>
 
-    <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'google'), 'default');?>">
-        <?php echo $this->__('Sign in with Google')?>
-    </a> |
-    <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'twitter'), 'default');?>">
-        <?php echo $this->__('Sign in with Twitter')?>
-    </a> |
-    <?php echo $this->fbConnect()->login(
-        $this->__('Login with Facebook'),
-        array('email', 'user_checkins'),
-        $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'facebook'), 'default')
-    );?>
+    <?php if ($this->google):?>
+        |
+        <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'google'), 'default');?>">
+            <?php echo $this->__('Sign in with Google')?>
+        </a>
+    <?php endif;?>
+
+    <?php if ($this->twitter):?>
+        |
+        <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'twitter'), 'default');?>">
+            <?php echo $this->__('Sign in with Twitter')?>
+        </a>
+    <?php endif;?>
+
+    <?php if ($this->twitter):?>
+        |
+        <?php echo $this->fbConnect()->login(
+            $this->__('Login with Facebook'),
+            array('email', 'user_checkins'),
+            $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'facebook'), 'default')
+        );?>
+    <?php endif;?>
 </p>
 </div>

@@ -25,3 +25,4 @@ mvc:
     management:
       allow: admin
     error:
+      allow: guest

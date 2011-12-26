@@ -10,13 +10,5 @@
  */
 class Blog_Bootstrap extends Zend_Application_Module_Bootstrap
 {
-    public function _initHelpers()
-    {   
-        $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
-        
-        $viewRenderer->view->addHelperPath(
-            APPLICATION_PATH . "/modules/comments/views/helpers", 
-            'Comments_View_Helper'
-        );
-    }
+    
 }

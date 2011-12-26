@@ -76,9 +76,9 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     /**
      * cache using
      *
-     * @var boolean
+     * @var string
      */
-    protected $_cache = true;
+    protected $_cache;
 
     /**
      * Allow All
@@ -137,11 +137,21 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
         }
 
         $this->_options = $options;
-
-        $this->getAcl();
     }
 
 
+    /**
+     * Called after Zend_Controller_Router exits.
+     *
+     * Called after Zend_Controller_Front exits from the router.
+     *
+     * @param  Zend_Controller_Request_Abstract $request
+     * @return void
+     */
+    public function routeShutdown(Zend_Controller_Request_Abstract $request)
+    {
+        $this->getAcl();
+    }
 
     /**
      * Gets config array from file
@@ -262,7 +272,7 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
             }
         }
     }
-    
+
     /**
      * Redirects to denied page
      *

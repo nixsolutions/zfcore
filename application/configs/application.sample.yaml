@@ -23,7 +23,7 @@ production:
       defaultControllerName: index
       defaultAction: index
       defaultModule: users
-      baseurl: /
+      baseUrl: /
       env: APPLICATION_ENV
       params:
         prefixDefaultModule: on
@@ -42,17 +42,17 @@ production:
               controller: error
               action: denied
             role: guest
-            cache: on
+            cache: acl
         navigation:
           class: Core_Controller_Plugin_Navigation
           stackindex: 50
           options:
             config: navigation
             section: dashboard
-            cache: on
+            cache: navigation
     router:
       config: routes
-      cache: on
+      cache: router
     translate:
       locale: en
       scan: filename
@@ -71,6 +71,7 @@ production:
         dbname: p_zfc
         charset: utf8
       isDefaultTableAdapter: on
+      defaultMetadataCache: database
     layout:
       layout: default/layout
       layoutPath: APPLICATION_PATH/layouts/scripts/
@@ -117,10 +118,72 @@ production:
           include: PUBLIC_PATH/assets/dashboard/
           buildDir: PUBLIC_PATH/assets/dashboard/builds/
           extend: base
-  view:
-    title: ZFCore
-    doctype: HTML5
-    encoding: UTF-8
+    cachemanager:
+      database:
+        frontend:
+          name: Core
+          options:
+            lifetime: 7200
+            cache_id_prefix: meta
+            automatic_serialization: true
+        backend:
+          name: File
+          options:
+            cache_dir: APPLICATION_PATH/../data/cache
+            file_name_prefix: APPLICATION_ENV_metadata
+      router:
+        frontend:
+          name: Core
+          options:
+            lifetime: 7200
+            cache_id_prefix: meta
+            automatic_serialization: true
+        backend:
+          name: File
+          options:
+            cache_dir: APPLICATION_PATH/../data/cache
+            file_name_prefix: APPLICATION_ENV_metadata
+      acl:
+        frontend:
+          name: Core
+          options:
+            lifetime: 7200
+            cache_id_prefix: meta
+            automatic_serialization: true
+        backend:
+          name: File
+          options:
+            cache_dir: APPLICATION_PATH/../data/cache
+            file_name_prefix: APPLICATION_ENV_metadata
+      navigation:
+        frontend:
+          name: Core
+          options:
+            lifetime: 7200
+            cache_id_prefix: meta
+            automatic_serialization: true
+        backend:
+          name: File
+          options:
+            cache_dir: APPLICATION_PATH/../data/cache
+            file_name_prefix: APPLICATION_ENV_metadata
+    view:
+      title: ZFCore
+      doctype: HTML5
+      charset: UTF-8
+      encoding: UTF-8
+      contentType: text/html; charset=UTF-8
+      meta:
+        httpEquiv:
+          Content-Language: en-US
+      helperPath:
+        Core_View_Helper: Core/View/Helper
+        Application_View_Helper: APPLICATION_PATH/layouts/helpers
+      filterPath:
+        Core_View_Filter: Core/View/Filter
+        Application_View_Filter: APPLICATION_PATH/layouts/filters
+      scriptPath:
+        - APPLICATION_PATH/views/scripts
 testing:
   _extends: production
   phpSettings:
