@@ -9,7 +9,7 @@
             <header>
                 <div class="right">#<a href="#comment-<?php echo $i + 1 ?>"><?php echo $i + 1 ?></a></div>
                 
-                <?php echo $this->status($row) ?>
+                <?php echo $this->commentStatus($row) ?>
                 
                 <?php echo ucfirst($row->login)?> <?php echo $this->__('on')?> <?php echo $this->date($row->created)?>
                 <span class="says"><?php echo $this->__('said')?>:</span>

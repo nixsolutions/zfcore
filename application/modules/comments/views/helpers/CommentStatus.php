@@ -4,7 +4,7 @@
  * 
  * @author Pavel Machekhin
  */
-class Comments_View_Helper_Status extends Zend_View_Helper_Abstract
+class Comments_View_Helper_CommentStatus extends Zend_View_Helper_Abstract
 {
     /**
      * Display the comment status.
@@ -12,7 +12,7 @@ class Comments_View_Helper_Status extends Zend_View_Helper_Abstract
      * @param Comments_Model_Comment $comment
      * @return string 
      */
-    public function status(Comments_Model_Comment $comment)
+    public function commentStatus(Comments_Model_Comment $comment)
     {
         $text = '';
         

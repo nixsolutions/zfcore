@@ -8,7 +8,7 @@
             <header>
                 <div class="right">#<a href="#comment-<?php echo $i?>"><?php echo $i?></a></div>
                 
-                <?php echo $this->status($row) ?>
+                <?php echo $this->commentStatus($row) ?>
                 
                 <h5><?php echo $row->title; ?></h5>
                 <?php echo $this->user->login; ?>
