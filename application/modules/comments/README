@@ -1,0 +1,18 @@
+1. Enable view helpers from comments module
+    - Comments_View_Helper: APPLICATION_PATH/modules/comments/views/helpers
+
+2. Define `alias` - create new row in `comment_aliases` table
+
+3. Insert code to the template:
+   
+   Show the comments amount for the item
+   <?php echo $this->commentsCounter($itemId, $alias, $itemsArray, $groupKey) ?>
+
+   Show the all item comments
+   <?php echo $this->getComments($alias, 
+        array(
+            'key' => $itemId,
+            'template' => $template
+        )
+    ) ?>
+
