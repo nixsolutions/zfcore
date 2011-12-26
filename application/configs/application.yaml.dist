@@ -1,0 +1,210 @@
+production:
+  phpSettings:
+    display_startup_errors: off
+    display_errors: off
+    date:
+      timezone: Europe/Kiev
+  includePaths:
+    library: APPLICATION_PATH/../library
+  pluginPaths:
+    Core_Application_Resource: Core/Application/Resource
+  bootstrap:
+    path: APPLICATION_PATH/Bootstrap.php
+    class: Bootstrap
+  appnamespace: Application
+  autoloadernamespaces:
+    - Core
+    - Facebook
+  uploadDir: uploads
+  resources:
+    frontController:
+      moduleDirectory: APPLICATION_PATH/modules
+      moduleControllerDirectoryName: controllers
+      defaultControllerName: index
+      defaultAction: index
+      defaultModule: install
+      baseUrl: /
+      env: APPLICATION_ENV
+      params:
+        prefixDefaultModule: on
+        displayExceptions: off
+      actionhelperpaths:
+        Helper: APPLICATION_PATH/helpers
+      plugins:
+        acl:
+          class: Core_Controller_Plugin_Acl
+          stackindex: 30
+          options:
+            config: acl
+            allowAll: on
+            denied:
+              module: users
+              controller: error
+              action: denied
+            role: guest
+            cache: acl
+        navigation:
+          class: Core_Controller_Plugin_Navigation
+          stackindex: 50
+          options:
+            config: navigation
+            section: dashboard
+            cache: navigation
+    router:
+      config: routes
+      cache: router
+    translate:
+      locale: en
+      scan: filename
+      disableNotices: on
+      logUntranslated: off
+      logMessage: Undefined message '%message%' in '%locale%'
+      logPath: APPLICATION_PATH/../data/logs/lang.log
+    locale: on
+    modules: on
+    layout:
+      layout: install/layout
+      layoutPath: APPLICATION_PATH/layouts/scripts/
+    auth: on
+    registry:
+      fbConfig:
+        appId: 
+        secret: 
+        cookie: on
+      twitterConfig:
+        callbackUrl: /users/login/oauth/type/twitter
+        siteUrl: http://twitter.com/oauth
+        consumerKey: 
+        consumerSecret: 
+      googleConfig:
+        callbackUrl: /users/login/oauth/type/google
+        siteUrl: https://www.google.com/accounts/
+        authorizeUrl: https://www.google.com/accounts/OAuthAuthorizeToken
+        requestTokenUrl: https://www.google.com/accounts/OAuthGetRequestToken
+        accessTokenUrl: https://www.google.com/accounts/OAuthGetAccessToken
+        consumerKey: 
+        consumerSecret: 
+    session:
+      save_path: APPLICATION_PATH/../data/session
+    mail:
+      transport:
+        type: Zend_Mail_Transport_Smtp
+        host: stubmail.nixsolutions.com
+        port: 2500
+      defaultFrom:
+        email: zfc@nixsolutions.com
+        name: ZFCore Webmaster
+    asset:
+      adapter: Core_Asset_Adapter_Simple
+      packages:
+        base:
+          include: PUBLIC_PATH/assets/base/
+          buildDir: PUBLIC_PATH/assets/base/builds/
+        default:
+          include: PUBLIC_PATH/assets/default/
+          buildDir: PUBLIC_PATH/assets/default/builds/
+          extend: base
+        dashboard:
+          include: PUBLIC_PATH/assets/dashboard/
+          buildDir: PUBLIC_PATH/assets/dashboard/builds/
+          extend: base
+#    cachemanager:
+#      database:
+#        frontend:
+#          name: Core
+#          options:
+#            lifetime: 7200
+#            cache_id_prefix: meta
+#            automatic_serialization: true
+#        backend:
+#          name: File
+#          options:
+#            cache_dir: APPLICATION_PATH/../data/cache
+#            file_name_prefix: APPLICATION_ENV_metadata
+#      router:
+#        frontend:
+#          name: Core
+#          options:
+#            lifetime: 7200
+#            cache_id_prefix: meta
+#            automatic_serialization: true
+#        backend:
+#          name: File
+#          options:
+#            cache_dir: APPLICATION_PATH/../data/cache
+#            file_name_prefix: APPLICATION_ENV_metadata
+#      acl:
+#        frontend:
+#          name: Core
+#          options:
+#            lifetime: 7200
+#            cache_id_prefix: meta
+#            automatic_serialization: true
+#        backend:
+#          name: File
+#          options:
+#            cache_dir: APPLICATION_PATH/../data/cache
+#            file_name_prefix: APPLICATION_ENV_metadata
+#      navigation:
+#        frontend:
+#          name: Core
+#          options:
+#            lifetime: 7200
+#            cache_id_prefix: meta
+#            automatic_serialization: true
+#        backend:
+#          name: File
+#          options:
+#            cache_dir: APPLICATION_PATH/../data/cache
+#            file_name_prefix: APPLICATION_ENV_metadata
+    view:
+      title: ZFCore
+      doctype: HTML5
+      charset: UTF-8
+      encoding: UTF-8
+      contentType: text/html; charset=UTF-8
+      meta:
+        httpEquiv:
+          Content-Language: en-US
+      helperPath:
+        Core_View_Helper: Core/View/Helper
+        Application_View_Helper: APPLICATION_PATH/layouts/helpers
+      filterPath:
+        Core_View_Filter: Core/View/Filter
+        Application_View_Filter: APPLICATION_PATH/layouts/filters
+      scriptPath:
+        - APPLICATION_PATH/views/scripts
+testing:
+  _extends: production
+  phpSettings:
+    display_startup_errors: on
+    display_errors: on
+  resources:
+    db:
+      params:
+        host: hippo.nixsolutions.com
+        username: d_unittest
+        password: unittest
+        dbname: p_zfc_test
+        persistent: on
+    frontController:
+      plugins:
+        acl:
+          options:
+            allowAll: off
+development:
+  _extends: production
+  phpSettings:
+    display_startup_errors: on
+    display_errors: on
+    error_reporting: E_ALL|E_STRICT
+  resources:
+    frontController:
+      plugins:
+        debug:
+          class: Core_Controller_Plugin_Debug
+    db:
+      params:
+        profiler:
+          enabled: on
+          class: Zend_Db_Profiler_Firebug
