@@ -12,6 +12,13 @@ install-index-settings:
     module: install
     controller: index
     action: settings
+install-index-requirements:
+  type: Zend_Controller_Router_Route
+  route: install/requirements
+  defaults:
+    module: install
+    controller: index
+    action: requirements
 install-index-mail:
   type: Zend_Controller_Router_Route
   route: install/mail

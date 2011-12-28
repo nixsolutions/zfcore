@@ -25,6 +25,7 @@ class Install_IndexController extends Core_Controller_Action
         Install_Model_Install::LANGUAGES_DIR,
         Install_Model_Install::LOGS_DIR,
         Install_Model_Install::SESSION_DIR,
+        Install_Model_Install::UPLOADS_DIR
     );
 
     protected $_config = '/configs/application.yaml';
@@ -52,52 +53,75 @@ class Install_IndexController extends Core_Controller_Action
 
         if (!$this->_store->progress) {
             $this->_store->progress = array(
-                'install-index-settings'   => false,
-                'install-index-api'        => false,
-                'install-index-database'   => false,
-                'install-index-mail'       => false,
-                'install-index-confirm'    => false,
-                'install-index-migrations' => false
+                'install-index-requirements' => null,
+                'install-index-settings'     => false,
+                'install-index-database'     => false,
+                'install-index-mail'         => false,
+            	'install-index-api'          => false,
+                'install-index-confirm'      => false,
+                'install-index-migrations'   => false
             );
         }
 
         $this->view->pages = array(
-            'install-index-settings'   => 'Settings',
-            'install-index-api'        => 'Api',
-            'install-index-database'   => 'Database',
-            'install-index-mail'       => 'Mail',
-            'install-index-confirm'    => 'Confirm',
+        	'install-index-requirements' => 'Requirements',
+            'install-index-settings'     => 'General Settings',
+            'install-index-database'     => 'Database',
+            'install-index-mail'         => 'Mail',
+            'install-index-confirm'      => 'Confirm',
+        	'install-index-api'          => 'Integrations',
         );
 
         $this->view->progress = $this->_store->progress;
     }
 
-    /**
+	/**
      * Index action
      */
     public function indexAction()
     {
-        $unwritable = array();
-        foreach ($this->_folders as $folder) {
-            $folder = APPLICATION_PATH . $folder;
-            if (!is_writable($folder)) {
-                @chmod($folder, 0777);
-            }
-            if (!is_writable($folder)) {
-                $unwritable[] = $folder;
+        $config = $this->_store->config->production->resources;
+        $config->session->save_path = APPLICATION_PATH . Install_Model_Install::SUB_DIR
+                . Install_Model_Install::SESSION_DIR;
+        foreach ($this->_store->progress as $route => $status) {
+            if (!$status) {
+                $this->_store->progress[$route] = null;
+                $this->_helper->redirector->gotoRoute(array(), $route);
             }
         }
+        $this->_helper->redirector->gotoRoute(array(), 'install-index-finish');
+    }
 
+    /**
+     * Requirements action
+     */
+    public function requirementsAction()
+    {
+        $unwritable = array();
+        foreach ($this->_folders as $folder) {
+            $folderPath = APPLICATION_PATH . Install_Model_Install::SUB_DIR . $folder;
+            if (!is_writable($folderPath)) {
+                @chmod($folderPath, 0777);
+            }
+            if (!is_writable($folderPath)) {
+                $unwritable[$folder] = $folderPath;
+            }
+        }
+        $phpVersion = explode('.', substr(phpversion(),0,strpos(phpversion(), '-')));
+        $this->view->phpversion = $phpVersion[0] . '.' . $phpVersion[1] . '.' . $phpVersion[2];
+
+        $this->view->folders = $this->_folders;
         if (!empty($unwritable)) {
             $this->view->unwritable = $unwritable;
-        } else {
-            $config = $this->_store->config->production->resources;
-            $config->session->save_path = APPLICATION_PATH . Install_Model_Install::SESSION_DIR;
+        }
+        if ($this->_request->isPost() && empty($unwritable) && version_compare(PHP_VERSION, '5.2.4', '>=') ) {
 
+            $this->_store->progress['install-index-requirements'] = true;
             foreach ($this->_store->progress as $route => $status) {
                 if (!$status) {
                     $this->_store->progress[$route] = null;
                     $this->_helper->redirector->gotoRoute(array(), $route);
+
                 }
             }
             $this->_helper->redirector->gotoRoute(array(), 'install-index-finish');
@@ -116,7 +140,6 @@ class Install_IndexController extends Core_Controller_Action
         $form->setDefault('timezone', $config->phpSettings->date->timezone);
         $form->setDefault('baseUrl', $config->resources->frontController->baseUrl);
         $form->setDefault('title', $config->resources->view->title);
-        $form->setDefault('uploadDir', $config->uploadDir);
 
         if ($this->_request->isPost()
             && $form->isValid($this->_getAllParams())) {
@@ -124,7 +147,7 @@ class Install_IndexController extends Core_Controller_Action
             $config->phpSettings->date->timezone = $form->getValue('timezone');
             $config->resources->frontController->baseUrl = $form->getValue('baseUrl');
             $config->resources->view->title = $form->getValue('title');
-            $config->uploadDir = $form->getValue('uploadDir');
+            //$config->uploadDir = $form->getValue('uploadDir');
 
             $this->_store->progress['install-index-settings'] = true;
             $this->_helper->redirector('index');
@@ -310,7 +333,7 @@ class Install_IndexController extends Core_Controller_Action
             $this->_helper->redirector('index');
         }
 
-        $this->view->filename = $this->_store->confirmFile;
+        $this->view->filename = realpath($this->_store->confirmFile);
         $this->view->form = $form;
     }
 

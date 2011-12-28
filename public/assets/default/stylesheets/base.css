@@ -467,3 +467,16 @@ form dd input:active {
     color: #f00;
 }
 /*/Form*/
+
+.m-install .header .tophelp {
+    font-size: 12pt;
+}
+
+.pageDelimiter:before {
+    content: open-quote;
+    margin-right: 10px;
+}
+.pageDelimiter {
+    margin-left: 10px;
+    quotes: "»" "»";
+}

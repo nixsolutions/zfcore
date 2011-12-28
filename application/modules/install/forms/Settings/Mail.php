@@ -44,12 +44,12 @@ class Install_Form_Settings_Mail extends Zend_Form
 
     protected function _transport()
     {
-        $element = new Zend_Form_Element_Select('transport');
+        $element = new Zend_Form_Element_Select('type');
         $element->setLabel('Transport');
         $element->setRequired(true)->setAttrib('style', 'width:100%');
 
-        //$element->addMultiOption('Sendmail', 'Zend_Mail_Transport_Sendmail');
-        $element->addMultiOption('Smtp', 'Zend_Mail_Transport_Smtp');
+        $element->addMultiOption('Zend_Mail_Transport_Smtp', 'Smtp');
+        $element->addMultiOption('Zend_Mail_Transport_Sendmail', 'Sendmail');
         //$element->addMultiOption('File', 'Zend_Mail_Transport_File');
 
         return $element;

@@ -64,7 +64,7 @@ class Install_Form_Settings_Database extends Zend_Form
 
     protected function _password()
     {
-        $element = new Zend_Form_Element_Text('password');
+        $element = new Zend_Form_Element_Password('password');
         $element->setLabel('Password');
         $element->setRequired(true)->setAttrib('style', 'width:100%');
 
@@ -85,7 +85,7 @@ class Install_Form_Settings_Database extends Zend_Form
     protected function _dbname()
     {
         $element = new Zend_Form_Element_Text('dbname');
-        $element->setLabel('Db name');
+        $element->setLabel('Database name');
         $element->setAttrib('style', 'width:100%');
 
         return $element;

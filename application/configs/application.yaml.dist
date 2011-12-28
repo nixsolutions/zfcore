@@ -158,7 +158,7 @@ production:
 #            cache_dir: APPLICATION_PATH/../data/cache
 #            file_name_prefix: APPLICATION_ENV_metadata
     view:
-      title: ZFCore
+      title: Site based on CMF ZFCore
       doctype: HTML5
       charset: UTF-8
       encoding: UTF-8

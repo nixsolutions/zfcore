@@ -26,8 +26,6 @@ class Install_Form_Settings_Basic extends Zend_Form
 
         $this->addElement($this->_title());
 
-        $this->addElement($this->_uploadDir());
-
         $this->addElement($this->_submit());
 
         return $this;
@@ -56,9 +54,42 @@ class Install_Form_Settings_Basic extends Zend_Form
         $element->setLabel('Timezone');
         $element->setRequired(true)->setAttrib('style', 'width:100%');
 
-        foreach (timezone_identifiers_list() as $id) {
-            $element->addMultiOption($id, $id);
+        $regions = array(
+            'Africa' => DateTimeZone::AFRICA,
+            'America' => DateTimeZone::AMERICA,
+            'Antarctica' => DateTimeZone::ANTARCTICA,
+            'Aisa' => DateTimeZone::ASIA,
+            'Atlantic' => DateTimeZone::ATLANTIC,
+            'Europe' => DateTimeZone::EUROPE,
+            'Indian' => DateTimeZone::INDIAN,
+            'Pacific' => DateTimeZone::PACIFIC
+        );
+        $timezones = array();
+        foreach ($regions as $name => $mask) {
+            $zones = DateTimeZone::listIdentifiers($mask);
+            foreach ($zones as $timezone) {
+                $dateTimeZoneGmt = new DateTimeZone('GMT');
+                $dateTimeZone = new DateTimeZone($timezone);
+
+                $dateTimeGmt = new DateTime("now", $dateTimeZoneGmt);
+                $timeOffset = $dateTimeZone->getOffset($dateTimeGmt);
+                $gmt = $timeOffset/3600;
+
+                if ($gmt == 0) {
+                    $gmt = ' 00';
+                } elseif($gmt > 0 && $gmt < 10) {
+                    $gmt = '+0' . $gmt;
+                } elseif($gmt >= 10) {
+                    $gmt = '+' . $gmt;
+                } elseif($gmt < 0 && $gmt > -10) {
+                    $gmt = '-0' . abs($gmt);
+                } elseif($gmt <= -10) {
+                    $gmt = $gmt;
+                }
+                $timezones[$name][$timezone] = substr($timezone, strlen($name) + 1) . ' (GMT ' . $gmt . ':00)';
+            }
         }
+        $element->addMultiOptions($timezones);
 
         return $element;
     }
@@ -70,25 +101,6 @@ class Install_Form_Settings_Basic extends Zend_Form
         $element->setRequired(true)->setAttrib('style', 'width:100%');
 
         $element->setValue('My ZFCore Site');
-
-        return $element;
-    }
-
-    protected function _uploadDir()
-    {
-        $path = APPLICATION_PATH . '/../public';
-
-        $element = new Zend_Form_Element_Text('uploadDir');
-        $element->setLabel('Upload Directory');
-        $element->setRequired(true)->setAttrib('style', 'width:100%');
-
-        $callback = new Zend_Validate_Callback(array($this, 'isWritable'));
-        $callback->setMessage(
-            "Directory '" . realpath($path) . "/%value%' must be writeable",
-            Zend_Validate_Callback::INVALID_VALUE
-        );
-        $element->addValidator($callback);
-        $element->setValue('uploads');
 
         return $element;
     }

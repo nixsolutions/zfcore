@@ -6,13 +6,17 @@
  */
 class Install_Model_Install
 {
-    const SESSION_DIR = '/../data/session';
+    const SESSION_DIR = 'data/session';
 
-    const CACHE_DIR = '/../data/cache';
+    const CACHE_DIR = 'data/cache';
 
-    const LANGUAGES_DIR = '/../data/languages';
+    const LANGUAGES_DIR = 'data/languages';
 
-    const LOGS_DIR = '/../data/logs';
+    const LOGS_DIR = 'data/logs';
+
+    const UPLOADS_DIR = 'public/uploads';
+
+    const SUB_DIR = '/../';
 
     /**
      * Genarate code
@@ -33,7 +37,7 @@ class Install_Model_Install
     public function saveCode($code)
     {
         do {
-            $filename = APPLICATION_PATH . self::CACHE_DIR . '/' . uniqid() . '.php';
+            $filename = APPLICATION_PATH . self::SUB_DIR . self::CACHE_DIR . '/' . uniqid() . '.php';
         } while (is_file($filename));
 
         file_put_contents(

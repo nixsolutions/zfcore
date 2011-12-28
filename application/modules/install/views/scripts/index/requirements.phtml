@@ -1,0 +1,295 @@
+<style>
+span.recomendations{
+    background: none;
+    display: block;
+    font-size: 10px;
+    line-height: 1.4em;
+    margin: 0;
+    padding: 0;
+    border: none;
+    color: #000000;
+}
+p.acceptIcon {
+    background: url("/assets/default/images/status_icons/checkmark_32.png") no-repeat scroll 0 50% transparent;
+    line-height: 32px;
+    padding-left: 40px;
+}
+p.noAcceptIcon {
+    background: url("/assets/default/images/status_icons/error_32.png") no-repeat scroll 0 50% transparent;
+    line-height: 32px;
+    padding-left: 40px;
+}
+p.warningAcceptIcon {
+    background: url("/assets/default/images/status_icons/warning_32.png") no-repeat scroll 0 50% transparent;
+    line-height: 32px;
+    padding-left: 40px;
+}
+
+form dd {
+    padding: 0px;
+}
+
+</style>
+<h2 class="clear"><?php echo $this->__('Mandatory requirements')?>:</h3>
+
+<h4><?php echo $this->__('PHP version')?>:</h5>
+
+<ul>
+    <li>
+        <p class="<?php echo version_compare(PHP_VERSION, '5.2.4', '>=')? 'acceptIcon' : 'noAcceptIcon'; ?>">Checking that PHP version is at least 5.2.4 (<?php echo $this->phpversion;?> installed)</p>
+    </li>
+</ul>
+<h4><?php echo $this->__('Directories')?>:</h5>
+
+<ul>
+    <?php
+     foreach ($this->folders as $folder):?>
+    <li>
+        <?php
+        if (!isset($this->unwritable[$folder])) {
+            echo '<p class="acceptIcon">Checking that `' . $folder .'` is writable</p>';
+        } else {
+            echo '<p class="noAcceptIcon">Checking that `' . $folder .'` is writable <span class="recomendations">'
+                . $this->__('Run `chmod 777 ' . realpath($this->unwritable[$folder]) . '`') . '</span>';
+        }
+        ?>
+
+        </li>
+    <?php endforeach;?>
+</ul>
+
+<h2><?php echo $this->__('Optional checks')?>:</h3>
+<h4><?php echo $this->__('PHP configs')?>:</h5>
+
+<ul>
+    <li>
+        <p class="<?php echo (ini_get('magic_quotes_gpc') == 0)? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that php.ini has magic_quotes_gpc set to off</p>
+    </li>
+    <li>
+        <p class="<?php echo (ini_get('register_globals') == 0)? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that php.ini has register_globals set to off</p>
+    </li>
+    <li>
+        <p class="<?php echo (ini_get('session.auto_start') == 0)? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that php.ini has session.auto_start set to off</p>
+    </li>
+</ul>
+
+<h4><?php echo $this->__('PHP extensions')?>:</h5>
+
+<ul>
+    <li>
+        <p class="<?php echo (in_array  ('apc', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.apc.php">apc</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.cache.backends.html">Zend_Cache_Backend_Apc</a> (hard), <a href="http://framework.zend.com/manual/en/zend.file.transfer.html">Zend_File_Transfer</a> (soft)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('bcmath', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.bc.php">bcmath</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.locale.html">Zend_Locale</a> (soft)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('bitset', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://pecl.php.net/package/Bitset">bitset</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.search.lucene.html">Zend_Search_Lucene</a> (soft)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('ctype', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.ctype.php">CTYPE</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.auth.adapter.http.html">Zend_Auth_Adapter_Http</a> (hard), <a href="http://framework.zend.com/manual/en/zend.gdata.html">Zend_Gdata</a> (hard), <a href="http://framework.zend.com/manual/en/zend.http.html">Zend_Http_Client</a> (hard), <a href="http://framework.zend.com/manual/en/zend.pdf.html">Zend_Pdf</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.client.html">Zend_Rest_Client</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.server.html">Zend_Rest_Server</a> (hard), <a href="http://framework.zend.com/manual/en/zend.search.lucene.html">Zend_Search_Lucene</a> (hard), <a href="http://framework.zend.com/manual/en/zend.uri.html">Zend_Uri</a> (hard), <a href="http://framework.zend.com/manual/en/zend.validate.html">Zend_Validate</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('curl', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.curl.php">CURL</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.http.client.adapters.html">Zend_Http_Client_Adapter_Curl</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('date', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.datetime.php">date</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.amf.html">Zend_Amf</a> (soft)</span>
+        </p>
+    </li>
+
+    <li>
+        <p class="<?php echo (in_array  ('dom', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.dom.php">DOM</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.amf.html">Zend_Amf</a> (hard), <a href="http://framework.zend.com/manual/en/zend.dom.html">Zend_Dom</a> (hard), <a href="http://framework.zend.com/manual/en/zend.feed.html">Zend_Feed</a> (hard), <a href="http://framework.zend.com/manual/en/zend.gdata.html">Zend_Gdata</a> (hard), <a href="http://framework.zend.com/manual/en/zend.log.formatters.html">Zend_Log_Formatter_Xml</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.server.html">Zend_Rest_Server</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.soap.html">Zend_Soap</a> (hard), <a href="http://framework.zend.com/manual/en/zend.search.lucene.html">Zend_Search_Lucene</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.amazon.html">Zend_Service_Amazon</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.delicious.html">Zend_Service_Delicious</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.flickr.html">Zend_Service_Flickr</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.simpy.html">Zend_Service_Simpy</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.yahoo.html">Zend_Service_Yahoo</a> (hard), <a href="http://framework.zend.com/manual/en/zend.xmlrpc.html">Zend_XmlRpc</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('gd', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.image.php">GD</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.captcha.html">Zend_Captcha</a> (hard), <a href="http://framework.zend.com/manual/en/zend.pdf.html">Zend_Pdf</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('hash', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.hash.php">HASH</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.auth.adapter.http.html">Zend_Auth_Adapter_Http</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('ibm_db2', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.ibm-db2.php">ibm_db2</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Db2</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('iconv', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.iconv.php">iconv</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.currency.html">Zend_Currency</a> (hard), <a href="http://framework.zend.com/manual/en/zend.locale.parsing.html">Zend_Locale_Format</a> (hard), <a href="http://framework.zend.com/manual/en/zend.mime.html">Zend_Mime</a> (hard), <a href="http://framework.zend.com/manual/en/zend.pdf.html">Zend_Pdf</a> (hard), <a href="http://framework.zend.com/manual/en/zend.search.lucene.html">Zend_Search_Lucene</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.audioscrobbler.html">Zend_Service_Audioscrobbler</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.flickr.html">Zend_Service_Flickr</a> (hard), <a href="http://framework.zend.com/manual/en/zend.xmlrpc.client.html">Zend_XmlRpc_Client</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('igbinary', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://opensource.dynamoid.com/">igbinary</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.serializer.adapter.html">Zend_Serializer_Adapter_Igbinary</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('interbase', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.ibase.php">interbase</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.db.adapter.html">Zend_Db_Adapter_Firebird</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('json', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.json.php">json</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.json.html">Zend_Json</a> (soft), <a href="http://framework.zend.com/manual/en/zend.serializer.adapter.html">Zend_Serializer_Adapter_Json</a> (soft)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('ldap', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.ldap.php">ldap</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.ldap.html">Zend_Ldap</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('mbstring', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.mbstring.php">mbstring</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.feed.html">Zend_Feed</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('mcrypt', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.mcrypt.php">mcrypt</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.service.recaptcha.html#zend.service.recaptcha.mailhide">Zend_Service_ReCaptcha_MailHide</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('memcache', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.memcache.php">memcache</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="Zend_Cache_Backend_Memcached">Zend_Cache_Backend_Memcached</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('memcached', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.memcached.php">memcached</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.cache.backends.html">Zend_Cache_Backend_Libmemcached</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('mime_magic', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.mime-magic.php">mime_magic</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.http.html">Zend_Http_Client</a> (soft)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('mysqli', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.mysqli.php">mysqli</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Mysqli</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('oci8', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.oci8.php">oci8</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Oracle</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('pcre', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.pcre.php">pcre</a> extension is loaded
+        <span class="recomendations">Dependence of virtually all components (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('pdo_mssql', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that pdo_mssql extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Pdo_Mssql</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('pdo_mysql', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.pdo-mysql.php">pdo_mysql</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Pdo_Mysql</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('pdo_oci', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.pdo-oci.php">pdo_oci</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Pdo_Oci</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('pdo_pgsql', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.pdo-pgsql.php">pdo_pgsql</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Pdo_Pgsql</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('pdo_sqlite', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.pdo-sqlite.php">pdo_sqlite</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Pdo_Sqlite</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('posix', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.posix.php">posix</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.mail.html">Zend_Mail</a> (soft)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('Reflection', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/book.reflection.php">Reflection</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.controller.html">Zend_Controller</a> (hard), <a href="http://framework.zend.com/manual/en/zend.locale.html">Zend_Locale</a> (hard), <a href="http://framework.zend.com/manual/en/zend.filter.html">Zend_Filter</a> (hard), <a href="http://framework.zend.com/manual/en/zend.filter.input.html">Zend_Filter_Input</a> (hard), <a href="http://framework.zend.com/manual/en/zend.json.html">Zend_Json</a> (hard), <a href="http://framework.zend.com/manual/en/zend.log.html">Zend_Log</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.server.html">Zend_Rest_Server</a> (hard), <a href="http://framework.zend.com/manual/en/zend.server.reflection.html">Zend_Server_Reflection</a> (hard), <a href="http://framework.zend.com/manual/en/zend.validate.html">Zend_Validate</a> (hard), <a href="http://framework.zend.com/manual/en/zend.view.html">Zend_View</a> (hard), <a href="http://framework.zend.com/manual/en/zend.xmlrpc.server.html">Zend_XmlRpc_Server</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('session', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.session.php">session</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.controller.actionhelpers.html">Zend_Controller_Action_Helper_Redirector</a> (hard), <a href="http://framework.zend.com/manual/en/zend.session.html">Zend_Session</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('SimpleXML', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.simplexml.php">SimpleXML</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.config.adapters.xml.html">Zend_Config_Xml</a> (hard), <a href="http://framework.zend.com/manual/en/zend.feed.html">Zend_Feed</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.client.html">Zend_Rest_Client</a> (hard), <a href="http://framework.zend.com/manual/en/zend.serializer.adapter.html">Zend_Serializer_Adapter_Wddx</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.audioscrobbler.html">Zend_Service_Audioscrobbler</a> (hard), <a href="http://framework.zend.com/manual/en/zend.soap.html">Zend_Soap</a> (hard), <a href="http://framework.zend.com/manual/en/zend.xmlrpc.html">Zend_XmlRpc</a> (hard), <a href="http://framework.zend.com/manual/en/zend.amf.html">Zend_Amf</a> (soft)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('soap', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.soap.php">soap</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.service.strikeiron.html">Zend_Service_StrikeIron</a> (hard), <a href="http://framework.zend.com/manual/en/zend.soap.html">Zend_Soap</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('SPL', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.spl.php">SPL</a> extension is loaded
+        <span class="recomendations">Dependence of virtually all components (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('SQLite', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.sqlite.php">SQLite</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.cache.backends.html">Zend_Cache_Backend_Sqlite</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('standard', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that `standard` extension is loaded
+        <span class="recomendations">Dependence of virtually all components (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('wddx', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.wddx.php">wddx</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.serializer.adapter.html">Zend_Serializer_Adapter_Wddx</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('xml', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.xml.php">xml</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.translate.adapter.html">Zend_Translate_Adapter_Qt</a> (hard), <a href="http://framework.zend.com/manual/en/zend.translate.adapter.html">Zend_Translate_Adapter_Tmx</a> (hard), <a href="http://framework.zend.com/manual/en/zend.translate.adapter.html">Zend_Translate_Adapter_Xliff</a> (hard)</span>
+        </p>
+    </li>
+    <li>
+        <p class="<?php echo (in_array  ('zlib', get_loaded_extensions()))? 'acceptIcon' : 'warningAcceptIcon'; ?>">Checking that <a href="http://www.php.net/manual/en/ref.zlib.php">zlib</a> extension is loaded
+        <span class="recomendations">Dependence of <a href="http://framework.zend.com/manual/en/zend.pdf.html">Zend_Pdf</a> (hard), <a href="http://framework.zend.com/manual/en/zend.filter.set.compress.html">Zend_Filter_Compress</a> (hard)</span>
+        </p>
+    </li>
+</ul>
+
+<form method="post">
+<dl>
+    <dd id="submit-element">
+    <input type="submit" name="submit" id="submit" value="Ok"></dd>
+</dl>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+

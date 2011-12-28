@@ -226,6 +226,18 @@ http://%host%/users/login/cancel-password-recovery/hash/%hash%/</a>'.
                           "%host% team",
             'signature' => 'true'
         ));
+
+        $this->insert('users', array(
+            'id'              =>  '1',
+            'login'       =>  'admin',
+            'email' =>  'admin@zfcore.net',
+            'password'   =>  'b08c008a22f7277669ff7b0be686c11a',
+            'salt'   =>  'c5a1657f4f98c67a7a9db797fa7cb2f0',
+            'firstname'   =>  'firstname',
+            'lastname'   =>  'lastname',
+            'role'   =>  'admin',
+            'status'   =>  'active'
+        ));
     }
 
     public function down()

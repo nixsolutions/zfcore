@@ -18,9 +18,7 @@
 
                 <?php if (in_array(false, $this->progress)):?>
                     <?php foreach ($this->progress as $route => $status):?>
-                        <li class="left">
-                            <?php if (false !== $status && isset($this->pages[$route])):?>
-                                &nbsp; » &nbsp; <a href="<?php echo $this->url(array(), $route)?>"><?php echo $this->pages[$route]?></a>
+                        <li class="left"><?php if (false !== $status && isset($this->pages[$route])):?><span class="pageDelimiter"></span><a href="<?php echo $this->url(array(), $route)?>"><?php echo $this->pages[$route]?></a>
                             <?php endif?>
                         </li>
                     <?php endforeach;?>
