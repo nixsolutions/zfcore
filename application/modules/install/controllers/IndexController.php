@@ -25,6 +25,7 @@ class Install_IndexController extends Core_Controller_Action
     public function init()
     {
         $this->_helper->layout->setLayout('install/layout');
+        $this->view->stylesheet()->module();
 
         $this->_store = new Zend_Session_Namespace(self::SESSION_KEY);
 
@@ -140,7 +141,12 @@ class Install_IndexController extends Core_Controller_Action
         }
         $this->view->phpExtensions = $phpExtensions;
 
-        if ($this->_request->isPost() && empty($unwritable) && $isValidPhpVersion) {
+        $isValid = false;
+        if (empty($unwritable) && $isValidPhpVersion) {
+        	$isValid = true;
+        }
+        $this->view->isValid = $isValid;
+        if ($this->_request->isPost() && $isValid) {
 
             $this->_store->progress['install-index-requirements'] = true;
             foreach ($this->_store->progress as $route => $status) {

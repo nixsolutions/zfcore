@@ -3,7 +3,7 @@
  * @category Application
  * @package  Core_View
  * @subpackage Helper
- * 
+ *
  * @version  $Id$
  */
 class Application_View_Helper_Stylesheet extends Zend_View_Helper_Abstract
@@ -18,25 +18,25 @@ class Application_View_Helper_Stylesheet extends Zend_View_Helper_Abstract
     {
         return $this;
     }
-    
+
     /**
      * __call
      *
      * append stylesheet by module/controller/action
      *
-     * @param   string $method 
+     * @param   string $method
      * @param   mixed  $args
      * @return  rettype  return
      */
-    public function __call($method, $args) 
+    public function __call($method, $args)
     {
         $request = Zend_Controller_Front::getInstance()->getRequest();
-        
+
         /* @var $request Zend_Controller_Request_Abstract */
         $module     = $request->getModuleName();
         $controller = $request->getControllerName();
         $action     = $request->getActionName();
-        
+
         // switch statement for $method
         switch ($method) {
             case 'module':
@@ -50,7 +50,7 @@ class Application_View_Helper_Stylesheet extends Zend_View_Helper_Abstract
             default:
                 break;
         }
-        
+
         /** production enveriment? */
         if (strtolower(APPLICATION_ENV) == 'production') {
             switch ($method) {

@@ -33,7 +33,7 @@
 <?php
  foreach ($this->phpOptions as $opt => $value): ?>
     <li>
-        <p class="<?php echo ($value['check'])? 'acceptIcon' : 'warningAcceptIcon'; ?>"><?php echo $value['title']; ?></p>
+        <p class="<?php echo ($value['check']) ? 'acceptIcon' : 'warningAcceptIcon'; ?>"><?php echo $value['title']; ?></p>
     </li>
 <?php endforeach;?>
 </ul>
@@ -43,7 +43,7 @@
 <ul>
 <?php foreach ($this->phpExtensions as $ext => $desc): ?>
     <li>
-        <p class="<?php echo $desc['check']? 'acceptIcon' : 'warningAcceptIcon'; ?>"><?php echo $desc['title'];?>
+        <p class="<?php echo $desc['check'] ? 'acceptIcon' : 'warningAcceptIcon'; ?>"><?php echo $desc['title'];?>
         <span class="recomendations"><?php echo $desc['description'];?></span>
         </p>
     </li>
@@ -53,7 +53,7 @@
 <form method="post">
 <dl>
     <dd id="submit-element">
-    <input type="submit" name="submit" <?php echo ($this->unwritable || !$this->isValidPhpVersion)? 'disabled':'';?> id="submit" value="Next &gt;"></dd>
+    <input type="submit" name="submit" <?php echo $this->isValid ? '' : 'disabled';?> id="submit" value="Next &gt;"></dd>
 </dl>
 </form>
 
