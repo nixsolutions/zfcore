@@ -40,7 +40,7 @@ class Install_Form_Settings_Api extends Zend_Form
     protected function _submit()
     {
         $sudmit = new Zend_Form_Element_Submit('submit');
-        $sudmit->setLabel('Save');
+        $sudmit->setLabel('Save & Next >');
         return $sudmit;
     }
 

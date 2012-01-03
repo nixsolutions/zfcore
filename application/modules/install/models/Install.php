@@ -6,18 +6,6 @@
  */
 class Install_Model_Install
 {
-    const SESSION_DIR = 'data/session';
-
-    const CACHE_DIR = 'data/cache';
-
-    const LANGUAGES_DIR = 'data/languages';
-
-    const LOGS_DIR = 'data/logs';
-
-    const UPLOADS_DIR = 'public/uploads';
-
-    const SUB_DIR = '/../';
-
     /**
      * Genarate code
      *
@@ -36,8 +24,13 @@ class Install_Model_Install
      */
     public function saveCode($code)
     {
+        $config = APPLICATION_PATH . '/modules/install/configs/checks.yaml';
+        require_once 'Zend/Config/Yaml.php';
+        require_once 'Core/Config/Yaml.php';
+        $result = new Core_Config_Yaml($config);
+        $requirements = $result->toArray();
         do {
-            $filename = APPLICATION_PATH . self::SUB_DIR . self::CACHE_DIR . '/' . uniqid() . '.php';
+            $filename = APPLICATION_PATH . '/../' . $requirements['directories']['cache_dir'] . '/' . uniqid() . '.php';
         } while (is_file($filename));
 
         file_put_contents(

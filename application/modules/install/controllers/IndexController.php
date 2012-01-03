@@ -17,17 +17,6 @@ class Install_IndexController extends Core_Controller_Action
      */
     protected $_store;
 
-    /**
-     * @var array
-     */
-    protected $_folders = array(
-        Install_Model_Install::CACHE_DIR,
-        Install_Model_Install::LANGUAGES_DIR,
-        Install_Model_Install::LOGS_DIR,
-        Install_Model_Install::SESSION_DIR,
-        Install_Model_Install::UPLOADS_DIR
-    );
-
     protected $_config = '/configs/application.yaml';
 
     /**
@@ -57,32 +46,30 @@ class Install_IndexController extends Core_Controller_Action
                 'install-index-settings'     => false,
                 'install-index-database'     => false,
                 'install-index-mail'         => false,
-            	'install-index-api'          => false,
+                'install-index-api'          => false,
                 'install-index-confirm'      => false,
                 'install-index-migrations'   => false
             );
         }
 
         $this->view->pages = array(
-        	'install-index-requirements' => 'Requirements',
-            'install-index-settings'     => 'General Settings',
+            'install-index-requirements' => 'Requirements',
+            'install-index-settings'     => 'General',
             'install-index-database'     => 'Database',
             'install-index-mail'         => 'Mail',
-            'install-index-confirm'      => 'Confirm',
-        	'install-index-api'          => 'Integrations',
+            'install-index-api'          => 'Integration',
+            'install-index-confirm'      => 'Confirmation',
         );
 
         $this->view->progress = $this->_store->progress;
     }
 
-	/**
+    /**
      * Index action
      */
     public function indexAction()
     {
-        $config = $this->_store->config->production->resources;
-        $config->session->save_path = APPLICATION_PATH . Install_Model_Install::SUB_DIR
-                . Install_Model_Install::SESSION_DIR;
+
         foreach ($this->_store->progress as $route => $status) {
             if (!$status) {
                 $this->_store->progress[$route] = null;
@@ -97,9 +84,19 @@ class Install_IndexController extends Core_Controller_Action
      */
     public function requirementsAction()
     {
-        $unwritable = array();
-        foreach ($this->_folders as $folder) {
-            $folderPath = APPLICATION_PATH . Install_Model_Install::SUB_DIR . $folder;
+        $config = APPLICATION_PATH . '/modules/install/configs/checks.yaml';
+        require_once 'Zend/Config/Yaml.php';
+        require_once 'Core/Config/Yaml.php';
+        $result = new Core_Config_Yaml($config);
+        $requirements = $result->toArray();
+        $this->view->requirements = $requirements;
+
+        $resources = $this->_store->config->production->resources;
+        $resources->session->save_path = APPLICATION_PATH . '/../' . $requirements['directories']['session_dir'];
+
+        $unwritable = array();//check directories
+        foreach ($requirements['directories']  as $folder) {
+            $folderPath = APPLICATION_PATH . '/../' . $folder;
             if (!is_writable($folderPath)) {
                 @chmod($folderPath, 0777);
             }
@@ -107,14 +104,43 @@ class Install_IndexController extends Core_Controller_Action
                 $unwritable[$folder] = $folderPath;
             }
         }
-        $phpVersion = explode('.', substr(phpversion(),0,strpos(phpversion(), '-')));
-        $this->view->phpversion = $phpVersion[0] . '.' . $phpVersion[1] . '.' . $phpVersion[2];
+        //remove postfix
+        $phpVersion = substr(PHP_VERSION,0,strpos(PHP_VERSION, '-'));
+        $this->view->phpversion = $phpVersion;
 
-        $this->view->folders = $this->_folders;
+        $this->view->folders = $requirements['directories'];
         if (!empty($unwritable)) {
             $this->view->unwritable = $unwritable;
         }
-        if ($this->_request->isPost() && empty($unwritable) && version_compare(PHP_VERSION, '5.2.4', '>=') ) {
+        $isValidPhpVersion = false;//check PHP version
+        if (version_compare($phpVersion, $requirements['minPhpVersion'], '>=')) {
+            $isValidPhpVersion = true;
+        }
+        $this->view->isValidPhpVersion = $isValidPhpVersion;
+
+        $phpOptions = array();//check PHP options
+        foreach ($requirements['phpOptions'] as $option => $val) {
+            $phpOptions[$option] = $val;
+            if (ini_get($option) == $val['desired']) {
+                $phpOptions[$option]['check'] = true;
+            } else {
+                $phpOptions[$option]['check'] = false;
+            }
+        }
+        $this->view->phpOptions = $phpOptions;
+
+        $phpExtensions = array();
+        foreach ($requirements['extensions'] as $ext => $desc) {
+            $phpExtensions[$ext] = $desc;
+            if (in_array($ext, get_loaded_extensions())) {
+                $phpExtensions[$ext]['check'] = true;
+            } else {
+                $phpExtensions[$ext]['check'] = false;
+            }
+        }
+        $this->view->phpExtensions = $phpExtensions;
+
+        if ($this->_request->isPost() && empty($unwritable) && $isValidPhpVersion) {
 
             $this->_store->progress['install-index-requirements'] = true;
             foreach ($this->_store->progress as $route => $status) {

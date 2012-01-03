@@ -35,7 +35,7 @@ class Install_Form_Install_Confirm extends Zend_Form
     protected function _submit()
     {
         $sudmit = new Zend_Form_Element_Submit('submit');
-        $sudmit->setLabel('Save');
+        $sudmit->setLabel('Finish');
         return $sudmit;
     }
 
