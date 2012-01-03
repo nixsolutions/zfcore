@@ -48,6 +48,7 @@ class Install_IndexController extends Core_Controller_Action
                 'install-index-database'     => false,
                 'install-index-mail'         => false,
                 'install-index-api'          => false,
+                'install-index-admin'          => false,
                 'install-index-confirm'      => false,
                 'install-index-migrations'   => false
             );
@@ -59,6 +60,7 @@ class Install_IndexController extends Core_Controller_Action
             'install-index-database'     => 'Database',
             'install-index-mail'         => 'Mail',
             'install-index-api'          => 'Integration',
+            'install-index-admin'        => 'Administrator',
             'install-index-confirm'      => 'Confirmation',
         );
 
@@ -143,7 +145,7 @@ class Install_IndexController extends Core_Controller_Action
 
         $isValid = false;
         if (empty($unwritable) && $isValidPhpVersion) {
-        	$isValid = true;
+            $isValid = true;
         }
         $this->view->isValid = $isValid;
         if ($this->_request->isPost() && $isValid) {
@@ -327,16 +329,47 @@ class Install_IndexController extends Core_Controller_Action
 
         $options = array(
             'projectDirectoryPath' => APPLICATION_PATH . '/..',
-            'modulesDirectoryPath' => APPLICATION_PATH . '/../modules',
+            'modulesDirectoryPath' => APPLICATION_PATH . '/modules',
         );
 
         $manager = new Core_Migration_Manager($options);
 
         $manager->up();
+        $manager->up('menu');//@todo transfer to install modules
+
+        $usersTable = new Users_Model_Users_Table();
+        $usersTable->insert($this->_store->user);
+        unset($this->_store->user);
 
         $this->_helper->flashMessenger('Migrations rolled up');
         $this->_store->progress['install-index-migrations'] = true;
         $this->_helper->redirector('index');
+    }
+
+    /**
+     * Admin action
+     */
+    public function adminAction()
+    {
+        $form = new Install_Form_Settings_Admin();
+        if ($this->_request->isPost()
+            && $form->isValid($this->_getAllParams())) {
+
+            $user = array();
+            $user['login']    = $this->_getParam('login');
+            $user['email']    = $this->_getParam('email');
+            $user['role']     = Users_Model_User::ROLE_ADMIN;
+            $user['status']   = Users_Model_User::STATUS_ACTIVE;
+            $user['hashCode'] = md5($this->_getParam('login') . uniqid());
+            $user['salt']     = md5(uniqid());
+            $user['password'] = md5($user['salt'] . $this->_getParam('password'));
+
+            $this->_store->user = $user;
+
+            $this->_store->progress['install-index-admin'] = true;
+            $this->_helper->redirector('index');
+        }
+        $this->view->form = $form;
     }
 
     /**
