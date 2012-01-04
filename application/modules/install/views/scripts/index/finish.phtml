@@ -4,3 +4,7 @@
 <p><?php echo $this->filename?></p>
 
 <textarea><?php echo $this->config?></textarea>
+
+<h3><?php echo $this->__('And remove module Install')?>:</h3>
+<span class="recomendations"><?php echo 'rm -r ' . APPLICATION_PATH . '/modules/install/';?></span>
+

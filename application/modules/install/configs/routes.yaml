@@ -68,3 +68,10 @@ install-index-admin:
     module: install
     controller: index
     action: admin
+install-index-modules:
+  type: Zend_Controller_Router_Route
+  route: install/modules
+  defaults:
+    module: install
+    controller: index
+    action: modules

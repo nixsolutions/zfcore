@@ -1,0 +1,20 @@
+<h2 class="clear"><?php echo $this->__('Install modules')?>:</h2>
+
+<h5>To be able to disable some modules directory in which it is located shall have the right to write</h5>
+<span class="recomendations"><?php echo 'chmod 777 ' . APPLICATION_PATH . '/modules/';?></span>
+<form method="post">
+<ul>
+<?php foreach ($this->modules as $module => $options): ?>
+    <li>
+        <p><input type="checkbox" <?php echo $options['checked'] ? 'checked="checked"' : ''; ?> <?php echo $options['required'] ? 'disabled="disabled"' : ''; ?> name="modules[<?php echo $module; ?>]" value="1" />
+        <?php echo $options['title'];?>
+        <span class="recomendations"><?php echo $options['description'];?></span>
+    </li>
+<?php endforeach;?>
+</ul>
+
+<dl>
+    <dd id="submit-element">
+    <input type="submit" name="submit" id="submit" value="Save &amp; Next &gt;"></dd>
+</dl>
+</form>

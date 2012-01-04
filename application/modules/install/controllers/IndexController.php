@@ -48,7 +48,8 @@ class Install_IndexController extends Core_Controller_Action
                 'install-index-database'     => false,
                 'install-index-mail'         => false,
                 'install-index-api'          => false,
-                'install-index-admin'          => false,
+                'install-index-modules'      => false,
+                'install-index-admin'        => false,
                 'install-index-confirm'      => false,
                 'install-index-migrations'   => false
             );
@@ -60,7 +61,8 @@ class Install_IndexController extends Core_Controller_Action
             'install-index-database'     => 'Database',
             'install-index-mail'         => 'Mail',
             'install-index-api'          => 'Integration',
-            'install-index-admin'        => 'Administrator',
+            'install-index-modules'      => 'Modules',
+            'install-index-admin'        => 'Admin',
             'install-index-confirm'      => 'Confirmation',
         );
 
@@ -132,6 +134,7 @@ class Install_IndexController extends Core_Controller_Action
         }
         $this->view->phpOptions = $phpOptions;
 
+        //check PHP extensions
         $phpExtensions = array();
         foreach ($requirements['extensions'] as $ext => $desc) {
             $phpExtensions[$ext] = $desc;
@@ -160,6 +163,7 @@ class Install_IndexController extends Core_Controller_Action
             }
             $this->_helper->redirector->gotoRoute(array(), 'install-index-finish');
         }
+        $this->view->currentPage = 'install-index-requirements';
     }
 
     /**
@@ -187,6 +191,7 @@ class Install_IndexController extends Core_Controller_Action
             $this->_helper->redirector('index');
         }
         $this->view->form = $form;
+        $this->view->currentPage = 'install-index-settings';
     }
 
     /**
@@ -223,6 +228,7 @@ class Install_IndexController extends Core_Controller_Action
             $this->_helper->redirector('index');
         }
         $this->view->form = $form;
+        $this->view->currentPage = 'install-index-api';
     }
 
 
@@ -266,6 +272,7 @@ class Install_IndexController extends Core_Controller_Action
             $this->_helper->redirector('index');
         }
         $this->view->form = $form;
+        $this->view->currentPage = 'install-index-mail';
     }
 
     /**
@@ -315,6 +322,7 @@ class Install_IndexController extends Core_Controller_Action
         }
 
         $this->view->form = $form;
+        $this->view->currentPage = 'install-index-database';
     }
 
     /**
@@ -335,15 +343,31 @@ class Install_IndexController extends Core_Controller_Action
         $manager = new Core_Migration_Manager($options);
 
         $manager->up();
-        $manager->up('menu');//@todo transfer to install modules
+
+        $pathToModules = APPLICATION_PATH . '/modules/';
+        foreach ($this->_store->modules as $module => $value) {//up installed modules migrations
+            if ($value === false) {
+                $pathToModule = $pathToModules . $module;
+                if (is_dir($pathToModules) && is_writable($pathToModules) && is_dir($pathToModule)) {
+                    rename($pathToModule, APPLICATION_PATH . '/modules/.' . $module);
+                }
+            } else {
+                $manager->up($module);
+            }
+        }
+        unset($this->_store->modules);
 
         $usersTable = new Users_Model_Users_Table();
-        $usersTable->insert($this->_store->user);
+        //update or create admin
+        if (!$usersTable->update($this->_store->user, 'login = "' . $this->_store->user['login'] . '"')) {
+            $usersTable->insert($this->_store->user);
+        }
         unset($this->_store->user);
 
         $this->_helper->flashMessenger('Migrations rolled up');
         $this->_store->progress['install-index-migrations'] = true;
         $this->_helper->redirector('index');
+        $this->view->currentPage = 'install-index-migrations';
     }
 
     /**
@@ -370,6 +394,57 @@ class Install_IndexController extends Core_Controller_Action
             $this->_helper->redirector('index');
         }
         $this->view->form = $form;
+        $this->view->currentPage = 'install-index-admin';
+    }
+
+    /**
+     * Admin action
+     */
+    public function modulesAction()
+    {
+        $config = APPLICATION_PATH . '/modules/install/configs/modules.yaml';
+        require_once 'Zend/Config/Yaml.php';
+        require_once 'Core/Config/Yaml.php';
+        $result = new Core_Config_Yaml($config);
+        $modules = $result->modules->toArray();
+
+        $isWritableModulesDir = true;
+        $installModules = array();
+        $pathToModules = APPLICATION_PATH . '/modules/';
+        if (!is_writable($pathToModules)) {
+            @chmod($pathToModules, 0777);
+            if (!is_writable($pathToModules)) {
+                $isWritableModulesDir = false;
+            }
+        }
+
+        foreach ($modules as $module => $value) {
+            if (!$isWritableModulesDir) {
+                $modules[$module]['required'] = true;
+                $installModules[$module] = true;
+            } else {
+                $installModules[$module] = $modules[$module]['required'];
+            }
+            if ($this->_store->modules) {
+                $modules[$module]['checked'] = $this->_store->modules[$module];
+            } else {
+                $modules[$module]['checked'] = true;
+            }
+
+        }
+        $this->view->modules = $modules;
+
+        if ($this->_request->isPost()) {
+
+            if ($this->_request->getParam('modules')) {
+                $installModules = array_merge($installModules, $this->_request->getParam('modules'));
+            }
+
+            $this->_store->modules = $installModules;
+            $this->_store->progress['install-index-modules'] = true;
+            $this->_helper->redirector('index');
+        }
+        $this->view->currentPage = 'install-index-modules';
     }
 
     /**
@@ -400,6 +475,7 @@ class Install_IndexController extends Core_Controller_Action
 
         $this->view->filename = realpath($this->_store->confirmFile);
         $this->view->form = $form;
+        $this->view->currentPage = 'install-index-confirm';
     }
 
     /**

@@ -169,6 +169,7 @@ production:
       helperPath:
         Core_View_Helper: Core/View/Helper
         Application_View_Helper: APPLICATION_PATH/layouts/helpers
+        Comments_View_Helper: APPLICATION_PATH/modules/comments/views/helpers
       filterPath:
         Core_View_Filter: Core/View/Filter
         Application_View_Filter: APPLICATION_PATH/layouts/filters

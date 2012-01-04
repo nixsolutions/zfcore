@@ -86,7 +86,7 @@ class Install_Form_Settings_Database extends Zend_Form
     {
         $element = new Zend_Form_Element_Text('dbname');
         $element->setLabel('Database name');
-        $element->setAttrib('style', 'width:100%');
+        $element->setRequired(true)->setAttrib('style', 'width:100%');
 
         return $element;
     }

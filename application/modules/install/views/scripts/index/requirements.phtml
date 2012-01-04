@@ -1,13 +1,13 @@
-<h2 class="clear"><?php echo $this->__('Mandatory requirements')?>:</h3>
+<h2 class="clear"><?php echo $this->__('Mandatory requirements')?>:</h2>
 
-<h4><?php echo $this->__('PHP version')?>:</h5>
+<h4><?php echo $this->__('PHP version')?>:</h4>
 
 <ul>
     <li>
         <p class="<?php echo $this->isValidPhpVersion? 'acceptIcon' : 'noAcceptIcon'; ?>">Checking that PHP version is at least 5.2.4 (<?php echo $this->phpversion;?> installed)</p>
     </li>
 </ul>
-<h4><?php echo $this->__('Directories')?>:</h5>
+<h4><?php echo $this->__('Directories')?>:</h4>
 
 <ul>
     <?php
@@ -26,8 +26,8 @@
     <?php endforeach;?>
 </ul>
 
-<h2><?php echo $this->__('Optional checks')?>:</h3>
-<h4><?php echo $this->__('PHP configs')?>:</h5>
+<h2><?php echo $this->__('Optional checks')?>:</h2>
+<h4><?php echo $this->__('PHP configs')?>:</h4>
 
 <ul>
 <?php
@@ -38,7 +38,7 @@
 <?php endforeach;?>
 </ul>
 
-<h4><?php echo $this->__('PHP extensions')?>:</h5>
+<h4><?php echo $this->__('PHP extensions')?>:</h4>
 
 <ul>
 <?php foreach ($this->phpExtensions as $ext => $desc): ?>

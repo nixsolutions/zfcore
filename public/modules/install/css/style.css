@@ -1,5 +1,5 @@
 .m-install .header .tophelp {
-    font-size: 12pt;
+    font-size: 11pt;
 }
 
 .pageDelimiter:before {
@@ -9,7 +9,7 @@
 .pageDelimiter {
     margin-left: 10px;
 }
-.a-requirements span.recomendations{
+span.recomendations{
     background: none;
     display: block;
     font-size: 10px;
@@ -51,4 +51,8 @@
 .a-finish textarea{
     width:800px;
     height:400px;
+}
+
+.bold {
+    font-weight: bold;
 }
