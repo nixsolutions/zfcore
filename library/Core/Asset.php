@@ -1,7 +1,29 @@
 <?php
+/**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 /**
- * Core_Asset
+ * @category Core
+ * @package  Core_Asset
  *
  * asset manager
  */
@@ -60,7 +82,7 @@ class Core_Asset
     public function __construct(array $options = null)
     {
         if (null !== $options) {
-            $this->setOptions($options);
+            $this->setOptions( $options );
         }
     }
 
@@ -72,11 +94,11 @@ class Core_Asset
      */
     public function setOptions(array $options)
     {
-        $methods = get_class_methods($this);
+        $methods = get_class_methods( $this );
         foreach ($options as $key => $value) {
-            $method = 'set' . ucfirst($key);
-            if (in_array($method, $methods)) {
-                $this->$method($value);
+            $method = 'set' . ucfirst( $key );
+            if (in_array( $method, $methods )) {
+                $this->$method( $value );
             }
         }
         return $this;
@@ -85,16 +107,16 @@ class Core_Asset
     /**
      * set include
      *
-     * @param $include
+     * @param      $include
      * @param bool $append
      * @return Core_Asset
      */
     public function setInclude($include, $append = false)
     {
         if ($append) {
-            $this->_includes = array_merge($this->_includes, (array) $include);
+            $this->_includes = array_merge( $this->_includes, (array)$include );
         } else {
-            $this->_includes = array_merge((array) $include, $this->_includes);
+            $this->_includes = array_merge( (array)$include, $this->_includes );
         }
         return $this;
     }
@@ -112,18 +134,18 @@ class Core_Asset
     /**
      * set extend
      *
-     * @param $assets
+     * @param array $assets
      * @return Core_Asset
      */
     public function setExtend($assets)
     {
-        $assets = array_reverse((array) $assets);
+        $assets = array_reverse( (array)$assets );
         foreach ($assets as $asset) {
-            $this->setInclude($asset->getInclude(), true);
+            $this->setInclude( $asset->getInclude(), true );
         }
 
         foreach ($assets as $asset) {
-            $this->setExclude($asset->getExclude());
+            $this->setExclude( $asset->getExclude() );
         }
 
         return $this;
@@ -137,7 +159,7 @@ class Core_Asset
      */
     public function setExclude($exclude)
     {
-        $this->_excludes = array_merge($this->_excludes, (array) $exclude);
+        $this->_excludes = array_merge( $this->_excludes, (array)$exclude );
         return $this;
     }
 
@@ -148,7 +170,7 @@ class Core_Asset
      */
     public function getExclude()
     {
-        return array_merge($this->_excludes, (array) $this->getBuildDir());
+        return array_merge( $this->_excludes, (array)$this->getBuildDir() );
     }
 
     /**
@@ -185,10 +207,10 @@ class Core_Asset
      */
     public function setAdapter($adapter)
     {
-        if (is_string($adapter)) {
+        if (is_string( $adapter )) {
             $class = $adapter;
             $adapter = new $class();
-        } elseif (is_array($adapter)) {
+        } elseif (is_array( $adapter )) {
             $options = $adapter;
             if (empty($options['class'])) {
                 throw new Core_Exception('Adapter class is not set');
@@ -229,10 +251,10 @@ class Core_Asset
      */
     public function buildJavascripts()
     {
-        $this->_checkBuildFile($this->getJavascriptBuild());
+        $this->_checkBuildFile( $this->getJavascriptBuild() );
 
         $this->getAdapter()->buildJavascripts(
-            array_reverse($this->getJavascripts()),
+            array_reverse( $this->getJavascripts() ),
             $this->getJavascriptBuild()
         );
     }
@@ -244,10 +266,10 @@ class Core_Asset
      */
     public function buildStylesheets()
     {
-        $this->_checkBuildFile($this->getStylesheetBuild());
+        $this->_checkBuildFile( $this->getStylesheetBuild() );
 
         $this->getAdapter()->buildStylesheets(
-            array_reverse($this->getStylesheets()),
+            array_reverse( $this->getStylesheets() ),
             $this->getStylesheetBuild()
         );
     }
@@ -261,8 +283,8 @@ class Core_Asset
     {
         if (null === $this->_javascripts) {
             $files = array();
-            foreach($this->_getFiles() as $file) {
-                $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            foreach ($this->_getFiles() as $file) {
+                $ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
                 if ($ext === 'js') {
                     $files[] = $file;
                 }
@@ -281,8 +303,8 @@ class Core_Asset
     {
         if (null === $this->_stylesheets) {
             $files = array();
-            foreach($this->_getFiles() as $file) {
-                $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            foreach ($this->_getFiles() as $file) {
+                $ext = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
                 if ($ext === 'css') {
                     $files[] = $file;
                 }
@@ -301,8 +323,8 @@ class Core_Asset
     public function getJavascriptBuild()
     {
         if (null === $this->_javascriptBuild) {
-            $this->_javascriptBuild = rtrim($this->getBuildDir(), '/') . '/'
-                                    . 'build-' . Core_Version::getVersion() . '.js';
+            $this->_javascriptBuild = rtrim( $this->getBuildDir(), '/' ) . '/'
+                . 'build-' . Core_Version::getVersion() . '.js';
         }
         return $this->_javascriptBuild;
     }
@@ -316,8 +338,8 @@ class Core_Asset
     public function getStylesheetBuild()
     {
         if (null === $this->_stylesheetBuild) {
-            $this->_stylesheetBuild = rtrim($this->getBuildDir(), '/') . '/'
-                                    . 'build-' . Core_Version::getVersion() . '.css';
+            $this->_stylesheetBuild = rtrim( $this->getBuildDir(), '/' ) . '/'
+                . 'build-' . Core_Version::getVersion() . '.css';
         }
         return $this->_stylesheetBuild;
     }
@@ -337,10 +359,10 @@ class Core_Asset
 
             $this->_files = array();
             foreach ($this->_includes as $include) {
-                if (is_file($include)) {
+                if (is_file( $include )) {
                     $this->_files[] = $include;
-                } elseif (is_dir($include)) {
-                    $this->_files = array_merge($this->_files, self::recursiveScanDir($include));
+                } elseif (is_dir( $include )) {
+                    $this->_files = array_merge( $this->_files, self::recursiveScanDir( $include ) );
                 } else {
                     throw new Core_Exception('Cannot get access to "' . $include . '". No such file or directory');
                 }
@@ -350,7 +372,7 @@ class Core_Asset
             $excludes = $this->getExclude();
             foreach ($this->_files as $i => $file) {
                 foreach ($excludes as $exclude) {
-                    if (strpos($file, realpath($exclude)) !== false) {
+                    if (strpos( $file, realpath( $exclude ) ) !== false) {
                         unset($this->_files[$i]);
                     }
                 }
@@ -369,13 +391,13 @@ class Core_Asset
      */
     protected function _checkBuildFile($file)
     {
-        $dir = dirname($file);
+        $dir = dirname( $file );
 
-        if (!is_dir($dir)) {
+        if (!is_dir( $dir )) {
             throw new Core_Exception('"' . $dir . '" is not directory');
         }
 
-        if (!is_writable($dir)) {
+        if (!is_writable( $dir )) {
             throw new Core_Exception('"' . $dir . '" is not writable');
         }
     }
@@ -390,17 +412,17 @@ class Core_Asset
     static public function recursiveScanDir($path)
     {
         $files = array();
-        $path = realpath($path);
-        foreach (scandir($path) as $item) {
-            if (in_array($item, array('.', '..'))) {
+        $path = realpath( $path );
+        foreach (scandir( $path ) as $item) {
+            if (in_array( $item, array('.', '..') )) {
                 continue;
             }
 
             $itemPath = $path . '/' . $item;
-            if (is_file($itemPath)) {
+            if (is_file( $itemPath )) {
                 $files[] = $itemPath;
-            } elseif (is_dir($itemPath)) {
-                $files = array_merge($files, self::recursiveScanDir($itemPath));
+            } elseif (is_dir( $itemPath )) {
+                $files = array_merge( $files, self::recursiveScanDir( $itemPath ) );
             }
         }
 

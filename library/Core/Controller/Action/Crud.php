@@ -1,4 +1,25 @@
 <?php
+/**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 /**
  * Core_Controller_Action_Crud
@@ -6,7 +27,7 @@
  * @uses       Zend_Controller_Action
  * @category   Core
  * @package    Core_Controller
- * @subpackage Core_Controller_Action
+ * @subpackage Action
  */
 abstract class Core_Controller_Action_Crud extends Core_Controller_Action
 {
@@ -19,15 +40,15 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     {
         $this->_isDashboard();
 
-        $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
-        $this->_viewRenderer = $this->_helper->getHelper('viewRenderer');
-        $this->_redirector = $this->_helper->getHelper('redirector');
+        $this->_flashMessenger = $this->_helper->getHelper( 'FlashMessenger' );
+        $this->_viewRenderer = $this->_helper->getHelper( 'viewRenderer' );
+        $this->_redirector = $this->_helper->getHelper( 'redirector' );
 
         /** change view script path specification */
-        $this->_after('_changeViewScriptPathSpec', array('only' => array('index', 'grid', 'create', 'edit')));
+        $this->_after( '_changeViewScriptPathSpec', array('only' => array('index', 'grid', 'create', 'edit')) );
 
         /** load grid */
-        $this->_beforeGridFilter('_loadGrid');
+        $this->_beforeGridFilter( '_loadGrid' );
     }
 
     /**
@@ -76,16 +97,16 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     {
         $table = $this->_getTable();
         $form = $this->_getCreateForm()
-            ->setAction($this->view->url());
+            ->setAction( $this->view->url() );
 
         if ($this->_request->isPost() &&
-            $form->isValid($this->_getAllParams())
+            $form->isValid( $this->_getAllParams() )
         ) {
-            $table->createRow($form->getValues())
+            $table->createRow( $form->getValues() )
                 ->save();
 
-            $this->_helper->flashMessenger('Successfully');
-            $this->_helper->redirector('index');
+            $this->_helper->flashMessenger( 'Successfully' );
+            $this->_helper->redirector( 'index' );
         }
 
         $this->view->form = $form;
@@ -101,17 +122,17 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $model = $this->_loadModel();
 
         $form = $this->_getEditForm()
-            ->setAction($this->view->url())
-            ->setDefaults($model->toArray());
+            ->setAction( $this->view->url() )
+            ->setDefaults( $model->toArray() );
 
         if ($this->_request->isPost() &&
-            $form->isValid($this->_getAllParams())
+            $form->isValid( $this->_getAllParams() )
         ) {
-            $model->setFromArray($form->getValues())
-                  ->save();
+            $model->setFromArray( $form->getValues() )
+                ->save();
 
-            $this->_helper->flashMessenger('Successfully');
-            $this->_helper->redirector('index');
+            $this->_helper->flashMessenger( 'Successfully' );
+            $this->_helper->redirector( 'index' );
         }
 
         $this->view->form = $form;
@@ -124,13 +145,13 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _loadModel()
     {
-        if (!$id = $this->_getParam('id')) {
+        if (!$id = $this->_getParam( 'id' )) {
             $this->_forwardNotFound();
         }
 
         $table = $this->_getTable();
 
-        if (!$model = $table->getById($id)) {
+        if (!$model = $table->getById( $id )) {
             $this->_forwardNotFound();
         }
 
@@ -144,7 +165,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _changeViewScriptPathSpec()
     {
-        $this->_viewRenderer->setViewScriptPathSpec('crud/:action.:suffix');
+        $this->_viewRenderer->setViewScriptPathSpec( 'crud/:action.:suffix' );
     }
 
     /**
@@ -155,7 +176,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     public function deleteAction()
     {
         $model = $this->_loadModel();
-        $this->_helper->json($model->delete());
+        $this->_helper->json( $model->delete() );
     }
 
     /**
@@ -164,16 +185,16 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     public function deleteAllAction()
     {
         $res = false;
-        if($ids = $this->_getParam('ids')){
+        if ($ids = $this->_getParam( 'ids' )) {
             $this->_getTable()->delete(
-                $this->_getTable()->getAdapter()->quoteInto('id IN (?)', array_values($ids))
+                $this->_getTable()->getAdapter()->quoteInto( 'id IN (?)', array_values( $ids ) )
             );
-            $res = true ;
+            $res = true;
         }
-        $this->_helper->json($res);
+        $this->_helper->json( $res );
     }
 
-     /**
+    /**
      * add create button
      *
      * @return void
@@ -211,16 +232,16 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     protected function _loadGrid()
     {
         $grid = new Core_Grid();
-        $grid->setAdapter($this->_getSource())
-            ->setCurrentPageNumber($this->_getParam('page', 1))
-            ->setItemCountPerPage(10);
+        $grid->setAdapter( $this->_getSource() )
+            ->setCurrentPageNumber( $this->_getParam( 'page', 1 ) )
+            ->setItemCountPerPage( 10 );
 
-        if ($this->_getParam('orderColumn')) {
-            $grid->setOrder($this->_getParam('orderColumn'), $this->_getParam('orderDirection', 'asc'));
+        if ($this->_getParam( 'orderColumn' )) {
+            $grid->setOrder( $this->_getParam( 'orderColumn' ), $this->_getParam( 'orderDirection', 'asc' ) );
         }
 
-        if ($this->_getParam('filterColumn')) {
-            $grid->setFilter($this->_getParam('filterColumn'), $this->_getParam('filterValue'));
+        if ($this->_getParam( 'filterColumn' )) {
+            $grid->setFilter( $this->_getParam( 'filterColumn' ), $this->_getParam( 'filterValue' ) );
         }
 
         $this->grid = $grid;
@@ -233,12 +254,12 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function _addAllTableColumns()
     {
-        foreach ($this->_getTable()->info(Zend_Db_Table::COLS) as $col) {
-            $this->grid->setColumn($col, array(
-                'name' => ucfirst($col),
-                'type' => Core_Grid::TYPE_DATA,
-                'index' => $col
-            ));
+        foreach ($this->_getTable()->info( Zend_Db_Table::COLS ) as $col) {
+            $this->grid->setColumn( $col, array(
+                    'name'  => ucfirst( $col ),
+                    'type'  => Core_Grid::TYPE_DATA,
+                    'index' => $col
+                ) );
         }
     }
 
@@ -249,10 +270,10 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function _addEditColumn()
     {
-        $this->grid->setColumn('edit', array(
-            'name' => 'Edit',
-            'formatter' => array($this, 'editLinkFormatter')
-        ));
+        $this->grid->setColumn( 'edit', array(
+                'name'      => 'Edit',
+                'formatter' => array($this, 'editLinkFormatter')
+            ) );
     }
 
     /**
@@ -262,10 +283,10 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function _addDeleteColumn()
     {
-        $this->grid->setColumn('delete', array(
-            'name' => 'Delete',
-            'formatter' => array($this, 'deleteLinkFormatter')
-        ));
+        $this->grid->setColumn( 'delete', array(
+                'name'      => 'Delete',
+                'formatter' => array($this, 'deleteLinkFormatter')
+            ) );
     }
 
     /**
@@ -275,10 +296,10 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function _addCheckBoxColumn()
     {
-        $this->grid->setColumn('check', array(
-            'name' => '<input type="checkbox" id="selectAllCheckbox"/>',
-            'formatter' => array($this, 'checkBoxLinkFormatter')
-        ));
+        $this->grid->setColumn( 'check', array(
+                'name'      => '<input type="checkbox" id="selectAllCheckbox"/>',
+                'formatter' => array($this, 'checkBoxLinkFormatter')
+            ) );
     }
 
     /**
@@ -291,12 +312,12 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     public function editLinkFormatter($value, $row)
     {
         $link = '<a href="%s" class="edit">Edit</a>';
-        $url = $this->getHelper('url')->url(array(
-            'action' => 'edit',
-            'id' => $row['id']
-        ), 'default');
+        $url = $this->getHelper( 'url' )->url( array(
+                'action' => 'edit',
+                'id'     => $row['id']
+            ), 'default' );
 
-        return sprintf($link, $url);
+        return sprintf( $link, $url );
     }
 
     /**
@@ -309,12 +330,12 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     public function deleteLinkFormatter($value, $row)
     {
         $link = '<a href="%s" class="delete">Delete</a>';
-        $url = $this->getHelper('url')->url(array(
-            'action' => 'delete',
-            'id' => $row['id']
-        ), 'default');
+        $url = $this->getHelper( 'url' )->url( array(
+                'action' => 'delete',
+                'id'     => $row['id']
+            ), 'default' );
 
-        return sprintf($link, $url);
+        return sprintf( $link, $url );
     }
 
     /**
@@ -329,17 +350,17 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         return '<input type="checkbox" name="id" value="' . $row['id'] . '"/>';
     }
 
-     /**
-      * @param $value
-      * @param $row
-      * @return string
-      */
+    /**
+     * @param $value
+     * @param $row
+     * @return string
+     */
     public function trimFormatter($value, $row)
     {
-        if (strlen($value) >= 200) {
-            if (false !== ($breakpoint = strpos($value, ' ', 200))) {
-                if ($breakpoint < strlen($value) - 1) {
-                    $value = substr($value, 0, $breakpoint) . ' ...';
+        if (strlen( $value ) >= 200) {
+            if (false !== ($breakpoint = strpos( $value, ' ', 200 ))) {
+                if ($breakpoint < strlen( $value ) - 1) {
+                    $value = substr( $value, 0, $breakpoint ) . ' ...';
                 }
             }
         }
@@ -353,7 +374,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function stripTagsFormatter($value, $row)
     {
-        return strip_tags($value);
+        return strip_tags( $value );
     }
 
     /**
@@ -364,8 +385,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     protected function _addCreateButton()
     {
         $link = '<a href="%s" class="button">Create</a>';
-        $url = $this->getHelper('url')->url(array('action' => 'create'), 'default');
-        $this->view->placeholder('grid_buttons')->create = sprintf($link, $url);
+        $url = $this->getHelper( 'url' )->url( array('action' => 'create'), 'default' );
+        $this->view->placeholder( 'grid_buttons' )->create = sprintf( $link, $url );
     }
 
     /**
@@ -376,10 +397,10 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     protected function _addDeleteButton()
     {
         $link = '<a href="%s" class="button" id="delete-all-button">Delete All</a>';
-                $url = $this->getHelper('url')->url(array(
-            'action' => 'delete-all'
-        ), 'default');
-        $this->view->placeholder('grid_buttons')->deleteAll = sprintf($link, $url);
+        $url = $this->getHelper( 'url' )->url( array(
+                'action' => 'delete-all'
+            ), 'default' );
+        $this->view->placeholder( 'grid_buttons' )->deleteAll = sprintf( $link, $url );
     }
 
 
@@ -418,7 +439,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _setDefaultScriptPath()
     {
-        $this->_viewRenderer->setViewScriptPathSpec('/:controller/:action.:suffix');
+        $this->_viewRenderer->setViewScriptPathSpec( '/:controller/:action.:suffix' );
         return $this;
     }
 
@@ -430,7 +451,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _beforeGridFilter($function)
     {
-        $this->_before($function, array('only' => array('index', 'grid')));
+        $this->_before( $function, array('only' => array('index', 'grid')) );
     }
 
 

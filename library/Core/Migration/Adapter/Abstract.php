@@ -1,4 +1,25 @@
 <?php
+/**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 /**
  * Class Core_Migration_Abstract
@@ -6,12 +27,11 @@
  * abstract migration
  *
  * @category Core
- * @package  Core_Migration_Adapter
+ * @package  Core_Migration
+ * @subpackage Adapter
  *
  * @author   Anton Shevchuk <AntonShevchuk@gmail.com>
  * @link     http://anton.shevchuk.name
- * 
- * @version  $Id: Abstract.php 48 2010-02-12 13:23:39Z AntonShevchuk $
  */
 abstract class Core_Migration_Adapter_Abstract
 {
@@ -21,14 +41,14 @@ abstract class Core_Migration_Adapter_Abstract
      * @var Zend_Db_Adapter_Abstract
      */
     protected $_dbAdapter = null;
-    
-    
+
+
     public function __construct(Zend_Db_Adapter_Abstract $dbAdapter)
     {
         $this->_dbAdapter = $dbAdapter;
-    } 
-    
-     /**
+    }
+
+    /**
      * setDbAdapter
      *
      * @param  Zend_Db_Adapter_Abstract $dbAdapter
@@ -43,6 +63,7 @@ abstract class Core_Migration_Adapter_Abstract
         }
         return $this;
     }
+
     /**
      * getDbAdapter
      *
@@ -54,44 +75,44 @@ abstract class Core_Migration_Adapter_Abstract
             $this->setDbAdapter();
         }
         return $this->_dbAdapter;
-    } 
-    
+    }
+
     /**
      * query
      *
      * @param   string     $query
      * @return  Core_Migration_Abstract
      */
-    public function query($query) 
+    public function query($query)
     {
-        $this->getDbAdapter()->query($query);
+        $this->getDbAdapter()->query( $query );
         return $this;
     }
-    
-    
+
+
     /**
      * createTable
      *
      * @param   string $table table name
      * @return  Core_Migration_Abstract
      */
-    abstract public function createTable($table); 
-    
+    abstract public function createTable($table);
+
     /**
      * dropTable
      *
      * @param   string     $table  table name
      * @return  Core_Migration_Abstract
      */
-    abstract public function dropTable($table); 
-   
+    abstract public function dropTable($table);
+
     /**
      * createColumn
      *
      * FIXME: requried quoted queries data
-     * 
+     *
      * @param   string   $table
-     * @param   string   $column 
+     * @param   string   $column
      * @param   string   $datatype
      * @param   string   $length
      * @param   string   $default
@@ -99,49 +120,49 @@ abstract class Core_Migration_Adapter_Abstract
      * @param   bool     $primary
      * @return  bool
      */
-    abstract public function createColumn($table, 
-                                 $column,
-                                 $datatype,
-                                 $length = null,
-                                 $default = null,
-                                 $notnull = false,
-                                 $primary = false
-                                 ); 
-   
-    
+    abstract public function createColumn($table,
+                                          $column,
+                                          $datatype,
+                                          $length = null,
+                                          $default = null,
+                                          $notnull = false,
+                                          $primary = false
+    );
+
+
     /**
      * dropColumn
      *
      * @param   string   $table
-     * @param   string   $name 
+     * @param   string   $name
      * @return  bool
      */
     abstract public function dropColumn($table, $name);
-    
+
     /**
      * Create an unique index on table
      *
      * @param string $table
-     * @param array $columns
+     * @param array  $columns
      * @param string $indName
      * @return Core_Migration_Adapter_Abstract
      */
     abstract public function createUniqueIndexes($table, array $columns, $indName = null);
-    
-     /**
+
+    /**
      * Drop an index on table
      *
      * @param string $indName
      * @return Core_Migration_Adapter_Abstract
      */
     abstract public function dropUniqueIndexes($table, $indName);
-    
+
     /**
      * __call for unsupported adaptors methods
      *
-     * @param string $name Method name
-     * @param mixed $arguments Method Arguments
-     * return Core_Migration_Adapter_Abstract
+     * @param string $name      Method name
+     * @param mixed  $arguments Method Arguments
+     *                          return Core_Migration_Adapter_Abstract
      */
     public function  __call($name, $arguments)
     {

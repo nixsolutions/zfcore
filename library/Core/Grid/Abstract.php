@@ -1,5 +1,27 @@
 <?php
 /**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Abstract Grid
  *
  * @category Core
@@ -91,13 +113,13 @@ abstract class Core_Grid_Abstract
     /**
      * add column
      *
-     * @param $columnId
+     * @param       $columnId
      * @param array $options
      * @return Core_Grid
      */
     public function setColumn($columnId, array $options)
     {
-        if(empty($this->_columns[$columnId])){
+        if (empty($this->_columns[$columnId])) {
             $this->_columns[$columnId] = array();
         }
         $this->_columns[$columnId] = array_merge(
@@ -140,26 +162,26 @@ abstract class Core_Grid_Abstract
     /**
      * set ordering
      *
-     * @param $columnId
+     * @param        $columnId
      * @param string $direction
      * @return Core_Grid
      */
     public function setOrder($columnId, $direction = 'ASC')
     {
-        $this->_orders[$columnId] = strtoupper($direction);
+        $this->_orders[$columnId] = strtoupper( $direction );
         return $this;
     }
 
     /**
      * set default ordering
      *
-     * @param $columnId
+     * @param        $columnId
      * @param string $direction
      * @return Core_Grid
      */
     public function setDefaultOrder($columnId, $direction = 'ASC')
     {
-        $this->_defaultOrders[$columnId] = strtoupper($direction);
+        $this->_defaultOrders[$columnId] = strtoupper( $direction );
         return $this;
     }
 
