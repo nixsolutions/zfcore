@@ -1,5 +1,27 @@
 <?php
 /**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Front Controller Application Resources
  *
  * You can use this is resource in your application.yaml
@@ -15,10 +37,8 @@
  * @category   Core
  * @package    Core_Application
  * @subpackage Resource
- * 
- * @version  $Id: Frontcontroller.php 160 2010-07-12 10:47:54Z AntonShevchuk $
  */
-class Core_Application_Resource_Frontcontroller 
+class Core_Application_Resource_Frontcontroller
     extends Zend_Application_Resource_ResourceAbstract
 {
     /**
@@ -28,19 +48,19 @@ class Core_Application_Resource_Frontcontroller
 
     /**
      * Initialize Front Controller
-     * 
+     *
      * @return Zend_Controller_Front
      */
     public function init()
     {
         $front = $this->getFrontController();
-        
+
         foreach ($this->getOptions() as $key => $value) {
-            switch (strtolower($key)) {
+            switch (strtolower( $key )) {
                 case 'controllerdirectory':
-                    if (is_string($value)) {
-                        $front->setControllerDirectory($value);
-                    } elseif (is_array($value)) {
+                    if (is_string( $value )) {
+                        $front->setControllerDirectory( $value );
+                    } elseif (is_array( $value )) {
                         foreach ($value as $module => $directory) {
                             $front->addControllerDirectory(
                                 $directory,
@@ -49,43 +69,43 @@ class Core_Application_Resource_Frontcontroller
                         }
                     }
                     break;
-                    
+
                 case 'modulecontrollerdirectoryname':
-                    $front->setModuleControllerDirectoryName($value);
+                    $front->setModuleControllerDirectoryName( $value );
                     break;
-                    
+
                 case 'moduledirectory':
-                    $front->addModuleDirectory($value);
+                    $front->addModuleDirectory( $value );
                     break;
-                    
+
                 case 'defaultcontrollername':
-                    $front->setDefaultControllerName($value);
+                    $front->setDefaultControllerName( $value );
                     break;
-                    
+
                 case 'defaultaction':
-                    $front->setDefaultAction($value);
+                    $front->setDefaultAction( $value );
                     break;
-                    
+
                 case 'defaultmodule':
-                    $front->setDefaultModule($value);
+                    $front->setDefaultModule( $value );
                     break;
-                    
+
                 case 'baseurl':
                     if (!empty($value)) {
-                        $front->setBaseUrl($value);
+                        $front->setBaseUrl( $value );
                     }
                     break;
-                    
+
                 case 'params':
-                    $front->setParams($value);
+                    $front->setParams( $value );
                     break;
-                    
+
                 case 'plugins':
-                    foreach ((array) $value as $pluginClass) {
+                    foreach ((array)$value as $pluginClass) {
                         $stackIndex = null;
-                        $options    = array();
-                        if (is_array($pluginClass)) {
-                            $pluginClass = array_change_key_case($pluginClass, CASE_LOWER);
+                        $options = array();
+                        if (is_array( $pluginClass )) {
+                            $pluginClass = array_change_key_case( $pluginClass, CASE_LOWER );
                             if (isset($pluginClass['class'])) {
                                 if (isset($pluginClass['stackindex'])) {
                                     $stackIndex = $pluginClass['stackindex'];
@@ -97,28 +117,28 @@ class Core_Application_Resource_Frontcontroller
                             }
                         }
                         $plugin = new $pluginClass($options);
-                        $front->registerPlugin($plugin, $stackIndex);
+                        $front->registerPlugin( $plugin, $stackIndex );
                     }
                     break;
 
                 case 'returnresponse':
-                    $front->returnResponse((bool) $value);
+                    $front->returnResponse( (bool)$value );
                     break;
 
                 case 'throwexceptions':
-                    $front->throwExceptions((bool) $value);
+                    $front->throwExceptions( (bool)$value );
                     break;
 
                 case 'actionhelperpaths':
-                    if (is_array($value)) {
+                    if (is_array( $value )) {
                         foreach ($value as $helperPrefix => $helperPath) {
-                            Zend_Controller_Action_HelperBroker::addPath($helperPath, $helperPrefix);
+                            Zend_Controller_Action_HelperBroker::addPath( $helperPath, $helperPrefix );
                         }
                     }
                     break;
 
                 default:
-                    $front->setParam($key, $value);
+                    $front->setParam( $key, $value );
                     break;
             }
         }
@@ -132,7 +152,7 @@ class Core_Application_Resource_Frontcontroller
 
     /**
      * Retrieve front controller instance
-     * 
+     *
      * @return Zend_Controller_Front
      */
     public function getFrontController()

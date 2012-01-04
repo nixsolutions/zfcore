@@ -1,5 +1,27 @@
 <?php
 /**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Grid
  *
  * @category Core
@@ -42,7 +64,7 @@ class Core_Grid extends Core_Grid_Abstract
                 $header = new stdClass();
                 $header->id = $columnId;
                 $header->name = $column['name'];
-                $header->type = $this->_getColumnType($columnId);
+                $header->type = $this->_getColumnType( $columnId );
                 $header->isOrdered = isset($column['order']) && $column['order'] ? true : false;
                 $header->orderDirection = isset($column['order']) ? $column['order'] : '';
                 $this->_headers[] = $header;
@@ -72,12 +94,12 @@ class Core_Grid extends Core_Grid_Abstract
                 $row = array();
                 foreach ($this->_columns as $id => $column) {
                     $value = '';
-                    $type = $this->_getColumnType($id);
+                    $type = $this->_getColumnType( $id );
 
                     if ($type === self::TYPE_DATA) {
-                        $index = $this->_getColumnIndex($id);
+                        $index = $this->_getColumnIndex( $id );
 
-                        if (!array_key_exists($index, $item)) {
+                        if (!array_key_exists( $index, $item )) {
                             throw new Core_Exception('Index "' . $index . '" does not exist in data source');
                         }
 
@@ -85,23 +107,23 @@ class Core_Grid extends Core_Grid_Abstract
                     }
 
                     if (isset($column['formatter'])) {
-                        if(is_array($column['formatter'][1])){
+                        if (is_array( $column['formatter'][1] )) {
                             $obj = $column['formatter'][0];
-                            foreach($column['formatter'][1] as $func){
+                            foreach ($column['formatter'][1] as $func) {
                                 $function = '';
                                 $formatter = array($obj, $func);
-                                if (!is_callable($formatter, null, $function)) {
+                                if (!is_callable( $formatter, null, $function )) {
                                     throw new Core_Exception('"' . $function . '" is not callable');
                                 }
-                                $value = call_user_func($formatter, $value, $item, $column);
+                                $value = call_user_func( $formatter, $value, $item, $column );
                             }
-                        }else {
+                        } else {
                             $function = '';
                             $formatter = $column['formatter'];
-                            if (!is_callable($formatter, null, $function)) {
+                            if (!is_callable( $formatter, null, $function )) {
                                 throw new Core_Exception('"' . $function . '" is not callable');
                             }
-                            $value = call_user_func($formatter, $value, $item, $column);
+                            $value = call_user_func( $formatter, $value, $item, $column );
                         }
                     }
                     $row[$id] = $value;
@@ -150,9 +172,9 @@ class Core_Grid extends Core_Grid_Abstract
             } else {
                 /** order by first column if default order isn't set */
 
-                foreach($this->_columns as $key => $column){
-                    if(isset($column->type) && self::TYPE_DATA == $column->type) {
-                        $this->setOrder($key);
+                foreach ($this->_columns as $key => $column) {
+                    if (isset($column->type) && self::TYPE_DATA == $column->type) {
+                        $this->setOrder( $key );
                         break;
                     }
                 }
@@ -161,16 +183,16 @@ class Core_Grid extends Core_Grid_Abstract
 
         /** ordering */
         foreach ($this->_orders as $columnId => $direction) {
-            $this->_adapter->order($this->_getColumnIndex($columnId), $direction);
+            $this->_adapter->order( $this->_getColumnIndex( $columnId ), $direction );
             $this->_columns[$columnId]['order'] = $direction;
         }
 
         /** filtering */
         if ($this->_filters) {
             foreach ($this->_filters as $columnId => $filters) {
-                $index = $this->_getColumnIndex($columnId);
+                $index = $this->_getColumnIndex( $columnId );
                 foreach ($filters as $filter) {
-                    $this->_adapter->filter($index, $filter);
+                    $this->_adapter->filter( $index, $filter );
                 }
             }
         }
@@ -183,9 +205,9 @@ class Core_Grid extends Core_Grid_Abstract
             throw new Core_Exception('Current page is not set');
         }
 
-        $this->_paginator = Zend_Paginator::factory($this->_adapter->getSource())
-             ->setItemCountPerPage($this->_itemCountPerPage)
-             ->setCurrentPageNumber($this->_currentPageNumber);
+        $this->_paginator = Zend_Paginator::factory( $this->_adapter->getSource() )
+            ->setItemCountPerPage( $this->_itemCountPerPage )
+            ->setCurrentPageNumber( $this->_currentPageNumber );
     }
 
     /**
@@ -213,7 +235,7 @@ class Core_Grid extends Core_Grid_Abstract
      */
     protected function _getColumnIndex($columnId)
     {
-        $column = $this->_getColumn($columnId);
+        $column = $this->_getColumn( $columnId );
 
         if (empty($column['index'])) {
             throw new Core_Exception('Index of column "' . $columnId . '" does not exist');
@@ -231,14 +253,14 @@ class Core_Grid extends Core_Grid_Abstract
      */
     protected function _getColumnType($columnId)
     {
-        $column = $this->_getColumn($columnId);
+        $column = $this->_getColumn( $columnId );
 
         $type = 'empty';
         if (isset($column['type'])) {
             $type = $column['type'];
         }
 
-        if (!in_array($type, $this->_getAllowedTypes())) {
+        if (!in_array( $type, $this->_getAllowedTypes() )) {
             throw new Core_Exception('Type "' . $type . '" of column "' . $columnId . '" is not allowed');
         }
 

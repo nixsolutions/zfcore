@@ -1,14 +1,34 @@
 <?php
 /**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Front Controller Plugin
  *
  * @uses       Zend_Controller_Plugin_Abstract
  *
  * @category   Core
  * @package    Core_Controller
- * @subpackage Plugins
- *
- * @version  $Id: Acl.php 223 2011-01-19 15:14:14Z AntonShevchuk $
+ * @subpackage Plugin
  */
 class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
 {
@@ -109,15 +129,15 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     public function __construct(Array $options = array())
     {
         if (isset($options['error'])) {
-            $this->_errorPage = array_merge($this->_errorPage, $options['error']);
+            $this->_errorPage = array_merge( $this->_errorPage, $options['error'] );
         }
 
         if (isset($options['denied'])) {
-            $this->_deniedPage = array_merge($this->_deniedPage, $options['denied']);
+            $this->_deniedPage = array_merge( $this->_deniedPage, $options['denied'] );
         }
 
         if (isset($options['login'])) {
-            $this->_loginPage = array_merge($this->_loginPage, $options['login']);
+            $this->_loginPage = array_merge( $this->_loginPage, $options['login'] );
         }
 
         if (isset($options['role'])) {
@@ -191,9 +211,9 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     {
         if (null == $this->_acl) {
             $config = $this->_getConfig();
-            $this->setAcl(new Core_Acl($config));
+            $this->setAcl( new Core_Acl($config) );
 
-            Zend_Registry::set('Acl', $this->_acl);
+            Zend_Registry::set( 'Acl', $this->_acl );
         }
         return $this->_acl;
     }
@@ -230,21 +250,22 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
      * Checks if the current user identified by roleName has rights to the requested url (module/controller/action)
      * If not, it will call denyAccess to be redirected to errorPage
      *
+     * @param \Zend_Controller_Request_Abstract $request
      * @return void
      */
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
-        $resourceName  = 'mvc:';
+        $resourceName = 'mvc:';
         $resourceName .= $request->getModuleName() . '/';
         $resourceName .= $request->getControllerName();
 
         /** Check resource */
-        if (!$this->getAcl()->has($resourceName)) {
+        if (!$this->getAcl()->has( $resourceName )) {
             if ($this->_allowAll) {
                 return true;
-            } elseif (Zend_Controller_Front::getInstance()->getParam('env') == 'development') {
+            } elseif (Zend_Controller_Front::getInstance()->getParam( 'env' ) == 'development') {
                 $this->getResponse()
-                     ->appendBody("<h2>Resource \"$resourceName\" not found in ACL rules</h2>");
+                    ->appendBody( "<h2>Resource \"$resourceName\" not found in ACL rules</h2>" );
                 return true;
             } else {
                 $this->toError();
@@ -257,7 +278,8 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
             $this->getRoleName(),
             $resourceName,
             $request->getActionName()
-        )) {
+        )
+        ) {
             return true;
         } else {
             /** Save request to session */
@@ -281,10 +303,10 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     public function toDenied()
     {
         // user logined, but don't have access
-        $this->_request->setModuleName($this->_deniedPage['module']);
-        $this->_request->setControllerName($this->_deniedPage['controller']);
-        $this->_request->setActionName($this->_deniedPage['action']);
-        $this->_request->setDispatched(false);
+        $this->_request->setModuleName( $this->_deniedPage['module'] );
+        $this->_request->setControllerName( $this->_deniedPage['controller'] );
+        $this->_request->setActionName( $this->_deniedPage['action'] );
+        $this->_request->setDispatched( false );
     }
 
     /**
@@ -295,10 +317,10 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     public function toError()
     {
         // resource exist, but user is guest - go to login page
-        $this->_request->setModuleName($this->_errorPage['module']);
-        $this->_request->setControllerName($this->_errorPage['controller']);
-        $this->_request->setActionName($this->_errorPage['action']);
-        $this->_request->setDispatched(false);
+        $this->_request->setModuleName( $this->_errorPage['module'] );
+        $this->_request->setControllerName( $this->_errorPage['controller'] );
+        $this->_request->setActionName( $this->_errorPage['action'] );
+        $this->_request->setDispatched( false );
     }
 
     /**
@@ -309,9 +331,9 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     public function toLogin()
     {
         // resource exist, but user is guest - go to login page
-        $this->_request->setModuleName($this->_loginPage['module']);
-        $this->_request->setControllerName($this->_loginPage['controller']);
-        $this->_request->setActionName($this->_loginPage['action']);
-        $this->_request->setDispatched(false);
+        $this->_request->setModuleName( $this->_loginPage['module'] );
+        $this->_request->setControllerName( $this->_loginPage['controller'] );
+        $this->_request->setActionName( $this->_loginPage['action'] );
+        $this->_request->setDispatched( false );
     }
 }

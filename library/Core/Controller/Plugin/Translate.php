@@ -1,12 +1,32 @@
 <?php
 /**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Core_Controller_Plugin_Translate
  *
  * @category   Core
  * @package    Core_Controller
- * @subpackage Plugins
- *
- * @version  $Id$
+ * @subpackage Plugin
  */
 class Core_Controller_Plugin_Translate extends Zend_Controller_Plugin_Abstract
 {
@@ -16,6 +36,7 @@ class Core_Controller_Plugin_Translate extends Zend_Controller_Plugin_Abstract
     {
         $this->_translate = $translate;
     }
+
     /**
      * Called after Zend_Controller_Router exits.
      *
@@ -28,13 +49,13 @@ class Core_Controller_Plugin_Translate extends Zend_Controller_Plugin_Abstract
     {
         $adapter = $this->_translate->getAdapter();
 
-        if (!$locale = $request->getParam('locale')) {
+        if (!$locale = $request->getParam( 'locale' )) {
             $locale = $adapter->getLocale();
         } else {
-            $adapter->setLocale($locale);
+            $adapter->setLocale( $locale );
         }
 
         $router = Zend_Controller_Front::getInstance()->getRouter();
-        $router->setGlobalParam('locale', $locale);
+        $router->setGlobalParam( 'locale', $locale );
     }
 }

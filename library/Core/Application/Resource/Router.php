@@ -1,5 +1,27 @@
 <?php
 /**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Controller plugin intended to set additional routes rules from standard
  * config file and files from modules /configs directories
  *
@@ -14,10 +36,10 @@
  * @uses       Zend_Controller_Plugin_Abstract
  *
  * @category   Core
- * @package    Core_Controller
- * @subpackage Plugins
+ * @package    Core_Application
+ * @subpackage Resource
  *
- * @author MYem (max.yemets@gmail.com)
+ * @author     MYem (max.yemets@gmail.com)
  */
 class Core_Application_Resource_Router
     extends Zend_Application_Resource_Router
@@ -38,10 +60,10 @@ class Core_Application_Resource_Router
     {
         if (null === $this->_router) {
             $router = $this->getRouter(); // returns $this->_router
-            $router->addConfig($this->_getConfig());
+            $router->addConfig( $this->_getConfig() );
 
             // add locale chain if using translate
-            if ($this->getBootstrap()->hasPluginResource('Translate')) {
+            if ($this->getBootstrap()->hasPluginResource( 'Translate' )) {
                 $locale = new Zend_Controller_Router_Route(
                     ':locale',
                     array(),
@@ -52,10 +74,10 @@ class Core_Application_Resource_Router
 
                 foreach ($router->getRoutes() as $name => $route) {
                     //rename existing routes
-                    $router->removeRoute($name)
-                           ->addRoute($name . 'Default', $route)
-                           //add chained routes
-                           ->addRoute($name, $locale->chain($route));
+                    $router->removeRoute( $name )
+                        ->addRoute( $name . 'Default', $route )
+                    //add chained routes
+                        ->addRoute( $name, $locale->chain( $route ) );
                 }
             }
         }
@@ -73,11 +95,11 @@ class Core_Application_Resource_Router
 
         $cache = false;
         if (!empty($this->_options['cache'])) {
-            if ($bootstrap->hasPluginResource('CacheManager')) {
-                $manager = $bootstrap->bootstrap('CacheManager')
-                                     ->getResource('CacheManager');
+            if ($bootstrap->hasPluginResource( 'CacheManager' )) {
+                $manager = $bootstrap->bootstrap( 'CacheManager' )
+                    ->getResource( 'CacheManager' );
 
-                $cache = $manager->getCache($this->_options['cache']);
+                $cache = $manager->getCache( $this->_options['cache'] );
             }
         }
 

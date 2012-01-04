@@ -1,16 +1,34 @@
 <?php
+/**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
 /**
  * Class Core_Migration_Adapter_Mysql
  *
- * 
- *
  * @category Core
- * @package  Core_Migration_Adapter
+ * @package  Core_Migration
+ * @subpackage Adapter
  *
  * @author   Alexey Novikov <oleksii.novikov@gmail.com>
- * 
- * @version  
  */
 class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
 {
@@ -18,7 +36,7 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
      * Insert
      *
      * @param string $table
-     * @param array $params
+     * @param array  $params
      * @return Core_Migration_Adapter_Abstract
      */
     public function insert($table, array $params)
@@ -33,7 +51,7 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
         ')';
         echo $query . "\n";*/
 
-        return $this->getDbAdapter()->insert($table, $params);
+        return $this->getDbAdapter()->insert( $table, $params );
     }
 
     /**
@@ -46,7 +64,7 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
      */
     public function update($table, array $bind, $where = '')
     {
-        return $this->getDbAdapter()->update($table, $bind, $where);
+        return $this->getDbAdapter()->update( $table, $bind, $where );
     }
 
     /**
@@ -54,13 +72,13 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
      *
      * @param string $table
      * @return Core_Migration_Adapter_Abstract
-     */    
+     */
     public function createTable($table)
     {
         $this->query(
             'CREATE TABLE ' .
-            $table .
-            ' ( id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT )'
+                $table .
+                ' ( id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT )'
         );
         return $this;
     }
@@ -73,7 +91,7 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
      */
     public function dropTable($table)
     {
-        $this->query('DROP TABLE ' . $this->getDbAdapter()->quote($table));
+        $this->query( 'DROP TABLE ' . $this->getDbAdapter()->quote( $table ) );
         return $this;
     }
 
@@ -81,9 +99,9 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
      * createColumn
      *
      * FIXME: requried quoted queries data
-     * 
+     *
      * @param   string   $table
-     * @param   string   $column 
+     * @param   string   $column
      * @param   string   $datatype
      * @param   string   $length
      * @param   string   $default
@@ -91,31 +109,33 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
      * @param   bool     $primary
      * @return  bool
      */
-    public function createColumn($table,
-                                 $column,
-                                 $datatype,
-                                 $length = null,
-                                 $default = null,
-                                 $notnull = false,
-                                 $primary = false)
+    public function createColumn(
+        $table,
+        $column,
+        $datatype,
+        $length = null,
+        $default = null,
+        $notnull = false,
+        $primary = false
+    )
     {
 
         $fullField = '';
-        $column = $this->getDbAdapter()->quoteIdentifier($column);
+        $column = $this->getDbAdapter()->quoteIdentifier( $column );
         // switch statement for $datatype
         switch ($datatype) {
             case Core_Migration_Abstract::TYPE_VARCHAR:
-                $length = $length?$length:255;
+                $length = $length ? $length : 255;
                 $fullField .= " VARCHAR($length)";
                 break;
             case Core_Migration_Abstract::TYPE_FLOAT:
-                $length = $length?$length:'0,0';
+                $length = $length ? $length : '0,0';
                 $fullField .= " FLOAT($length)";
                 break;
-                //TODO ENUM!!!
+            //TODO ENUM!!!
             case Core_Migration_Abstract::TYPE_ENUM:
-                if (is_array($length)) {
-                    $length =  join(",", $length);
+                if (is_array( $length )) {
+                    $length = join( ",", $length );
                 }
                 $fullField .= " ENUM '" . $length . "'";
                 break;
@@ -123,7 +143,7 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
                 $fullField .= $datatype;
                 break;
         }
-        if (!is_null($default)) {
+        if (!is_null( $default )) {
             // switch statement for $datatype
             switch ($datatype) {
                 case (Core_Migration_Abstract::TYPE_TIMESTAMP) && ($default === 'CURRENT_TIMESTAMP'):
@@ -131,7 +151,7 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
                     break;
                 default:
                     $fullField .= ' DEFAULT '
-                        . $this->getDbAdapter()->quote($default);
+                        . $this->getDbAdapter()->quote( $default );
                     break;
             }
         }
@@ -144,14 +164,14 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
 
         //if column is a primary key or NOT NULL & Default is not set or not constant
         //in this case we must recreate table with new column
-        if ($primary || ($notnull && (is_null($default) || $default === 'CURRENT_TIMESTAMP'))) {
-            $fields = $this->getDbAdapter()->describeTable($table);
+        if ($primary || ($notnull && (is_null( $default ) || $default === 'CURRENT_TIMESTAMP'))) {
+            $fields = $this->getDbAdapter()->describeTable( $table );
             $allCols = array();
             $collNames = array();
             foreach ($fields as $field => $options) {
                 $collNames[] = $options['COLUMN_NAME'];
 
-                $allCols[$field] = $this->getDbAdapter()->quoteIdentifier($options['COLUMN_NAME']) 
+                $allCols[$field] = $this->getDbAdapter()->quoteIdentifier( $options['COLUMN_NAME'] )
                     . ' ' . $options['DATA_TYPE'];
 
                 if ($options['LENGTH']) {
@@ -162,32 +182,32 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
                 }
                 if ($options['DEFAULT']) {
                     $allCols[$field] .= " DEFAULT "
-                        . $this->getDbAdapter()->quote($options['DEFAULT']);
+                        . $this->getDbAdapter()->quote( $options['DEFAULT'] );
                 }
             }
 
             //Full info about columns  exept  names
-            $colls = join(',', $allCols);
+            $colls = join( ',', $allCols );
             //Names of columns
-            $collNames = $this->_quoteIdentifierArray($collNames);
-            $table = $this->getDbAdapter()->quoteIdentifier($table);
+            $collNames = $this->_quoteIdentifierArray( $collNames );
+            $table = $this->getDbAdapter()->quoteIdentifier( $table );
 
-            $newQuery = 'CREATE TEMPORARY TABLE t1_backup(' . $colls .')';
-            $this->query($newQuery);
-            $newQuery = 'INSERT INTO t1_backup SELECT ' . $collNames 
+            $newQuery = 'CREATE TEMPORARY TABLE t1_backup(' . $colls . ')';
+            $this->query( $newQuery );
+            $newQuery = 'INSERT INTO t1_backup SELECT ' . $collNames
                 . ' FROM ' . $table;
-            $this->query($newQuery);
+            $this->query( $newQuery );
             $newQuery = 'DROP TABLE ' . $table;
-            $this->query($newQuery);
+            $this->query( $newQuery );
             $newQuery = 'Create TABLE ' . $table .
-            ' (' . $colls . ',' . $column . '
+                ' (' . $colls . ',' . $column . '
                         ' . $fullField . ', PRIMARY KEY(id))';
-            $this->query($newQuery);
+            $this->query( $newQuery );
             $newQuery = 'INSERT INTO ' . $table .
-            ' (' . $collNames . ') SELECT ' . $collNames .' FROM t1_backup';
-            $this->query($newQuery);
+                ' (' . $collNames . ') SELECT ' . $collNames . ' FROM t1_backup';
+            $this->query( $newQuery );
             $newQuery = 'DROP TABLE t1_backup';
-            $this->query($newQuery);
+            $this->query( $newQuery );
 
             /*@TODO: Get all indexes -> remove indexes -> create index
              * with a new column
@@ -201,10 +221,10 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
             */
         } else {
             //just add a new column
-            $table = $this->getDbAdapter()->quoteIdentifier($table);
+            $table = $this->getDbAdapter()->quoteIdentifier( $table );
             $query = 'ALTER TABLE ' . $table
                 . ' ADD COLUMN ' . $column . $fullField;
-            $this->query($query);
+            $this->query( $query );
         }
 
         return $this;
@@ -214,22 +234,22 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
      * dropColumn
      *
      * @param   string   $table
-     * @param   string   $name 
+     * @param   string   $name
      * @return  bool
      */
     public function dropColumn($table, $name)
     {
-        $fields = $this->getDbAdapter()->describeTable($table);
+        $fields = $this->getDbAdapter()->describeTable( $table );
         $allCols = array();
         $collNames = array();
         foreach ($fields as $field => $options) {
             //skip column
-            if($options['COLUMN_NAME'] === $name)
-            continue;
+            if ($options['COLUMN_NAME'] === $name)
+                continue;
             $collNames[] = $options['COLUMN_NAME'];
 
-            $allCols[$field] = $this->getDbAdapter()->quoteIdentifier($options['COLUMN_NAME']) .
-            ' ' . $options['DATA_TYPE'];
+            $allCols[$field] = $this->getDbAdapter()->quoteIdentifier( $options['COLUMN_NAME'] ) .
+                ' ' . $options['DATA_TYPE'];
 
             if ($options['LENGTH']) {
                 $allCols[$field] .= '(' . $options['LENGTH'] . ')';
@@ -243,26 +263,26 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
         }
 
         //Full info about columns  exept  names
-        $colls = join(',', $allCols);
+        $colls = join( ',', $allCols );
         //Names of columns
-        $collNames = $this->_quoteIdentifierArray($collNames);
-        $table = $this->getDbAdapter()->quoteIdentifier($table); //!important
+        $collNames = $this->_quoteIdentifierArray( $collNames );
+        $table = $this->getDbAdapter()->quoteIdentifier( $table ); //!important
 
-        $newQuery = 'CREATE TEMPORARY TABLE t1_backup(' . $colls .')';
-        $this->query($newQuery);
-        $newQuery = 'INSERT INTO t1_backup SELECT ' . $collNames 
+        $newQuery = 'CREATE TEMPORARY TABLE t1_backup(' . $colls . ')';
+        $this->query( $newQuery );
+        $newQuery = 'INSERT INTO t1_backup SELECT ' . $collNames
             . ' FROM ' . $table;
-        $this->query($newQuery);
+        $this->query( $newQuery );
         $newQuery = 'DROP TABLE ' . $table;
-        $this->query($newQuery);
+        $this->query( $newQuery );
         $newQuery = 'Create TABLE ' . $table
             . ' (' . $colls . ', PRIMARY KEY(id))';
-        $this->query($newQuery);
+        $this->query( $newQuery );
         $newQuery = 'INSERT INTO ' . $table .
-        ' (' . $collNames . ') SELECT ' . $collNames .' FROM t1_backup';
-        $this->query($newQuery);
+            ' (' . $collNames . ') SELECT ' . $collNames . ' FROM t1_backup';
+        $this->query( $newQuery );
         $newQuery = 'DROP TABLE t1_backup';
-        $this->query($newQuery);
+        $this->query( $newQuery );
 
         return $this;
     }
@@ -272,23 +292,23 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
      *
      * @return  string
      */
-    public function getCurrentTimestamp() 
+    public function getCurrentTimestamp()
     {
         return 'now()';
     }
-    
+
     public function createUniqueIndexes($table, array $columns, $indName = null)
     {
         if ($table && !empty($columns)) {
             if (!$indName) {
-                $indName = strtoupper($table . '_' . implode('_', $columns));
+                $indName = strtoupper( $table . '_' . implode( '_', $columns ) );
             }
             //columns is coma separated string for now
-            $quotedColumns = $this->_quoteIdentifierArray($columns);
-            $query = 'CREATE UNIQUE INDEX ' . $this->getDbAdapter()->quoteIdentifier($indName) .
-            ' ON ' . $this->getDbAdapter()->quoteIdentifier($table) .
-            '(' . $quotedColumns . ')';
-            $this->query($query);
+            $quotedColumns = $this->_quoteIdentifierArray( $columns );
+            $query = 'CREATE UNIQUE INDEX ' . $this->getDbAdapter()->quoteIdentifier( $indName ) .
+                ' ON ' . $this->getDbAdapter()->quoteIdentifier( $table ) .
+                '(' . $quotedColumns . ')';
+            $this->query( $query );
         } else {
             throw new Core_Exception("
                 Can't create index " . $indName . " on table " . $table
@@ -307,8 +327,8 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
     {
         if ($indName) {
             $query = 'DROP INDEX '
-                . $this->getDbAdapter()->quoteIdentifier($indName);
-            $this->query($query);
+                . $this->getDbAdapter()->quoteIdentifier( $indName );
+            $this->query( $query );
         } else {
             throw new Core_Exception("Can't drop index " . $indName);
         }
@@ -325,9 +345,9 @@ class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
     {
         $quotedColumns = array();
         foreach ($columns as $value) {
-            $quotedColumns[] = $this->getDbAdapter()->quoteIdentifier($value);
+            $quotedColumns[] = $this->getDbAdapter()->quoteIdentifier( $value );
         }
 
-        return implode(',', $quotedColumns);
+        return implode( ',', $quotedColumns );
     }
 }

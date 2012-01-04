@@ -1,12 +1,35 @@
 <?php
 /**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Class Core_Controller_Action
  *
  * Controller class for our application
  *
  * @category Core
  * @package  Core_Controller
- * @uses     Core_Controller_Action
+ *
+ * @uses     Zend_Controller_Action
  */
 abstract class Core_Controller_Action extends Zend_Controller_Action
 {
@@ -34,7 +57,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     protected function _isDashboard()
     {
         // change layout
-        $this->_helper->layout->setLayout('dashboard/layout');
+        $this->_helper->layout->setLayout( 'dashboard/layout' );
 
         return $this;
     }
@@ -42,7 +65,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     /**
      * add function to stack
      *
-     * @param $function
+     * @param       $function
      * @param array $options
      * @return void
      */
@@ -50,14 +73,14 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     {
         $this->_before[] = array(
             'function' => $function,
-            'options' => $options
+            'options'  => $options
         );
     }
 
     /**
      * add function to stack
      *
-     * @param $function
+     * @param       $function
      * @param array $options
      * @return void
      */
@@ -65,7 +88,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     {
         $this->_after[] = array(
             'function' => $function,
-            'options' => $options
+            'options'  => $options
         );
     }
 
@@ -77,7 +100,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     protected function _initBefore()
     {
         $action = $this->getRequest()->getActionName();
-        $this->_execFunctions($this->_before, $action);
+        $this->_execFunctions( $this->_before, $action );
     }
 
     /**
@@ -88,7 +111,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     protected function _initAfter()
     {
         $action = $this->getRequest()->getActionName();
-        $this->_execFunctions($this->_after, $action);
+        $this->_execFunctions( $this->_after, $action );
     }
 
     /**
@@ -104,22 +127,22 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
 
             /** check if function is only for current action */
             if (!empty($item['options']['only'])) {
-                $only = (array) $item['options']['only'];
-                if (!in_array($action, $only)) {
+                $only = (array)$item['options']['only'];
+                if (!in_array( $action, $only )) {
                     continue;
                 }
             }
 
             /** check if function is skipped for current action */
             if (!empty($item['options']['skip'])) {
-                $skip = (array) $item['options']['skip'];
-                if (in_array($action, $skip)) {
+                $skip = (array)$item['options']['skip'];
+                if (in_array( $action, $skip )) {
                     continue;
                 }
             }
 
             /** execute */
-            $functions = (array) $item['function'];
+            $functions = (array)$item['function'];
             foreach ($functions as $function) {
 
                 /** next functions won't be executed if current one returns false */
@@ -179,6 +202,6 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
      */
     protected function _forwardNotFound()
     {
-        $this->_forward('notfound', 'error', 'users');
+        $this->_forward( 'notfound', 'error', 'users' );
     }
 }

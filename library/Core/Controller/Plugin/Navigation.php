@@ -1,5 +1,27 @@
 <?php
 /**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Controller plugin that sets the correct paths to the Zend_Layout instances
  *
  * You can initialize this is plugin in your application.yaml
@@ -18,12 +40,10 @@
  *
  * @category   Core
  * @package    Core_Controller
- * @subpackage Plugins
+ * @subpackage Plugin
  *
- * @author   Anton Shevchuk <AntonShevchuk@gmail.com>
- * @link     http://anton.shevchuk.name
- *
- * @version  $Id: Navigation.php 223 2011-01-19 15:14:14Z AntonShevchuk $
+ * @author     Anton Shevchuk <AntonShevchuk@gmail.com>
+ * @link       http://anton.shevchuk.name
  */
 class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
 {
@@ -114,21 +134,21 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
      */
     protected function _initNavigation($section = null)
     {
-        $container = new Zend_Navigation($this->_getConfig($section));
+        $container = new Zend_Navigation($this->_getConfig( $section ));
 
         $navigation = Zend_Layout::getMvcInstance()->getView()
-                                                   ->navigation($container);
+            ->navigation( $container );
 
-        if (Zend_Registry::isRegistered('Zend_Translate')) {
-            $navigation->setTranslator(Zend_Registry::get('Zend_Translate'));
+        if (Zend_Registry::isRegistered( 'Zend_Translate' )) {
+            $navigation->setTranslator( Zend_Registry::get( 'Zend_Translate' ) );
         }
 
-        if (Zend_Registry::isRegistered('Acl')) {
-            $navigation->setAcl(Zend_Registry::get('Acl'));
+        if (Zend_Registry::isRegistered( 'Acl' )) {
+            $navigation->setAcl( Zend_Registry::get( 'Acl' ) );
 
             $identity = Zend_Auth::getInstance()->getIdentity();
 
-            $navigation->setRole($identity ? $identity->role : 'guest');
+            $navigation->setRole( $identity ? $identity->role : 'guest' );
         }
     }
 
@@ -143,7 +163,7 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
         // extracting layout type (admin|default) and setting it as $this->_section
         $currentLayout = Zend_Layout::getMvcInstance()->getLayout();
 
-        $currentLayout = preg_split('/\//', $currentLayout);
+        $currentLayout = preg_split( '/\//', $currentLayout );
 
         if (isset($currentLayout[0])) {
             $section = $currentLayout[0];

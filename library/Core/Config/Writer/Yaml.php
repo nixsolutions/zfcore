@@ -1,5 +1,31 @@
 <?php
+/**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
+/**
+ * @category Core
+ * @package  Core_Config
+ * @subpackage Writer
+ */
 class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
 {
     /**
@@ -27,7 +53,7 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
      */
     public function setYamlEncoder($yamlEncoder)
     {
-        if (!is_callable($yamlEncoder)) {
+        if (!is_callable( $yamlEncoder )) {
             require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception('Invalid parameter to setYamlEncoder - must be callable');
         }
@@ -44,11 +70,11 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
      */
     public function render()
     {
-        $data        = $this->_config->toArray();
+        $data = $this->_config->toArray();
         $sectionName = $this->_config->getSectionName();
-        $extends     = $this->_config->getExtends();
+        $extends = $this->_config->getExtends();
 
-        if (is_string($sectionName)) {
+        if (is_string( $sectionName )) {
             $data = array($sectionName => $data);
         }
 
@@ -58,7 +84,7 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
 
         // Ensure that each "extends" section actually exists
         foreach ($data as $section => $sectionData) {
-            if (is_array($sectionData) && isset($sectionData[Zend_Config_Yaml::EXTENDS_NAME])) {
+            if (is_array( $sectionData ) && isset($sectionData[Zend_Config_Yaml::EXTENDS_NAME])) {
                 $sectionExtends = $sectionData[Zend_Config_Yaml::EXTENDS_NAME];
                 if (!isset($data[$sectionExtends])) {
                     // Remove "extends" declaration if section does not exist
@@ -67,7 +93,7 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
             }
         }
 
-        return call_user_func($this->getYamlEncoder(), $data);
+        return call_user_func( $this->getYamlEncoder(), $data );
     }
 
     /**
@@ -80,19 +106,19 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
      */
     public static function encode($data)
     {
-        return self::_encodeYaml(0, $data);
+        return self::_encodeYaml( 0, $data );
     }
 
     /**
      * Service function for encoding YAML
      *
-     * @param int $indent Current indent level
-     * @param array $data Data to encode
+     * @param int   $indent Current indent level
+     * @param array $data   Data to encode
      * @return string
      */
     protected static function _encodeYaml($indent, $data)
     {
-        reset($data);
+        reset( $data );
 
         //make _extends be the first child
         if (isset($data[Zend_Config_Yaml::EXTENDS_NAME])) {
@@ -102,25 +128,25 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
         }
 
         $result = "";
-        $numeric = is_numeric(key($data));
+        $numeric = is_numeric( key( $data ) );
 
-        foreach($data as $key => $value) {
-            if(is_array($value)) {
-                $encoded = "\n".self::_encodeYaml($indent+1, $value);
+        foreach ($data as $key => $value) {
+            if (is_array( $value )) {
+                $encoded = "\n" . self::_encodeYaml( $indent + 1, $value );
             } else {
-                if (is_bool($value)) {
+                if (is_bool( $value )) {
                     $value = ($value) ? 'on' : 'off';
                 }
-                $encoded = (string)$value."\n";
+                $encoded = (string)$value . "\n";
 
                 if ($encoded) {
                     $encoded = " " . $encoded;
                 }
             }
 
-            $result .= str_repeat("  ", $indent)
-                     . ($numeric ? "-" : "$key:")
-                     . $encoded;
+            $result .= str_repeat( "  ", $indent )
+                . ($numeric ? "-" : "$key:")
+                . $encoded;
         }
         return $result;
     }

@@ -1,14 +1,34 @@
 <?php
 /**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Front Controller Plugin
- * 
+ *
  * @uses       Zend_Controller_Plugin_Abstract
- * 
+ *
  * @category   Core
  * @package    Core_Controller
- * @subpackage Plugins
- * 
- * @version  $Id: Debug.php 48 2010-02-12 13:23:39Z AntonShevchuk $
+ * @subpackage Plugin
  */
 class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
 {
@@ -22,8 +42,8 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function __construct(Array $options = array())
     {
-        Core_Debug::setEnabled(true);
-        Core_Debug::getGenerateTime('init');
+        Core_Debug::setEnabled( true );
+        Core_Debug::getGenerateTime( 'init' );
     }
 
     /**
@@ -35,7 +55,7 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function routeStartup(Zend_Controller_Request_Abstract $request)
     {
-        Core_Debug::getGenerateTime("routeStartup() called");
+        Core_Debug::getGenerateTime( "routeStartup() called" );
     }
 
     /**
@@ -48,9 +68,9 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function routeShutdown(Zend_Controller_Request_Abstract $request)
     {
-        Core_Debug::getGenerateTime("routeShutdown() called");
+        Core_Debug::getGenerateTime( "routeShutdown() called" );
     }
-    
+
     /**
      * Called before Zend_Controller_Front enters its dispatch loop.
      *
@@ -59,9 +79,9 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function dispatchLoopStartup(Zend_Controller_Request_Abstract $request)
     {
-        Core_Debug::getGenerateTime("dispatchLoopStartup() called");
+        Core_Debug::getGenerateTime( "dispatchLoopStartup() called" );
     }
-    
+
     /**
      * Called before an action is dispatched by Zend_Controller_Dispatcher.
      *
@@ -76,9 +96,9 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
-        Core_Debug::getGenerateTime("preDispatch() called");
+        Core_Debug::getGenerateTime( "preDispatch() called" );
     }
-    
+
     /**
      * Called after an action is dispatched by Zend_Controller_Dispatcher.
      *
@@ -93,9 +113,9 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function postDispatch(Zend_Controller_Request_Abstract $request)
     {
-        Core_Debug::getGenerateTime("postDispatch() called");
+        Core_Debug::getGenerateTime( "postDispatch() called" );
     }
-    
+
     /**
      * Called before Zend_Controller_Front exits its dispatch loop.
      *
@@ -103,6 +123,6 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function dispatchLoopShutdown()
     {
-        Core_Debug::getGenerateTime("dispatchLoopShutdown() called");
+        Core_Debug::getGenerateTime( "dispatchLoopShutdown() called" );
     }
 }

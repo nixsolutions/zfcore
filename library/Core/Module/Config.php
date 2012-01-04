@@ -1,5 +1,27 @@
 <?php
 /**
+ * Copyright (c) 2012 by PHP Team of NIX Solutions Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
  * Load configuration from every module, merge it, save to cache
  *
  * <code>
@@ -13,18 +35,15 @@
  *
  * @category   Core
  * @package    Core_Module
- * @subpackage Config
  *
- * @author   Anton Shevchuk <AntonShevchuk@gmail.com>
- * @link     http://anton.shevchuk.name
- *
- * @version  $Id: Config.php 223 2011-01-19 15:14:14Z AntonShevchuk $
+ * @author     Anton Shevchuk <AntonShevchuk@gmail.com>
+ * @link       http://anton.shevchuk.name
  */
 class Core_Module_Config
 {
 
     const MAIN_ORDER_FIRST = 1;
-    const MAIN_ORDER_LAST  = 2;
+    const MAIN_ORDER_LAST = 2;
 
     /**
      * Singleton instance
@@ -69,11 +88,11 @@ class Core_Module_Config
      */
     public function __construct()
     {
-        $this->_modules    = array_keys(Zend_Controller_Front::getInstance()->getControllerDirectory());
-        $this->_modulesDir = dirname(Zend_Controller_Front::getInstance()->getModuleDirectory());
+        $this->_modules = array_keys( Zend_Controller_Front::getInstance()->getControllerDirectory() );
+        $this->_modulesDir = dirname( Zend_Controller_Front::getInstance()->getModuleDirectory() );
         $this->_configsDir = APPLICATION_PATH . '/configs/';
 
-        sort($this->_modules);
+        sort( $this->_modules );
     }
 
     /**
@@ -102,32 +121,34 @@ class Core_Module_Config
      * @param   string $cache     cache name
      * @return  array  $result
      */
-    public static function getConfig($filename,
-                                     $section = null,
-                                     $order = Core_Module_Config::MAIN_ORDER_FIRST,
-                                     $cache)
+    public static function getConfig(
+        $filename,
+        $section = null,
+        $order = Core_Module_Config::MAIN_ORDER_FIRST,
+        $cache
+    )
     {
         $moduleConfig = Core_Module_Config::getInstance();
 
         if ($cache) {
             if (!$cache instanceof Zend_Cache_Core) {
-                $bootstrap = Zend_Controller_Front::getInstance()->getParam('bootstrap');
+                $bootstrap = Zend_Controller_Front::getInstance()->getParam( 'bootstrap' );
 
-                if ($bootstrap && $bootstrap->hasPluginResource('CacheManager')) {
-                    $manager = $bootstrap->getResource('CacheManager');
-                    $cache = $manager->getCache($cache);
+                if ($bootstrap && $bootstrap->hasPluginResource( 'CacheManager' )) {
+                    $manager = $bootstrap->getResource( 'CacheManager' );
+                    $cache = $manager->getCache( $cache );
                 } else {
                     $cache = null;
                 }
             }
         }
         if ($cache) {
-            if (!$result = $cache->load($filename.$section)) {
-                $result = $moduleConfig->_getYamlConfig($filename, $section, $order);
-                $cache->save($result, $filename . $section);
+            if (!$result = $cache->load( $filename . $section )) {
+                $result = $moduleConfig->_getYamlConfig( $filename, $section, $order );
+                $cache->save( $result, $filename . $section );
             }
         } else {
-            $result = $moduleConfig->_getYamlConfig($filename, $section, $order);
+            $result = $moduleConfig->_getYamlConfig( $filename, $section, $order );
         }
         return $result;
     }
@@ -144,9 +165,11 @@ class Core_Module_Config
      * @param   string $order     Order of load main config
      * @return  array  $result
      */
-    protected function _getYamlConfig($filename,
-                                         $section = null,
-                                         $order = Core_Module_Config::MAIN_ORDER_FIRST)
+    protected function _getYamlConfig(
+        $filename,
+        $section = null,
+        $order = Core_Module_Config::MAIN_ORDER_FIRST
+    )
     {
         $result = array();
 
@@ -154,15 +177,15 @@ class Core_Module_Config
         foreach ($this->_modules as $module) {
 
             $dirPath = $this->_modulesDir . DIRECTORY_SEPARATOR .
-                       $module . DIRECTORY_SEPARATOR . 'configs';
+                $module . DIRECTORY_SEPARATOR . 'configs';
 
-            $confFile = $dirPath . DIRECTORY_SEPARATOR . $filename .'.yaml';
+            $confFile = $dirPath . DIRECTORY_SEPARATOR . $filename . '.yaml';
 
-            if (is_dir($dirPath) && file_exists($confFile)) {
+            if (is_dir( $dirPath ) && file_exists( $confFile )) {
                 try {
                     $config = new Core_Config_Yaml($confFile, $section);
                     if ($config = $config->toArray()) {
-                        $result = array_merge_recursive($result, $config);
+                        $result = array_merge_recursive( $result, $config );
                     }
                 } catch (Zend_Config_Exception $e) {
                     // nothing, "section" is not required
@@ -173,16 +196,17 @@ class Core_Module_Config
         }
 
         // load main configuration
-        $mainConfig = $this->_configsDir . DIRECTORY_SEPARATOR . $filename .'.yaml';
+        $mainConfig = $this->_configsDir . DIRECTORY_SEPARATOR . $filename . '.yaml';
 
-        if (is_dir($this->_configsDir)
-            && file_exists($mainConfig)) {
+        if (is_dir( $this->_configsDir )
+            && file_exists( $mainConfig )
+        ) {
             $config = new Core_Config_Yaml($mainConfig, $section);
             if ($config = $config->toArray()) {
-                if ($order === Core_Module_Config::MAIN_ORDER_FIRST ) {
-                    $result = array_merge_recursive($config, $result);
+                if ($order === Core_Module_Config::MAIN_ORDER_FIRST) {
+                    $result = array_merge_recursive( $config, $result );
                 } else {
-                    $result = array_merge_recursive($result, $config);
+                    $result = array_merge_recursive( $result, $config );
                 }
             }
         }
