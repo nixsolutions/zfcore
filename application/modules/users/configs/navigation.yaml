@@ -14,3 +14,11 @@ usermanagment:
       controller: management
       action: index
       route: default
+statistic:
+  pages:
+    users:
+      label: Users
+      module: users
+      controller: management
+      action: stats
+      route: default

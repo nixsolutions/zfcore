@@ -31,6 +31,17 @@
  */
 abstract class Core_Controller_Action_Crud extends Core_Controller_Action
 {
+
+    /**
+     * @var Core_Grid
+     */
+    protected $grid;
+
+    /**
+     * @var boolean
+     */
+    protected $showFilter = false;
+
     /**
      * init controller
      *

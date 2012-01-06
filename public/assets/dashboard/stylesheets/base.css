@@ -69,7 +69,6 @@ pre {
     line-height: 1.4em;
     white-space: pre-wrap; /* css-3 */
     white-space: -moz-pre-wrap !important; /* Mozilla, since 1999 */
-    white-space: -pre-wrap; /* Opera 4-6 */
     white-space: -o-pre-wrap; /* Opera 7 */
     word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
@@ -144,7 +143,6 @@ ul, li {
     font-size: 12px;
     padding: 10px;
     margin: 10px auto;
-    height: 40px;
     background: #fff;
     height: 24px;
     line-height: 24px;
@@ -157,7 +155,6 @@ ul, li {
 }
 
 #messages {
-    padding: 0;
     z-index: 999;
     font-weight: 700;
     font-size: 1.6em;
@@ -342,4 +339,45 @@ label {
 
 #filter-value {
     height: 22px;
+}
+/*Blocks*/
+.b-dashboard {
+	overflow:hidden;
+	/*border:1px solid #ddd;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;*/
+	padding: 4px;
+}
+.b-stats {
+	overflow: hidden;
+	color:#555;
+	font-size: 14px;
+	line-height: 18px;
+	border:1px solid #ddd;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	width: 420px;
+	margin:4px 0 4px 4px;
+	float:left;
+}
+.b-stats__title {
+	font-size: 14px;
+	border-bottom: 1px solid #ddd;
+	padding:2px 4px;
+	margin:4px;
+}
+.b-stats__key {
+	float:left;
+	clear: left;
+	width: 160px;
+	text-align: right;
+}
+
+.b-stats__value {
+	float:left;
+	margin-left: 4px;
+	width: 200px;
+	font-weight: 700;
 }

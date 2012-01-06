@@ -43,6 +43,10 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
     /**
      * @dataProvider providerUpSuccess
+     * @param $module
+     * @param $migration
+     * @param $tableFilter
+     * @param $expected
      */
     public function testUpSuccess($module, $migration, $tableFilter, $expected)
     {
@@ -61,6 +65,7 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
     /**
      * Data provider for testUpSuccess
+     * @return array
      */
     public function providerUpSuccess()
     {
@@ -74,6 +79,8 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
     /**
      * @dataProvider providerUpExceptions
+     * @param $migration
+     * @return
      */
     public function testUpExceptions($migration)
     {
@@ -91,6 +98,7 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
     /**
      * Data provider for testUpExceptions
+     * @return array
      */
     public function providerUpExceptions()
     {
@@ -103,6 +111,10 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
     /**
      * @dataProvider providerDownSuccess
+     * @param $module
+     * @param $migration
+     * @param $tableFilter
+     * @param $expected
      */
     public function testDownSuccess($module, $migration, $tableFilter, $expected)
     {
@@ -128,6 +140,7 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
     /**
      * Data provider for testDownSuccess
+     * @return array
      */
     public function providerDownSuccess()
     {
@@ -141,6 +154,10 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
     /**
      * @dataProvider providerRollbackSuccess
+     * @param $module
+     * @param $step
+     * @param $tableFilter
+     * @param $expected
      */
     public function testRollbackSuccess($module, $step, $tableFilter, $expected)
     {
@@ -166,6 +183,7 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
     /**
      * Data provider for testRollbackSuccess
+     * @return array
      */
     public function providerRollbackSuccess()
     {

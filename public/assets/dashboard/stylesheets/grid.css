@@ -8,9 +8,9 @@ table {
 
     font-size: 13px;
     border: 1px solid #ddd;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
 }
 
 table th, table td {
@@ -170,4 +170,13 @@ table .orderable.up:after {
 
 .pagination .next a {
     border: 0;
+}
+
+.b-grid__message {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	padding: 8px 16px;
+	margin: 4px;
 }

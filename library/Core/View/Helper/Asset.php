@@ -39,7 +39,8 @@ class Core_View_Helper_Asset extends Zend_View_Helper_Abstract
      */
     public function asset($package)
     {
-        if ($assets = Zend_Registry::get( 'assets' )) {
+        if (Zend_Registry::isRegistered('assets')
+            && $assets = Zend_Registry::get( 'assets' )) {
             if (empty($assets[$package])) {
                 throw new Core_Exception('"' . $package . '" not found');
             }

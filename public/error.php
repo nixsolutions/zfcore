@@ -15,7 +15,7 @@
     <p>Contact us information...</p>
     <?php
         if (APPLICATION_ENV == 'development' && isset($exception)) {
-            echo '<br /><br />' . $exception->getMessage() . '<br />'
+            echo '<br /><br /><pre>' . $exception->getMessage() . '</pre><br />'
                . '<div align="left">Stack Trace:'
                . '<pre>' . $exception->getTraceAsString() . '</pre></div>';
         }

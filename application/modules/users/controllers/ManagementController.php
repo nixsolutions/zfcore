@@ -33,6 +33,19 @@ class Users_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
+     * module statistic
+     *
+     * @return void
+     */
+    public function statsAction()
+    {
+        $adapter = Zend_Db_Table::getDefaultAdapter();
+        $this->view->totalUsers = $adapter->fetchOne('SELECT COUNT(*) FROM `users`');
+        $this->view->activeUsers = $adapter->fetchOne('SELECT COUNT(*) FROM `users` WHERE `status` = ?',
+            array(Users_Model_User::STATUS_ACTIVE));
+    }
+
+    /**
      * Add user
      */
     public function editAction()
@@ -112,6 +125,10 @@ class Users_ManagementController extends Core_Controller_Action_Crud
     {
         return new Users_Form_Users_Edit();
     }
+
+    /**
+     *
+     */
     protected function _prepare()
     {
         $this->grid

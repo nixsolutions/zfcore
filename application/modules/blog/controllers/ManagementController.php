@@ -10,6 +10,20 @@
  */
 class Blog_ManagementController extends Core_Controller_Action_Crud
 {
+
+    /**
+     * module statistic
+     *
+     * @return void
+     */
+    public function statsAction()
+    {
+        $adapter = Zend_Db_Table::getDefaultAdapter();
+        $this->view->totalPosts = $adapter->fetchOne('SELECT COUNT(*) FROM `blog_post`');
+        $this->view->publicPosts = $adapter->fetchOne('SELECT COUNT(*) FROM `blog_post` WHERE `status` = ?',
+            array(Blog_Model_Post::STATUS_PUBLISHED));
+    }
+
     /**
      * init invironment
      *

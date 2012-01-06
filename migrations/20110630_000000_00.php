@@ -28,11 +28,11 @@ class Migration_20110630_000000_00 extends Core_Migration_Abstract
 
         // category table
         $this->insert('categories', array(
-                    'id'              =>  '2',
-                    'title'       =>  'blog',
-                    'description' =>  'blog',
-                    'alias'   =>  'blog',
-                    'path'   =>  'blog',
+                    'id'  => '2',
+                    'title' => 'blog',
+                    'description' => 'blog',
+                    'alias' => 'blog',
+                    'path' => 'blog',
         ));
     }
 
