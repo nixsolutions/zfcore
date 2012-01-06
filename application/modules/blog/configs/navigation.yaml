@@ -14,3 +14,11 @@ blogmanagment:
       controller: management
       action: index
       route: default
+statistic:
+  pages:
+    blog:
+      label: Blog
+      module: blog
+      controller: management
+      action: stats
+      route: default
