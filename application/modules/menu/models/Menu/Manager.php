@@ -449,13 +449,38 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     public function getNamesOfRoutes()
     {
         $instance = Zend_Controller_Front::getInstance();
-
         $routes = $instance->getRouter()->getRoutes();
-        $numes = array();
+
+        $names = array();
         foreach ($routes as $routeName => $route) {
-            $numes[$routeName] = $routeName;
+            if ($routes[$routeName] instanceof Zend_Controller_Router_Route_Static) {
+                if (preg_match("/([\S]*)Default$/i", $routeName, $data) && isset($data[1])) {
+                    $names[$data[1]] = $data[1];
+                } else {
+                    $names[$routeName] = $routeName;
+                }
+            } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route) {
+                if (preg_match("/([\S]*)Default$/i", $routeName, $data) && isset($data[1])) {
+                    $names[$data[1]] = $data[1];
+                } else {
+                    $names[$routeName] = $routeName;
+                }
+            } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route_Regex) {
+                if (preg_match("/([\S]*)Default$/i", $routeName, $data) && isset($data[1])) {
+                    //var_dump($data);exit;
+                    $names[$data[1]] = $data[1];
+                } else {
+                    $names[$routeName] = $routeName;
+                }
+            } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route_Module) {
+                if (preg_match("/([\S]*)Default$/i", $routeName, $data) && isset($data[1])) {
+                    $names[$data[1]] = $data[1];
+                } else {
+                    $names[$routeName] = $routeName;
+                }
+            }
         }
-        return $numes;
+        return $names;
     }
 
     /**
@@ -472,16 +497,27 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
         $numes = array();
         foreach ($routes as $routeName => $route) {
             if ($routes[$routeName] instanceof Zend_Controller_Router_Route_Static) {
+                if (preg_match("/([\S]*)Default$/i", $routeName, $data) && isset($data[1])) {
+                    $routeName = $data[1];
+                }
                 $routesArray[$routeName] = $this->getInfoFromStaticRoute($routeName, (array)$route);
             } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route) {
+                if (preg_match("/([\S]*)Default$/i", $routeName, $data) && isset($data[1])) {
+                    $routeName = $data[1];
+                }
                 $routesArray[$routeName] = $this->getInfoFromRoute($routeName, (array)$route);
             } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route_Regex) {
+                if (preg_match("/([\S]*)Default$/i", $routeName, $data) && isset($data[1])) {
+                    $routeName = $data[1];
+                }
                 $routesArray[$routeName] = $this->getInfoFromRegexRoute($routeName, (array)$route);
-
             } elseif ($routes[$routeName] instanceof Zend_Controller_Router_Route_Module) {
+                if (preg_match("/([\S]*)Default$/i", $routeName, $data) && isset($data[1])) {
+                    $routeName = $data[1];
+                }
                 $routesArray[$routeName] = $this->getInfoFromModuleRoute($routeName, (array)$route, $instance);
             } else {
-                //var_dump($routes[$routeName]);
+                //
             }
         }
         return $routesArray;
@@ -654,7 +690,11 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
             $options = array();
 
             if (isset($data['params']) && is_array($data['params'])) {
-                $options = $data['params'];
+                foreach ($data['params'] as $param => $value) {
+                    if ($value) {
+                        $options[$param] = $value;
+                    }
+                }
             }
             $menu->visible = (int)$data['visible'];
             if ($data['class']) {
@@ -737,7 +777,11 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                 $options = array();
 
                 if (isset($data['params']) && is_array($data['params'])) {
-                    $options = $data['params'];
+                    foreach ($data['params'] as $param => $value) {
+                        if ($value) {
+                            $options[$param] = $value;
+                        }
+                    }
                 }
                 $menu->visible = (int)$data['visible'];
                 if ($data['class']) {

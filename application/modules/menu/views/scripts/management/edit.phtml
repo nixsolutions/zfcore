@@ -1,0 +1,292 @@
+<?php
+    $this->stylesheet()->controller();
+    $countParametrs = 0;
+?>
+<form action=""
+    name="<?php echo $this->form->getName(); ?>"
+    id="<?php echo $this->form->getId(); ?>"
+    enctype="<?php echo $this->form->getEnctype(); ?>"
+    method="<?php echo $this->form->getMethod();?>">
+
+        <?php echo $this->form->id; ?>
+<ul class="form-list">
+    <li>
+        <div class="form-title">
+            <label for="label"><?php echo $this->form->label->getLabel();?></label>
+        </div>
+        <div class="form-field"><?php echo $this->aElement($this->form->label); ?>
+            <div class="errors"><?php
+                foreach ($this->form->getMessages('label') as $message){
+                    echo "<p>" . $this->escape($message) . "</p>";
+                }?>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="form-title">
+            <label for="parent"><?php echo $this->form->parent->getLabel();?></label>
+        </div>
+        <div class="form-field"><?php echo $this->aElement($this->form->parent); ?></div>
+    </li>
+    <li>
+        <div class="form-title">
+            <label for="title"><?php echo $this->form->title->getLabel();?></label>
+        </div>
+        <div class="form-field"><?php echo $this->aElement($this->form->title); ?></div>
+
+    </li>
+
+    <li>
+        <div class="form-title">
+            <label for="class"><?php echo $this->form->class->getLabel();?></label>
+        </div>
+        <div class="form-field"><?php echo $this->aElement($this->form->class); ?></div>
+        <hr />
+    </li>
+
+    <li>
+        <div class="form-title">
+            <label for="visible"><?php echo $this->form->visible->getLabel();?></label>
+        </div>
+        <div class="form-field"><?php echo $this->aElement($this->form->visible); ?></div>
+    </li>
+    <li>
+        <div class="form-title">
+            <label for="active"><?php echo $this->form->active->getLabel();?></label>
+        </div>
+        <div class="form-field"><?php echo $this->aElement($this->form->active); ?></div>
+    </li>
+
+    <li>
+        <div class="form-title">
+            <label for="target"><?php echo $this->form->target->getLabel();?></label>
+        </div>
+        <div class="form-field"><?php echo $this->aElement($this->form->target); ?></div>
+        <hr />
+    </li>
+
+    <li>
+        <div class="form-title">
+            <label for="linkType"><?php echo $this->form->linkType->getLabel();?></label>
+        </div>
+        <div class="form-field"><?php echo $this->aElement($this->form->linkType); ?></div>
+    </li>
+
+    <li class="type-route">
+        <div class="form-title">
+            <label for="route"><?php echo $this->form->route->getLabel();?></label>
+        </div>
+        <div class="form-field"><?php echo $this->aElement($this->form->route); ?></div>
+    </li>
+
+    <li class="routes">
+    <?php
+    if ($this->routes):
+        foreach ($this->routes as $route):
+            if ($route['name']):?>
+            <div style="display:none;" id="route-<?php echo $route['name']; ?>">
+                <p><label>Route type:</label> <?php echo $route['type']; ?></p>
+                <?php if ($_SERVER && isset($_SERVER["HTTP_HOST"])) {
+                    $host = $_SERVER["HTTP_HOST"];
+                } else {
+                    $host = 'localhost';
+                }?>
+                <p><label>Example path:</label> <i>http://<?php echo $host.$route['path']; ?></i></p>
+                <?php
+                if ($route['type'] == Menu_Model_Menu::ROUTE_TYPE_ROUTE):
+                    foreach ($route['params'] as $key => $param):
+                    if (strstr($route['path'], ':' . $key)): ?>
+                        <div>
+                            <label><?php echo $this->escape($key);?></label>
+                            <div>
+                                <input id="<?php echo $route['name'] . '-' . $param; ?>" type="text" name="params[<?php echo $key;?>]" value="<?php echo $param;?>">
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <div id="param_<?php echo ++$countParametrs; ?>">
+                            <label><?php echo $this->escape($key);?></label>
+                            <div>
+                                <input id="<?php echo $route['name'] . '-' . $param; ?>" type="text" name="params[<?php echo $key;?>]" value="<?php echo $param;?>">
+                                <input class="ui-button ui-widget ui-state-default ui-corner-all" onclick="removeParam(<?php echo $countParametrs; ?>);" alt="Remove parameter" type="button" name="remove" value="-">
+                            </div>
+                        </div>
+                    <?php ?>
+
+                    <?php
+                        endif;
+                    endforeach;?>
+                    <?php
+                    if ($route['wildcard'] === true):?>
+                        <div class="new-parameters">
+                            <?php
+                             if ($this->menu->routeType == Menu_Model_Menu::ROUTE_TYPE_MODULE) {
+                                $params = json_decode($this->menu->params);
+                                if ($params):
+                                    foreach($params as $key => $val):
+                                    ?>
+                                        <div id="param_<?php echo $countParametrs; ?>">
+                                           <label><?php echo $this->escape($key);?></label>
+                                           <div>
+                                               <input type="text" name="params[<?php echo $key;?>]" value="<?php echo $val;?>">
+                                               <input class="ui-button ui-widget ui-state-default ui-corner-all" onclick="removeParam(<?php echo $countParametrs; ?>);" alt="Remove parameter" type="button" name="remove" value="-">
+                                           </div>
+                                       </div>
+                                    <?php
+                                    endforeach;
+                                endif;
+                            }?>
+                        </div>
+                        <span>Custom parameter name:</span>
+                        <div>
+                            <input class="newparam" type="text" name="newparam" value="">
+                            <input class="aForm-field-valid ui-button ui-widget ui-state-default ui-corner-all" onclick="addParam();" alt="Add parameter" type="button" name="add" value="+">
+                        </div>
+
+                    <?php
+                    endif;
+                endif;
+                if ($route['type'] == Menu_Model_Menu::ROUTE_TYPE_REGEX):
+                    foreach ($route['params'] as $key => $param):?>
+                        <label>Param[<?php echo $this->escape($key); ?>]</label>
+                        <div >
+                            <input id="<?php echo $route['name'] . '-' . $param; ?>" type="text" name="params[<?php echo $key; ?>]" value="<?php echo $param; ?>">
+                        </div>
+                        <br />
+                            <?php
+                    endforeach;
+                endif;
+                if ($route['type'] == Menu_Model_Menu::ROUTE_TYPE_MODULE):?>
+                    <label>Module</label>
+                    <div>
+                        <select onChange="changeModule()" name="params[module]" id="mvcModule" >
+                            <option value="" label="---">---</option>
+                            <?php
+                            $selectedModule = false;
+                            foreach ($route['modules'] as $key => $param):?>
+                                <?php
+                                if ($key == $this->menu->module && $this->menu->routeType == Menu_Model_Menu::ROUTE_TYPE_MODULE) {
+                                    $selected = 'selected="selected"';
+                                    $selectedModule = $key;
+                                } else {
+                                    $selected = '';
+                                }?>
+                                <option value="<?php echo $key; ?>" <?php echo $selected; ?> label="<?php echo $key; ?>"><?php echo $key; ?></option>
+                            <?php
+                            endforeach;
+                        ?>
+                        </select>
+
+                        <div class="modules">
+
+                            <?php
+                            foreach ($route['modules'] as $modul => $controllers):?>
+                                <div style="display:none;" id="module-<?php echo $modul; ?>">
+                                    <label>Controller</label>
+                                    <div>
+                                        <select onChange="getActions('<?php echo $modul; ?>')" class="controller" name="params[controller]" id="<?php echo $modul; ?>-Controller" >
+                                            <option value="" label="---">---</option>
+                                            <?php
+                                            foreach ($controllers as $key => $param):?>
+                                            <?php
+                                            if($key == $this->menu->controller) {
+                                                $controllerSelected = 'selected="selected"';
+
+                                            } else {
+                                                $controllerSelected = '';
+                                            }?>
+                                                <option value="<?php echo $key; ?>" <?php echo $controllerSelected; ?>  label="<?php echo $key; ?>"><?php echo $key; ?></option>
+                                            <?php
+                                            endforeach;
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <?php
+                                foreach ($controllers as $key => $param):?>
+                                <div style="display:none;" id="<?php echo $modul.'-'.$key.'-'; ?>actions">
+                                    <label>Action</label>
+                                    <div style="display:none;" id="<?php echo $modul.'-'.$key.'-'; ?>action"></div>
+                                </div>
+                                <?php
+                                endforeach;
+                                ?>
+                            <?php
+                            endforeach;
+                            ?>
+                        </div>
+
+                        <div class="new-parameters">
+                        <?php
+                         if ($this->menu->routeType == Menu_Model_Menu::ROUTE_TYPE_MODULE) {
+                            $params = json_decode($this->menu->params);
+                            if ($params):
+                                foreach($params as $key => $val):
+                                    $countParametrs++;
+                                ?>
+                                <div id="param_<?php echo $countParametrs; ?>">
+                                    <label><?php echo $this->escape($key);?></label>
+                                    <div>
+                                        <input type="text" name="params[<?php echo $key;?>]" value="<?php echo $val;?>">
+                                        <input class="ui-button ui-widget ui-state-default ui-corner-all" onclick="removeParam(<?php echo $countParametrs; ?>);" alt="Remove parameter" type="button" name="remove" value="-">
+                                    </div>
+                                </div>
+                                <?php
+                                endforeach;
+                            endif;
+                        }?>
+                        </div>
+                        <span>Custom parameter name:</span>
+                        <div>
+                            <input class="newparam"  type="text" name="newparam" value="">
+                            <input class="ui-button ui-widget ui-state-default ui-corner-all" onclick="addParam();" alt="Add parameter" type="button" name="add" value="+">
+                        </div>
+
+                    </div>
+                    <?php
+                endif;
+            endif;?>
+            </div>
+             <?php
+        endforeach;
+    endif;
+    ?>
+    </li>
+    <li class="type-uri">
+        <div class="form-title">
+            <label for="uri"><?php echo $this->form->uri->getLabel();?></label>
+        </div>
+        <div class="form-field"><?php echo $this->aElement($this->form->uri); ?>
+            <div class="errors"><?php
+            foreach ($this->form->getMessages('uri') as $message){
+                echo "<p>" . $this->escape($message) . "</p>";
+            }?>
+            </div>
+        </div>
+    </li>
+    <li>
+        <div class="form-title"></div>
+        <div class="form-field"><?php echo $this->aElement($this->form->submit); ?></div>
+    </li>
+</ul>
+</form>
+
+<script>
+    var countParametrs = <?php echo $countParametrs; ?>;
+
+    $(document).ready(function() {
+        changedLinkType();
+        <?php if ($selectedModule):?>
+        changeModule();
+        getActions('<?php echo $selectedModule;?>','<?php echo $this->menu->action;?>');
+        <?php endif;?>
+        /*$('#<?php echo $this->form->getId(); ?>').submit(function() {
+            if ($('#label').val().length == 0) {
+                return false;
+            }
+            if ($('#uri').val().length == 0) {
+                return false;
+            }
+        });*/
+    });
+</script>

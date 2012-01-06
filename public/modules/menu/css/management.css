@@ -1,0 +1,24 @@
+#menuItemCreateForm input[type=text], 
+#menuItemCreateForm input[type=password],
+#menuItemCreateForm select, 
+#menuItemCreateForm textarea {
+    width: 200px;
+}
+#menuItemCreateForm #type-uri input[type=text]{
+    width: 400px;
+}
+#menuItemCreateForm dd, #menuItemCreateForm li {
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+#menuItemCreateForm hr{
+    border: 1px solid #CCCCCC;
+}
+
+.errors {
+    color: #f00;
+}
+#menuItemCreateForm .type-route{
+    display:none;
+}

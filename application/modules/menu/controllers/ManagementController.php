@@ -16,6 +16,9 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
+        $this->_clearAfter();
+        $this->_after( '_changeViewScriptPathSpec', array('only' => array('index', 'grid')) );
+
         $this->_beforeGridFilter(array(
              '_addCheckBoxColumn',
              '_addAllTableColumns',
@@ -38,7 +41,7 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getCreateForm()
     {
-        return $this->_addUrls(new Menu_Model_Menu_Form_Create());
+        return $this;
     }
 
     /**
@@ -50,29 +53,9 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getEditForm()
     {
-        return $this->_addUrls(new Menu_Model_Menu_Form_Edit());
+        return $this;
     }
 
-    /**
-     * add urls for ajax
-     *
-     * @param Menu_Model_Menu_Form_Create $form
-     * @return  Menu_Model_Menu_Form_Create
-     */
-    protected function _addUrls($form)
-    {
-        $form->getElement('getModules')->setValue($this->view->url(
-            array('module'=>'menu', 'controller'=>'management', 'action'=>'get-modules')
-        ));
-        $form->getElement('getActions')->setValue($this->view->url(
-            array('module'=>'menu', 'controller'=>'management', 'action'=>'get-actions')
-        ));
-        $form->getElement('getControllers')->setValue($this->view->url(
-            array('module'=>'menu', 'controller'=>'management', 'action'=>'get-controllers')
-        ));
-
-        return $form;
-    }
 
     /**
      * _getTable
@@ -87,6 +70,26 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
+     * grid
+     *
+     * @return void
+     */
+    public function gridAction()
+    {
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            $this->_helper->layout->disableLayout();
+        }
+
+        /**
+         * todo: do it better way
+         * init grid before rendering, catch all exception in action
+         */
+        $this->grid->getHeaders();
+        $this->grid->getData();
+        $this->view->grid = $this->grid;
+    }
+
+    /**
      * create new menu item
      *
      * @return void
@@ -94,20 +97,25 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
     public function createAction()
     {
         $menuManager = new Menu_Model_Menu_Manager();
-        $createForm = $this->_getCreateForm();
+        $form = new Menu_Model_Menu_Form_Create();
 
         if ($this->_request->isPost()
-                && $createForm->isValid($this->_getAllParams())) {
+                && $form->isValid($this->_getAllParams())) {
             try {
-                if($menuManager->addMenuItem($this->_request->getParams())) {
+            if ($menuManager->addMenuItem($this->_request->getParams())) {
                     $this->_helper->flashMessenger('Successfully');
                     $this->_helper->getHelper('redirector')->direct('index');
                 }
             } catch (Exception $e) {
                 return $this->_forward('internal', 'error', 'admin', array('error' => $e->getMessage()));
             }
+            $this->_helper->getHelper('redirector')->direct('index');
         }
-        $this->view->form = $createForm;
+
+        $routes = $menuManager->getRoutes();
+        $this->view->routes = $routes;
+        $this->view->form = $form;
+        $this->view->javascript()->action();
     }
 
     /**
@@ -125,6 +133,8 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
 
         $menuManager = new Menu_Model_Menu_Manager();
 
+        $editForm = new Menu_Model_Menu_Form_Edit();
+
         $routes = $menuManager->getRoutes();
         $row = $menuManager->getRowById($id);
 
@@ -137,17 +147,25 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
             }
         }
 
-        if ($this->_request->isPost()
-                && $this->_getEditForm()->isValid($this->_getAllParams())) {
-            try {
-                $menuManager->updateMenuItem($this->_request->getParams());
-            } catch (Exception $e) {
-                return $this->_forward('internal', 'error', 'admin', array('error' => $e->getMessage()));
+        if ($this->_request->isPost()) {
+            if ($this->_request->getParam('linkType') == Menu_Model_Menu::TYPE_URI) {
+                $editForm->uri->setRequired(true);
             }
-            $this->_helper->getHelper('redirector')->direct('index');
+
+            if ($editForm->isValid($this->_getAllParams())) {
+                try {
+                    $menuManager->updateMenuItem($this->_request->getParams());
+                } catch (Exception $e) {
+                    return $this->_forward('internal', 'error', 'admin', array('error' => $e->getMessage()));
+                }
+                $this->_helper->getHelper('redirector')->direct('index');
+            }
         }
 
-        $this->view->form = $this->_getEditForm()->setDefaults($row->toArray());
+        $this->view->menu = $row;
+        $this->view->routes = $routes;
+        $this->view->form = $editForm;
+        $this->view->javascript()->action();
     }
 
     /**
@@ -174,10 +192,10 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
      */
     public function getActionsAction()
     {
-        $controllerActions = array('');
+        $controllerActions = array();
         $controller = $this->_getParam('c');
         $module = $this->_getParam('m');
-        
+
         if ($controller && $module ) {
             $methods = $this->_getActionsByController($module, $controller);
 
@@ -192,41 +210,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
          $this->_helper->json($controllerActions);
     }
 
-    /**
-     * get controllers by current module
-     *
-     * @return void
-     */
-    public function getControllersAction()
-    {
-        $controllers = array('');
-        $instance = Zend_Controller_Front::getInstance();
-        $modules = $instance->getControllerDirectory();
-        
-        if ($module = $this->_getParam('m')) {
-            if ($handle = opendir($modules[$module])) {
-                while ( false !== ($file = readdir($handle))) {
-                    if(preg_match("/^([\w]*)Controller.php$/", $file, $tmp)) {
-                        $controllers[] = strtolower(preg_replace("/([A-Z])/", "$1", $tmp[1]));
-                    }
-                }
-                closedir($handle);
-            }
-        }
-        $this->_helper->json($controllers);
-    }
-
-    /**
-     * get modules
-     *
-     * @return void
-     */
-    public function getModulesAction()
-    {
-        $instance = Zend_Controller_Front::getInstance();
-        $modules = $instance->getControllerDirectory();
-        $this->_helper->json(array_keys($modules));
-    }
 
      /**
      * get actions by controller enter description here
@@ -291,7 +274,14 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
             ->removeColumn('routeType')
             ->removeColumn('module')
             ->removeColumn('controller')
-            ->removeColumn('action');
+            ->removeColumn('action')
+            ->setColumn('label', array(
+                'formatter' => array($this->view,
+                    array('escape'))
+            ))->setColumn('uri', array(
+                'formatter' => array($this->view,
+                    array('escape'))
+            ));
     }
 
 }
