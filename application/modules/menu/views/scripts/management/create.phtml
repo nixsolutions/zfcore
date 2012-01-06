@@ -206,13 +206,5 @@
 <script>
 $(document).ready(function(){
     changedLinkType();
-    $('#<?php echo $this->form->getId(); ?>').submit(function() {
-        if ($('#label').val().length == 0) {
-            return false;
-        }
-        if ($('#uri').val().length == 0) {
-            return false;
-        }
-    });
 });
 </script>

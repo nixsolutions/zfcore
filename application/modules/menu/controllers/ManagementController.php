@@ -99,17 +99,19 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         $menuManager = new Menu_Model_Menu_Manager();
         $form = new Menu_Model_Menu_Form_Create();
 
-        if ($this->_request->isPost()
-                && $form->isValid($this->_getAllParams())) {
-            try {
-            if ($menuManager->addMenuItem($this->_request->getParams())) {
-                    $this->_helper->flashMessenger('Successfully');
-                    $this->_helper->getHelper('redirector')->direct('index');
-                }
-            } catch (Exception $e) {
-                return $this->_forward('internal', 'error', 'admin', array('error' => $e->getMessage()));
+        if ($this->_request->isPost()) {
+            if ($this->_request->getParam('linkType') == Menu_Model_Menu::TYPE_URI) {
+                $form->uri->setRequired(true);
             }
-            $this->_helper->getHelper('redirector')->direct('index');
+
+            if ($form->isValid($this->_getAllParams())) {
+                try {
+                    $menuManager->addMenuItem($this->_request->getParams());
+                } catch (Exception $e) {
+                    return $this->_forward('internal', 'error', 'admin', array('error' => $e->getMessage()));
+                }
+                $this->_helper->getHelper('redirector')->direct('index');
+            }
         }
 
         $routes = $menuManager->getRoutes();
