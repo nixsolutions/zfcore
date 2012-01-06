@@ -421,7 +421,6 @@ class Core_Migration_Manager
                     $migrationObject->getDbAdapter()->rollBack();
                     throw new Zend_Exception($e->getMessage());
                 }
-
                 array_push(
                     $this->_messages,
                     "Upgrade to revision '$migration'"

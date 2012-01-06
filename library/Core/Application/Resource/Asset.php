@@ -38,6 +38,10 @@ class Core_Application_Resource_Asset extends Zend_Application_Resource_Resource
     {
         $options = $this->getOptions();
 
+        if (sizeof($options) == 1 && !current($options)) {
+            return false;
+        }
+
         $assets = array();
         foreach ($options['packages'] as $package => $config) {
 

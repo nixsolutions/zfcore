@@ -1,6 +1,8 @@
 <?php
 require_once 'Zend/Application.php';
 require_once 'Zend/Test/PHPUnit/ControllerTestCase.php';
+require_once 'Zend/Config/Yaml.php';
+require_once 'Core/Config/Yaml.php';
 
 /**
  * Controller Test case
@@ -35,9 +37,12 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
      */
     public function setUp()
     {
+        $config = APPLICATION_PATH . '/configs/application.yaml';
+        $result = new Core_Config_Yaml($config, APPLICATION_ENV);
+        $result = $result->toArray();
         $this->bootstrap = new Zend_Application(
             APPLICATION_ENV,
-            APPLICATION_PATH . '/configs/application.yaml'
+            $result
         );
 
         parent::setUp();
@@ -53,9 +58,14 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
      */
     static public function appInit()
     {
+        $config = APPLICATION_PATH . '/configs/application.yaml';
+        $result = new Core_Config_Yaml($config, APPLICATION_ENV);
+        $result = $result->toArray();
+
+        // Create application, bootstrap, and run
         $application = new Zend_Application(
             APPLICATION_ENV,
-            APPLICATION_PATH . '/configs/application.yaml'
+            $result
         );
 
 //        $application->bootstrap();
@@ -95,6 +105,10 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 
     /**
      * Migrations
+     *
+     * @param bool $up
+     * @param null $module
+     * @param null $migration
      */
     static public function migration($up = true, $module = null,
         $migration = null)
@@ -111,7 +125,6 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
             'modulesDirectoryPath'    => APPLICATION_PATH . '/modules/',
             'migrationsDirectoryName' => 'migrations',
         ));
-
         if ($up) {
             $manager->up($module, $migration);
         } else {
@@ -125,6 +138,8 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 
     /**
      * Migrations Up
+     *
+     * @param null $module
      */
     static public function migrationUp($module = null)
     {
@@ -134,6 +149,8 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 
     /**
      * Migrations Down
+     *
+     * @param null $module
      */
     static public function migrationDown($module = null)
     {
