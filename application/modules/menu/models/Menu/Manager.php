@@ -181,9 +181,13 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
             return null;
         }
 
-        if ($arr[$name] == $value) {
+        if (isset($arr[$name]) && $arr[$name] == $value) {
             $arr['label'] = null;
             return $arr;
+        }
+
+        if (!isset($arr['pages'])) {
+            return null;
         }
 
         foreach ($arr['pages'] as $page) {
@@ -241,9 +245,12 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
      */
     public function isExistRoutes($inputArray)
     {
+        if (!is_array($inputArray)) {
+            return null;
+        }
         $routes = $this->getNamesOfRoutes();
         $newArray = array();
-        foreach ($inputArray as $name){
+        foreach ($inputArray as $name) {
             if ($name['type'] != Menu_Model_Menu::TYPE_MVC || isset($routes[$name['route']])) {
                 $newArray[] = $name;
             }

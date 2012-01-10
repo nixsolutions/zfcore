@@ -7,7 +7,7 @@
  *
  * @author      Valeriu Baleyko <baleyko.v.v@gmail.com>
  * @author      Alexander Khaylo <alex.khaylo@gmail.com>
- * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
+ * @copyright   Copyright (c) 2012 NIX Solutions (http://www.nixsolutions.com)
  */
 class Menu_ManagementController extends Core_Controller_Action_Crud
 {
@@ -76,7 +76,7 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
      */
     public function gridAction()
     {
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($this->getRequest()->isPost()) {
             $this->_helper->layout->disableLayout();
         }
 
@@ -88,6 +88,18 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         $this->grid->getData();
         $this->view->grid = $this->grid;
     }
+
+    /**
+     * index
+     *
+     * @return void
+     */
+    public function indexAction()
+    {
+        parent::indexAction();
+        $this->view->javascript()->action();
+    }
+
 
     /**
      * create new menu item
@@ -177,14 +189,12 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
      */
     public function moveAction()
     {
-        $ids = (array)$this->_getParam('ids');
+        $id = (int)$this->_getParam('id');
         $to = $this->_getParam('to');
         $manager = new Menu_Model_Menu_Manager();
-        $res = '';
-        if ($ids && $to) {
-            foreach($ids as $id) {
-                $res = $manager->moveToById($id, $to);
-            }
+        $res = false;
+        if ($id && $to) {
+            $res = $manager->moveToById($id, $to);
         }
         $this->_helper->json($res);
     }

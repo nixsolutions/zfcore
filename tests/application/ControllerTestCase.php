@@ -72,7 +72,7 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 //        $application->bootstrap('Frontcontroller');
         $application->bootstrap();
 
-        self::migration();
+        self::migration(true, "menu");
     }
 
     /**
@@ -80,6 +80,7 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
      */
     static public function appDown()
     {
+        self::migration(false, "menu");
         self::migrationDown();
 
         try {

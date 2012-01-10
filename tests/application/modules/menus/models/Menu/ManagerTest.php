@@ -6,10 +6,18 @@
  * @package     Menu_Model_Menu_ManagerTest
  *
  * @author      Alexander Khaylo <alex.khaylo@gmail.com>
- * @copyright   Copyright (c) 2011 NIX Solutions (http://www.nixsolutions.com)
+ * @copyright   Copyright (c) 2012 NIX Solutions (http://www.nixsolutions.com)
  */
 class Menu_Model_Menu_ManagerTest extends ControllerTestCase
 {
+
+
+    /*public static function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+        parent::migrationUp('menu');
+    }*/
+
     public function setUp()
     {
         parent::setUp();
@@ -23,7 +31,7 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
             'title'      => 'register',
             'linkType'   => 1,
             'params'     => array("type" => "bot"),
-            'parent'  => 0,
+            'parent'     => 0,
             'route'      => 'default',
             'uri'        => NULL,
             'class'      => 'register',
@@ -39,9 +47,10 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
         );
 
         $this->_fixture['array'] = array(
-        array(
+            array(
                 'label' => null,
                 'id' => 0,
+                'parentId' => 0,
                 'type' => 'mvc',
                 'route' => 'default',
                 'module' => 'default',
@@ -50,11 +59,12 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
                 'uri' => null,
                 'class' => 'register',
                 'active' => '0',
-                'visible' => '0'),
+                'visible' => '0'
+            ),
             array(
                 'label' => 'Item1',
                 'id' => 1,
-                'parent_id' => 0,
+                'parentId' => 0,
                 'type' => 'mvc',
                 'route' => 'default',
                 'module' => 'default',
@@ -63,33 +73,34 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
                 'uri' => null,
                 'class' => 'register',
                 'active' => '0',
-                'visible' => '1'),
+                'visible' => '1'
+            ),
             array(
-                 'label' => 'Item2',
-                 'title' => 'register',
-                  'id' => 2,
-                'parent_id' => 1,
-                  'type' => 'mvc',
-                  'route' => 'default',
-                  'uri' => null,
-                  'class' => 'register',
-                  'active' => '1',
-                  'visible' => '1',
-                 'route_type' => 'module',
-                  'module' => 'users',
-                  'controller' => 'register',
-                  'action' => 'index',
+                'label' => 'Item2',
+                'title' => 'register',
+                'id' => 2,
+                'parentId' => 1,
+                'type' => 'mvc',
+                'route' => 'default',
+                'uri' => null,
+                'class' => 'register',
+                'active' => '1',
+                'visible' => '1',
+                'route_type' => 'module',
+                'module' => 'users',
+                'controller' => 'register',
+                'action' => 'index',
                 'params' => array(
                     "type" => "bot",
                     "module" => "users",
                     "controller" => "register",
                     "action" => "index"
                 )
-               ),
-               array(
+            ),
+            array(
                 'label' => 'Item3',
                 'id' => 3,
-                   'parent_id' => 2,
+                'parentId' => 2,
                 'type' => 'mvc',
                 'route' => 'default',
                 'module' => 'default',
@@ -98,7 +109,8 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
                 'uri' => null,
                 'class' => 'register',
                 'active' => '0',
-                'visible' => '1')
+                'visible' => '1'
+            )
         );
 
     }
@@ -117,12 +129,12 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
         $this->assertNull($this->_menuManager->makeParentChildRelations($this->_fixture['array'][0]['label']));
         $this->assertNull(
             $this->_menuManager->getArrayItemByKey(
-                $this->_fixture['array'][0]['label'],
+                $this->_fixture['array'][1],
                 'label', $this->_fixture['array'][0]['label']
             )
         );
-        $result = $this->_menuManager->getArrayItemByKey($array, 'label', $this->_fixture['array'][0]['label']);
-        $this->assertTrue(key($result[1]['pages']) == $this->_fixture['array'][2]['label']);
+        $result = $this->_menuManager->getArrayItemByKey($array[1], 'label', $this->_fixture['array'][1]['label']);
+        $this->assertTrue(key($result['pages']) == $this->_fixture['array'][2]['label']);
     }
 
 
@@ -151,7 +163,6 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
      */
     public function testGetRowById()
     {
-        $this->dispatch('/');
         $menuItem = $this->_menuManager->getRowById($this->_fixture['item']['id']);
         $this->assertTrue($menuItem instanceof Core_Db_Table_Row_Abstract);
     }
@@ -161,7 +172,6 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
      */
     public function testGetRoutes()
     {
-        $this->dispatch('/');
         $menuItem = $this->_menuManager->getRoutes();
         $this->assertArrayHasKey('default', $menuItem);
         $this->assertArrayHasKey('login', $menuItem);
@@ -173,7 +183,6 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
      */
     public function testGetNamesOfRoutes()
     {
-        $this->dispatch('/');
         $menuItem = $this->_menuManager->getNamesOfRoutes();
         $this->assertArrayHasKey('default', $menuItem);
         $this->assertArrayHasKey('login', $menuItem);
@@ -187,7 +196,6 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
     public function testAddAndRemoveMenuItem()
     {
         //create
-        $this->dispatch('/');
         $menuItem = $this->_menuManager->addMenuItem($this->_fixture['item']);
         $this->assertTrue($menuItem instanceof Core_Db_Table_Row_Abstract);
         $this->assertTrue($this->_fixture['item']['label'] == $menuItem->label);
@@ -201,12 +209,18 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
      */
     public function testUpdateMenuItem()
     {
-        $this->dispatch('/');
         $this->_fixture['item']['label'] = 'edited';
         $menuItem = $this->_menuManager->updateMenuItem($this->_fixture['item']);
         $this->assertTrue($menuItem instanceof Core_Db_Table_Row_Abstract);
         $this->assertTrue($menuItem->id == $this->_fixture['item']['id']);
         $this->assertTrue($menuItem->label == 'edited');
     }
+
+
+    /*public static function tearDownAfterClass()
+    {
+        parent::migrationDown('menu');
+        parent::tearDownAfterClass();
+    }*/
 
 }

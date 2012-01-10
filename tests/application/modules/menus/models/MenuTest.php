@@ -6,7 +6,7 @@
  * @category Tests
  * @package  Model
  */
-class Model_MenuTest extends ControllerTestCase
+class Menu_Model_MenuTest extends ControllerTestCase
 {
 
 }
