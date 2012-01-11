@@ -10,6 +10,9 @@ defined('APPLICATION_ENV')
 
     defined('PUBLIC_PATH') || define('PUBLIC_PATH', APPLICATION_PATH . '/../public/');
 
+    $_SERVER['HTTP_HOST'] = 'localhost';
+    $_SERVER['REQUEST_URI'] = '/';
+
 // Ensure library/ is on include_path
 set_include_path(
     implode(

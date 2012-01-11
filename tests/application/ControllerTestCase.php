@@ -71,7 +71,10 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 //        $application->bootstrap();
 //        $application->bootstrap('Frontcontroller');
         $application->bootstrap();
+        $acl = new Core_Controller_Plugin_Acl();
+    	$acl->getAcl();
 
+    	self::migrationUp();
         self::migration(true, "menu");
     }
 
