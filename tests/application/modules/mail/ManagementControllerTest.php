@@ -11,7 +11,7 @@ class Mail_ManagementControllerTest extends ControllerTestCase
     {
         parent::setUp();
 
-        $this->_doLogin(Users_Model_User::ROLE_ADMIN, 
+        $this->_doLogin(Users_Model_User::ROLE_ADMIN,
                         Users_Model_User::STATUS_ACTIVE);
 
         $this->_fixture = array(
@@ -39,7 +39,7 @@ class Mail_ManagementControllerTest extends ControllerTestCase
         $this->assertModule('mail');
         $this->assertController('management');
         $this->assertAction('index');
-        $this->assertQuery('div#gridContainer');
+        $this->assertQuery('div#grid');
     }
 
     /**
@@ -49,7 +49,7 @@ class Mail_ManagementControllerTest extends ControllerTestCase
     public function testDeleteAction()
     {
         $this->dispatch('/mail/management/delete');
-        $this->assertModule('mail');
+        $this->assertModule('users');
         $this->assertController('error');
         $this->assertAction('notfound');
     }
@@ -94,29 +94,11 @@ class Mail_ManagementControllerTest extends ControllerTestCase
         $this->dispatch('/mail/management/edit/id/' . $mail->id);
 
         //$this->assertQuery('form#mailEditForm');
-        $this->assertRedirectTo('/mail/management');
+        $this->assertRedirect();
 
         $mail = $this->_table->getModel($this->_fixture['alias']);
 
         $this->assertEquals($registration, $mail->toArray());
     }
 
-    /**
-     * Test /admin/mail/store
-     *
-     */
-    public function testAdminMailStoreAction()
-    {
-        $this->request->setQuery(array('count' => 1));
-        $this->dispatch('/mail/management/store/');
-
-        $result = json_decode($this->response->getBody(), true);
-        $this->assertEquals(1, count($result['items']));
-
-        $this->request->setQuery(array('count' => 2));
-        $this->dispatch('/mail/management/store/');
-
-        $result = json_decode($this->response->getBody(), true);
-        $this->assertEquals(2, count($result['items']));
-    }
 }
