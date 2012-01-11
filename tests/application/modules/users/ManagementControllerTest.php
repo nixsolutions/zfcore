@@ -18,7 +18,8 @@ class Users_ManagementControllerTest extends ControllerTestCase
             'email'         => 'test'.__LINE__.time().'@nixsolutions.com',
             'role'          => Users_Model_User::ROLE_USER,
             'status'        => Users_Model_User::STATUS_BLOCKED,
-            'ip'            => '10.10.10.10');
+            //'ip'            => '10.10.10.10'
+        );
 
         $this->_fixture['1'] = array(
             'login'        => 'test3'.time(),
@@ -43,14 +44,15 @@ class Users_ManagementControllerTest extends ControllerTestCase
     public function testAdminUserCreateAction()
     {
         $this->dispatch('/users/management/create');
+        $this->assertQuery('form#userForm');
+
         $this->request
              ->setMethod('POST')
              ->setPost($this->_fixture['0']);
 
         $this->dispatch('/users/management/create');
-        $this->assertQuery('form#userCreateForm');
+        $this->assertRedirect();
 
-        $this->assertRedirectTo('/users/management');
         $user = $this->_userTable->getByLogin($this->_fixture['0']['login']);
 
         unset($this->_fixture['0']['password']);
@@ -72,7 +74,7 @@ class Users_ManagementControllerTest extends ControllerTestCase
      */
     public function testAdminUserEditAction()
     {
-        $user = $this->_userTable->create();
+        $user = $this->_userTable->createRow();
         $user->setFromArray($this->_fixture['1']);
         $user->save();
 
@@ -83,15 +85,16 @@ class Users_ManagementControllerTest extends ControllerTestCase
         $this->_fixture['1'] = array_filter($this->_fixture['1']);
 
         $this->dispatch('/users/management/edit/id/' . $user->id);
+        $this->assertQuery('form#userForm');
+
         $this->request
              ->setMethod('POST')
              ->setPost($this->_fixture['1']);
 
         $this->dispatch('/users/management/edit/id/' . $user->id);
-        $this->assertQuery('form#userEditForm');
-        $this->assertRedirectTo('/users/management');
+        $this->assertRedirect();
 
-        $this->_fixture['1']['password'] = '';
+        $this->_fixture['1']['password'] = md5($user->salt . $this->_fixture['1']['password']);
         $user->refresh();
 
         unset($this->_fixture['1']['updated']);
@@ -130,46 +133,19 @@ class Users_ManagementControllerTest extends ControllerTestCase
         $this->assertModule('users');
         $this->assertController('management');
         $this->assertAction('index');
-        $this->assertQuery('div#gridContainer');
+        $this->assertQuery('div#grid');
     }
 
     /**
      * Test /users/management/store
      *
      */
-    public function testAdminUserStoreAction()
+    public function testAdminUserStatsAction()
     {
-        $this->dispatch('/users/management/store');
+        $this->dispatch('/users/management/stats');
         $this->assertModule('users');
         $this->assertController('management');
-        $this->assertAction('store');
-        $resultBegin = json_decode($this->response->getBody(), true);
-//        $this->assertEquals(true, isset($resultBegin['items']));
-        if (isset($resultBegin['items'])) {
-            $countOfItemsResultBegin = sizeof($resultBegin['items']);
-        } else {
-            $countOfItemsResultBegin = 0;
-        }
-
-        $userFirst = $this->_userTable->create($this->_fixture['0']);
-        $userFirst->save();
-        $this->dispatch('/users/management/store');
-        $result = json_decode($this->response->getBody(), true);
-        $this->assertEquals($countOfItemsResultBegin+1, count($result['items']));
-
-        $userSecond = $this->_userTable->create($this->_fixture['1']);
-        $userSecond->save();
-        $this->dispatch('/users/management/store');
-        $result = json_decode($this->response->getBody(), true);
-        $this->assertEquals($countOfItemsResultBegin+2, count($result['items']));
-
-        $this->request->setQuery(array('count' => 1));
-        $this->dispatch('/users/management/store/');
-        $result = json_decode($this->response->getBody(), true);
-        $this->assertEquals(1, count($result['items']));
-
-        $userFirst->delete();
-        $userSecond->delete();
+        $this->assertAction('stats');
     }
 
     /**
