@@ -1,7 +1,7 @@
 <?php
 /**
  * IndexControllerTest
- * 
+ *
  * @category Tests
  * @package  Sync
  */
@@ -57,10 +57,10 @@ class Sync_IndexControllerTest extends ControllerTestCase
         );
 
         if ($config->tables) {
-            $user = $this->_userTable->create($this->_fixture['testuser']);
+            $user = $this->_userTable->createRow($this->_fixture['testuser']);
             $user->save();
 
-            $pages = $this->_pagesTable->create($this->_fixture['testpage']);
+            $pages = $this->_pagesTable->createRow($this->_fixture['testpage']);
             $pages->updated = date('Y-m-d H:i:s');
             $pages->save();
 
@@ -82,7 +82,7 @@ class Sync_IndexControllerTest extends ControllerTestCase
                 '/response/table[@name="pages"]/item/content',
                 htmlspecialchars($this->_fixture['testpage']['content'])
             );
-        
+
             $pages->delete();
             $user->delete();
         }
@@ -97,18 +97,18 @@ class Sync_IndexControllerTest extends ControllerTestCase
         );
 
         if ($config->tables) {
-            $user = $this->_userTable->create($this->_fixture['testuser']);
+            $user = $this->_userTable->createRow($this->_fixture['testuser']);
             $user->save();
 
             $pages = array();
 
-            $pages['0'] = $this->_pagesTable->create(
+            $pages['0'] = $this->_pagesTable->createRow(
                 $this->_fixture['testpage']
             );
             $pages['0']->updated = date('2010-09-01 14:00:00');
             $pages['0']->save();
-            
-            $pages['1'] = $this->_pagesTable->create(
+
+            $pages['1'] = $this->_pagesTable->createRow(
                 $this->_fixture['testpage2']
             );
             $pages['1']->updated = date('2010-09-02 14:00:00');
@@ -152,10 +152,10 @@ class Sync_IndexControllerTest extends ControllerTestCase
         );
 
         if ($config->tables) {
-            $user = $this->_userTable->create($this->_fixture['testuser']);
+            $user = $this->_userTable->createRow($this->_fixture['testuser']);
             $user->save();
 
-            $pages = $this->_pagesTable->create($this->_fixture['testpage']);
+            $pages = $this->_pagesTable->createRow($this->_fixture['testpage']);
             $pages->updated = date('Y-m-d H:i:s');
             $pages->save();
 
