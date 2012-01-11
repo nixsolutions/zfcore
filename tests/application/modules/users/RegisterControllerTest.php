@@ -22,7 +22,7 @@ class Users_RegisterControllerTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        
+
         $this->_userManager = new Users_Model_Users_Manager();
         $this->_userTable = new Users_Model_Users_Table();
 
@@ -73,7 +73,7 @@ class Users_RegisterControllerTest extends ControllerTestCase
 
     /**
      * Test register user
-     * 
+     *
      * @todo unable provide test without advanced mocking
      */
     public function testRegisterUser()
@@ -89,9 +89,9 @@ class Users_RegisterControllerTest extends ControllerTestCase
         // 1. Change email address to config email.
         // 2. Make the address in config as stub for test emails
         $this->_fixture['captcha'] = $this->getCaptcha($html);
-        
+
         //$this->markTestIncomplete('todo mock registration form');
-        
+
         $this->request
              ->setMethod('POST')
              ->setPost($this->_fixture);
@@ -101,18 +101,18 @@ class Users_RegisterControllerTest extends ControllerTestCase
         $user = $this->_userTable->getByLogin($this->_fixture['login']);
 
         $this->assertNotNull($user->id);
-        
+
         $user->status = Users_Model_User::STATUS_ACTIVE;
         $user->save();
-        
+
         $auth = Users_Model_Users_Manager::authenticate(
             $this->_fixture['login'],
             $this->_fixture['password']
         );
         $this->assertTrue($auth);
-            
+
         Users_Model_Users_Manager::logout();
-                            
+
         $this->request
              ->setMethod('POST')
              ->setPost(array('login' => $this->_fixture['login']));
@@ -120,14 +120,14 @@ class Users_RegisterControllerTest extends ControllerTestCase
         $this->assertModule('users');
         $this->assertController('register');
         $this->assertAction('index');
-        
+
         $user->delete();
-        
+
     }
 
     public function testConfirmRegistrationAction()
     {
-        $user = $this->_userTable->create($this->_fixture);
+        $user = $this->_userTable->createRow($this->_fixture);
         $user->status = Users_Model_User::STATUS_REGISTER;
         $user->hashCode = md5(uniqid());
         $user->save();
@@ -142,19 +142,19 @@ class Users_RegisterControllerTest extends ControllerTestCase
         $this->assertModule('users');
         $this->assertController('register');
         $this->assertAction('confirm-registration');
-        
+
         $user->refresh();
         $this->assertEquals($user->status, Users_Model_User::STATUS_ACTIVE);
-        
+
 //        $this->request
 //             ->setQuery(array('hash' => 134468431))
 //             ->setMethod('GET'); //sets method as GET ONLY this way
 //        $this->dispatch('/users/register/confirm-registration/');
-//        
+//
 //        $this->assertModule('users');
 //        $this->assertController('register');
 //        $this->assertAction('confirm-registration');
-        
+
         $user->delete();
     }
 
@@ -165,34 +165,34 @@ class Users_RegisterControllerTest extends ControllerTestCase
     public function testForgetPasswordAction()
     {
         Users_Model_Users_Manager::logout();
-        
-        $user = $this->_userTable->create($this->_fixture);
+
+        $user = $this->_userTable->createRow($this->_fixture);
         $user->save();
-        
+
         $this->dispatch('/users/register/forget-password');
-        
+
         $this->assertModule('users');
         $this->assertController('register');
         $this->assertAction('forget-password');
         $this->assertQuery('form#userForgetPasswordForm');
 
         //$this->markTestIncomplete('forget password don\'t pass this is test, hidden dependency?');
-        
+
 //        $this->request
 //             ->setMethod('POST')
 //             ->setPost(array('email' => $this->_fixture['email']));
-//        
+//
 //        $this->dispatch('/users/register/forget-password');
-        
+
 //        $this->assertModule('users');
 //        $this->assertController('register');
 //        $this->assertAction('forget-password');
-       
+
 //        $this->assertRedirectTo("/login");
-       
+
         $user->delete();
     }
-   
+
     /**
      * @todo unable provide test without advanced mocking
      *
@@ -219,7 +219,7 @@ class Users_RegisterControllerTest extends ControllerTestCase
         $this->assertQueryCount('form#userRegisterForm', 1);
         $this->assertQueryCount('#messages', 1);
     }
-    
+
     /**
      * tear Down
      */
