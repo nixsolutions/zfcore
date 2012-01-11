@@ -12,6 +12,7 @@ defined('APPLICATION_ENV')
 
     $_SERVER['HTTP_HOST'] = 'localhost';
     $_SERVER['REQUEST_URI'] = '/';
+    $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
 // Ensure library/ is on include_path
 set_include_path(

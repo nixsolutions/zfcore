@@ -30,7 +30,7 @@ class Model_Users_TableTest extends ControllerTestCase
             'status'   => Users_Model_User::STATUS_REGISTER,
             'password' => 123456);
 
-        $user = $this->_userTable->create($this->_fixture['guest']);
+        $user = $this->_userTable->createRow($this->_fixture['guest']);
         $user->save();
 
         $this->_fixture['blocked'] = array(
@@ -40,7 +40,7 @@ class Model_Users_TableTest extends ControllerTestCase
             'status' => Users_Model_User::STATUS_BLOCKED,
             'password' => 123456);
 
-        $user = $this->_userTable->create($this->_fixture['blocked']);
+        $user = $this->_userTable->createRow($this->_fixture['blocked']);
         $user->save();
 
         $this->_fixture['removed'] = array(
@@ -50,7 +50,7 @@ class Model_Users_TableTest extends ControllerTestCase
             'status' => Users_Model_User::STATUS_REMOVED,
             'password' => 123456);
 
-        $user = $this->_userTable->create($this->_fixture['removed']);
+        $user = $this->_userTable->createRow($this->_fixture['removed']);
         $user->save();
 
 
@@ -61,7 +61,7 @@ class Model_Users_TableTest extends ControllerTestCase
             'status' => Users_Model_User::STATUS_ACTIVE,
             'password' => 123456);
 
-        $user = $this->_userTable->create($this->_fixture['admin']);
+        $user = $this->_userTable->createRow($this->_fixture['admin']);
         $user->save();
     }
 
@@ -74,7 +74,7 @@ class Model_Users_TableTest extends ControllerTestCase
         $user = $this->_userTable
                      ->getByLogin($this->_fixture['guest']['login']);
 
-        $this->_fixture['guest']['password'] = null;
+        $this->_fixture['guest']['password'] = md5($user->salt . $this->_fixture['guest']['password']);
         $this->assertEquals(
             array_merge($user->toArray(true), $this->_fixture['guest']),
             $user->toArray(true)
@@ -90,7 +90,7 @@ class Model_Users_TableTest extends ControllerTestCase
         $user = $this->_userTable
                      ->getByEmail($this->_fixture['guest']['email']);
 
-        $this->_fixture['guest']['password'] = null;
+        $this->_fixture['guest']['password'] = md5($user->salt . $this->_fixture['guest']['password']);
         $this->assertEquals(
             array_merge($user->toArray(true), $this->_fixture['guest']),
             $user->toArray(true)
