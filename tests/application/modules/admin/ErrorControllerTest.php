@@ -30,11 +30,11 @@ class Admin_ErrorControllerTest extends ControllerTestCase
     {
         $this->_doLogin(Users_Model_User::ROLE_ADMIN);
 
-        $this->dispatch('/admin/foo');
+        $this->dispatch('/admin/index/foo');
 
-        $this->assertModule('default');
+        $this->assertModule('users');
         $this->assertController('error');
-        $this->assertAction('notfound');
+        $this->assertAction('error');
     }
 
     /**
