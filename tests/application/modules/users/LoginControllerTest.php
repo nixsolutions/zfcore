@@ -29,7 +29,7 @@ class Users_LoginControllerTest extends ControllerTestCase
 
         $manager = new Users_Model_Users_Table();
 
-        $this->_user = $manager->create($this->_fixture);
+        $this->_user = $manager->createRow($this->_fixture);
         $this->_user->save();
     }
 
@@ -64,7 +64,7 @@ class Users_LoginControllerTest extends ControllerTestCase
             $this->_fixture['login'],
             $this->_fixture['password']
         );
-        $this->assertRedirectTo('/');
+        $this->assertRedirect();
     }
 
     /**
@@ -77,7 +77,7 @@ class Users_LoginControllerTest extends ControllerTestCase
             $this->_fixture['password']
         );
         $this->dispatch('/logout');
-        $this->assertRedirectTo('/');
+        $this->assertRedirect();
     }
 
     /**
@@ -137,7 +137,7 @@ class Users_LoginControllerTest extends ControllerTestCase
         $this->dispatch('/cancel-password-recovery/0101010101');
         $this->assertModule('users');
         $this->assertController('login');
-        $this->assertRedirectTo('/login');
+        $this->assertRedirect();
     }
 
     /**
