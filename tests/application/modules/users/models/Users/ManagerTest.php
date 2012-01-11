@@ -31,7 +31,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
             'password' => 123456
         );
 
-        $user = $this->_userTable->create($this->_fixture['guest']);
+        $user = $this->_userTable->createRow($this->_fixture['guest']);
         $user->save();
 
         $this->_fixture['blocked'] = array(
@@ -42,7 +42,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
             'password' => 123456
         );
 
-        $user = $this->_userTable->create($this->_fixture['blocked']);
+        $user = $this->_userTable->createRow($this->_fixture['blocked']);
         $user->save();
 
         $this->_fixture['removed'] = array(
@@ -53,7 +53,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
             'password' => 123456
         );
 
-        $user = $this->_userTable->create($this->_fixture['removed']);
+        $user = $this->_userTable->createRow($this->_fixture['removed']);
         $user->save();
 
 
@@ -65,7 +65,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
             'password' => 123456
         );
 
-        $user = $this->_userTable->create($this->_fixture['admin']);
+        $user = $this->_userTable->createRow($this->_fixture['admin']);
         $user->save();
     }
 
@@ -180,7 +180,8 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $user = $this->_userManager->register(
             array(
                 'login'    => $this->_fixture['admin']['login'],
-                'password' => $this->_fixture['admin']['password']
+                'password' => $this->_fixture['admin']['password'],
+                'email'    => $this->_fixture['admin']['email']
             )
         );
 
@@ -374,21 +375,21 @@ class Model_Users_ManagerTest extends ControllerTestCase
      */
     public function tearDown()
     {
-        $this->_userTable
-             ->getByLogin($this->_fixture['guest']['login'])
-             ->delete();
+    	$this->_userTable->delete(
+        	$this->_userTable->quoteInto('login=?', $this->_fixture['guest']['login'])
+        );
 
-        $this->_userTable
-             ->getByLogin($this->_fixture['blocked']['login'])
-             ->delete();
+        $this->_userTable->delete(
+        	$this->_userTable->quoteInto('login=?', $this->_fixture['blocked']['login'])
+        );
 
-        $this->_userTable
-             ->getByLogin($this->_fixture['removed']['login'])
-             ->delete();
+        $this->_userTable->delete(
+        	$this->_userTable->quoteInto('login=?', $this->_fixture['removed']['login'])
+        );
 
-        $this->_userTable
-             ->getByLogin($this->_fixture['admin']['login'])
-             ->delete();
+        $this->_userTable->delete(
+        	$this->_userTable->quoteInto('login=?', $this->_fixture['admin']['login'])
+        );
 
         parent::tearDown();
     }
