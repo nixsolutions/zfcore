@@ -15,6 +15,8 @@ directories:
     language_dir: 'data/languages'
     logs_dir: 'data/logs'
     uploads_dir: 'public/uploads'
+    images_dir: 'public/images'
+    captcha_dir: 'public/images/captcha'
 extensions:
   apc:
     title: 'Checking that <a href="http://www.php.net/manual/en/ref.apc.php">apc</a> extension is loaded'
