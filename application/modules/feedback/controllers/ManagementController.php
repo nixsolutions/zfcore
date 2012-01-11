@@ -68,16 +68,16 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
     public function replyAction()
     {
         if (!$this->getRequest()->isPost()) {
-            throw new Zend_Controller_Action_Exception('Page not found');
+        	$this->_helper->redirector('index');
         }
 
         if (!$id = (int)$this->_getParam('id')) {
-            throw new Zend_Controller_Action_Exception('Page not found');
+            throw new Zend_Controller_Action_Exception('Param id is required');
         }
 
         $table = new Feedback_Model_Feedback_Table();
         if (!$row = $table->getById($id)) {
-            throw new Zend_Controller_Action_Exception('Page not found');
+            throw new Zend_Controller_Action_Exception('Feedback not found');
         }
 
         $form = $this->_getCreateForm();
@@ -133,7 +133,7 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
             $template->send($mail);
             // Если надо сохранить копию сообщения
             //XXX
-            if ($data['saveCopy']) {
+            if (isset($data['saveCopy'])) {
                 $login = Zend_Auth::getInstance()->getIdentity()->login;
                 $table->createRow(
                     array(
