@@ -12,31 +12,63 @@ class Blog_PostControllerTest extends ControllerTestCase
     {
         parent::setUpBeforeClass();
         parent::migrationUp('blog');
+        parent::migrationUp('comments');
     }
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->_fixture['post'] = array('id' => 55,
-                                   'title' => 'title',
-                                   'body' => 'text',
-                                   'categoryId' => 43,
-                                   'alias' => 'test1',
-                                   'userId' => 75,
-                                   'status' => 'published');
+        $this->_fixture['post'] = array(
+            'id'         => 55,
+            'title'      => 'title',
+            'body'       => 'text',
+            'categoryId' => 43,
+            'alias'      => 'test1',
+            'userId'     => 75,
+            'status'     => 'published'
+        );
+        $this->_fixture['post2'] = array(
+            'id'         => 56,
+            'title'      => 'title2',
+            'body'       => 'text2',
+            'categoryId' => 44,
+            'alias'      => 'test2',
+            'userId'     => 75,
+            'status'     => 'published'
+        );
 
-        $this->_fixture['category'] = array('id' => 43,
-                                   'title' => 'title',
-                                   'description' => 'descr',
-                                   'parentId' => 0,
-                                   'alias' => 'title');
+        $this->_fixture['category'] = array(
+            'id'          => 43,
+            'title'       => 'title',
+            'description' => 'descr',
+            'parentId'    => 0,
+            'alias'       => 'title'
+        );
+        $this->_fixture['category2'] = array(
+            'id'          => 44,
+            'title'       => 'title2',
+            'description' => 'descr2',
+            'parentId'    => 0,
+            'alias'       => 'title2'
+        );
+        $this->_fixture['user'] = array(
+            'id'       => 75,
+            'login'    => 'test_login',
+            'password' => '123456',
+            'email'    => 'test@email.com'
+        );
+        $users = new Users_Model_Users_Table();
+
+        $users->delete(' id = ' . $this->_fixture['user']['id']);
+        $user = $users->createRow($this->_fixture['user']);
+        $user->save();
     }
 
     public function testEmptyPostAction()
     {
         $this->dispatch('/blog/post/');
-        $this->assertModule('default');
+        $this->assertModule('users');
         $this->assertController('error');
         $this->assertAction('error');
     }
@@ -55,10 +87,6 @@ class Blog_PostControllerTest extends ControllerTestCase
         $post = $table->createRow($this->_fixture['post']);
         $post->save();
 
-        $users= new Users_Model_Users_Table();
-        $user = $users->createRow(array('id' => 75, 'login' => 'asdasd'));
-        $user->save();
-
         $this->dispatch('/blog/post/' . $post->alias);
 
         $this->assertModule('blog');
@@ -67,7 +95,6 @@ class Blog_PostControllerTest extends ControllerTestCase
 
         $post->delete();
         $cat->delete();
-        $user->delete();
     }
 
     public function testCreateCommentIndexAction()
@@ -76,29 +103,25 @@ class Blog_PostControllerTest extends ControllerTestCase
         $manager = new Blog_Model_Category_Manager();
 
         $rootCat = $manager->getRoot();
-        $cat = $manager->getDbTable()->createRow($this->_fixture['category']);
+        $cat = $manager->getDbTable()->createRow($this->_fixture['category2']);
         $rootCat->addChild($cat);
 
-        $post = $table->createRow($this->_fixture['post']);
+        $post = $table->createRow($this->_fixture['post2']);
         $post->save();
 
         $this->_doLogin();
 
-        $users= new Users_Model_Users_Table();
-        $user = $users->createRow(array('id' => 75, 'login' => 'asdasd'));
-        $user->save();
-
         $this->request->setMethod('POST')
                       ->setPost(array('comment' => 'comment'));
 
-        $this->dispatch('/blog/post/' . $this->_fixture['post']['alias']);
+        $this->dispatch('/blog/post/' . $this->_fixture['post2']['alias']);
+        //var_dump($this->getResponse()->getBody());exit;
         $this->assertModule('blog');
         $this->assertController('post');
         $this->assertAction('index');
 
         $post->delete();
         $cat->delete();
-        $user->delete();
     }
 
     public function testCreateAction()
@@ -184,11 +207,15 @@ class Blog_PostControllerTest extends ControllerTestCase
 
         $table = new Categories_Model_Category_Table();
         $table->delete(' id = 43');
+
+        $table = new Users_Model_Users_Table();
+        $table->delete(' id = ' . $this->_fixture['user']['id']);
     }
 
     public static function tearDownAfterClass()
     {
         parent::migrationDown('blog');
+        parent::migrationDown('comments');
         parent::tearDownAfterClass();
     }
 }
