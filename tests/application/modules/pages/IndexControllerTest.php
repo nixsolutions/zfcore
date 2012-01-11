@@ -16,7 +16,7 @@ class Pages_IndexControllerTest extends ControllerTestCase
         parent::setUpBeforeClass();
         parent::migrationUp('pages');
     }
-    
+
     /**
      * set up environment
      *
@@ -35,28 +35,28 @@ class Pages_IndexControllerTest extends ControllerTestCase
     public function testAboutPage()
     {
         $manager = new Pages_Model_Page_Table();
-        
+
         // Insert record to DB
-        $page = $manager->create($this->_data);
-        
+        $page = $manager->createRow($this->_data);
+
         $page->save();
 
         $this->dispatch('/'.$this->_data['alias'].'.html');
         $this->assertModule('pages');
         $this->assertController('index');
         $this->assertAction('index');
-        
+
         $page->delete();
     }
 
     public function testErrorPage()
     {
         $this->dispatch('/error-page.html');
-        $this->assertModule('default');
+        $this->assertModule('users');
         $this->assertController('error');
         $this->assertAction('notfound');
     }
-    
+
     public function testSitemapPage()
     {
         $this->dispatch('/sitemap.html');
@@ -64,14 +64,14 @@ class Pages_IndexControllerTest extends ControllerTestCase
         $this->assertController('index');
         $this->assertAction('sitemap');
     }
-    
+
     public function testSitemapXmlPage()
     {
         $this->dispatch('/sitemap.xml');
         $this->assertModule('pages');
         $this->assertController('index');
         $this->assertAction('sitemapxml');
-        
+
 //        $this->assertHeader('Content-Type', 'application/xml');
     }
 
