@@ -12,6 +12,7 @@ class Forum_PostControllerTest extends ControllerTestCase
         parent::setUp();
 
         parent::migrationUp('forum');
+        parent::migrationUp('comments');
 
         $this->_fixture['post'] = array('id' => 45,
                                    'title' => 'title',
@@ -27,14 +28,14 @@ class Forum_PostControllerTest extends ControllerTestCase
                                    'alias' => 'title');
 
         $users= new Users_Model_Users_Table();
-        $user = $users->createRow(array('id' => 75, 'login' => 'asdasd'));
+        $user = $users->createRow(array('id' => 75, 'login' => 'asdasd', 'email' => 'test@email.com', 'password' => '123456'));
         $user->save();
     }
 
     public function testEmptyPostAction()
     {
         $this->dispatch('/forum/post/');
-        $this->assertModule('default');
+        $this->assertModule('users');
         $this->assertController('error');
         $this->assertAction('error');
     }
@@ -48,7 +49,7 @@ class Forum_PostControllerTest extends ControllerTestCase
         $cat = $manager->getDbTable()->createRow($this->_fixture['category']);
         $rootCat->addChild($cat);
 
-        $post = $table->create($this->_fixture['post']);
+        $post = $table->createRow($this->_fixture['post']);
         $post->save();
 
         $this->dispatch('/forum/post/45');
@@ -69,7 +70,7 @@ class Forum_PostControllerTest extends ControllerTestCase
         $cat = $manager->getDbTable()->createRow($this->_fixture['category']);
         $rootCat->addChild($cat);
 
-        $post = $table->create($this->_fixture['post']);
+        $post = $table->createRow($this->_fixture['post']);
         $post->save();
 
         $this->_doLogin();
@@ -139,7 +140,7 @@ class Forum_PostControllerTest extends ControllerTestCase
         $cat = $manager->getDbTable()->createRow($this->_fixture['category']);
         $rootCat->addChild($cat);
 
-        $post = $table->create($this->_fixture['post']);
+        $post = $table->createRow($this->_fixture['post']);
         $post->save();
 
         $this->_doLogin();
@@ -162,7 +163,7 @@ class Forum_PostControllerTest extends ControllerTestCase
         $cat = $manager->getDbTable()->createRow($this->_fixture['category']);
         $rootCat->addChild($cat);
 
-        $post = $table->create($this->_fixture['post']);
+        $post = $table->createRow($this->_fixture['post']);
         $post->save();
 
         $this->_doLogin();
@@ -195,14 +196,13 @@ class Forum_PostControllerTest extends ControllerTestCase
         $table = new Forum_Model_Post_Table();
         $table->delete('1');
 
-        $table = new Forum_Model_Comment_Table();
-        $table->delete('1');
-
         $table = new Categories_Model_Category_Table();
         $table->delete('id = 33');
 
 
         parent::migrationDown('forum');
+        parent::migrationDown('comments');
+
         parent::tearDown();
     }
 }
