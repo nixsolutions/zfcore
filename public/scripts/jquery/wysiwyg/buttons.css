@@ -1,0 +1,254 @@
+/*------------------------------------*\
+	$ICONS
+\*------------------------------------*/
+.gpui-icon {
+    background-image: url(images/google+-ui-sprite-gray.png) !important;
+    
+    display: block; 
+    text-indent: -99999px; 
+    overflow: hidden; 
+    background-repeat: no-repeat; 
+    margin:0 12px;
+
+    height: 18px;
+    width: 18px;
+}
+.ui-state-hover .gpui-icon, 
+.ui-state-focus .gpui-icon,
+.ui-state-active .gpui-icon,
+.ui-state-highlight .gpui-icon,
+.ui-state-error .gpui-icon, 
+.ui-state-error-text .gpui-icon,
+.gpui-icon:hover {
+    background-image: url(images/google+-ui-sprite-colour.png) !important;
+}
+
+/* Sprite Row 1 */
+.gpui-icon1 {background-position: -0px -0px;}
+.gpui-icon2 {background-position: -18px -0px;}
+.gpui-icon3 {background-position: -36px -0px;}
+.gpui-icon4 {background-position: -54px -0px;}
+.gpui-icon5 {background-position: -72px -0px;}
+.gpui-icon6 {background-position: -90px -0px;}
+.gpui-icon7 {background-position: -108px -0px;}
+.gpui-icon8 {background-position: -126px -0px;}
+.gpui-icon9 {background-position: -144px -0px;}
+.gpui-icon10 {background-position: -162px -0px;}
+.gpui-icon11 {background-position: -180px -0px;}
+.gpui-icon12 {background-position: -198px -0px;}
+.gpui-icon13 {background-position: -216px -0px;}
+.gpui-icon14 {background-position: -234px -0px;}
+.gpui-icon15 {background-position: -252px -0px;}
+.gpui-icon16 {background-position: -270px -0px;}
+.gpui-icon17 {background-position: -288px -0px;}
+.gpui-icon18 {background-position: -306px -0px;}
+.gpui-icon19 {background-position: -324px -0px;}
+.gpui-icon20 {background-position: -342px -0px;}
+
+/* Sprite Row 2 */
+.gpui-icon21 {background-position: -0px -18px;}
+.gpui-icon22 {background-position: -18px -18px;}
+.gpui-icon23 {background-position: -36px -18px;}
+.gpui-icon24 {background-position: -54px -18px;}
+.gpui-icon25 {background-position: -72px -18px;}
+.gpui-icon26 {background-position: -90px -18px;}
+.gpui-icon27 {background-position: -108px -18px;}
+.gpui-icon28 {background-position: -126px -18px;}
+.gpui-icon29 {background-position: -144px -18px;}
+.gpui-icon30 {background-position: -162px -18px;}
+.gpui-icon31 {background-position: -180px -18px;}
+.gpui-icon32 {background-position: -198px -18px;}
+.gpui-icon33 {background-position: -216px -18px;}
+.gpui-icon34 {background-position: -234px -18px;}
+.gpui-icon35 {background-position: -252px -18px;}
+.gpui-icon36 {background-position: -270px -18px;}
+.gpui-icon37 {background-position: -288px -18px;}
+.gpui-icon38 {background-position: -306px -18px;}
+.gpui-icon39 {background-position: -324px -18px;}
+.gpui-icon40 {background-position: -342px -18px;}
+
+/* Sprite Row 3 */
+.gpui-icon41 {background-position: -0px -36px;}
+.gpui-icon42 {background-position: -18px -36px;}
+.gpui-icon43 {background-position: -36px -36px;}
+.gpui-icon44 {background-position: -54px -36px;}
+.gpui-icon45 {background-position: -72px -36px;}
+.gpui-icon46 {background-position: -90px -36px;}
+.gpui-icon47 {background-position: -108px -36px;}
+.gpui-icon48 {background-position: -126px -36px;}
+.gpui-icon49 {background-position: -144px -36px;}
+.gpui-icon50 {background-position: -162px -36px;}
+.gpui-icon51 {background-position: -180px -36px;}
+.gpui-icon52 {background-position: -198px -36px;}
+.gpui-icon53 {background-position: -216px -36px;}
+.gpui-icon54 {background-position: -234px -36px;}
+.gpui-icon55 {background-position: -252px -36px;}
+.gpui-icon56 {background-position: -270px -36px;}
+.gpui-icon57 {background-position: -288px -36px;}
+.gpui-icon58 {background-position: -306px -36px;}
+.gpui-icon59 {background-position: -324px -36px;}
+.gpui-icon60 {background-position: -342px -36px;}
+
+/* Sprite Row 4 */
+.gpui-icon61 {background-position: -0px -54px;}
+.gpui-icon62 {background-position: -18px -54px;}
+.gpui-icon63 {background-position: -36px -54px;}
+.gpui-icon64 {background-position: -54px -54px;}
+.gpui-icon65 {background-position: -72px -54px;}
+.gpui-icon66 {background-position: -90px -54px;}
+.gpui-icon67 {background-position: -108px -54px;}
+.gpui-icon68 {background-position: -126px -54px;}
+.gpui-icon69 {background-position: -144px -54px;}
+.gpui-icon70 {background-position: -162px -54px;}
+.gpui-icon71 {background-position: -180px -54px;}
+.gpui-icon72 {background-position: -198px -54px;}
+.gpui-icon73 {background-position: -216px -54px;}
+.gpui-icon74 {background-position: -234px -54px;}
+.gpui-icon75 {background-position: -252px -54px;}
+.gpui-icon76 {background-position: -270px -54px;}
+.gpui-icon77 {background-position: -288px -54px;}
+.gpui-icon78 {background-position: -306px -54px;}
+.gpui-icon79 {background-position: -324px -54px;}
+.gpui-icon80 {background-position: -342px -54px;}
+
+/* Sprite Row 5 */
+.gpui-icon81 {background-position: -0px -72px;}
+.gpui-icon82 {background-position: -18px -72px;}
+.gpui-icon83 {background-position: -36px -72px;}
+.gpui-icon84 {background-position: -54px -72px;}
+.gpui-icon85 {background-position: -72px -72px;}
+.gpui-icon86 {background-position: -90px -72px;}
+.gpui-icon87 {background-position: -108px -72px;}
+.gpui-icon88 {background-position: -126px -72px;}
+.gpui-icon89 {background-position: -144px -72px;}
+.gpui-icon90 {background-position: -162px -72px;}
+.gpui-icon91 {background-position: -180px -72px;}
+.gpui-icon92 {background-position: -198px -72px;}
+.gpui-icon93 {background-position: -216px -72px;}
+.gpui-icon94 {background-position: -234px -72px;}
+.gpui-icon95 {background-position: -252px -72px;}
+.gpui-icon96 {background-position: -270px -72px;}
+.gpui-icon97 {background-position: -288px -72px;}
+.gpui-icon98 {background-position: -306px -72px;}
+.gpui-icon99 {background-position: -324px -72px;}
+.gpui-icon100 {background-position: -342px -72px;}
+
+/* Sprite Row 6 */
+.gpui-icon101 {background-position: -0px -90px;}
+.gpui-icon102 {background-position: -18px -90px;}
+.gpui-icon103 {background-position: -36px -90px;}
+.gpui-icon104 {background-position: -54px -90px;}
+.gpui-icon105 {background-position: -72px -90px;}
+.gpui-icon106 {background-position: -90px -90px;}
+.gpui-icon107 {background-position: -108px -90px;}
+.gpui-icon108 {background-position: -126px -90px;}
+.gpui-icon109 {background-position: -144px -90px;}
+.gpui-icon110 {background-position: -162px -90px;}
+.gpui-icon111 {background-position: -180px -90px;}
+.gpui-icon112 {background-position: -198px -90px;}
+.gpui-icon113 {background-position: -216px -90px;}
+.gpui-icon114 {background-position: -234px -90px;}
+.gpui-icon115 {background-position: -252px -90px;}
+.gpui-icon116 {background-position: -270px -90px;}
+.gpui-icon117 {background-position: -288px -90px;}
+.gpui-icon118 {background-position: -306px -90px;}
+.gpui-icon119 {background-position: -324px -90px;}
+.gpui-icon120 {background-position: -342px -90px;}
+
+/* Sprite Row 7 */
+.gpui-icon121 {background-position: -0px -108px;}
+.gpui-icon122 {background-position: -18px -108px;}
+.gpui-icon123 {background-position: -36px -108px;}
+.gpui-icon124 {background-position: -54px -108px;}
+.gpui-icon125 {background-position: -72px -108px;}
+.gpui-icon126 {background-position: -90px -108px;}
+.gpui-icon127 {background-position: -108px -108px;}
+.gpui-icon128 {background-position: -126px -108px;}
+.gpui-icon129 {background-position: -144px -108px;}
+.gpui-icon130 {background-position: -162px -108px;}
+.gpui-icon131 {background-position: -180px -108px;}
+.gpui-icon132 {background-position: -198px -108px;}
+.gpui-icon133 {background-position: -216px -108px;}
+.gpui-icon134 {background-position: -234px -108px;}
+.gpui-icon135 {background-position: -252px -108px;}
+.gpui-icon136 {background-position: -270px -108px;}
+.gpui-icon137 {background-position: -288px -108px;}
+.gpui-icon138 {background-position: -306px -108px;}
+.gpui-icon139 {background-position: -324px -108px;}
+.gpui-icon140 {background-position: -342px -108px;}
+
+/* Sprite Row 8 */
+.gpui-icon141 {background-position: -0px -126px;}
+.gpui-icon142 {background-position: -18px -126px;}
+.gpui-icon143 {background-position: -36px -126px;}
+.gpui-icon144 {background-position: -54px -126px;}
+.gpui-icon145 {background-position: -72px -126px;}
+.gpui-icon146 {background-position: -90px -126px;}
+.gpui-icon147 {background-position: -108px -126px;}
+.gpui-icon148 {background-position: -126px -126px;}
+.gpui-icon149 {background-position: -144px -126px;}
+.gpui-icon150 {background-position: -162px -126px;}
+.gpui-icon151 {background-position: -180px -126px;}
+.gpui-icon152 {background-position: -198px -126px;}
+.gpui-icon153 {background-position: -216px -126px;}
+.gpui-icon154 {background-position: -234px -126px;}
+.gpui-icon155 {background-position: -252px -126px;}
+.gpui-icon156 {background-position: -270px -126px;}
+.gpui-icon157 {background-position: -288px -126px;}
+.gpui-icon158 {background-position: -306px -126px;}
+.gpui-icon159 {background-position: -324px -126px;}
+.gpui-icon160 {background-position: -342px -126px;}
+
+/* Sprite Row 9 */
+.gpui-icon161 {background-position: -0px -144px;}
+.gpui-icon162 {background-position: -18px -144px;}
+.gpui-icon163 {background-position: -36px -144px;}
+.gpui-icon164 {background-position: -54px -144px;}
+.gpui-icon165 {background-position: -72px -144px;}
+.gpui-icon166 {background-position: -90px -144px;}
+.gpui-icon167 {background-position: -108px -144px;}
+.gpui-icon168 {background-position: -126px -144px;}
+.gpui-icon169 {background-position: -144px -144px;}
+.gpui-icon170 {background-position: -162px -144px;}
+.gpui-icon171 {background-position: -180px -144px;}
+.gpui-icon172 {background-position: -198px -144px;}
+.gpui-icon173 {background-position: -216px -144px;}
+.gpui-icon174 {background-position: -234px -144px;}
+.gpui-icon175 {background-position: -252px -144px;}
+.gpui-icon176 {background-position: -270px -144px;}
+.gpui-icon177 {background-position: -288px -144px;}
+.gpui-icon178 {background-position: -306px -144px;}
+.gpui-icon179 {background-position: -324px -144px;}
+.gpui-icon180 {background-position: -342px -144px;}
+
+/* Sprite Row 10 */
+.gpui-icon181 {background-position: -0px -162px;}
+.gpui-icon182 {background-position: -18px -162px;}
+.gpui-icon183 {background-position: -36px -162px;}
+.gpui-icon184 {background-position: -54px -162px;}
+.gpui-icon185 {background-position: -72px -162px;}
+.gpui-icon186 {background-position: -90px -162px;}
+.gpui-icon187 {background-position: -108px -162px;}
+.gpui-icon188 {background-position: -126px -162px;}
+.gpui-icon189 {background-position: -144px -162px;}
+.gpui-icon190 {background-position: -162px -162px;}
+.gpui-icon191 {background-position: -180px -162px;}
+.gpui-icon192 {background-position: -198px -162px;}
+.gpui-icon193 {background-position: -216px -162px;}
+.gpui-icon194 {background-position: -234px -162px;}
+.gpui-icon195 {background-position: -252px -162px;}
+.gpui-icon196 {background-position: -270px -162px;}
+.gpui-icon197 {background-position: -288px -162px;}
+.gpui-icon198 {background-position: -306px -162px;}
+.gpui-icon199 {background-position: -324px -162px;}
+.gpui-icon200 {background-position: -342px -162px;}
+
+/* Sprite Row 11 */
+.gpui-icon201 {background-position: -0px -180px;}
+.gpui-icon202 {background-position: -18px -180px;}
+.gpui-icon203 {background-position: -36px -180px;}
+.gpui-icon204 {background-position: -54px -180px;}
+.gpui-icon205 {background-position: -72px -180px;}
+.gpui-icon206 {background-position: -90px -180px;}
+
+

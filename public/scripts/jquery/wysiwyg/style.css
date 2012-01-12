@@ -1,0 +1,123 @@
+@CHARSET "UTF-8";
+
+/* Wysiwyg */
+.wysiwyg-wrapper {
+    padding:0;
+    margin: 0;
+}
+.wysiwyg-wrapper li {
+    position: relative;
+}
+.wysiwyg-frame {
+    border-top: 1px solid #D9D9D9;
+    height: 100%;
+    width: 100% !important;
+    background: #fff;
+    overflow: hidden;
+}
+.wysiwyg-frame-overlay {
+    display: none;
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.wysiwyg-toolbar > div > * {
+    margin: 5px 0 0 5px;
+    float: left;
+}
+.wysiwyg-toolbar .ui-widget-header {
+    height: 42px;
+    background: none;
+    border: 0;
+}
+.toolbar-buttonset {
+    padding-right: 10px;
+    overflow: hidden;
+}
+
+
+/* Dropdown */
+
+.toolbar-dropdown {
+    float: left;
+    position: relative;
+}
+.toolbar-dropdown > button {
+    min-width: 8em;
+}
+.toolbar-dropdown-slider {
+    display: none;
+    
+    overflow: hidden;
+    position: absolute;
+    top: 28px;
+    right: -4px;
+    
+    background: #F2F2F2;
+    
+    border: solid 1px #D9D9D9;
+    
+    -webkit-border-bottom-right-radius: 2px;
+    -webkit-border-bottom-left-radius: 2px;
+    -moz-border-radius-bottomright: 2px;
+    -moz-border-radius-bottomleft: 2px;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+    
+    -webkit-transition: border-color .20s;
+    -moz-transition: border .20s;
+    -o-transition: border-color .20s;
+    transition: border-color .20s;
+    
+    z-index:99999;
+    width: 100%;
+    margin-right: 5px;
+}
+
+.toolbar-dropdown-slider .ui-button {
+    border-width: 0 !important;
+    width: 100%;
+    background: none;
+    border-radius: 0;
+    background-image: none !important;
+}
+
+
+/* Color Picker */
+ .colorpick-color {
+    height: 20px;
+    width: 20px;
+}
+.colorpick-table .colorpick-td {
+    border: 1px solid #D9D9D9;
+    padding: 0px;
+    margin: 0px;
+}
+.colorpick-table {
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+/* UI Button */
+.wysiwyg-toolbar .ui-button-icon-only { width: 4.5em; } /* to make room for the icon, a width needs to be set here */
+.wysiwyg-toolbar button.ui-button-icon-only { width: 4.5em; } /* button elements seem to need a little more width */
+.wysiwyg-toolbar .ui-button-icons-only { width: 8em; } 
+.wysiwyg-toolbar button.ui-button-icons-only { width: 8em; } 
+
+/*button text element */
+.wysiwyg-toolbar .ui-button .ui-button-text { line-height: 1.7;  }
+.wysiwyg-toolbar .ui-button-text-only .ui-button-text { padding: .5em 1.5em; }
+.wysiwyg-toolbar .ui-button-icon-only .ui-button-text, .wysiwyg-toolbar .ui-button-icons-only .ui-button-text { padding: .5em;}
+.wysiwyg-toolbar .ui-button-text-icon-primary .ui-button-text, .wysiwyg-toolbar .ui-button-text-icons .ui-button-text { padding: .5em 1.5em .5em 3.5em; }
+.wysiwyg-toolbar .ui-button-text-icon-secondary .ui-button-text, .wysiwyg-toolbar .ui-button-text-icons .ui-button-text { padding: .5em 4em .5em 1.5em; }
+/* no icon support for input elements, provide padding by default */
+
+/*button icon element(s) */
+.ui-button-text-icon-primary .ui-button-icon-primary, .ui-button-text-icons .ui-button-icon-primary, .ui-button-icons-only .ui-button-icon-primary { left: .5em; }
+.ui-button-text-icon-secondary .ui-button-icon-secondary, .ui-button-text-icons .ui-button-icon-secondary, .ui-button-icons-only .ui-button-icon-secondary { right: .5em; }
+.ui-button-text-icons .ui-button-icon-secondary, .ui-button-icons-only .ui-button-icon-secondary { right: .5em; }
+
+/*button sets*/
+.wysiwyg-toolbar .ui-buttonset { margin-right: 7px; }
+.wysiwyg-toolbar .ui-buttonset .ui-button { margin-left: 0; margin-right: -.5em; }

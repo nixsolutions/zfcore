@@ -65,7 +65,7 @@
  * </code>
  *
  */
-class Core_View_Helper_FormRedactor extends Zend_View_Helper_FormTextarea
+class Core_View_Helper_FormWysiwyg extends Zend_View_Helper_FormTextarea
 {
     /**
      * Helper to generate a "Redactor" element
@@ -75,29 +75,43 @@ class Core_View_Helper_FormRedactor extends Zend_View_Helper_FormTextarea
      * @param null $attribs
      * @return string
      */
-    public function formRedactor($name, $value = null, $attribs = null)
+    public function formWysiwyg($name, $value = null, $attribs = null)
     {
-        $info = $this->_getInfo( $name, $value, $attribs );
-        $id = $this->view->escape( $info['id'] );
-        $options = array(
-            'lang' => Zend_Registry::get( 'Zend_Locale' )->getLanguage(),
-            'path' => '/scripts/jquery/redactor/' // w/o lang prefix
-        );
+        $view = $this->view;
 
-        if (!empty($attribs['redactor'])) {
-            $options = array_merge( $options, $attribs['redactor'] );
-            unset($attribs['redactor']);
+        $info = $this->_getInfo($name, $value, $attribs);
+        $id = $view->escape($info['id']);
+
+        $options = array('css' => $view->baseUrl('scripts/jquery/wysiwyg/frame/default.css'));
+        if (!empty($attribs['editor'])) {
+            $options = array_merge($options, $attribs['editor']);
+            unset($attribs['editor']);
+        }
+
+        $toolbars = array();
+        if (!empty($attribs['toolbars'])) {
+            $toolbars = array_merge($toolbars, $attribs['toolbars']);
+            unset($attribs['toolbars']);
         }
 
         /** add plugin libraries */
-        $this->view->plugins()->redactor();
+        $view->plugins()->wysiwyg();
 
-        /** init plugin */
-        $options = Zend_Json::encode($options);
-        $this->view->headScript()
-            ->appendScript('(function($){$(function(){$("#' . $id . '").redactor(' . $options . ');});})(jQuery)');
+        ob_start();
+        ?>
+        (function($){
+            $(function(){
+                $("#<?php echo $id?>").wysiwyg(<?php echo Zend_Json::encode($options)?>)
+                <?php foreach ($toolbars as $toolbar):?>
+                    .wysiwyg("toolbar", <?php echo Zend_Json::encode(array('buttons' => $toolbar))?>)
+                <?php endforeach;?>
+            });
+        })(jQuery)
+        <?php
+
+        $view->headScript()->appendScript(ob_get_clean());
 
         /** render text area */
-        return $this->formTextarea( $name, $value, $attribs );
+        return $this->formTextarea($name, $value, $attribs);
     }
 }
