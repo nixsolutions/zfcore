@@ -15,27 +15,27 @@ class ErrorControllerTest extends ControllerTestCase
     {
         parent::setUp();
     }
-    
+
     public function testInvalidURL()
     {
+        //@todo @fixme
         $this->dispatch('foo');
 
         // see error page in application.yaml
-        $this->assertModule('default');
+        $this->assertModule('users');
         $this->assertController('error');
         $this->assertAction('notfound');
     }
-    
+
     public function testInvalidActionURL()
     {
         $this->dispatch('index/foo');
 
-        // default error page, see logic
-        $this->assertModule('default');
-        $this->assertController('error');
-        $this->assertAction('error');
+        $this->assertModule('users');
+        $this->assertController('login');
+        $this->assertAction('index');
     }
-    
+
     /**
      * tear Down
      */

@@ -1,5 +1,6 @@
 <?php
 ini_set("memory_limit","256M");
+date_default_timezone_set('Europe/Kiev');
 // Define path to application directory
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../../application'));

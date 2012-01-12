@@ -115,7 +115,6 @@ class Blog_PostControllerTest extends ControllerTestCase
                       ->setPost(array('comment' => 'comment'));
 
         $this->dispatch('/blog/post/' . $this->_fixture['post2']['alias']);
-        //var_dump($this->getResponse()->getBody());exit;
         $this->assertModule('blog');
         $this->assertController('post');
         $this->assertAction('index');
