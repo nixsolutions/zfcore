@@ -6,15 +6,17 @@
                 <li><h4>Home</h4></li>
                 <li>
                     <?php
-                    //$this->navigation()->coreMenu()->setPartial(array('/default/partial/bottomMenu.phtml', 'default'));
-                    echo $this->coreMenu()->byId(1)->setMinDepth(0)->setMaxDepth(2);
+                        echo $this->menu('Home', 0, 50, '/default/partial/bottomMenu.phtml');
                     ?>
                 </li>
             </ul>
             <ul>
                 <li><h4>Terms of use</h4></li>
-                <li>Privacy policy</li>
-                <li>Terms and conditions</li>
+                <li>
+                    <?php
+                        echo $this->menu('Terms of use', 0, 50, '/default/partial/bottomMenu.phtml');
+                    ?>
+                </li>
             </ul>
         </div>
         <div class="clear">

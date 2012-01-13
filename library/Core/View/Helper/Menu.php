@@ -26,35 +26,34 @@
  * @package    Core_View
  * @subpackage Helper
  */
-class Core_View_Helper_CoreMenu
-    extends Zend_View_Helper_Navigation_Menu
+class Core_View_Helper_Menu
 {
-
     /**
-     * label of menu
-     */
-    private $_menuLabel = null;
-
-    /**
-     * id of menu
-     */
-    private $_menuId = null;
+    * Identifier of menu
+    */
+    private $_identifier = 0;
 
     /*
      * Constructor menu
      */
-    public function coreMenu(Zend_Navigation_Container $container = null)
+    public function menu($identifier = 0, $minDepth = 0, $maxDepth = 50, $partial = null, $type = null)
     {
-        $menuManager = new Menu_Model_Menu_Manager();
-
-        if ($this->_menuLabel) {
-            $menuArray = $menuManager->getMenuByLabel( $this->_menuLabel );
-            $this->_menuLabel = null;
-        } elseif ($this->_menuId) {
-            $menuArray = $menuManager->getMenuById( $this->_menuId );
-            $this->_menuId = null;
+        if ($identifier !== 0) {
+            $this->_identifier = $identifier;
         } else {
-            $menuArray = $menuManager->getMenuById( 0 );
+            return $this;
+        }
+
+        $view = new Zend_View();
+        $view->setScriptPath(APPLICATION_PATH . '/layouts/scripts');
+
+        $menuManager = new Menu_Model_Menu_Manager();
+        if (is_string($this->_identifier)) {
+            $menuArray = $menuManager->getMenuByLabel($this->_identifier);
+        } elseif (is_integer($this->_identifier)) {
+            $menuArray = $menuManager->getMenuById($this->_identifier);
+        } else {
+            $menuArray = $menuManager->getMenuById(0);
         }
 
         $container = new Zend_Navigation(array($menuArray));
@@ -66,7 +65,7 @@ class Core_View_Helper_CoreMenu
         } else {
             $role = 'guest';
         }
-        $this->setAcl( $acl )->setRole( $role );
+        $view->navigation()->setAcl( $acl )->setRole( $role );
 
         $iterator = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
 
@@ -91,7 +90,7 @@ class Core_View_Helper_CoreMenu
                 }
 
                 try {
-                    if (!$this->getAcl()->isAllowed(
+                    if (!$view->navigation()->getAcl()->isAllowed(
                         $role,
                         $resourceName,
                         $action
@@ -105,35 +104,20 @@ class Core_View_Helper_CoreMenu
                 }
             }
         }
-        return parent::menu( $container );
-    }
 
-
-    /**
-     * Set label for menu
-     *
-     * @param string $label
-     */
-    public function byLabel($label)
-    {
-        if (is_string( $label )) {
-            $this->_menuLabel = $label;
+        if ($type == 'breadcrumbs') {
+            return $view->navigation()
+                ->breadcrumbs($container)
+                ->setPartial($partial)
+                ->setMaxDepth($maxDepth)
+                ->setPartial($partial);
         }
-        $this->coreMenu();
-        return $this;
+
+        return $view->navigation()
+            ->menu($container)
+            ->setPartial($partial)
+            ->setMaxDepth($maxDepth)
+            ->setMinDepth($minDepth);
     }
 
-    /**
-     * Set id for menu
-     *
-     * @param int $id
-     */
-    public function byId($id)
-    {
-        if (is_integer( $id )) {
-            $this->_menuId = $id;
-        }
-        $this->coreMenu();
-        return $this;
-    }
 }

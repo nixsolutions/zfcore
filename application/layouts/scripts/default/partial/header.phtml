@@ -7,35 +7,16 @@
         <div class="menu small"></div>
         <div class="menu clearright">
             <?php
-            $this->coreMenu()->setPartial(array('/default/partial/mainMenu.phtml', 'users'));
-            //echo $this->navigation()->coreMenu()->byId(0);
-            //echo $this->navigation()->coreMenu()->byLabel('Home');
-            echo $this->navigation()->coreMenu() /*->byId(0)*/->byLabel('Home')->setMinDepth(0)->setMaxDepth(50);
+            echo $this->menu('Home', 0, 50, '/default/partial/mainMenu.phtml');
             ?>
             <br class="clear"/>
-            <?php // echo $this->getMenu(13)->setMinDepth(0)->setMaxDepth(0); ?>
-            <?php //echo $this->getMenu(12)->setMinDepth(1)->setMaxDepth(1); ?>
         </div>
     </div>
     <div class="topgreen clear">
         <div class="cont_width">
             <?php
-
-                /*$titleArr = $this->headTitle()->getIterator();
-              $title = reset($titleArr);
-              if (sizeof($titleArr) != 1) {
-                  echo $title;
-              } else {*/
-                $nav = $this->navigation()->coreMenu()->setMinDepth(1)->setMaxDepth(1)->findByActive('true');
-                if ($nav) {
-                    //showing page title or smt another from navigation
-                    //done only for 1st lev navigation
-                    echo $nav->getLabel();
-                } else {
-                    echo 'home';
-                }
-                //}
-                ?>
+            echo $this->menu('Home', 0, 10, '/default/partial/breadcrumbs.phtml','breadcrumbs');
+            ?>
         </div>
     </div>
     <div class="tophelp">

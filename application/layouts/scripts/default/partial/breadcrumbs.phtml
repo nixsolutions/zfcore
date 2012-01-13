@@ -1,17 +1,17 @@
 <?php if (sizeof($this->pages)==0) return ; ?>
 
-<div class="menu breadcrumbs box shadow">
 <?php
 for ($i = 0, $size = sizeof($this->pages); $i < $size; $i++) {
     // @see Zend_Navigation_Page_Mvc
     $url   = $this->pages[$i]->getHref();
     $label = $this->pages[$i]->getLabel();
-    
-    if ($i != ($size - 1)) {
-        echo "<a href='$url' title='$label'>$label</a> &raquo; ";
-    } else {
-        echo $label;
+
+    if ($label) {
+        if ($i != ($size - 1)) {
+            echo "<a href='$url' title='$label'>$label</a> &raquo; ";
+        } else {
+            echo $label;
+        }
     }
 }
 ?>
-</div> 
