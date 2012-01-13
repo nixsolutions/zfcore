@@ -1,4 +1,7 @@
-<?php if (sizeof($this->pages)==0) return ; ?>
+<?php if (sizeof($this->pages)==0) {
+    echo 'Home';
+    return ;
+}  ?>
 
 <?php
 for ($i = 0, $size = sizeof($this->pages); $i < $size; $i++) {
