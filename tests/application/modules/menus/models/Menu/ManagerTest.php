@@ -144,7 +144,7 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
     public function testMoveToById()
     {
         $this->assertFalse($this->_menuManager->moveToById(743, 'down'));
-        $this->assertFalse($this->_menuManager->moveToById(2, 'down'));
+        $this->assertTrue($this->_menuManager->moveToById(2, 'down'));
         $this->assertTrue($this->_menuManager->moveToById(2, 'up'));
     }
 
