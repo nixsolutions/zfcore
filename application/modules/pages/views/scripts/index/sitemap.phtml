@@ -1,5 +1,7 @@
 <div id="sitemap">
+    <ul>
     <?php
-    echo $this->navigation()->menu()->setMinDepth(1);
+        echo $this->menu('Home', 0, 50, '/default/partial/sitemap.phtml');
     ?>
+    </ul>
 </div>
