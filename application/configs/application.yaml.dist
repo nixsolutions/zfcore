@@ -41,6 +41,14 @@ production:
               module: users
               controller: error
               action: denied
+            error:
+              module: users
+              controller: error
+              action: notfound
+            login:
+              module: users
+              controller: login
+              action: index
             role: guest
             cache: acl
         navigation:

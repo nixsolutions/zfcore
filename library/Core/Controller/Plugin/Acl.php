@@ -56,7 +56,7 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
      * @var array
      */
     protected $_errorPage = array(
-        'module'     => 'default',
+        'module'     => 'users',
         'controller' => 'error',
         'action'     => 'notfound'
     );
