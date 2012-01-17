@@ -79,7 +79,7 @@ class Feedback_ManagementControllerTest extends ControllerTestCase
 
         $this->dispatch('/feedback/management/reply');
 
-        $this->assertRedirect('feedback/index');
+        $this->assertRedirect();
 
     }
 
@@ -187,7 +187,7 @@ class Feedback_ManagementControllerTest extends ControllerTestCase
 
         $this->dispatch('/feedback/management/reply');
 
-        $this->assertRedirect('feedback/index');
+        $this->assertRedirect();
     }
 
     public function testReplyValidAction()
@@ -212,7 +212,7 @@ class Feedback_ManagementControllerTest extends ControllerTestCase
 
         $this->dispatch('/feedback/management/reply');
 
-        $this->assertRedirect('feedback/index');
+        $this->assertRedirect();
 
     }
     /**
