@@ -18,7 +18,6 @@ class ErrorControllerTest extends ControllerTestCase
 
     public function testInvalidURL()
     {
-        //@todo @fixme
         $this->dispatch('foo');
 
         // see error page in application.yaml
