@@ -67,96 +67,97 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
      */
     public function replyAction()
     {
-        if (!$this->getRequest()->isPost()) {
-        	$this->_helper->redirector('index');
-        }
+        if ($this->getRequest()->isPost()) {
 
-        if (!$id = (int)$this->_getParam('id')) {
-            throw new Zend_Controller_Action_Exception('Param id is required');
-        }
-
-        $table = new Feedback_Model_Feedback_Table();
-        if (!$row = $table->getById($id)) {
-            throw new Zend_Controller_Action_Exception('Feedback not found');
-        }
-
-        $form = $this->_getCreateForm();
-        $form->setAction($this->view->url());
-
-        // Проверить, если данные пришли из indexAction
-        if ($this->_getParam('viewForm')) {
-            $form->setDefault('id', $id);
-            $form->setDefaults($row->toArray());
-        } else if ($form->isValid($this->_getAllParams())) {
-            $data = $form->getValues();
-            $message = $row->toArray();
-
-            $mail = new Zend_Mail();
-            // Формирование MIME данных
-            $mime = null;
-            if ($form->inputFile->isUploaded()) {
-                $file = $form->inputFile->getFileInfo();
-                $mime = Mail_Model_Mail::getMimePart(
-                    array(
-                         'file' => $file['inputFile']['tmp_name'],
-                         'name' => $file['inputFile']['name'],
-                         'description' => 'Attachment Image'
-                    )
-                );
-                $mail->setMime($mime);
-                // Удалить загруженный файл
-                unlink($file['tmp_name']);
-            }
-            // Формирование шаблона собщения
-            $subject = $data['subject'] ?
-                    $data['subject'] :
-                    ('To reply on "' . $message['subject'] . '"');
-
-            $template = new Mail_Model_Templates_Model();
-            $template->toName = $data['sender'];
-            $template->toEmail = $data['email'];
-            $template->fromName = $data['fromName'];
-            $template->fromEmail = $data['fromEmail'];
-            $template->subject = $subject;
-            $template->bodyHtml = $data['message'];
-
-            // if message with file, change %image% in template to link
-            if ($form->inputFile->isUploaded()) {
-                $image = '<img src="cid:' .
-                         $mime->id .
-                         '" title="' .
-                         $mime->description . '"/>';
-
-                $template->assign('image', $image);
-            }
-            // Посылка собщения
-            $template->send($mail);
-            // Если надо сохранить копию сообщения
-            //XXX
-            if (isset($data['saveCopy'])) {
-                $login = Zend_Auth::getInstance()->getIdentity()->login;
-                $table->createRow(
-                    array(
-                         'sender' => ($data['sender'] ? $data['sender'] : $login),
-                         'subject' => $subject,
-                         'message' => $data['message'],
-                         'email' => ($data['email'] ? $data['email'] : 'zfc@nixsolutions.com'),
-                         'status' => Feedback_Model_Feedback::STATUS_REPLY,
-                         'created' => date('Y-m-d H:i:s')
-                    )
-                )->save();
+            if (!$id = (int)$this->_getParam('id')) {
+                throw new Zend_Controller_Action_Exception('Param id is required');
             }
 
-            $row->status = Feedback_Model_Feedback::STATUS_REPLY;
-            $row->updated = date('Y-m-d H:i:s');
-            $row->save();
+            $table = new Feedback_Model_Feedback_Table();
+            if (!$row = $table->getById($id)) {
+                throw new Zend_Controller_Action_Exception('Feedback not found');
+            }
 
-            $this->_helper->flashMessenger('Successfully!');
+            $form = $this->_getCreateForm();
+            $form->setAction($this->view->url());
+
+            // Проверить, если данные пришли из indexAction
+            if ($this->_getParam('viewForm')) {
+                $form->setDefault('id', $id);
+                $form->setDefaults($row->toArray());
+            } else if ($form->isValid($this->_getAllParams())) {
+                $data = $form->getValues();
+                $message = $row->toArray();
+
+                $mail = new Zend_Mail();
+                // Формирование MIME данных
+                $mime = null;
+                if ($form->inputFile->isUploaded()) {
+                    $file = $form->inputFile->getFileInfo();
+                    $mime = Mail_Model_Mail::getMimePart(
+                        array(
+                             'file' => $file['inputFile']['tmp_name'],
+                             'name' => $file['inputFile']['name'],
+                             'description' => 'Attachment Image'
+                        )
+                    );
+                    $mail->setMime($mime);
+                    // Удалить загруженный файл
+                    unlink($file['tmp_name']);
+                }
+                // Формирование шаблона собщения
+                $subject = $data['subject'] ?
+                        $data['subject'] :
+                        ('To reply on "' . $message['subject'] . '"');
+
+                $template = new Mail_Model_Templates_Model();
+                $template->toName = $data['sender'];
+                $template->toEmail = $data['email'];
+                $template->fromName = $data['fromName'];
+                $template->fromEmail = $data['fromEmail'];
+                $template->subject = $subject;
+                $template->bodyHtml = $data['message'];
+
+                // if message with file, change %image% in template to link
+                if ($form->inputFile->isUploaded()) {
+                    $image = '<img src="cid:' .
+                             $mime->id .
+                             '" title="' .
+                             $mime->description . '"/>';
+
+                    $template->assign('image', $image);
+                }
+                // Посылка собщения
+                $template->send($mail);
+                // Если надо сохранить копию сообщения
+                //XXX
+                if (isset($data['saveCopy'])) {
+                    $login = Zend_Auth::getInstance()->getIdentity()->login;
+                    $table->createRow(
+                        array(
+                             'sender' => ($data['sender'] ? $data['sender'] : $login),
+                             'subject' => $subject,
+                             'message' => $data['message'],
+                             'email' => ($data['email'] ? $data['email'] : 'zfc@nixsolutions.com'),
+                             'status' => Feedback_Model_Feedback::STATUS_REPLY,
+                             'created' => date('Y-m-d H:i:s')
+                        )
+                    )->save();
+                }
+
+                $row->status = Feedback_Model_Feedback::STATUS_REPLY;
+                $row->updated = date('Y-m-d H:i:s');
+                $row->save();
+
+                $this->_helper->flashMessenger('Successfully!');
+                $this->_helper->redirector('index');
+            }
+
+            $this->view->form = $form;
+            $this->_setDefaultScriptPath();
+        } else {
             $this->_helper->redirector('index');
         }
-
-        $this->view->form = $form;
-        $this->_setDefaultScriptPath();
     }
 
     /**
