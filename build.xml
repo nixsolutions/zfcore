@@ -97,7 +97,7 @@
         </exec>
     </target>
     <target name="phpunit" depends="prepare">
-        <exec dir="${basedir}/tests" executable="phpunit" failonerror="false" output="${logsDir}/phpunit.log">
+        <exec dir="${basedir}/tests" executable="phpunit" failonerror="true" output="${logsDir}/phpunit.log">
             <arg line="--log-junit '${logsDir}/junit.xml'"/>
             <arg line="--coverage-clover '${logsDir}/clover.xml'"/>
             <arg line="--coverage-html '${logsDir}/clover'"/>
