@@ -54,27 +54,23 @@ class Install_Form_Settings_Basic extends Zend_Form
         $element->setLabel('Timezone');
         $element->setRequired(true)->setAttrib('style', 'width:100%');
 
-        $regions = array(
-            'Africa' => DateTimeZone::AFRICA,
-            'America' => DateTimeZone::AMERICA,
-            'Antarctica' => DateTimeZone::ANTARCTICA,
-            'Aisa' => DateTimeZone::ASIA,
-            'Atlantic' => DateTimeZone::ATLANTIC,
-            'Europe' => DateTimeZone::EUROPE,
-            'Indian' => DateTimeZone::INDIAN,
-            'Pacific' => DateTimeZone::PACIFIC
-        );
         $timezones = array();
-        foreach ($regions as $name => $mask) {
-            $zones = DateTimeZone::listIdentifiers($mask);
-            foreach ($zones as $timezone) {
+        $timezoneIdentifiers = DateTimeZone::listIdentifiers();
+
+        foreach ($timezoneIdentifiers as $timezone) {
+            if (preg_match( '/^(Africa|America|Antarctica|Asia|Atlantic|Europe|Indian|Pacific)\//', $timezone)) {
+                $ex = explode('/', $timezone);
+                $city = isset($ex[2]) ? $ex[1] . ' - ' . $ex[2] : $ex[1];
+                $name = $ex[0];
+                $timezones[$name][$timezone] = $city;
+
                 $dateTimeZoneGmt = new DateTimeZone('GMT');
                 $dateTimeZone = new DateTimeZone($timezone);
 
                 $dateTimeGmt = new DateTime("now", $dateTimeZoneGmt);
                 $timeOffset = $dateTimeZone->getOffset($dateTimeGmt);
-                $gmt = $timeOffset/3600;
 
+                $gmt = $timeOffset/3600;
                 if ($gmt == 0) {
                     $gmt = ' 00';
                 } elseif($gmt > 0 && $gmt < 10) {
@@ -86,6 +82,7 @@ class Install_Form_Settings_Basic extends Zend_Form
                 } elseif($gmt <= -10) {
                     $gmt = $gmt;
                 }
+
                 $timezones[$name][$timezone] = substr($timezone, strlen($name) + 1) . ' (GMT ' . $gmt . ':00)';
             }
         }
