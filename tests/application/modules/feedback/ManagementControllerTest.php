@@ -182,7 +182,7 @@ class Feedback_ManagementControllerTest extends ControllerTestCase
     {
         $this->_fixture['feedback']['id'] = 0;
         $this->getRequest()
-             ->setMethod('Get')
+             ->setMethod('GET')
              ->setParams($this->_fixture['feedback']);
 
         $this->dispatch('/feedback/management/reply');
