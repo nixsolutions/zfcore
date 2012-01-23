@@ -96,7 +96,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
         return $this->_parentArray;
     }
 
-
     /**
      * Build hierarchical tree for menu of parents
      *
@@ -298,25 +297,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     }
 
     /**
-     * Return _menuRowset
-     *
-     * @return Zend_Db_Table_Rowset
-     */
-    public function getMenuRowset()
-    {
-        return $this->_menuTableRowset;
-    }
-
-    public function getMenuRows()
-    {
-        if (null === $this->_dbTable) {
-            return;
-        }
-        return $this->getDbTable()->fetchAll()->toArray();
-    }
-
-
-    /**
      * get row by id
      *
      * @param $id int
@@ -363,9 +343,9 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
             return false;
         }
         if ($to == 'down') {
-            $result = $this->moveDownItem($row->id, $row->parentId, $row->position);
+            $result = $this->moveDownItem($row->parentId, $row->position);
         } else {
-            $result = $this->moveUpItem($row->id, $row->parentId, $row->position);
+            $result = $this->moveUpItem($row->parentId, $row->position);
         }
         return $result;
     }
@@ -373,12 +353,11 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     /**
      * move up item
      *
-     * @param int $id
      * @param int $parentId
      * @param int $position
      * @return bool
      */
-    public function moveUpItem($id, $parentId, $position)
+    public function moveUpItem($parentId, $position)
     {
         $where = $this->getDbTable()->getAdapter()->quoteInto('parentId = ?', $parentId);
         $where .= $this->getDbTable()->getAdapter()->quoteInto(' AND position <= ?', $position);
@@ -405,12 +384,11 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     /**
      * move down item
      *
-     * @param int $id
      * @param int $parentId
      * @param int $position
      * @return bool
      */
-    public function moveDownItem($id, $parentId, $position)
+    public function moveDownItem($parentId, $position)
     {
         $where = $this->getDbTable()->getAdapter()->quoteInto('parentId = ?', $parentId);
         $where .= $this->getDbTable()->getAdapter()->quoteInto(' AND position >= ?', $position);
@@ -491,9 +469,8 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     }
 
     /**
-     * get routes
+     * Get all routes
      *
-     * @param $onlyNames bool
      * @return array
      */
     public function getRoutes()
@@ -501,7 +478,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
         $instance = Zend_Controller_Front::getInstance();
 
         $routes = $instance->getRouter()->getRoutes();
-        $numes = array();
+        $routesArray = array();
         foreach ($routes as $routeName => $route) {
             if ($routes[$routeName] instanceof Zend_Controller_Router_Route_Static) {
                 if (preg_match("/([\S]*)Default$/i", $routeName, $data) && isset($data[1])) {
@@ -529,6 +506,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
         }
         return $routesArray;
     }
+
     /**
      * get info from static route
      *
@@ -538,6 +516,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
      */
     public function getInfoFromStaticRoute($routeName, $route)
     {
+        $defaults = array();
         foreach ($route as $names => $val) {
             if (preg_match("/_route/i", $names)) {
                 $path = $val;
@@ -568,6 +547,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
         $params = array();
         $parts = array();
         $arrayParams = array();
+        $defaults = array();
         $path = '';
         $wildcard = false;
         foreach ($route as $names => $val) {
@@ -619,7 +599,8 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     public function getInfoFromRegexRoute($routeName, $route)
     {
         $params = array();
-        $path = '';
+        $defaults = array();
+        $regex = '';
         $pattern = "/\([\S\s]*\)/i";
         foreach ($route as $names => $val) {
 
@@ -661,6 +642,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     public function getInfoFromModuleRoute($routeName, $route, $instance)
     {
         $modules = $instance->getControllerDirectory();
+        $module = array();
         foreach ($modules as $modul => $path) {
             if (is_dir($path)) {
                 $controllers = scandir($path);
@@ -752,17 +734,15 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                 $menu->route = $routes[$data['route']]['name'];
             }
 
-            $menu->label     = $data['label'];
-            $menu->title     = $data['title'];
-            $menu->params    = json_encode($options);
+            $menu->label    = $data['label'];
+            $menu->title    = $data['title'];
+            $menu->params   = json_encode($options);
             $menu->parentId = $data['parent'];
-            $menu->position  = $this->getLastPositionByParent($data['parent']);
+            $menu->position = $this->getLastPositionByParent($data['parent']);
 
-        if ( $menu->save() ) {
-            return $menu;
-        }
-        return false;
-
+            if ($menu->save()) {
+                return $menu;
+            }
         }
         return false;
     }
