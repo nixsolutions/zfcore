@@ -15,12 +15,14 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter(array(
-              '_addAllTableColumns',
-              '_addReadColumn',
-              '_addDeleteColumn',
-              '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addAllTableColumns',
+                '_addReadColumn',
+                '_addDeleteColumn',
+                '_showFilter'
+            )
+        );
     }
 
     /**
@@ -198,10 +200,13 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
      */
     public function _addReadColumn()
     {
-        $this->grid->setColumn('read', array(
-            'name' => 'Read',
-            'formatter' => array($this, 'readLinkFormatter')
-        ));
+        $this->grid->setColumn(
+            'read',
+            array(
+                'name' => 'Read',
+                'formatter' => array($this, 'readLinkFormatter')
+            )
+        );
     }
 
     /**
@@ -214,10 +219,13 @@ class Feedback_ManagementController extends Core_Controller_Action_Crud
     public function readLinkFormatter($value, $row)
     {
         $link = '<a href="%s" class="read">Read</a>';
-        $url = $this->getHelper('url')->url(array(
-             'action' => 'read',
-             'id' => $row['id']
-        ), 'default');
+        $url = $this->getHelper('url')->url(
+            array(
+                'action' => 'read',
+                'id' => $row['id']
+            ),
+            'default'
+        );
 
         return sprintf($link, $url);
     }
