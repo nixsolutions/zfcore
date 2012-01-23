@@ -1,9 +1,9 @@
 <?php
 /**
- * Bootstrap Users Module
+ * Bootstrap Menu Module
  *
  * @category   Application
- * @package    Users
+ * @package    Menu
  * @subpackage Bootstrap
  *
  * @version  $Id$
