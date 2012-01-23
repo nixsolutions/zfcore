@@ -20,12 +20,14 @@ class Translate_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter(array(
-             '_addAllTableColumns',
-             '_addCreateButton',
-             '_addDeleteColumn',
-             '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addAllTableColumns',
+                '_addCreateButton',
+                '_addDeleteColumn',
+                '_showFilter'
+            )
+        );
     }
 
     /**
