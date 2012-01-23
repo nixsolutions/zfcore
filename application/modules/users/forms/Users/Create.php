@@ -147,10 +147,10 @@ class Users_Form_Users_Create extends Zend_Form
         $element->setLabel('Password')
                 ->setRequired(true)
                 ->addValidator(
-                     'StringLength',
-                     false,
-                     array('min' => Users_Model_User::MIN_PASSWORD_LENGTH)
-                 );
+                    'StringLength',
+                    false,
+                    array('min' => Users_Model_User::MIN_PASSWORD_LENGTH)
+                );
 
         return $element;
     }

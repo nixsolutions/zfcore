@@ -20,14 +20,16 @@ class Users_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter(array(
-             '_addAllTableColumns',
-             '_addEditColumn',
-             '_prepare',
-             '_addDeleteColumn',
-             '_addCreateButton',
-             '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addAllTableColumns',
+                '_addEditColumn',
+                '_prepare',
+                '_addDeleteColumn',
+                '_addCreateButton',
+                '_showFilter'
+            )
+        );
 
         $this->_after('_setDefaultScriptPath', array('only' => array('create', 'edit')));
     }
@@ -41,8 +43,10 @@ class Users_ManagementController extends Core_Controller_Action_Crud
     {
         $adapter = Zend_Db_Table::getDefaultAdapter();
         $this->view->totalUsers = $adapter->fetchOne('SELECT COUNT(*) FROM `users`');
-        $this->view->activeUsers = $adapter->fetchOne('SELECT COUNT(*) FROM `users` WHERE `status` = ?',
-            array(Users_Model_User::STATUS_ACTIVE));
+        $this->view->activeUsers = $adapter->fetchOne(
+            'SELECT COUNT(*) FROM `users` WHERE `status` = ?',
+            array(Users_Model_User::STATUS_ACTIVE)
+        );
     }
 
     /**

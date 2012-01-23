@@ -31,7 +31,7 @@ class Users_Form_Users_Edit extends Users_Form_Users_Create
     {
         if (isset($defaults['id'])) {
             $this->getElement('email')->getValidator('Db_NoRecordExists')
-                                      ->setExclude(
+            ->setExclude(
                 array('field' => 'id', 'value' => $defaults['id'])
             );
         }

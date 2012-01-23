@@ -49,11 +49,15 @@ class Users_LoginController extends Core_Controller_Action
                     }
 
                     if (empty($url) || strpos($url, 'login') !== false) {
-                        $url = $this->getHelper('url')->url(array(
-                            'module' => 'users',
-                            'controller' => 'index',
-                            'action' => 'index'
-                        ), 'default', true);
+                        $url = $this->getHelper('url')->url(
+                            array(
+                                'module' => 'users',
+                                'controller' => 'index',
+                                'action' => 'index'
+                            ),
+                            'default',
+                            true
+                        );
                     }
 
                     $this->_flashMessenger->addMessage('Now You\'re logged in');
