@@ -58,7 +58,7 @@ class Install_Form_Settings_Basic extends Zend_Form
         $timezoneIdentifiers = DateTimeZone::listIdentifiers();
 
         foreach ($timezoneIdentifiers as $timezone) {
-            if (preg_match( '/^(Africa|America|Antarctica|Asia|Atlantic|Europe|Indian|Pacific)\//', $timezone)) {
+            if (preg_match('/^(Africa|America|Antarctica|Asia|Atlantic|Europe|Indian|Pacific)\//', $timezone)) {
                 $ex = explode('/', $timezone);
                 $city = isset($ex[2]) ? $ex[1] . ' - ' . $ex[2] : $ex[1];
                 $name = $ex[0];
@@ -73,14 +73,12 @@ class Install_Form_Settings_Basic extends Zend_Form
                 $gmt = $timeOffset/3600;
                 if ($gmt == 0) {
                     $gmt = ' 00';
-                } elseif($gmt > 0 && $gmt < 10) {
+                } elseif ($gmt > 0 && $gmt < 10) {
                     $gmt = '+0' . $gmt;
-                } elseif($gmt >= 10) {
+                } elseif ($gmt >= 10) {
                     $gmt = '+' . $gmt;
-                } elseif($gmt < 0 && $gmt > -10) {
+                } elseif ($gmt < 0 && $gmt > -10) {
                     $gmt = '-0' . abs($gmt);
-                } elseif($gmt <= -10) {
-                    $gmt = $gmt;
                 }
 
                 $timezones[$name][$timezone] = substr($timezone, strlen($name) + 1) . ' (GMT ' . $gmt . ':00)';
