@@ -67,10 +67,13 @@ class Options_Model_Options_Form_Create extends Zend_Form
                 ->addFilter('StringTrim')
                 ->addValidator('regex', false, array('/([a-zA-Z0-9 _-])+/'))
                 ->addValidator(
-            'StringLength', false,
-            array(0,
-                 self::MAX_NAME_LENGTH)
-        );
+                    'StringLength',
+                    false,
+                    array(
+                        0,
+                        self::MAX_NAME_LENGTH
+                    )
+                );
 
         return $name;
     }
@@ -89,10 +92,13 @@ class Options_Model_Options_Form_Create extends Zend_Form
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addValidator(
-            'StringLength', false,
-            array(0,
-                 self::MAX_VALUE_LENGTH)
-        );
+                    'StringLength',
+                    false,
+                    array(
+                         0,
+                        self::MAX_VALUE_LENGTH
+                    )
+                );
 
         $request = Zend_Controller_Front::getInstance()->getRequest();
         $type = $request->getParam('type');
@@ -120,19 +126,19 @@ class Options_Model_Options_Form_Create extends Zend_Form
                 ->setRequired(true)
                 ->setAttribs(array('style' => 'width:60%'))
                 ->setMultiOptions(
-            array(
-                 Options_Model_Options_Manager::TYPE_ARRAY =>
-                 Options_Model_Options_Manager::TYPE_ARRAY,
-                 Options_Model_Options_Manager::TYPE_FLOAT =>
-                 Options_Model_Options_Manager::TYPE_FLOAT,
-                 Options_Model_Options_Manager::TYPE_INT =>
-                 Options_Model_Options_Manager::TYPE_INT,
-                 Options_Model_Options_Manager::TYPE_OBJECT =>
-                 Options_Model_Options_Manager::TYPE_OBJECT,
-                 Options_Model_Options_Manager::TYPE_STRING =>
-                 Options_Model_Options_Manager::TYPE_STRING
-            )
-        );
+                    array(
+                         Options_Model_Options_Manager::TYPE_ARRAY =>
+                         Options_Model_Options_Manager::TYPE_ARRAY,
+                         Options_Model_Options_Manager::TYPE_FLOAT =>
+                         Options_Model_Options_Manager::TYPE_FLOAT,
+                         Options_Model_Options_Manager::TYPE_INT =>
+                         Options_Model_Options_Manager::TYPE_INT,
+                         Options_Model_Options_Manager::TYPE_OBJECT =>
+                         Options_Model_Options_Manager::TYPE_OBJECT,
+                         Options_Model_Options_Manager::TYPE_STRING =>
+                         Options_Model_Options_Manager::TYPE_STRING
+                    )
+                );
         return $value;
     }
 
@@ -150,14 +156,18 @@ class Options_Model_Options_Form_Create extends Zend_Form
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addValidator(
-            'regex', false,
-            array('/([a-zA-Z0-9 _-])+/')
-        )
+                    'regex',
+                    false,
+                    array('/([a-zA-Z0-9 _-])+/')
+                )
                 ->addValidator(
-            'StringLength', false,
-            array(0,
-                 self::MAX_NAMESPACE_LENGTH)
-        );
+                    'StringLength',
+                    false,
+                    array(
+                         0,
+                        self::MAX_NAMESPACE_LENGTH
+                    )
+                );
         return $namespace;
     }
 
