@@ -22,21 +22,25 @@ class Faq_Model_Question_Form_Create extends Zend_Form
         $content = new Core_Form_Element_Redactor('question');
         $content->setLabel('Question:')
             ->setRequired(true)
-            ->setAttrib('redactor', array(
-                'toolbar' => 'full',
-                'image_upload' => $this->_getUploadImageUrl()
-            ))
-        ;
+            ->setAttrib(
+                'redactor',
+                array(
+                    'toolbar' => 'full',
+                    'image_upload' => $this->_getUploadImageUrl()
+                )
+            );
         $this->addElement($content);
 
         $content = new Core_Form_Element_Redactor('answer');
         $content->setLabel('Answer:')
             ->setRequired(true)
-            ->setAttrib('redactor', array(
-                'toolbar' => 'full',
-                'image_upload' => $this->_getUploadImageUrl()
-            ))
-        ;
+            ->setAttrib(
+                'redactor',
+                array(
+                    'toolbar' => 'full',
+                    'image_upload' => $this->_getUploadImageUrl()
+                )
+            );
         $this->addElement($content);
 
         $submit = new Zend_Form_Element_Submit('submit');
@@ -52,10 +56,14 @@ class Faq_Model_Question_Form_Create extends Zend_Form
     protected function _getUploadImageUrl()
     {
         $helper = new Zend_View_Helper_Url();
-        return $helper->url(array(
-            'module' => 'pages',
-            'controller' => 'management',
-            'action' => 'upload'
-        ), 'default', true);
+        return $helper->url(
+            array(
+                'module' => 'pages',
+                'controller' => 'management',
+                'action' => 'upload'
+            ),
+            'default',
+            true
+        );
     }
 }
