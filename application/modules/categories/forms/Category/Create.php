@@ -20,7 +20,8 @@ class Categories_Form_Category_Create extends Zend_Form
         $this->setName('categoryForm')->setMethod('post');
 
         $this->addElements(
-            array($this->_title(),
+            array(
+                 $this->_title(),
                  $this->_description(),
                  $this->_alias(),
                  $this->_parent(),
@@ -59,11 +60,12 @@ class Categories_Form_Category_Create extends Zend_Form
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addValidator(
-                  'Db_NoRecordExists', false,
-                  array(
-                      array('table' => 'categories', 'field' => 'alias')
-                  )
-              );;
+                    'Db_NoRecordExists',
+                    false,
+                    array(
+                        array('table' => 'categories', 'field' => 'alias')
+                    )
+                );
         return $subject;
     }
 
