@@ -321,7 +321,7 @@ class Core_Migration_Manager
      * @param  string $module Module name
      * @return string Migration name
      */
-    public function create($module = null)
+    public function create($module = null,$migrationBody = null)
     {
         $path = $this->getMigrationsDirectoryPath( $module );
 
@@ -337,6 +337,25 @@ class Core_Migration_Manager
         $methodDown = new Zend_CodeGenerator_Php_Method();
         $methodDown->setName( 'down' )
             ->setBody( '// degrade' );
+
+
+        if($migrationBody) {
+            if(isset($migrationBody['up'])) {
+                $upBody = '';
+                foreach($migrationBody['up'] as $query) {
+                    $upBody .= '$this->query(\''.$query.'\');'.PHP_EOL;
+                }
+                $methodUp->setBody($upBody);
+            }
+            if(isset($migrationBody['down'])) {
+                $downBody = '';
+                foreach($migrationBody['down'] as $query) {
+                    $downBody .= '$this->query(\''.$query.'\');'.PHP_EOL;
+                }
+                $methodDown->setBody($downBody);
+            }
+        }
+
 
         $class = new Zend_CodeGenerator_Php_Class();
         $className = ((null !== $module) ? ucfirst( $module ) . '_' : '')
@@ -355,6 +374,66 @@ class Core_Migration_Manager
 
         return $_migrationName;
     }
+
+    protected function getLastDbState($module=null)
+    {
+        $lastMigration = $this->getLastMigration($module);
+
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+
+        $query = $dbAdapter->select()->from(
+            $this->_options['migrationsSchemaTable'],
+            array('db_state')
+        )->where('migration=?',$lastMigration);
+
+        if($module)
+            $query->where('module=?',$module);
+
+        $dbState = $dbAdapter->fetchOne($query);
+
+        return $dbState;
+    }
+
+    public function generateMigration()
+    {
+        $currDb = new Core_Migration_Db();
+
+        $lastPublishedDb = new Core_Migration_Db(
+            array('blacklist'=>$this->_options['migrationsSchemaTable']),
+            false
+        );
+        $lastPublishedDb->fromString($this->getLastDbState());
+
+        $diff = new Core_Migration_Db_Diff($currDb,$lastPublishedDb);
+        $difference = $diff->getDifference();
+
+        if (!count($difference['up']) && !count($difference['down'])) {
+            return false;
+        } else {
+            return $this->create(null,$difference);
+        }
+    }
+
+    public function checkState($module)
+    {
+        $lastMigration = $this->getLastMigration($module);
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+        $dbState = $this->getLastDbState($module);
+
+        if (!$dbState) {
+            $dbAdapter->update(
+                $this->_options['migrationsSchemaTable'],
+                array('db_state'=>$this->getDb()->toString()),
+                array($dbAdapter->quoteInto('migration=?',$lastMigration),
+                    $dbAdapter->quoteInto('module=?',$module))
+            );
+
+            return true;
+        }
+
+        return false;
+    }
+
 
     /**
      * Method upgrade all migration or migrations to selected
