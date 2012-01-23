@@ -8,9 +8,9 @@
  */
 class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
 {
-    protected $key = 0;
+    protected $_key = 0;
 
-    protected $template;
+    protected $_template;
 
     /**
      * Load the comments by the unique alias.
@@ -21,7 +21,6 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
      *
      * @param string $aliasKey
      * @param array $options
-     * @param integer | mixed $page
      * @return type
      * @throws Zend_Controller_Action_Exception
      */
@@ -46,11 +45,11 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
         }
 
         // throw Exception when key required and missed
-        if (!$this->key && $alias->isKeyRequired()) {
+        if (!$this->_key && $alias->isKeyRequired()) {
             throw new Zend_Controller_Action_Exception('Missed key parameter');
         }
 
-        $paginator = Zend_Paginator::factory($manager->getSelect($alias, $userId, $this->key));
+        $paginator = Zend_Paginator::factory($manager->getSelect($alias, $userId, $this->_key));
 
         // set paginator options
         if ($alias->isPaginatorEnabled()) {
@@ -64,7 +63,7 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
         // init form
         $form = new Comments_Model_Comment_Form_Create();
         $form->setAlias($aliasKey);
-        $form->setKey($this->key);
+        $form->setKey($this->_key);
         $form->setReturnUrl($this->view->url());
 
         if (!$alias->isTitleDisplayed()) {
@@ -78,7 +77,7 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
                 'paginator' => $paginator,
                 'form' => $form,
                 'user' => $user,
-                'template' => $this->template
+                'template' => $this->_template
             )
         );
     }
@@ -86,17 +85,17 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
     /**
      * Check the stack of options
      *
-     * @param type $options
+     * @param array $options
      * @return void
      */
     private function _checkOptions($options = array())
     {
         if (isset($options['template'])) {
-            $this->template = $options['template'];
+            $this->_template = $options['template'];
         }
 
         if (isset($options['key'])) {
-            $this->key = $options['key'];
+            $this->_key = $options['key'];
         }
     }
 }

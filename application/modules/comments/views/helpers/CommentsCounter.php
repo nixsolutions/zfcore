@@ -8,7 +8,8 @@
  * @version $Id$
  */
 class Comments_View_Helper_CommentsCounter extends Zend_View_Helper_Abstract
-{   
+{
+
     /**
      * Fetch the amount of comments for the items related to the $alias with keys
      * 

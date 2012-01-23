@@ -20,16 +20,18 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
         parent::init();
 
         // setup the grid
-        $this->_beforeGridFilter(array(
-             '_addCheckBoxColumn',
-             '_addAllTableColumns',
-             '_addShowCommentsColumn',
-             '_addEditColumn',
-             '_addDeleteColumn',
-             '_addCreateButton',
-             '_addDeleteButton',
-             '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addCheckBoxColumn',
+                '_addAllTableColumns',
+                '_addShowCommentsColumn',
+                '_addEditColumn',
+                '_addDeleteColumn',
+                '_addCreateButton',
+                '_addDeleteButton',
+                '_showFilter'
+            )
+        );
     }
     
     /**
@@ -69,10 +71,13 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
      */
     public function _addShowCommentsColumn()
     {
-        $this->grid->setColumn('show', array(
-            'name' => 'Show',
-            'formatter' => array($this, 'showCommentsFormatter')
-        ));
+        $this->grid->setColumn(
+            'show',
+            array(
+                'name' => 'Show',
+                'formatter' => array($this, 'showCommentsFormatter')
+            )
+        );
     }
 
     /**
@@ -85,11 +90,14 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
     public function showCommentsFormatter($value, $row)
     {
         $link = '<a href="%s" class="Show">Show</a>';
-        $url = $this->getHelper('url')->url(array(
-            'controller' => 'management',
-            'action' => 'index',
-            'alias' => $row['id']
-        ), 'default');
+        $url = $this->getHelper('url')->url(
+            array(
+                'controller' => 'management',
+                'action' => 'index',
+                'alias' => $row['id']
+            ),
+            'default'
+        );
 
         return sprintf($link, $url);
     }

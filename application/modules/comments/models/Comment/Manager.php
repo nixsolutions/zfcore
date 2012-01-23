@@ -35,7 +35,9 @@ class Comments_Model_Comment_Manager extends Core_Model_Manager
             ->where(
                 'comments.status = "' . Comments_Model_Comment::STATUS_ACTIVE . '"'
                 . ' OR (comments.status != "' . Comments_Model_Comment::STATUS_ACTIVE . '"'
-                . ' AND comments.userId = ?)', $userId);
+                . ' AND comments.userId = ?)',
+                $userId
+            );
         
         if ($commentAlias->isKeyRequired()) {
             $select->where('comments.key = ?', $key);
@@ -64,7 +66,9 @@ class Comments_Model_Comment_Manager extends Core_Model_Manager
             ->where(
                 'comments.status = "' . Comments_Model_Comment::STATUS_ACTIVE . '"'
                 . ' OR (comments.status != "' . Comments_Model_Comment::STATUS_ACTIVE . '"'
-                . ' AND comments.userId = ?)', $userId)
+                . ' AND comments.userId = ?)',
+                $userId
+            )
             ->group('comments.aliasId');
     }
 
@@ -77,7 +81,12 @@ class Comments_Model_Comment_Manager extends Core_Model_Manager
      * @param integer $userId
      * @return array
      */
-    public function getGrouppedCommentsAmount(Comments_Model_CommentAlias $commentAlias, $fieldName, array $fieldValues, $userId)
+    public function getGrouppedCommentsAmount(
+        Comments_Model_CommentAlias $commentAlias,
+        $fieldName,
+        array $fieldValues,
+        $userId
+    )
     {
         if (sizeof($fieldValues) < 1) {
             return array();

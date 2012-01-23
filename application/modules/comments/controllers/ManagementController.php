@@ -13,7 +13,7 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
     /**
      * @var Comments_Model_CommentAlias
      */
-    protected $alias;
+    protected $_alias;
     
     /**
      * Initialize
@@ -27,21 +27,23 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
         $aliasManager = new Comments_Model_CommentAlias_Manager();
         
         // get the Alias by the requested param
-        $this->alias = $aliasManager->getDbTable()
+        $this->_alias = $aliasManager->getDbTable()
             ->find($this->getRequest()->getParam('alias'))
             ->current();
         
         // setup the grid
-        $this->_beforeGridFilter(array(
-             '_addCheckBoxColumn',
-             '_addAllTableColumns',
-             '_prepare',
-             '_addEditColumn',
-             '_addDeleteColumn',
-             '_addBackButton',
-             '_addDeleteButton',
-             '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addCheckBoxColumn',
+                '_addAllTableColumns',
+                '_prepare',
+                '_addEditColumn',
+                '_addDeleteColumn',
+                '_addBackButton',
+                '_addDeleteButton',
+                '_showFilter'
+            )
+        );
 
     }
     
@@ -54,9 +56,9 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
     {
         return new Core_Grid_Adapter_Select(
             $this->_getTable()
-                ->select()
-                ->where('aliasId = ?', $this->alias->id)
-                ->order('created DESC')
+            ->select()
+            ->where('aliasId = ?', $this->_alias->id)
+            ->order('created DESC')
         );
     }
     
@@ -91,7 +93,7 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
         
         $form = new Comments_Model_Comment_Form_Edit();
         
-        if ($this->alias && !$this->alias->isTitleDisplayed()) {
+        if ($this->_alias && !$this->_alias->isTitleDisplayed()) {
             $form->removeTitleElement();
         }
         
@@ -109,7 +111,7 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
     {
         $this->grid->removeColumn('aliasId');
         
-        if ($this->alias && !$this->alias->isTitleDisplayed()) {
+        if ($this->_alias && !$this->_alias->isTitleDisplayed()) {
             $this->grid->removeColumn('title');
         }
     }
@@ -168,7 +170,7 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
                 'module' => 'comments', 
                 'controller' => 'management', 
                 'action' => 'index', 
-                'alias' => $this->alias->id
+                'alias' => $this->_alias->id
             ), 
             'default', 
             true
