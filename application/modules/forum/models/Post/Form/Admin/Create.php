@@ -24,19 +24,23 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Form
         $title->setLabel('Title')
               ->setRequired(true)
               ->setAttribs(array('style'=>'width:60%'))
-              ->addValidator('regex', false,
-                  array('/^[\w\s\'",.\-_]+$/i', 'messages' => array (
-                      Zend_Validate_Regex::INVALID => 'Invalid title',
-                      Zend_Validate_Regex::NOT_MATCH  => 'Invalid title'
-                  ))
+              ->addValidator(
+                  'regex',
+                  false,
+                  array(
+                      '/^[\w\s\'",.\-_]+$/i',
+                      'messages' => array (
+                          Zend_Validate_Regex::INVALID => 'Invalid title',
+                          Zend_Validate_Regex::NOT_MATCH  => 'Invalid title'
+                      )
+                  )
               );
         $this->addElement($title);
 
         $body = new Core_Form_Element_Redactor('body');
         $body->setLabel('Post')
              ->setRequired(true)
-             ->setAttribs(array('style' => 'width:100%;height:340px'))
-        ;
+             ->setAttribs(array('style' => 'width:100%;height:340px'));
 
         $this->addElement($body);
         $this->addElement($this->_category());

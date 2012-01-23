@@ -31,10 +31,10 @@ class Forum_Model_Post_Table extends Core_Db_Table_Abstract
         $select = $this->select()->from(array('p' => $this->_name), array('*'));
         $select->setIntegrityCheck(false)
                ->joinLeft(
-            array('u' => $users->info('name')),
-            'userId=u.id',
-            array('login')
-        );
+                   array('u' => $users->info('name')),
+                   'userId=u.id',
+                   array('login')
+               );
         $select->order('created DESC');
         $select->group('categoryId');
         $select->where('p.status=?', Forum_Model_Post::STATUS_ACTIVE);
@@ -65,10 +65,10 @@ class Forum_Model_Post_Table extends Core_Db_Table_Abstract
         $select = $this->select()->from(array('p' => $this->_name), array('*'));
         $select->setIntegrityCheck(false)
             ->joinLeft(
-            array('u' => $users->info('name')),
-            'userId=u.id',
-            array('author' =>'login')
-        );
+                array('u' => $users->info('name')),
+                'userId=u.id',
+                array('author' =>'login')
+            );
         $select->order('p.created DESC');
         $select->group('p.id');
         $select->where('p.status=?', Forum_Model_Post::STATUS_ACTIVE);

@@ -34,11 +34,13 @@ class Forum_RssController extends Core_Controller_Action
         $feed->setTitle('Forum Rss Feed');
         $feed->setLink($serverUrl . $url->url(array(), 'forum'));
         $feed->setFeedLink('http://www.example.com/atom', 'atom');
-        $feed->addAuthor(array(
-            'name'  => 'Forum Owner Name',
-            'email' => 'support@example.com',
-            'uri'   => $serverUrl,
-        ));
+        $feed->addAuthor(
+            array(
+                'name'  => 'Forum Owner Name',
+                'email' => 'support@example.com',
+                'uri'   => $serverUrl,
+            )
+        );
 
         $posts = new Forum_Model_Post_Table();
         $select = $posts->getPostsSelect();

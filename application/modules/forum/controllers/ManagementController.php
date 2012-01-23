@@ -20,16 +20,18 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter(array(
-             '_addCheckBoxColumn',
-             '_addAllTableColumns',
-             '_prepareGrid',
-             '_addEditColumn',
-             '_addDeleteColumn',
-             '_addCreateButton',
-             '_addDeleteButton',
-             '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addCheckBoxColumn',
+                '_addAllTableColumns',
+                '_prepareGrid',
+                '_addEditColumn',
+                '_addDeleteColumn',
+                '_addCreateButton',
+                '_addDeleteButton',
+                '_showFilter'
+            )
+        );
     }
 
     /**
@@ -81,12 +83,13 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
              ->removeColumn('categoryId')
              ->removeColumn('userId')
              ->removeColumn('views')
-             ->setColumn('body', array(
-                'formatter' => array($this, array('trimFormatter'))
-             ));
+             ->setColumn(
+                 'body',
+                 array(
+                     'formatter' => array($this, array('trimFormatter'))
+                 )
+             );
     }
-
-
 
 }
 
