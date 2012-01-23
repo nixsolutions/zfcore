@@ -17,19 +17,21 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         parent::init();
 
         $this->_clearAfter();
-        $this->_after( '_changeViewScriptPathSpec', array('only' => array('index', 'grid')) );
+        $this->_after('_changeViewScriptPathSpec', array('only' => array('index', 'grid')));
 
-        $this->_beforeGridFilter(array(
-             '_addCheckBoxColumn',
-             '_addAllTableColumns',
-             '_prepareGrid',
-             '_addEditColumn',
-             '_addDeleteColumn',
-             '_addCreateButton',
-             '_addUpButton',
-             '_addDownButton',
-             '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addCheckBoxColumn',
+                '_addAllTableColumns',
+                '_prepareGrid',
+                '_addEditColumn',
+                '_addDeleteColumn',
+                '_addCreateButton',
+                '_addUpButton',
+                '_addDownButton',
+                '_showFilter'
+            )
+        );
     }
 
     /**
@@ -99,7 +101,6 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
         parent::indexAction();
         $this->view->javascript()->action();
     }
-
 
     /**
      * create new menu item
@@ -247,10 +248,13 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
     protected function _addUpButton()
     {
         $link = '<a href="%s" class="button" id="up-button">Up</a>';
-        $url = $this->getHelper('url')->url(array(
-            'action' => 'move',
-            'to' => 'up'
-        ), 'default');
+        $url = $this->getHelper('url')->url(
+            array(
+                'action' => 'move',
+                'to'     => 'up'
+            ),
+            'default'
+        );
         $this->view->placeholder('grid_buttons')->create .= sprintf($link, $url);
     }
 
@@ -262,10 +266,13 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
     protected function _addDownButton()
     {
         $link = '<a href="%s" class="button" id="down-button">Down</a>';
-        $url = $this->getHelper('url')->url(array(
-            'action' => 'move',
-            'to' => 'down'
-        ), 'default');
+        $url = $this->getHelper('url')->url(
+            array(
+                'action' => 'move',
+                'to'     => 'down'
+            ),
+            'default'
+        );
         $this->view->placeholder('grid_buttons')->create .= sprintf($link, $url);
     }
 
@@ -287,13 +294,23 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
             ->removeColumn('module')
             ->removeColumn('controller')
             ->removeColumn('action')
-            ->setColumn('label', array(
-                'formatter' => array($this->view,
-                    array('escape'))
-            ))->setColumn('uri', array(
-                'formatter' => array($this->view,
-                    array('escape'))
-            ));
+            ->setColumn(
+                'label',
+                array(
+                    'formatter' => array(
+                        $this->view,
+                        array('escape')
+                    )
+                )
+            )->setColumn(
+                'uri',
+                array(
+                    'formatter' => array(
+                        $this->view,
+                        array('escape')
+                    )
+                )
+            );
     }
 
 }
