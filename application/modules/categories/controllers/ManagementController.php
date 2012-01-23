@@ -18,16 +18,18 @@ class Categories_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter(array(
-             '_addCheckBoxColumn',
-             '_addAllTableColumns',
-//             '_prepareGrid',
-             '_addEditColumn',
-             '_addDeleteColumn',
-             '_addCreateButton',
-             '_addDeleteButton',
-             '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addCheckBoxColumn',
+                '_addAllTableColumns',
+                //'_prepareGrid',
+                '_addEditColumn',
+                '_addDeleteColumn',
+                '_addCreateButton',
+                '_addDeleteButton',
+                '_showFilter'
+            )
+        );
 
     }
 
