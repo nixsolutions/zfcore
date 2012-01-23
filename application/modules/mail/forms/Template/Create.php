@@ -75,10 +75,13 @@ class Mail_Form_Template_Create extends Zend_Form
              ->setRequired(true)
              ->setAttribs(array('style'=>'width:60%'))
              ->addFilter('StringTrim')
-             ->setAttrib('redactor', array(
-                 'toolbar' => 'full',
-                 'image_upload' => $this->_getUploadImageUrl()
-             ));
+             ->setAttrib(
+                 'redactor',
+                 array(
+                    'toolbar' => 'full',
+                    'image_upload' => $this->_getUploadImageUrl()
+                 )
+             );
 
         return $body;
     }
@@ -206,10 +209,14 @@ class Mail_Form_Template_Create extends Zend_Form
     protected function _getUploadImageUrl()
     {
         $helper = new Zend_View_Helper_Url();
-        return $helper->url(array(
-            'module' => 'pages',
-            'controller' => 'management',
-            'action' => 'upload'
-        ), 'default', true);
+        return $helper->url(
+            array(
+                'module' => 'pages',
+                'controller' => 'management',
+                'action' => 'upload'
+            ),
+            'default',
+            true
+        );
     }
 }

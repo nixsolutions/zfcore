@@ -18,12 +18,14 @@ class Mail_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter(array(
-             '_addAllTableColumns',
-             '_getCustomChanges',
-             '_addEditColumn',
-             '_addDeleteColumn'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addAllTableColumns',
+                '_getCustomChanges',
+                '_addEditColumn',
+                '_addDeleteColumn'
+            )
+        );
     }
 
     /**
