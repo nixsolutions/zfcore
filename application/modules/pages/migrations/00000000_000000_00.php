@@ -6,53 +6,23 @@ class Pages_Migration_00000000_000000_00 extends Core_Migration_Abstract
     public function up()
     {
         // static pages table
-        $this->createTable('pages');
-        
-        $this->createColumn('pages', 
-                            'pid', 
-                            Core_Migration_Abstract::TYPE_BIGINT, 
-                            null, null, true, true);
-          
-        $this->createColumn('pages', 
-                            'title', 
-                            Core_Migration_Abstract::TYPE_TEXT, 
-                            null, null, true);
-                            
-        $this->createColumn('pages', 
-                            'alias', 
-                            Core_Migration_Abstract::TYPE_VARCHAR, 
-                            255, null, true);
-                            
-        $this->createColumn('pages', 
-                            'content', 
-                            Core_Migration_Abstract::TYPE_LONGTEXT);
-                            
-        $this->createColumn('pages', 
-                            'keywords', 
-                            Core_Migration_Abstract::TYPE_TEXT);
-                            
-        $this->createColumn('pages', 
-                            'description', 
-                            Core_Migration_Abstract::TYPE_TEXT);
-                            
-        $this->createColumn('pages', 
-                            'created', 
-                            Core_Migration_Abstract::TYPE_TIMESTAMP,
-                            null,
-                            'CURRENT_TIMESTAMP', true);
-                            
-        $this->createColumn('pages', 
-                            'updated', 
-                            Core_Migration_Abstract::TYPE_TIMESTAMP,
-                            null,
-                            '2000-01-01 00:00', true);
-                            
-        $this->createColumn('pages', 
-                            'user_id', 
-                            Core_Migration_Abstract::TYPE_BIGINT,
-                            null, '1', true);
-                            
-        $this->createUniqueIndexes('pages', array('pid', 'alias'), 'unique');
+        $this->query(
+            "
+            CREATE TABLE `pages` (
+              `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+              `pid` BIGINT(20) NOT NULL,
+              `title` TEXT NOT NULL,
+              `alias` VARCHAR(255) NOT NULL,
+              `content` LONGTEXT,
+              `keywords` TEXT,
+              `description` TEXT,
+              `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `updated` TIMESTAMP NOT NULL DEFAULT '2000-01-01 00:00:00',
+              `user_id` BIGINT(20) NOT NULL DEFAULT '1',
+              PRIMARY KEY  (`id`,`pid`),
+              UNIQUE KEY `unique` (`pid`,`alias`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8"
+        );
     }
 
     public function down()
