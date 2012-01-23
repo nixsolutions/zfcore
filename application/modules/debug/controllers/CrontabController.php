@@ -22,14 +22,16 @@ class Debug_CrontabController extends Core_Controller_Action_Crud
     {
         parent::init();
 
-        $this->_beforeGridFilter(array(
-             '_addAllTableColumns',
-             //'_prepareGrid',
-             '_addEditColumn',
-             '_addDeleteColumn',
-             '_addCreateButton',
-             '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addAllTableColumns',
+                //'_prepareGrid',
+                '_addEditColumn',
+                '_addDeleteColumn',
+                '_addCreateButton',
+                '_showFilter'
+            )
+        );
     }
 
     /**
@@ -59,31 +61,48 @@ class Debug_CrontabController extends Core_Controller_Action_Crud
      */
     public function _addAllTableColumns()
     {
-        $this->grid->setColumn('minute', array(
-            'name' => 'Minute',
-            'type' => Core_Grid::TYPE_DATA,
-            'index' => 'minute'
-        ))->setColumn('hour', array(
-            'name' => 'Hour',
-            'type' => Core_Grid::TYPE_DATA,
-            'index' => 'hour'
-        ))->setColumn('dayOfMonth', array(
-            'name' => 'Day of month',
-            'type' => Core_Grid::TYPE_DATA,
-            'index' => 'dayOfMonth'
-        ))->setColumn('month', array(
-            'name' => 'Month',
-            'type' => Core_Grid::TYPE_DATA,
-            'index' => 'month'
-        ))->setColumn('dayOfWeek', array(
-            'name' => 'Day of week',
-            'type' => Core_Grid::TYPE_DATA,
-            'index' => 'dayOfWeek'
-        ))->setColumn('command', array(
-            'name' => 'Command',
-            'type' => Core_Grid::TYPE_DATA,
-            'index' => 'command'
-        ));
+        $this->grid->setColumn(
+            'minute', array(
+                'name' => 'Minute',
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => 'minute'
+            )
+        )->setColumn(
+            'hour',
+            array(
+                'name' => 'Hour',
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => 'hour'
+            )
+        )->setColumn(
+            'dayOfMonth',
+            array(
+                'name' => 'Day of month',
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => 'dayOfMonth'
+            )
+        )->setColumn(
+            'month',
+            array(
+                'name' => 'Month',
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => 'month'
+            )
+        )->setColumn(
+            'dayOfWeek',
+            array(
+                'name' => 'Day of week',
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => 'dayOfWeek'
+            )
+        )->setColumn(
+            'command',
+            array(
+                'name' => 'Command',
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => 'command'
+            )
+        );
     }
 
     /**

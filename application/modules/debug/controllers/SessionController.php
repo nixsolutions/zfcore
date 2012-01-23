@@ -22,13 +22,15 @@ class Debug_SessionController extends Core_Controller_Action_Crud
     {
         parent::init();
 
-        $this->_beforeGridFilter(array(
-             '_addAllTableColumns',
-             //'_prepareGrid',
-             '_addDeleteColumn',
-             '_addCreateButton',
-             '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addAllTableColumns',
+                //'_prepareGrid',
+                '_addDeleteColumn',
+                '_addCreateButton',
+                '_showFilter'
+            )
+        );
     }
 
     /**
@@ -58,16 +60,22 @@ class Debug_SessionController extends Core_Controller_Action_Crud
      */
     public function _addAllTableColumns()
     {
-        $this->grid->setColumn('id', array(
-            'name' => 'Id',
-            'type' => Core_Grid::TYPE_DATA,
-            'index' => 'id'
-        ))->setColumn('value', array(
-            'name' => 'Value',
-            'type' => Core_Grid::TYPE_DATA,
-            'index' => 'value',
-            'formatter' => array($this, 'formatter')
-        ));
+        $this->grid->setColumn(
+            'id',
+            array(
+                'name' => 'Id',
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => 'id'
+            )
+        )->setColumn(
+            'value',
+            array(
+                'name' => 'Value',
+                'type' => Core_Grid::TYPE_DATA,
+                'index' => 'value',
+                'formatter' => array($this, 'formatter')
+            )
+        );
     }
 
     /**
