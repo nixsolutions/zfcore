@@ -74,8 +74,8 @@
             <arg line="--exclude bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests" />
         </exec>
     </target>
-    
-    
+
+
     <target name="pdepend" depends="prepare" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
         <exec dir="${basedir}" executable="pdepend" failonerror="false" output="${logsDir}/pdepend.log">
             <arg line="--jdepend-xml=${logsDir}/jdepend.xml" />
@@ -92,6 +92,7 @@
             <arg line="--extensions=php"/>
             <arg line="--standard=Zend ."/>
             <arg line="--report-file=${logsDir}/checkstyle.xml" />
+            <arg line="--ignore=library/Zend,library/elFinder,library/Facebook" />
             <arg line="${appDir}"/>
             <arg line="${coreDir}"/>
         </exec>
