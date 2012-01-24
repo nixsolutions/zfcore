@@ -61,10 +61,10 @@ abstract class Core_Asset_Adapter_Abstract
     {
         $content = '';
         foreach ($files as $file) {
-            if (is_file( $file )) {
-                $content .= file_get_contents( $file ) . "\n";
+            if (is_file($file)) {
+                $content .= file_get_contents($file) . "\n";
             }
         }
-        file_put_contents( $destination, $content );
+        file_put_contents($destination, $content);
     }
 }
