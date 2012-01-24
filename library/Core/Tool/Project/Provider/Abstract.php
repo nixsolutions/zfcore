@@ -46,7 +46,7 @@ class Core_Tool_Project_Provider_Abstract
         // load Core Context
         $contextRegistry = Zend_Tool_Project_Context_Repository::getInstance();
         $contextRegistry->addContextsFromDirectory(
-            dirname( dirname( __FILE__ ) ) . '/Context/Core/',
+            dirname(dirname(__FILE__)) . '/Context/Core/',
             'Core_Tool_Project_Context_Core_'
         );
     }

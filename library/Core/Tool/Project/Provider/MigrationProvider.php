@@ -130,13 +130,13 @@ class Core_Tool_Project_Provider_MigrationProvider
     protected function getManager()
     {
         if (null == $this->_manager) {
-            $profile = $this->_loadProfile( self::NO_PROFILE_THROW_EXCEPTION );
+            $profile = $this->_loadProfile(self::NO_PROFILE_THROW_EXCEPTION);
 
             $options = array(
                 'projectDirectoryPath'
-                => self::_getProjectDirectoryPath( $profile ),
+                => self::_getProjectDirectoryPath($profile),
                 'modulesDirectoryPath'
-                => self::_getModulesDirectoryPath( $profile ),
+                => self::_getModulesDirectoryPath($profile),
                 'migrationsDirectoryName'
                 => 'migrations',
             );
@@ -156,29 +156,29 @@ class Core_Tool_Project_Provider_MigrationProvider
     {
         require_once 'bootstrap.php';
 
-        $this->message( '----------------------------------' );
-        $this->message( chr( 254 ) . ' - Already loaded', 'green' );
-        $this->message( chr( 254 ) . ' - Ready for load', 'yellow' );
-        $this->message( chr( 254 ) . ' - Loaded, not exists', 'red' );
-        $this->message( chr( 254 ) . ' - Conflict, not load', 'bgRed' );
-        $this->message( '----------------------------------' );
+        $this->message('----------------------------------');
+        $this->message(chr(254) . ' - Already loaded', 'green');
+        $this->message(chr(254) . ' - Ready for load', 'yellow');
+        $this->message(chr(254) . ' - Loaded, not exists', 'red');
+        $this->message(chr(254) . ' - Conflict, not load', 'bgRed');
+        $this->message('----------------------------------');
 
-        $lastMigration = $this->getManager()->getLastMigration( $module );
+        $lastMigration = $this->getManager()->getLastMigration($module);
 
-        $exists = $this->getManager()->getExistsMigrations( $module );
-        $loaded = $this->getManager()->getLoadedMigrations( $module );
+        $exists = $this->getManager()->getExistsMigrations($module);
+        $loaded = $this->getManager()->getLoadedMigrations($module);
 
-        $migrations = array_merge( $exists, $loaded );
-        $migrations = array_unique( $migrations );
+        $migrations = array_merge($exists, $loaded);
+        $migrations = array_unique($migrations);
 
-        sort( $migrations );
+        sort($migrations);
 
         foreach ($migrations as $migration) {
             $v = 0;
-            if (in_array( $migration, $exists )) {
+            if (in_array($migration, $exists)) {
                 $v = $v + 1;
             }
-            if (in_array( $migration, $loaded )) {
+            if (in_array($migration, $loaded)) {
                 $v = $v + 2;
             }
 
@@ -194,7 +194,7 @@ class Core_Tool_Project_Provider_MigrationProvider
                     break;
             }
 
-            $this->message( $migration, $color );
+            $this->message($migration, $color);
         }
     }
 
@@ -206,11 +206,11 @@ class Core_Tool_Project_Provider_MigrationProvider
     public function current($module = null)
     {
         require_once 'bootstrap.php';
-        $revision = $this->getManager()->getLastMigration( $module );
+        $revision = $this->getManager()->getLastMigration($module);
         if ('0' == $revision) {
-            $this->message( "None", 'hiWhite' );
+            $this->message("None", 'hiWhite');
         } else {
-            $this->message( "Current migration is '$revision'", 'hiWhite' );
+            $this->message("Current migration is '$revision'", 'hiWhite');
         }
     }
 
@@ -227,7 +227,7 @@ class Core_Tool_Project_Provider_MigrationProvider
     {
         $profileSearchParams = array();
 
-        if ($moduleName != null && is_string( $moduleName )) {
+        if ($moduleName != null && is_string($moduleName)) {
             $profileSearchParams = array(
                 'modulesDirectory',
                 'moduleDirectory' => array('moduleName' => $moduleName)
@@ -236,7 +236,7 @@ class Core_Tool_Project_Provider_MigrationProvider
 
         $profileSearchParams[] = 'migrationsDirectory';
 
-        return $profile->search( $profileSearchParams );
+        return $profile->search($profileSearchParams);
     }
 
     /**
@@ -249,12 +249,12 @@ class Core_Tool_Project_Provider_MigrationProvider
         Zend_Tool_Project_Profile $profile
     )
     {
-        $projectDirectory = $profile->search( array('projectDirectory') );
+        $projectDirectory = $profile->search(array('projectDirectory'));
 
         if (!($projectDirectory instanceof Zend_Tool_Project_Profile_Resource)) {
-            throw new Zend_Tool_Project_Provider_Exception("
-                Project resource undefined.
-            ");
+            throw new Zend_Tool_Project_Provider_Exception(
+                "Project resource undefined."
+            );
         }
 
         return $projectDirectory->getPath();
@@ -270,12 +270,12 @@ class Core_Tool_Project_Provider_MigrationProvider
         Zend_Tool_Project_Profile $profile
     )
     {
-        $modulesDirectory = $profile->search( array('modulesDirectory') );
+        $modulesDirectory = $profile->search(array('modulesDirectory'));
 
         if (!($modulesDirectory instanceof Zend_Tool_Project_Profile_Resource)) {
-            throw new Zend_Tool_Project_Provider_Exception("
-                Modules resource undefined.
-            ");
+            throw new Zend_Tool_Project_Provider_Exception(
+                "Modules resource undefined."
+            );
         }
 
         return $modulesDirectory->getPath();
@@ -290,13 +290,13 @@ class Core_Tool_Project_Provider_MigrationProvider
     {
         require_once 'bootstrap.php';
 
-        $migrationName = $this->getManager()->create( $module );
+        $migrationName = $this->getManager()->create($module);
 
         $message = "Migration '" . $migrationName . "' created"
             . ($module ? (" in module '" . $module . "'") : "");
 
-        $this->message( $message, 'hiWhite' );
-        $this->message( "Note: Don't forget run 'zf up migration'", 'yellow' );
+        $this->message($message, 'hiWhite');
+        $this->message("Note: Don't forget run 'zf up migration'", 'yellow');
     }
 
     /**
@@ -307,16 +307,16 @@ class Core_Tool_Project_Provider_MigrationProvider
      */
     public function up($module = null, $to = null)
     {
-        if ((null === $to) && Core_Migration_Manager::isMigration( $module )) {
+        if ((null === $to) && Core_Migration_Manager::isMigration($module)) {
             list($to, $module) = array($module, null);
         }
 
         require_once 'bootstrap.php';
 
-        $this->getManager()->up( $module, $to );
+        $this->getManager()->up($module, $to);
 
         foreach ($this->getManager()->getMessages() as $message) {
-            $this->message( $message, 'hiGreen' );
+            $this->message($message, 'hiGreen');
         }
     }
 
@@ -328,16 +328,16 @@ class Core_Tool_Project_Provider_MigrationProvider
      */
     public function down($module = null, $to = null)
     {
-        if ((null === $to) && Core_Migration_Manager::isMigration( $module )) {
+        if ((null === $to) && Core_Migration_Manager::isMigration($module)) {
             list($to, $module) = array($module, null);
         }
 
         require_once 'bootstrap.php';
 
-        $this->getManager()->down( $module, $to );
+        $this->getManager()->down($module, $to);
 
         foreach ($this->getManager()->getMessages() as $message) {
-            $this->message( $message, 'hiRed' );
+            $this->message($message, 'hiRed');
         }
     }
 
@@ -348,7 +348,7 @@ class Core_Tool_Project_Provider_MigrationProvider
      */
     public function rollback($module = null, $step = null)
     {
-        if (is_numeric( $module ) && (0 < (int)$module)) {
+        if (is_numeric($module) && (0 < (int)$module)) {
             list($step, $module) = array($module, null);
         }
 
@@ -358,25 +358,25 @@ class Core_Tool_Project_Provider_MigrationProvider
 
         require_once 'bootstrap.php';
 
-        $this->getManager()->rollback( $module, $step );
+        $this->getManager()->rollback($module, $step);
 
         foreach ($this->getManager()->getMessages() as $message) {
-            $this->message( $message, 'hiRed' );
+            $this->message($message, 'hiRed');
         }
     }
 
     public function fake($module = null, $to = null)
     {
-        if ((null === $to) && Core_Migration_Manager::isMigration( $module )) {
+        if ((null === $to) && Core_Migration_Manager::isMigration($module)) {
             list($to, $module) = array($module, null);
         }
 
         require_once 'bootstrap.php';
 
-        $this->getManager()->fake( $module, $to );
+        $this->getManager()->fake($module, $to);
 
         foreach ($this->getManager()->getMessages() as $message) {
-            $this->message( $message, 'hiGreen' );
+            $this->message($message, 'hiGreen');
         }
     }
 
@@ -390,8 +390,8 @@ class Core_Tool_Project_Provider_MigrationProvider
      */
     protected function message($text, $color = 'white')
     {
-        if (function_exists( 'posix_isatty' )) {
-            if (array_key_exists( $color, $this->_colorOptions )) {
+        if (function_exists('posix_isatty')) {
+            if (array_key_exists($color, $this->_colorOptions)) {
                 echo "\033[" . $this->_colorOptions[$color] . $text . "\033[m\n";
             }
         } else {
