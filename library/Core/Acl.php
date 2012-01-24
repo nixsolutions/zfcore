@@ -46,12 +46,13 @@ class Core_Acl extends Zend_Acl
      */
     public function __construct($config = null)
     {
-        if (is_array( $config ) || $config instanceof Zend_Config) {
-            $this->_build( $config );
+        if (is_array($config) || $config instanceof Zend_Config) {
+            $this->_build($config);
         } elseif (null !== $config) {
             throw new Zend_Acl_Exception(
-                'Invalid argument: $config must be an array, an ' .
-                    'instance of Zend_Config, or null');
+                'Invalid argument: $config must be an array, an '
+                . 'instance of Zend_Config, or null'
+            );
         }
     }
 
@@ -67,17 +68,17 @@ class Core_Acl extends Zend_Acl
             $config = $config->toArray();
         }
         if (isset($config['roles']))
-            $this->_addRoles( $config['roles'] );
+            $this->_addRoles($config['roles']);
 
 
         if (isset($config['mvc']))
-            $this->_addMvcResources( $config['mvc'] );
+            $this->_addMvcResources($config['mvc']);
 
         if (isset($config['resources']))
-            $this->_addResources( $config['resources'] );
+            $this->_addResources($config['resources']);
 
         if (isset($config['rules']))
-            $this->_addRules( $config['rules'] );
+            $this->_addRules($config['rules']);
 
         return $this;
     }
@@ -91,15 +92,15 @@ class Core_Acl extends Zend_Acl
     protected function _addRoles($roles)
     {
         foreach ($roles as $name => $parents) {
-            if (!$this->hasRole( $name )) {
+            if (!$this->hasRole($name)) {
                 if (empty($parents)) {
                     $parents = null;
                 } else {
-                    if (!is_array( $parents )) {
+                    if (!is_array($parents)) {
                         $parents = null;
                     }
                 }
-                $this->addRole( new Zend_Acl_Role($name), $parents );
+                $this->addRole(new Zend_Acl_Role($name), $parents);
             }
         }
         return $this;
@@ -121,8 +122,8 @@ class Core_Acl extends Zend_Acl
                 $parent = $parent['parent'];
             }
 
-            if (!$this->has( $resource )) {
-                $this->addResource( new Zend_Acl_Resource($resource), $parent );
+            if (!$this->has($resource)) {
+                $this->addResource(new Zend_Acl_Resource($resource), $parent);
             }
         }
 
@@ -145,15 +146,15 @@ class Core_Acl extends Zend_Acl
                 // resource name, like "mvc:users/login"
                 $resource = $prefix . $module . '/' . $controller;
                 // add new resource
-                if (!$this->has( $resource )) {
-                    $this->addResource( new Zend_Acl_Resource($resource) );
+                if (!$this->has($resource)) {
+                    $this->addResource(new Zend_Acl_Resource($resource));
                 }
 
-                if (is_array( $actions )) {
-                    $this->_addMvcRules( $actions, $resource );
+                if (is_array($actions)) {
+                    $this->_addMvcRules($actions, $resource);
                 } else {
                     // not set allow/deny - then allow to guest
-                    $this->allow( 'guest', $resource );
+                    $this->allow('guest', $resource);
                 }
             }
         }
@@ -185,33 +186,33 @@ class Core_Acl extends Zend_Acl
     protected function _addMvcRules($rules, $resource, $privileges = null)
     {
         if (isset($rules[self::ALLOW])) {
-            if (is_string( $rules[self::ALLOW] )) {
-                $rules[self::ALLOW] = preg_split( '/,/', $rules[self::ALLOW] );
+            if (is_string($rules[self::ALLOW])) {
+                $rules[self::ALLOW] = preg_split('/,/', $rules[self::ALLOW]);
             }
         } else {
             $rules[self::ALLOW] = array();
         }
 
         if (isset($rules[self::DENY])) {
-            if (is_string( $rules[self::DENY] )) {
-                $rules[self::DENY] = preg_split( '/,/', $rules[self::DENY] );
+            if (is_string($rules[self::DENY])) {
+                $rules[self::DENY] = preg_split('/,/', $rules[self::DENY]);
             }
         } else {
             $rules[self::DENY] = array();
         }
         foreach ($rules[self::ALLOW] as $role) {
-            $this->allow( $role, $resource, $privileges );
+            $this->allow($role, $resource, $privileges);
         }
         unset($rules[self::ALLOW]);
 
         foreach ($rules[self::DENY] as $role) {
-            $this->deny( $role, $resource, $privileges );
+            $this->deny($role, $resource, $privileges);
         }
         unset($rules[self::DENY]);
 
-        if (sizeof( $rules ) > 0) {
+        if (sizeof($rules) > 0) {
             foreach ($rules as $privileges => $rules) {
-                $this->_addMvcRules( $rules, $resource, $privileges );
+                $this->_addMvcRules($rules, $resource, $privileges);
             }
         }
 
@@ -231,10 +232,10 @@ class Core_Acl extends Zend_Acl
         unset($rules[0]);
         foreach ($rules as $type => $options) {
             if (isset($options['resource'])) {
-                $this->_addRule( $type, $options );
+                $this->_addRule($type, $options);
             } else {
                 foreach ($options as $rule) {
-                    $this->_addRule( $type, $rule );
+                    $this->_addRule($type, $rule);
                 }
             }
         }
@@ -268,7 +269,7 @@ class Core_Acl extends Zend_Acl
                 $role = null;
             }
 
-            if ($this->has( $options['resource'] )) {
+            if ($this->has($options['resource'])) {
                 $this->{$type}( $role,
                     $options['resource'],
                     $privilege );
