@@ -102,10 +102,10 @@ class Core_Form_Element_TinyMCE extends Zend_Form_Element
     public function setView(Zend_View_Interface $view = null)
     {
         if (null !== $view) {
-            if (false === $view->getPluginLoader( 'helper' )->getPaths( 'Core_View_Helper' )) {
-                $view->addHelperPath( 'Core/View/Helper', 'Core_View_Helper' );
+            if (false === $view->getPluginLoader('helper')->getPaths('Core_View_Helper')) {
+                $view->addHelperPath('Core/View/Helper', 'Core_View_Helper');
             }
         }
-        return parent::setView( $view );
+        return parent::setView($view);
     }
 }
