@@ -50,7 +50,7 @@ class Core_Model_Manager
      */
     public function setDbTable($dbTable)
     {
-        if (is_string( $dbTable )) {
+        if (is_string($dbTable)) {
             $dbTable = new $dbTable();
         }
         if (!$dbTable instanceof Zend_Db_Table_Abstract) {
@@ -69,7 +69,7 @@ class Core_Model_Manager
     {
         if (null === $this->_dbTable) {
             $dbTable = $this->getModelName() . '_Table';
-            $this->setDbTable( $dbTable );
+            $this->setDbTable($dbTable);
         }
         return $this->_dbTable;
     }
@@ -94,9 +94,9 @@ class Core_Model_Manager
     public function getModelName()
     {
         if (null === $this->_modelName) {
-            $modelName = get_class( $this );
-            $modelName = substr( $modelName, 0, strpos( $modelName, '_Manager' ) );
-            $this->setModelName( $modelName );
+            $modelName = get_class($this);
+            $modelName = substr($modelName, 0, strpos($modelName, '_Manager'));
+            $this->setModelName($modelName);
         }
 
         return $this->_modelName;
