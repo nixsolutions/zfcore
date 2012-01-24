@@ -45,7 +45,7 @@ class Core_Application_Resource_Auth
         $auth = Zend_Auth::getInstance();
 
         // Use 'Auth' instead of 'Zend_Auth'
-        $auth->setStorage( new Zend_Auth_Storage_Session('Auth') );
+        $auth->setStorage(new Zend_Auth_Storage_Session('Auth'));
 
         return $auth;
     }
