@@ -47,8 +47,8 @@ class Core_Controller_Plugin_ErrorHandler
         // Configure the error plugin to use the loaded module
         // so we can use module-specific error handling
         $frontController = Zend_Controller_Front::getInstance();
-        $errorPlugin = $frontController->getPlugin( 'Zend_Controller_Plugin_ErrorHandler' );
+        $errorPlugin = $frontController->getPlugin('Zend_Controller_Plugin_ErrorHandler');
         /* @var Zend_Controller_Plugin_ErrorHandler $errorPlugin */
-        $errorPlugin->setErrorHandlerModule( $request->getModuleName() );
+        $errorPlugin->setErrorHandlerModule($request->getModuleName());
     }
 }
