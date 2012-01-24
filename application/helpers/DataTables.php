@@ -32,7 +32,8 @@ class Helper_DataTables
                 if ($request->getParam('bSortable_'.(int)$request->getParam('iSortCol_'.$i))) {
                     $select->order(
                         $columns[(int)$request->getParam('iSortCol_'.$i)]
-                        . " " .  $request->getParam('sSortDir_' . $i));
+                        . " " .  $request->getParam('sSortDir_' . $i)
+                    );
                 }
             }
         }

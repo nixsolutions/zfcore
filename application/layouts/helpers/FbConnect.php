@@ -73,7 +73,11 @@ class Application_View_Helper_FbConnect extends Zend_View_Helper_Abstract
      * @param array  $params
      * @return Application_View_Helper_FbConnect
      */
-    public function login($label = 'Login with Facebook', array $perms = array('email', 'user_checkins'), $uri = '', array $params = array())
+    public function login(
+        $label        = 'Login with Facebook',
+        array $perms  = array('email', 'user_checkins'),
+        $uri          = '',
+        array $params = array())
     {
         $params['next'] = $uri;
         $params['req_perms'] = join(',', $perms);

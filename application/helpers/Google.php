@@ -132,7 +132,10 @@ class Helper_Google extends Zend_Controller_Action_Helper_Abstract
             $consumer = $this->getClient();
             // fetch a request token
             $token = $consumer->getRequestToken(
-                array('scope' => 'http://www-opensocial.googleusercontent.com/api/people/ https://www.googleapis.com/auth/userinfo#email')
+                array(
+                     'scope' =>
+                     'http://www-opensocial.googleusercontent.com/api/people/ '
+                     . 'https://www.googleapis.com/auth/userinfo#email')
             );
 
             // persist the token to storage
