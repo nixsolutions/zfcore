@@ -51,27 +51,27 @@ class Core_View_Helper_Translate extends Zend_View_Helper_Translate
         $translate = $this->getTranslator();
         $options = func_get_args();
 
-        array_shift( $options );
-        $count = count( $options );
+        array_shift($options);
+        $count = count($options);
         $locale = null;
         if ($count > 0) {
-            if (Zend_Locale::isLocale( $options[($count - 1)], false, false ) !== false) {
-                $locale = array_pop( $options );
+            if (Zend_Locale::isLocale($options[($count - 1)], false, false) !== false) {
+                $locale = array_pop($options);
             }
         }
 
-        if ((count( $options ) === 1) and (is_array( $options[0] ) === true)) {
+        if ((count($options) === 1) and (is_array($options[0]) === true)) {
             $options = $options[0];
         }
 
         if ($translate !== null) {
-            $messageid = $translate->translate( $messageid, $locale, $module );
+            $messageid = $translate->translate($messageid, $locale, $module);
         }
 
-        if (count( $options ) === 0) {
+        if (count($options) === 0) {
             return $messageid;
         }
 
-        return vsprintf( $messageid, $options );
+        return vsprintf($messageid, $options);
     }
 }
