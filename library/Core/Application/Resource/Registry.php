@@ -56,7 +56,7 @@ class Core_Application_Resource_Registry
 
         // set custom
         foreach ((array)$this->getOptions() as $key => $value) {
-            $registry->set( $key, $value );
+            $registry->set($key, $value);
         }
     }
 }
