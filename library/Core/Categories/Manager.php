@@ -41,7 +41,7 @@ abstract class Core_Categories_Manager extends Core_Model_Manager
         $offset = null
     )
     {
-        return $this->getRoot()->getAllChildren( $down, $order, $limit, $offset );
+        return $this->getRoot()->getAllChildren($down, $order, $limit, $offset);
     }
 
     /**

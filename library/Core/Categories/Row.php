@@ -60,10 +60,10 @@ class Core_Categories_Row extends Zend_Db_Table_Row_Abstract
             throw new Zend_Db_Table_Row_Exception('Parent category is not created yet');
         }
         if ($row->getParentNodeId() != $this->getNodeId()) {
-            $row->setParentNode( $this->getNodeId() );
+            $row->setParentNode($this->getNodeId());
         }
 
-        $this->getChildren()->addRow( $row );
+        $this->getChildren()->addRow($row);
 
         return $this;
     }
@@ -76,7 +76,7 @@ class Core_Categories_Row extends Zend_Db_Table_Row_Abstract
     public function getParent()
     {
         if (!$this->_parent && $this->getParentNodeId()) {
-            $this->_parent = $this->getTable()->find( $this->getParentNodeId() )
+            $this->_parent = $this->getTable()->find($this->getParentNodeId())
                 ->current();
         }
         return $this->_parent;
@@ -98,9 +98,9 @@ class Core_Categories_Row extends Zend_Db_Table_Row_Abstract
             }
 
             $select = $this->select();
-            $select->where( $this->_parentNodeKey . '=?', $this->getNodeId() );
+            $select->where($this->_parentNodeKey . '=?', $this->getNodeId());
 
-            $this->_children = $this->getTable()->fetchAll( $select );
+            $this->_children = $this->getTable()->fetchAll($select);
         }
         return $this->_children;
     }
@@ -126,7 +126,7 @@ class Core_Categories_Row extends Zend_Db_Table_Row_Abstract
         if ($node instanceof self) {
             $node = $node->getNodeId();
         }
-        $this->__set( $this->_parentNodeKey, $node );
+        $this->__set($this->_parentNodeKey, $node);
         $this->save();
 
         return $this;
