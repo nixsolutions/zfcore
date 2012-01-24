@@ -53,7 +53,7 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
      */
     public function setYamlEncoder($yamlEncoder)
     {
-        if (!is_callable( $yamlEncoder )) {
+        if (!is_callable($yamlEncoder)) {
             require_once 'Zend/Config/Exception.php';
             throw new Zend_Config_Exception('Invalid parameter to setYamlEncoder - must be callable');
         }
@@ -74,7 +74,7 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
         $sectionName = $this->_config->getSectionName();
         $extends = $this->_config->getExtends();
 
-        if (is_string( $sectionName )) {
+        if (is_string($sectionName)) {
             $data = array($sectionName => $data);
         }
 
@@ -84,7 +84,7 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
 
         // Ensure that each "extends" section actually exists
         foreach ($data as $section => $sectionData) {
-            if (is_array( $sectionData ) && isset($sectionData[Zend_Config_Yaml::EXTENDS_NAME])) {
+            if (is_array($sectionData) && isset($sectionData[Zend_Config_Yaml::EXTENDS_NAME])) {
                 $sectionExtends = $sectionData[Zend_Config_Yaml::EXTENDS_NAME];
                 if (!isset($data[$sectionExtends])) {
                     // Remove "extends" declaration if section does not exist
@@ -93,7 +93,7 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
             }
         }
 
-        return call_user_func( $this->getYamlEncoder(), $data );
+        return call_user_func($this->getYamlEncoder(), $data);
     }
 
     /**
@@ -106,7 +106,7 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
      */
     public static function encode($data)
     {
-        return self::_encodeYaml( 0, $data );
+        return self::_encodeYaml(0, $data);
     }
 
     /**
@@ -118,7 +118,7 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
      */
     protected static function _encodeYaml($indent, $data)
     {
-        reset( $data );
+        reset($data);
 
         //make _extends be the first child
         if (isset($data[Zend_Config_Yaml::EXTENDS_NAME])) {
@@ -128,13 +128,13 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
         }
 
         $result = "";
-        $numeric = is_numeric( key( $data ) );
+        $numeric = is_numeric(key($data));
 
         foreach ($data as $key => $value) {
-            if (is_array( $value )) {
-                $encoded = "\n" . self::_encodeYaml( $indent + 1, $value );
+            if (is_array($value)) {
+                $encoded = "\n" . self::_encodeYaml($indent + 1, $value);
             } else {
-                if (is_bool( $value )) {
+                if (is_bool($value)) {
                     $value = ($value) ? 'on' : 'off';
                 }
                 $encoded = (string)$value . "\n";
@@ -144,7 +144,7 @@ class Core_Config_Writer_Yaml extends Zend_Config_Writer_FileAbstract
                 }
             }
 
-            $result .= str_repeat( "  ", $indent )
+            $result .= str_repeat("  ", $indent)
                 . ($numeric ? "-" : "$key:")
                 . $encoded;
         }
