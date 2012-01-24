@@ -65,7 +65,7 @@ class Core_Debug extends Zend_Debug
 
         if (self::$_enabled && (!self::$_timer or !self::$_vars)) {
             self::$_timer = new Zend_Wildfire_Plugin_FirePhp_TableMessage('Timer');
-            self::$_timer->setBuffered( true );
+            self::$_timer->setBuffered(true);
             self::$_timer->setHeader(
                 array(
                     'Time (sec)',
@@ -76,7 +76,7 @@ class Core_Debug extends Zend_Debug
                     'File'
                 )
             );
-            self::$_timer->setOption( 'includeLineNumbers', false );
+            self::$_timer->setOption('includeLineNumbers', false);
         }
     }
 
@@ -90,11 +90,11 @@ class Core_Debug extends Zend_Debug
         $backtrace = debug_backtrace();
 
         // get variable name
-        $arrLines = file( $backtrace[0]["file"] );
+        $arrLines = file($backtrace[0]["file"]);
         $code = $arrLines[($backtrace[0]["line"] - 1)];
         $arrMatches = array();
         // find call to Core_Debug::debug()
-        preg_match( '/\b\s*Core_Debug::debug\s*\(\s*(.+)\s*\);\s*/i', $code, $arrMatches );
+        preg_match('/\b\s*Core_Debug::debug\s*\(\s*(.+)\s*\);\s*/i', $code, $arrMatches);
 
         $varName = isset($arrMatches[1]) ? $arrMatches[1] : '???';
 
@@ -110,17 +110,17 @@ class Core_Debug extends Zend_Debug
                     $t['call'] .= $rec['function'];
                 }
                 $t['call'] .= '(';
-                if (sizeof( $rec['args'] )) {
+                if (sizeof($rec['args'])) {
                     foreach ($rec['args'] as $arg) {
-                        if (is_object( $arg )) {
-                            $t['call'] .= get_class( $arg );
+                        if (is_object($arg)) {
+                            $t['call'] .= get_class($arg);
                         } else {
-                            $arg = str_replace( "\n", ' ', (string)$arg );
-                            $t['call'] .= '"' . (strlen( $arg ) <= 30 ? $arg : substr( $arg, 0, 25 ) . '[...]') . '"';
+                            $arg = str_replace("\n", ' ', (string)$arg);
+                            $t['call'] .= '"' . (strlen($arg) <= 30 ? $arg : substr($arg, 0, 25) . '[...]') . '"';
                         }
                         $t['call'] .= ', ';
                     }
-                    $t['call'] = substr( $t['call'], 0, -2 );
+                    $t['call'] = substr($t['call'], 0, -2);
                 }
                 $t['call'] .= ")";
             }
@@ -129,20 +129,20 @@ class Core_Debug extends Zend_Debug
         }
 
         $debug = new Zend_Wildfire_Plugin_FirePhp_TableMessage('Debug');
-        $debug->setBuffered( true );
-        $debug->setHeader( array('Value and BackTrace') );
-        $debug->setOption( 'includeLineNumbers', false );
+        $debug->setBuffered(true);
+        $debug->setHeader(array('Value and BackTrace'));
+        $debug->setOption('includeLineNumbers', false);
 
 
         foreach (func_get_args() as $var) {
-            $debug->addRow( array($var) );
+            $debug->addRow(array($var));
         }
-        $debug->addRow( array($trace) );
+        $debug->addRow(array($trace));
 
-        $where = basename( $backtrace[0]["file"] ) . ':' . $backtrace[0]["line"];
+        $where = basename($backtrace[0]["file"]) . ':' . $backtrace[0]["line"];
 
-        $debug->setLabel( "Debug: {$varName} ({$where})" );
-        Zend_Wildfire_Plugin_FirePhp::getInstance()->send( $debug );
+        $debug->setLabel("Debug: {$varName} ({$where})");
+        Zend_Wildfire_Plugin_FirePhp::getInstance()->send($debug);
     }
 
     /**
@@ -157,7 +157,7 @@ class Core_Debug extends Zend_Debug
 
         $back = debug_backtrace();
 
-        $_time = microtime( true );
+        $_time = microtime(true);
 
         list ($mTotal, $mSec) = self::getMemoryUsage();
 
@@ -167,11 +167,11 @@ class Core_Debug extends Zend_Debug
 
             self::$_timer->addRow(
                 array(
-                    sprintf( "%01.4f", 0 ),
-                    sprintf( "%01.4f", 0 ),
+                    sprintf("%01.4f", 0),
+                    sprintf("%01.4f", 0),
                     $mSec, $mTotal,
                     $aComment,
-                    basename( @$back[0]["file"] ) . ':' . @$back[0]["line"],
+                    basename(@$back[0]["file"]) . ':' . @$back[0]["line"],
                 )
             );
         } else {
@@ -180,18 +180,18 @@ class Core_Debug extends Zend_Debug
 
             self::$_timer->addRow(
                 array(
-                    sprintf( "%01.4f", round( self::$_time["section"] - $start, 4 ) ),
-                    sprintf( "%01.4f", round( self::$_time["section"] - self::$_time["start"], 4 ) ),
+                    sprintf("%01.4f", round(self::$_time["section"] - $start, 4)),
+                    sprintf("%01.4f", round(self::$_time["section"] - self::$_time["start"], 4)),
                     $mSec, $mTotal,
                     $aComment,
-                    basename( @$back[0]["file"] ) . ':' . @$back[0]["line"],
+                    basename(@$back[0]["file"]) . ':' . @$back[0]["line"],
                 )
             );
         }
 
         self::updateMessageLabel();
 
-        Zend_Wildfire_Plugin_FirePhp::getInstance()->send( self::$_timer );
+        Zend_Wildfire_Plugin_FirePhp::getInstance()->send(self::$_timer);
     }
 
     /**
@@ -201,23 +201,23 @@ class Core_Debug extends Zend_Debug
      */
     protected static function getMemoryUsage()
     {
-        if (!function_exists( 'memory_get_usage' )) {
-            if (substr( PHP_OS, 0, 3 ) == 'WIN') {
+        if (!function_exists('memory_get_usage')) {
+            if (substr(PHP_OS, 0, 3) == 'WIN') {
                 $output = array();
-                exec( 'tasklist /FI "PID eq ' . getmypid() . '" /FO LIST', $output );
-                $_memory = preg_replace( '/[\D]/', '', $output[5] ) * 1024;
+                exec('tasklist /FI "PID eq ' . getmypid() . '" /FO LIST', $output);
+                $_memory = preg_replace('/[\D]/', '', $output[5]) * 1024;
             } else {
                 $pid = getmypid();
-                exec( "ps -eo%mem,rss,pid | grep $pid", $output );
-                $output = explode( "  ", $output[0] );
+                exec("ps -eo%mem,rss,pid | grep $pid", $output);
+                $output = explode("  ", $output[0]);
                 $_memory = @$output[1] * 1024;
             }
         } else {
             $_memory = memory_get_usage();
         }
         $_memorySection = $_memory - self::$_memory;
-        $_memoryTotal = sprintf( "%08d", $_memory );
-        $_memorySection = sprintf( "%08d", $_memorySection );
+        $_memoryTotal = sprintf("%08d", $_memory);
+        $_memorySection = sprintf("%08d", $_memorySection);
 
         self::$_memory = $_memory;
 
@@ -231,8 +231,8 @@ class Core_Debug extends Zend_Debug
      */
     protected static function getMemoryPeak()
     {
-        if (function_exists( 'memory_get_peak_usage' )) {
-            self::$_memoryPeak = sprintf( "%07s", memory_get_peak_usage() );
+        if (function_exists('memory_get_peak_usage')) {
+            self::$_memoryPeak = sprintf("%07s", memory_get_peak_usage());
         }
 
         return self::$_memoryPeak;
@@ -248,8 +248,8 @@ class Core_Debug extends Zend_Debug
         self::$_timer->setLabel(
             sprintf(
                 'Timer (%s sec @  %s Kb)',
-                round( self::$_time["section"] - self::$_time["start"], 4 ),
-                number_format( self::$_memory / 1024, 2, '.', ' ' )
+                round(self::$_time["section"] - self::$_time["start"], 4),
+                number_format(self::$_memory / 1024, 2, '.', ' ')
             )
         );
     }
