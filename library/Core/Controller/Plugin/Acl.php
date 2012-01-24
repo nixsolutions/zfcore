@@ -129,15 +129,15 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     public function __construct(Array $options = array())
     {
         if (isset($options['error'])) {
-            $this->_errorPage = array_merge( $this->_errorPage, $options['error'] );
+            $this->_errorPage = array_merge($this->_errorPage, $options['error']);
         }
 
         if (isset($options['denied'])) {
-            $this->_deniedPage = array_merge( $this->_deniedPage, $options['denied'] );
+            $this->_deniedPage = array_merge($this->_deniedPage, $options['denied']);
         }
 
         if (isset($options['login'])) {
-            $this->_loginPage = array_merge( $this->_loginPage, $options['login'] );
+            $this->_loginPage = array_merge($this->_loginPage, $options['login']);
         }
 
         if (isset($options['role'])) {
@@ -211,9 +211,9 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     {
         if (null == $this->_acl) {
             $config = $this->_getConfig();
-            $this->setAcl( new Core_Acl($config) );
+            $this->setAcl(new Core_Acl($config));
 
-            Zend_Registry::set( 'Acl', $this->_acl );
+            Zend_Registry::set('Acl', $this->_acl);
         }
         return $this->_acl;
     }
@@ -260,12 +260,12 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
         $resourceName .= $request->getControllerName();
 
         /** Check resource */
-        if (!$this->getAcl()->has( $resourceName )) {
+        if (!$this->getAcl()->has($resourceName)) {
             if ($this->_allowAll) {
                 return true;
-            } elseif (Zend_Controller_Front::getInstance()->getParam( 'env' ) == 'development') {
+            } elseif (Zend_Controller_Front::getInstance()->getParam('env') == 'development') {
                 $this->getResponse()
-                    ->appendBody( "<h2>Resource \"$resourceName\" not found in ACL rules</h2>" );
+                    ->appendBody("<h2>Resource \"$resourceName\" not found in ACL rules</h2>");
                 return true;
             } else {
                 $this->toError();
@@ -303,10 +303,10 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     public function toDenied()
     {
         // user logined, but don't have access
-        $this->_request->setModuleName( $this->_deniedPage['module'] );
-        $this->_request->setControllerName( $this->_deniedPage['controller'] );
-        $this->_request->setActionName( $this->_deniedPage['action'] );
-        $this->_request->setDispatched( false );
+        $this->_request->setModuleName($this->_deniedPage['module']);
+        $this->_request->setControllerName($this->_deniedPage['controller']);
+        $this->_request->setActionName($this->_deniedPage['action']);
+        $this->_request->setDispatched(false);
     }
 
     /**
@@ -317,10 +317,10 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     public function toError()
     {
         // resource exist, but user is guest - go to login page
-        $this->_request->setModuleName( $this->_errorPage['module'] );
-        $this->_request->setControllerName( $this->_errorPage['controller'] );
-        $this->_request->setActionName( $this->_errorPage['action'] );
-        $this->_request->setDispatched( false );
+        $this->_request->setModuleName($this->_errorPage['module']);
+        $this->_request->setControllerName($this->_errorPage['controller']);
+        $this->_request->setActionName($this->_errorPage['action']);
+        $this->_request->setDispatched(false);
     }
 
     /**
@@ -331,9 +331,9 @@ class Core_Controller_Plugin_Acl extends Zend_Controller_Plugin_Abstract
     public function toLogin()
     {
         // resource exist, but user is guest - go to login page
-        $this->_request->setModuleName( $this->_loginPage['module'] );
-        $this->_request->setControllerName( $this->_loginPage['controller'] );
-        $this->_request->setActionName( $this->_loginPage['action'] );
-        $this->_request->setDispatched( false );
+        $this->_request->setModuleName($this->_loginPage['module']);
+        $this->_request->setControllerName($this->_loginPage['controller']);
+        $this->_request->setActionName($this->_loginPage['action']);
+        $this->_request->setDispatched(false);
     }
 }
