@@ -44,7 +44,7 @@ class Core_View extends Zend_View
         if (null === $messageid) {
             return '';
         }
-        return $this->translate( $messageid, $module );
+        return $this->translate($messageid, $module);
     }
 
     /**
@@ -56,6 +56,6 @@ class Core_View extends Zend_View
      */
     public function _e($messageid = null, $module = null)
     {
-        echo $this->__( $messageid, $module );
+        echo $this->__($messageid, $module);
     }
 }
