@@ -57,7 +57,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     protected function _isDashboard()
     {
         // change layout
-        $this->_helper->layout->setLayout( 'dashboard/layout' );
+        $this->_helper->layout->setLayout('dashboard/layout');
 
         return $this;
     }
@@ -100,7 +100,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     protected function _initBefore()
     {
         $action = $this->getRequest()->getActionName();
-        $this->_execFunctions( $this->_before, $action );
+        $this->_execFunctions($this->_before, $action);
     }
 
     /**
@@ -111,7 +111,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     protected function _initAfter()
     {
         $action = $this->getRequest()->getActionName();
-        $this->_execFunctions( $this->_after, $action );
+        $this->_execFunctions($this->_after, $action);
     }
 
     /**
@@ -128,7 +128,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
             /** check if function is only for current action */
             if (!empty($item['options']['only'])) {
                 $only = (array)$item['options']['only'];
-                if (!in_array( $action, $only )) {
+                if (!in_array($action, $only)) {
                     continue;
                 }
             }
@@ -136,7 +136,7 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
             /** check if function is skipped for current action */
             if (!empty($item['options']['skip'])) {
                 $skip = (array)$item['options']['skip'];
-                if (in_array( $action, $skip )) {
+                if (in_array($action, $skip)) {
                     continue;
                 }
             }
@@ -202,6 +202,6 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
      */
     protected function _forwardNotFound()
     {
-        $this->_forward( 'notfound', 'error', 'users' );
+        $this->_forward('notfound', 'error', 'users');
     }
 }
