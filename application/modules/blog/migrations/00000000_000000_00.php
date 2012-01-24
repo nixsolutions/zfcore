@@ -7,7 +7,7 @@ class Blog_Migration_00000000_000000_00 extends Core_Migration_Abstract
     {
         // post table
         $this->query(
-             "CREATE TABLE `blog_post` (
+            "CREATE TABLE `blog_post` (
              `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
              `alias` VARCHAR(250) NOT NULL,
              `title` VARCHAR(500) NOT NULL,

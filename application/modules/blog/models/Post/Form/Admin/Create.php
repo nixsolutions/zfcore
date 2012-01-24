@@ -24,12 +24,14 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Form
         $title->setLabel('Title')
             ->setRequired(true)
             ->setAttribs(array('style'=>'width:60%'))
-            ->addValidator('regex',
+            ->addValidator(
+                'regex',
                 false,
                 array('/^[\w\s\'",.\-_]+$/i', 'messages' => array (
                     Zend_Validate_Regex::INVALID => 'Invalid title',
                     Zend_Validate_Regex::NOT_MATCH  => 'Invalid title'
-                )));
+                ))
+            );
         $this->addElement($title);
 
         $teaser = new Core_Form_Element_Redactor('teaser');
@@ -94,12 +96,12 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Form
                 ->setRequired(true)
                 ->setAttribs(array('style' => 'width:60%'))
                 ->addMultioptions(
-            array(
-                 Forum_Model_Post::STATUS_ACTIVE => Forum_Model_Post::STATUS_ACTIVE,
-                 Forum_Model_Post::STATUS_CLOSED => Forum_Model_Post::STATUS_CLOSED,
-                 Forum_Model_Post::STATUS_DELETED => Forum_Model_Post::STATUS_DELETED,
-            )
-        );
+                    array(
+                         Forum_Model_Post::STATUS_ACTIVE => Forum_Model_Post::STATUS_ACTIVE,
+                         Forum_Model_Post::STATUS_CLOSED => Forum_Model_Post::STATUS_CLOSED,
+                         Forum_Model_Post::STATUS_DELETED => Forum_Model_Post::STATUS_DELETED,
+                    )
+                );
 
         return $status;
     }

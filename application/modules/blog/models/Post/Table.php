@@ -35,18 +35,18 @@ class Blog_Model_Post_Table extends Core_Db_Table_Abstract
         $select = $this->select()->setIntegrityCheck(false);
         $select->from(array('p' => $this->_name), array('*'))
                ->joinLeft(
-                    array('u' => $users->info('name')),
-                    'p.userId = u.id',
-                    array('login')
-                )
-                ->joinLeft(
-                    array('c' => $categories->info('name')),
-                    'c.id = p.categoryId',
-                    array('categoryTitle' => 'title', 'categoryAlias' => 'alias')
-                )
-                ->group('p.id')
-                ->where('p.status=?', Blog_Model_Post::STATUS_PUBLISHED)
-                ->order('published DESC');
+                   array('u' => $users->info('name')),
+                   'p.userId = u.id',
+                   array('login')
+               )
+               ->joinLeft(
+                   array('c' => $categories->info('name')),
+                   'c.id = p.categoryId',
+                   array('categoryTitle' => 'title', 'categoryAlias' => 'alias')
+               )
+               ->group('p.id')
+               ->where('p.status=?', Blog_Model_Post::STATUS_PUBLISHED)
+               ->order('published DESC');
 
         if ($date) {
             if ('NOW' == $date) {

@@ -20,8 +20,10 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
     {
         $adapter = Zend_Db_Table::getDefaultAdapter();
         $this->view->totalPosts = $adapter->fetchOne('SELECT COUNT(*) FROM `blog_post`');
-        $this->view->publicPosts = $adapter->fetchOne('SELECT COUNT(*) FROM `blog_post` WHERE `status` = ?',
-            array(Blog_Model_Post::STATUS_PUBLISHED));
+        $this->view->publicPosts = $adapter->fetchOne(
+            'SELECT COUNT(*) FROM `blog_post` WHERE `status` = ?',
+            array(Blog_Model_Post::STATUS_PUBLISHED)
+        );
     }
 
     /**
@@ -34,16 +36,18 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter(array(
-             '_addCheckBoxColumn',
-             '_addAllTableColumns',
-             '_prepareGrid',
-             '_addEditColumn',
-             '_addDeleteColumn',
-             '_addCreateButton',
-             '_addDeleteButton',
-             '_showFilter'
-        ));
+        $this->_beforeGridFilter(
+            array(
+                '_addCheckBoxColumn',
+                '_addAllTableColumns',
+                '_prepareGrid',
+                '_addEditColumn',
+                '_addDeleteColumn',
+                '_addCreateButton',
+                '_addDeleteButton',
+                '_showFilter'
+            )
+        );
     }
 
     /**
@@ -96,9 +100,12 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
              ->removeColumn('created')
              ->removeColumn('updated')
              ->removeColumn('published')
-             ->setColumn('teaser', array(
-                'formatter' => array($this, 'trimFormatter')
-             ));
+             ->setColumn(
+                 'teaser',
+                 array(
+                     'formatter' => array($this, 'trimFormatter')
+                 )
+             );
     }
 
 

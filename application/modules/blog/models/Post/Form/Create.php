@@ -101,7 +101,7 @@ class Blog_Model_Post_Form_Create extends Zend_Form
 
         $element->addMultiOption(Blog_Model_Post::STATUS_DRAFT, 'Draft');
         $element->addMultiOption(Blog_Model_Post::STATUS_PUBLISHED, 'Published');
-        $element->addMultiOption(Blog_Model_Post::STATUS_DELETED,'Deleted');
+        $element->addMultiOption(Blog_Model_Post::STATUS_DELETED, 'Deleted');
 
         return $element;
     }

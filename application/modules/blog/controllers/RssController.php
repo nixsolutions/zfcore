@@ -34,11 +34,13 @@ class Blog_RssController extends Core_Controller_Action
         $feed->setTitle('Blog Rss Feed');
         $feed->setLink($serverUrl . $url->url(array(), 'blog'));
         $feed->setFeedLink('http://www.example.com/atom', 'atom');
-        $feed->addAuthor(array(
-            'name'  => 'Blog Owner Name',
-            'email' => 'support@example.com',
-            'uri'   => $serverUrl,
-        ));
+        $feed->addAuthor(
+            array(
+                'name'  => 'Blog Owner Name',
+                'email' => 'support@example.com',
+                'uri'   => $serverUrl,
+            )
+        );
 
         $posts = new Blog_Model_Post_Table();
         $select = $posts->getSelect();
