@@ -42,8 +42,8 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function __construct(Array $options = array())
     {
-        Core_Debug::setEnabled( true );
-        Core_Debug::getGenerateTime( 'init' );
+        Core_Debug::setEnabled(true);
+        Core_Debug::getGenerateTime('init');
     }
 
     /**
@@ -55,7 +55,7 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function routeStartup(Zend_Controller_Request_Abstract $request)
     {
-        Core_Debug::getGenerateTime( "routeStartup() called" );
+        Core_Debug::getGenerateTime("routeStartup() called");
     }
 
     /**
@@ -68,7 +68,7 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function routeShutdown(Zend_Controller_Request_Abstract $request)
     {
-        Core_Debug::getGenerateTime( "routeShutdown() called" );
+        Core_Debug::getGenerateTime("routeShutdown() called");
     }
 
     /**
@@ -79,7 +79,7 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function dispatchLoopStartup(Zend_Controller_Request_Abstract $request)
     {
-        Core_Debug::getGenerateTime( "dispatchLoopStartup() called" );
+        Core_Debug::getGenerateTime("dispatchLoopStartup() called");
     }
 
     /**
@@ -96,7 +96,7 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
-        Core_Debug::getGenerateTime( "preDispatch() called" );
+        Core_Debug::getGenerateTime("preDispatch() called");
     }
 
     /**
@@ -113,7 +113,7 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function postDispatch(Zend_Controller_Request_Abstract $request)
     {
-        Core_Debug::getGenerateTime( "postDispatch() called" );
+        Core_Debug::getGenerateTime("postDispatch() called");
     }
 
     /**
@@ -123,6 +123,6 @@ class Core_Controller_Plugin_Debug extends Zend_Controller_Plugin_Abstract
      */
     public function dispatchLoopShutdown()
     {
-        Core_Debug::getGenerateTime( "dispatchLoopShutdown() called" );
+        Core_Debug::getGenerateTime("dispatchLoopShutdown() called");
     }
 }
