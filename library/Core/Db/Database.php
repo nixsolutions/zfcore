@@ -19,6 +19,11 @@ class Core_Db_Database
     protected $_indexes = array();
 
     /**
+     * @var array
+     */
+    protected $_data = array();
+
+    /**
      * array with ignored tables
      * @var array
      */
@@ -31,11 +36,27 @@ class Core_Db_Database
     protected $_whiteList = array();
 
     /**
+     * @var Zend_Db_Adapter_Abstract
+     */
+    protected $_db;
+
+    /**
+     * @var array
+     */
+    protected $_options = array();
+
+
+    /**
      * @param null $options
      * @param bool $autoLoad
      */
     public function __construct($options = null,$autoLoad = true)
     {
+
+        $this->_db = Zend_Db_Table::getDefaultAdapter();
+        $this->_options = $options;
+
+
         if (isset($options['blacklist']) && !isset($options['whitelist'])) {
 
             if(is_array($options['blacklist'])) {
@@ -56,21 +77,37 @@ class Core_Db_Database
 
 
         if($autoLoad) {
-            $dbAdapter = Zend_Db_Table::getDefaultAdapter();
-            $tables  = $dbAdapter->listTables();
+
+            $tables  = $this->_db->listTables();
 
             foreach($tables as $table) {
 
-                $scheme = $dbAdapter->describeTable($table);
+                $scheme = $this->_db->describeTable($table);
 
                 $this->addTable($table,$scheme);
-
-                $this->_indexes[$table] = $this->getIndexListFromTable($table);
-
             }
         }
 
     }
+
+    public function getDump()
+    {
+        $dump = '';
+
+        foreach($this->_scheme as $tableName=>$fields) {
+
+            $dump .= self::dropTable($tableName).';'.PHP_EOL;
+            $dump .= self::createTable($tableName).';'.PHP_EOL;
+
+            if(sizeof($this->_data[$tableName]) > 0)
+                foreach($this->_data[$tableName] as $data)
+                    $dump .= self::insert($tableName,$data).';'.PHP_EOL;
+        }
+
+       return stripslashes($dump);
+    }
+
+
 
     /**
      * retrieve index list from table
@@ -159,7 +196,19 @@ class Core_Db_Database
     public function addTable($tableName, $scheme)
     {
         if($this->isTblWhiteListed($tableName) && !$this->isTblBlackListed($tableName))
+        {
             $this->_scheme[$tableName] = $scheme;
+
+            $this->_indexes[$tableName] = $this->getIndexListFromTable($tableName);
+
+            if(isset($this->_options['loaddata']) && $this->_options['loaddata'] == true) {
+
+                $this->_data[$tableName] = $this->_db->fetchAll(
+                    $this->_db->select()->from($tableName)
+                );
+
+            }
+        }
     }
 
     /**
@@ -438,6 +487,30 @@ class Core_Db_Database
             "(`{$index['constraint']['reference']['column']}`) " .
             "ON UPDATE {$index['constraint']['reference']['update']} " .
             "ON DELETE {$index['constraint']['reference']['delete']} ";
+        return $sql;
+    }
+
+
+     public static function insert($table, array $bind)
+    {
+        $db = Zend_Db_Table::getDefaultAdapter();
+
+        // extract and quote col names from the array keys
+        $cols = array();
+        $vals = array();
+        $i = 0;
+        foreach ($bind as $col => $val) {
+            $cols[] = '`'.$col.'`';
+            $vals[] = $db->quote($val);
+
+        }
+
+        // build the statement
+        $sql = "INSERT INTO `"
+            . $table
+            . '` (' . implode(', ', $cols) . ') '
+            . 'VALUES (' . implode(', ', $vals) . ')';
+
         return $sql;
     }
 
