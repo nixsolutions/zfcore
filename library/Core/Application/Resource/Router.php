@@ -60,10 +60,10 @@ class Core_Application_Resource_Router
     {
         if (null === $this->_router) {
             $router = $this->getRouter(); // returns $this->_router
-            $router->addConfig( $this->_getConfig() );
+            $router->addConfig($this->_getConfig());
 
             // add locale chain if using translate
-            if ($this->getBootstrap()->hasPluginResource( 'Translate' )) {
+            if ($this->getBootstrap()->hasPluginResource('Translate')) {
                 $locale = new Zend_Controller_Router_Route(
                     ':locale',
                     array(),
@@ -74,10 +74,10 @@ class Core_Application_Resource_Router
 
                 foreach ($router->getRoutes() as $name => $route) {
                     //rename existing routes
-                    $router->removeRoute( $name )
-                        ->addRoute( $name . 'Default', $route )
+                    $router->removeRoute($name)
+                        ->addRoute($name . 'Default', $route)
                     //add chained routes
-                        ->addRoute( $name, $locale->chain( $route ) );
+                        ->addRoute($name, $locale->chain($route));
                 }
             }
         }
@@ -95,11 +95,11 @@ class Core_Application_Resource_Router
 
         $cache = false;
         if (!empty($this->_options['cache'])) {
-            if ($bootstrap->hasPluginResource( 'CacheManager' )) {
-                $manager = $bootstrap->bootstrap( 'CacheManager' )
-                    ->getResource( 'CacheManager' );
+            if ($bootstrap->hasPluginResource('CacheManager')) {
+                $manager = $bootstrap->bootstrap('CacheManager')
+                    ->getResource('CacheManager');
 
-                $cache = $manager->getCache( $this->_options['cache'] );
+                $cache = $manager->getCache($this->_options['cache']);
             }
         }
 
