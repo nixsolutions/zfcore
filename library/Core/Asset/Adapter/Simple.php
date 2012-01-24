@@ -39,7 +39,7 @@ class Core_Asset_Adapter_Simple extends Core_Asset_Adapter_Abstract
      */
     public function buildJavascripts(array $files, $destination)
     {
-        $this->_combine( $files, $destination );
+        $this->_combine($files, $destination);
     }
 
     /**
@@ -51,6 +51,6 @@ class Core_Asset_Adapter_Simple extends Core_Asset_Adapter_Abstract
      */
     public function buildStylesheets(array $files, $destination)
     {
-        $this->_combine( $files, $destination );
+        $this->_combine($files, $destination);
     }
 }

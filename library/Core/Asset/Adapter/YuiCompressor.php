@@ -45,7 +45,7 @@ class Core_Asset_Adapter_YuiCompressor extends Core_Asset_Adapter_Abstract
     public function buildJavascripts(array $files, $destination)
     {
         foreach ($files as $file) {
-            $this->_compress( $file, $destination );
+            $this->_compress($file, $destination);
         }
     }
 
@@ -59,7 +59,7 @@ class Core_Asset_Adapter_YuiCompressor extends Core_Asset_Adapter_Abstract
     public function buildStylesheets(array $files, $destination)
     {
         foreach ($files as $file) {
-            $this->_compress( $file, $destination );
+            $this->_compress($file, $destination);
         }
     }
 
@@ -71,7 +71,7 @@ class Core_Asset_Adapter_YuiCompressor extends Core_Asset_Adapter_Abstract
     public function __construct(array $options = null)
     {
         if (null !== $options) {
-            $this->setOptions( $options );
+            $this->setOptions($options);
         }
     }
 
@@ -83,11 +83,11 @@ class Core_Asset_Adapter_YuiCompressor extends Core_Asset_Adapter_Abstract
      */
     public function setOptions(array $options)
     {
-        $methods = get_class_methods( $this );
+        $methods = get_class_methods($this);
         foreach ($options as $key => $value) {
-            $method = 'set' . ucfirst( $key );
-            if (in_array( $method, $methods )) {
-                $this->$method( $value );
+            $method = 'set' . ucfirst($key);
+            if (in_array($method, $methods)) {
+                $this->$method($value);
             }
         }
         return $this;
@@ -101,7 +101,7 @@ class Core_Asset_Adapter_YuiCompressor extends Core_Asset_Adapter_Abstract
      */
     public function setJarPath($path)
     {
-        $this->_jarPath = realpath( $path );
+        $this->_jarPath = realpath($path);
     }
 
     /**
@@ -118,18 +118,18 @@ class Core_Asset_Adapter_YuiCompressor extends Core_Asset_Adapter_Abstract
             throw new Core_Exception('Path tp jar file is not set');
         }
 
-        if (!is_file( $this->_jarPath )) {
+        if (!is_file($this->_jarPath)) {
             throw new Core_Exception('"' . $this->_jarPath . '" is not file');
         }
 
-        if (!is_file( $input )) {
+        if (!is_file($input)) {
             throw new Core_Exception('Input file "' . $input . '" does not exist');
         }
 
-        $cmd = sprintf( 'java -jar %s %s >> %s', $this->_jarPath, $input, $output );
-        exec( $cmd );
+        $cmd = sprintf('java -jar %s %s >> %s', $this->_jarPath, $input, $output);
+        exec($cmd);
 
-        if (!is_file( $output )) {
+        if (!is_file($output)) {
             throw new Core_Exception('Output file "' . $output . '" does not exist');
         }
     }
