@@ -67,7 +67,7 @@ class Core_Application_Resource_Asset extends Zend_Application_Resource_Resource
             $assets[$package] = new Core_Asset($config);
         }
 
-        Zend_Registry::set( 'assets', $assets );
+        Zend_Registry::set('assets', $assets);
         return $assets;
     }
 }
