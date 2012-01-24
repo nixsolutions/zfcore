@@ -55,7 +55,7 @@ class Core_Grid_Adapter_Select implements Core_Grid_Adapter_AdapterInterface
      */
     public function order($column, $direction)
     {
-        $this->_select->order( $column . ' ' . $direction );
+        $this->_select->order($column . ' ' . $direction);
     }
 
     /**
@@ -66,7 +66,7 @@ class Core_Grid_Adapter_Select implements Core_Grid_Adapter_AdapterInterface
      */
     public function filter($column, $filter)
     {
-        $this->_select->having( $column . ' LIKE ?', str_replace( '*', '%', $filter ) );
+        $this->_select->having($column . ' LIKE ?', str_replace('*', '%', $filter));
     }
 
     /**

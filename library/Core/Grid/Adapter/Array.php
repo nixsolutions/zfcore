@@ -62,9 +62,9 @@ class Core_Grid_Adapter_Array implements Core_Grid_Adapter_AdapterInterface
      */
     public function order($column, $direction)
     {
-        $direction = strtolower( $direction );
+        $direction = strtolower($direction);
 
-        uasort( $this->_data, array($this, "sort_{$column}_{$direction}") );
+        uasort($this->_data, array($this, "sort_{$column}_{$direction}"));
     }
 
     /**
@@ -76,11 +76,11 @@ class Core_Grid_Adapter_Array implements Core_Grid_Adapter_AdapterInterface
      */
     public function __call($method, $args)
     {
-        if (0 === strpos( $method, 'sort_' )) {
-            $method = explode( '_', $method );
-            array_unshift( $args, $method['1'], $method['2'] );
+        if (0 === strpos($method, 'sort_')) {
+            $method = explode('_', $method);
+            array_unshift($args, $method['1'], $method['2']);
 
-            return call_user_func_array( array($this, 'sort'), $args );
+            return call_user_func_array(array($this, 'sort'), $args);
         }
     }
 
@@ -125,10 +125,10 @@ class Core_Grid_Adapter_Array implements Core_Grid_Adapter_AdapterInterface
      */
     public function filter($column, $filter)
     {
-        $filter = preg_quote( $filter );
+        $filter = preg_quote($filter);
         foreach ($this->_data as $i => $row) {
             if (!empty($row[$column])) {
-                if (preg_match( '/' . $filter . '/im', $row[$column] )) {
+                if (preg_match('/' . $filter . '/im', $row[$column])) {
                     continue;
                 }
             }

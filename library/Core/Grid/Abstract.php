@@ -168,7 +168,7 @@ abstract class Core_Grid_Abstract
      */
     public function setOrder($columnId, $direction = 'ASC')
     {
-        $this->_orders[$columnId] = strtoupper( $direction );
+        $this->_orders[$columnId] = strtoupper($direction);
         return $this;
     }
 
@@ -181,7 +181,7 @@ abstract class Core_Grid_Abstract
      */
     public function setDefaultOrder($columnId, $direction = 'ASC')
     {
-        $this->_defaultOrders[$columnId] = strtoupper( $direction );
+        $this->_defaultOrders[$columnId] = strtoupper($direction);
         return $this;
     }
 
