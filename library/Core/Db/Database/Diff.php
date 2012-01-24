@@ -6,14 +6,14 @@
  * Time: 17:09
  */
 
-class Core_Migration_Db_Diff
+class Core_Db_Database_Diff
 {
     /**
-     * @var Core_Migration_Db
+     * @var Core_Db_Database
      */
     protected $_currentDb;
     /**
-     * @var Core_Migration_Db
+     * @var Core_Db_Database
      */
     protected $_publishedDb;
 

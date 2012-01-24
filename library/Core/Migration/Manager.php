@@ -424,12 +424,12 @@ class Core_Migration_Manager
             $options['whitelist'] = $whtListedTables;
         }
 
-        $currDb = new Core_Migration_Db($options);
+        $currDb = new Core_Db_Database($options);
 
-        $lastPublishedDb = new Core_Migration_Db($options, false);
+        $lastPublishedDb = new Core_Db_Database($options, false);
         $lastPublishedDb->fromString($this->getLastDbState());
 
-        $diff = new Core_Migration_Db_Diff($currDb, $lastPublishedDb);
+        $diff = new Core_Db_Database_Diff($currDb, $lastPublishedDb);
         $difference = $diff->getDifference();
 
         if (!count($difference['up']) && !count($difference['down'])) {
