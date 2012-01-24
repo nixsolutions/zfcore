@@ -121,13 +121,13 @@ class Core_View_Helper_FormTinyMCE extends Zend_View_Helper_FormElement
      */
     public function formTinyMCE($name, $value = null, $attribs = null)
     {
-        $info = $this->_getInfo( $name, $value, $attribs );
-        extract( $info );
+        $info = $this->_getInfo($name, $value, $attribs);
+        extract($info);
 
         /** build js code */
         if (!empty($attribs['tinyMCE'])) {
             $this->view->headScript()->captureStart();
-            echo '$(function (){tinyMCE.init(' . json_encode( $attribs['tinyMCE'] ) . ');});';
+            echo '$(function (){tinyMCE.init(' . json_encode($attribs['tinyMCE']) . ');});';
             $this->view->headScript()->captureEnd();
             unset($attribs['tinyMCE']);
         }
@@ -147,11 +147,11 @@ class Core_View_Helper_FormTinyMCE extends Zend_View_Helper_FormElement
         }
 
         /** build the element */
-        $xhtml = '<textarea name="' . $this->view->escape( $name ) . '"'
-            . ' id="' . $this->view->escape( $id ) . '"'
+        $xhtml = '<textarea name="' . $this->view->escape($name) . '"'
+            . ' id="' . $this->view->escape($id) . '"'
             . $disabled
-            . $this->_htmlAttribs( $attribs ) . '>'
-            . $this->view->escape( $value ) . '</textarea>';
+            . $this->_htmlAttribs($attribs) . '>'
+            . $this->view->escape($value) . '</textarea>';
 
         return $xhtml;
     }
