@@ -134,21 +134,21 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
      */
     protected function _initNavigation($section = null)
     {
-        $container = new Zend_Navigation($this->_getConfig( $section ));
+        $container = new Zend_Navigation($this->_getConfig($section));
 
         $navigation = Zend_Layout::getMvcInstance()->getView()
-            ->navigation( $container );
+            ->navigation($container);
 
-        if (Zend_Registry::isRegistered( 'Zend_Translate' )) {
-            $navigation->setTranslator( Zend_Registry::get( 'Zend_Translate' ) );
+        if (Zend_Registry::isRegistered('Zend_Translate')) {
+            $navigation->setTranslator(Zend_Registry::get('Zend_Translate'));
         }
 
-        if (Zend_Registry::isRegistered( 'Acl' )) {
-            $navigation->setAcl( Zend_Registry::get( 'Acl' ) );
+        if (Zend_Registry::isRegistered('Acl')) {
+            $navigation->setAcl(Zend_Registry::get('Acl'));
 
             $identity = Zend_Auth::getInstance()->getIdentity();
 
-            $navigation->setRole( $identity ? $identity->role : 'guest' );
+            $navigation->setRole($identity ? $identity->role : 'guest');
         }
     }
 
@@ -163,7 +163,7 @@ class Core_Controller_Plugin_Navigation extends Zend_Controller_Plugin_Abstract
         // extracting layout type (admin|default) and setting it as $this->_section
         $currentLayout = Zend_Layout::getMvcInstance()->getLayout();
 
-        $currentLayout = preg_split( '/\//', $currentLayout );
+        $currentLayout = preg_split('/\//', $currentLayout);
 
         if (isset($currentLayout[0])) {
             $section = $currentLayout[0];
