@@ -49,13 +49,13 @@ class Core_Controller_Plugin_Translate extends Zend_Controller_Plugin_Abstract
     {
         $adapter = $this->_translate->getAdapter();
 
-        if (!$locale = $request->getParam( 'locale' )) {
+        if (!$locale = $request->getParam('locale')) {
             $locale = $adapter->getLocale();
         } else {
-            $adapter->setLocale( $locale );
+            $adapter->setLocale($locale);
         }
 
         $router = Zend_Controller_Front::getInstance()->getRouter();
-        $router->setGlobalParam( 'locale', $locale );
+        $router->setGlobalParam('locale', $locale);
     }
 }
