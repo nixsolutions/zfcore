@@ -6,7 +6,8 @@ class Forum_Migration_00000000_000000_00 extends Core_Migration_Abstract
     public function up()
     {
         // post table
-        $this->query("CREATE TABLE `forum_post` (
+        $this->query(
+            "CREATE TABLE `forum_post` (
               `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
               `title` TEXT NOT NULL,
               `body` TEXT NOT NULL,
@@ -18,11 +19,14 @@ class Forum_Migration_00000000_000000_00 extends Core_Migration_Abstract
               `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
               `updated` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
               PRIMARY KEY (`id`)
-            ) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8");
+            ) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8
+            "
+        );
 
 
         // comment table
-        $this->query("CREATE TABLE `forum_comment` (
+        $this->query(
+            "CREATE TABLE `forum_comment` (
                  `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
                  `postId` INT(10) NOT NULL,
                  `userId` INT(10) NOT NULL,
@@ -31,7 +35,8 @@ class Forum_Migration_00000000_000000_00 extends Core_Migration_Abstract
                  `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
                  `updated` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
                  PRIMARY KEY (`id`)
-               ) ENGINE=INNODB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8");
+               ) ENGINE=INNODB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8"
+        );
     }
 
     public function down()

@@ -93,7 +93,7 @@ class Forum_PostController extends Core_Controller_Action
      */
     public function editAction()
     {
-    if (!$postId = $this->_getParam('id')) {
+        if (!$postId = $this->_getParam('id')) {
             throw new Zend_Controller_Action_Exception('Page not found');
         }
         $posts = new Forum_Model_Post_Table();
