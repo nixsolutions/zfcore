@@ -58,14 +58,14 @@ class Core_View_Helper_Menu
 
         $container = new Zend_Navigation(array($menuArray));
 
-        $acl = Zend_Registry::get( 'Acl' );
+        $acl = Zend_Registry::get('Acl');
         $identity = Zend_Auth::getInstance()->getIdentity();
         if ($identity) {
             $role = $identity->role;
         } else {
             $role = 'guest';
         }
-        $view->navigation()->setAcl( $acl )->setRole( $role );
+        $view->navigation()->setAcl($acl)->setRole($role);
 
         $iterator = new RecursiveIteratorIterator($container, RecursiveIteratorIterator::SELF_FIRST);
 
