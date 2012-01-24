@@ -39,11 +39,11 @@ class Core_View_Helper_AElement extends Zend_View_Helper_FormElement
      */
     public function aElement(Zend_Form_Element $element)
     {
-        $viewClasses = array($element->getAttrib( 'class' ));
+        $viewClasses = array($element->getAttrib('class'));
 
         if ($element->isRequired()) {
-            if (!$element->getAttrib( 'title' )) {
-                $element->setAttrib( 'title', 'Field is required' );
+            if (!$element->getAttrib('title')) {
+                $element->setAttrib('title', 'Field is required');
             }
             $viewClasses[] = 'aForm-field-required';
         }
@@ -60,7 +60,7 @@ class Core_View_Helper_AElement extends Zend_View_Helper_FormElement
             $viewClasses[] = 'aForm-field-validate';
         }
 
-        $element->setAttrib( 'class', implode( ' ', $viewClasses ) );
+        $element->setAttrib('class', implode(' ', $viewClasses));
 
         $options = null;
         $separator = null;

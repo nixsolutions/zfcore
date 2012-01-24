@@ -90,16 +90,16 @@ class Core_View_Helper_AForm extends Zend_View_Helper_FormElement
             $label = null;
             if ($labelText = $element->getLabel()) {
                 if ($element instanceof Zend_Form_Element_Submit) {
-                    $element->setValue( $labelText );
+                    $element->setValue($labelText);
                 } else {
-                    $label = $view->formLabel( $element->getName(), $labelText, $element->getAttribs() );
+                    $label = $view->formLabel($element->getName(), $labelText, $element->getAttribs());
                 }
             }
-            $el = $view->aElement( $element );
+            $el = $view->aElement($element);
 
             $errorList = null;
             if ($errors = $element->getMessages()) {
-                $errorList = $view->formErrors( $errors );
+                $errorList = $view->formErrors($errors);
             }
             $rows[] = '<div class="form-title">' . $label . '</div>'
                 . '<div class="form-field">' . $el . '</div>'
@@ -113,14 +113,14 @@ class Core_View_Helper_AForm extends Zend_View_Helper_FormElement
             false
         );
 
-        $output = $view->form( $this->_form->getName(), $this->_form->getAttribs(), $list );
+        $output = $view->form($this->_form->getName(), $this->_form->getAttribs(), $list);
 
         if ($this->_ajaxParams) {
             $id = $this->_form->getName();
-            $view->headScript()->appendFile( $view->baseUrl( $this->_aFormPath ) );
+            $view->headScript()->appendFile($view->baseUrl($this->_aFormPath));
 
             $view->headScript()->appendScript(
-                '$(function(){ $("#' . $id . '").aForm(' . Zend_Json::encode( $this->_ajaxParams ) . ') })'
+                '$(function(){ $("#' . $id . '").aForm(' . Zend_Json::encode($this->_ajaxParams) . ') })'
             );
         }
 
