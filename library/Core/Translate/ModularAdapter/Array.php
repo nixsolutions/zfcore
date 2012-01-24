@@ -51,12 +51,12 @@ class Core_Translate_ModularAdapter_Array extends Zend_Translate_Adapter_Array
 
         $plural = null;
         $number = null;
-        if (is_array( $messageId )) {
-            if (count( $messageId ) > 2) {
-                $number = array_pop( $messageId );
-                if (!is_numeric( $number )) {
+        if (is_array($messageId)) {
+            if (count($messageId) > 2) {
+                $number = array_pop($messageId);
+                if (!is_numeric($number)) {
                     $plocale = $number;
-                    $number = array_pop( $messageId );
+                    $number = array_pop($messageId);
                 } else {
                     $plocale = 'en';
                 }
@@ -68,17 +68,17 @@ class Core_Translate_ModularAdapter_Array extends Zend_Translate_Adapter_Array
             }
         }
 
-        if (!Zend_Locale::isLocale( $locale, true, false )) {
-            if (!Zend_Locale::isLocale( $locale, false, false )) {
+        if (!Zend_Locale::isLocale($locale, true, false)) {
+            if (!Zend_Locale::isLocale($locale, false, false)) {
                 // language does not exist, return original string
-                $this->_log( $messageId, $locale );
+                $this->_log($messageId, $locale);
                 // use rerouting when enabled
                 if (!empty($this->_options['route'])) {
-                    if (array_key_exists( $locale, $this->_options['route'] ) &&
-                        !array_key_exists( $locale, $this->_routed )
+                    if (array_key_exists($locale, $this->_options['route']) &&
+                        !array_key_exists($locale, $this->_routed)
                     ) {
                         $this->_routed[$locale] = true;
-                        return $this->translate( $messageId, $this->_options['route'][$locale], $module );
+                        return $this->translate($messageId, $this->_options['route'][$locale], $module);
                     }
                 }
 
@@ -87,7 +87,7 @@ class Core_Translate_ModularAdapter_Array extends Zend_Translate_Adapter_Array
                     return $messageId;
                 }
 
-                $rule = Zend_Translate_Plural::getPlural( $number, $plocale );
+                $rule = Zend_Translate_Plural::getPlural($number, $plocale);
                 if (!isset($plural[$rule])) {
                     $rule = 0;
                 }
@@ -99,38 +99,40 @@ class Core_Translate_ModularAdapter_Array extends Zend_Translate_Adapter_Array
         }
 
         $locale = (string)$locale;
-        if ((is_string( $messageId ) || is_int( $messageId ))
-            && (isset($this->_translate[$locale][$module][$messageId]) || isset($this->_translate[$locale]['default'][$messageId]))
+        if ((is_string($messageId) || is_int($messageId))
+            && (isset($this->_translate[$locale][$module][$messageId])
+                || isset($this->_translate[$locale]['default'][$messageId]))
         ) {
 
             // return original translation
-            $result = $this->_getTranslatedMessage( $messageId, $locale, $module, $plural, $number );
+            $result = $this->_getTranslatedMessage($messageId, $locale, $module, $plural, $number);
             if (false !== $result) {
                 return $result;
             }
-        } else if (strlen( $locale ) != 2) {
+        } else if (strlen($locale) != 2) {
             // faster than creating a new locale and separate the leading part
-            $locale = substr( $locale, 0, -strlen( strrchr( $locale, '_' ) ) );
+            $locale = substr($locale, 0, -strlen(strrchr($locale, '_')));
 
-            if ((is_string( $messageId ) || is_int( $messageId ))
-                && (isset($this->_translate[$locale][$module][$messageId]) || isset($this->_translate[$locale]['default'][$messageId]))
+            if ((is_string($messageId) || is_int($messageId))
+                && (isset($this->_translate[$locale][$module][$messageId])
+                    || isset($this->_translate[$locale]['default'][$messageId]))
             ) {
                 // return regionless translation (en_US -> en)
-                $result = $this->_getTranslatedMessage( $messageId, $locale, $module, $plural, $number );
+                $result = $this->_getTranslatedMessage($messageId, $locale, $module, $plural, $number);
                 if (false !== $result) {
                     return $result;
                 }
             }
         }
 
-        $this->_log( $messageId, $locale );
+        $this->_log($messageId, $locale);
         // use rerouting when enabled
         if (!empty($this->_options['route'])) {
-            if (array_key_exists( $locale, $this->_options['route'] ) &&
-                !array_key_exists( $locale, $this->_routed )
+            if (array_key_exists($locale, $this->_options['route']) &&
+                !array_key_exists($locale, $this->_routed)
             ) {
                 $this->_routed[$locale] = true;
-                return $this->translate( $messageId, $this->_options['route'][$locale], $module );
+                return $this->translate($messageId, $this->_options['route'][$locale], $module);
             }
         }
 
@@ -139,7 +141,7 @@ class Core_Translate_ModularAdapter_Array extends Zend_Translate_Adapter_Array
             return $messageId;
         }
 
-        $rule = Zend_Translate_Plural::getPlural( $number, $plocale );
+        $rule = Zend_Translate_Plural::getPlural($number, $plocale);
         if (!isset($plural[$rule])) {
             $rule = 0;
         }
@@ -167,7 +169,7 @@ class Core_Translate_ModularAdapter_Array extends Zend_Translate_Adapter_Array
             return $this->_translate[$locale]['default'][$messageId];
         }
 
-        $rule = Zend_Translate_Plural::getPlural( $number, $locale );
+        $rule = Zend_Translate_Plural::getPlural($number, $locale);
         if (isset($this->_translate[$locale][$module][$plural[0]][$rule])) {
             $this->_routed = array();
             return $this->_translate[$locale][$module][$plural[0]][$rule];
