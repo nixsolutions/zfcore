@@ -40,19 +40,32 @@ class Core_Migration_Db_Diff
         $this->_db = Zend_Db_Table::getDefaultAdapter();
 
     }
-
-    protected function up($sql)
+    /**
+     * add query to upgrade actions
+     * @param $query
+     */
+    protected function up($query)
     {
-        if (!strlen($sql)) return;
-        $this->_difference['up'][] = $sql;
+        if (!empty($query)) {
+            $this->_difference['up'][] = $query;
+        }
     }
 
-    protected function down($sql)
+    /**
+     * add query to downgrade action
+     * @param $query
+     */
+    protected function down($query)
     {
-        if (!strlen($sql)) return;
-        $this->_difference['down'][] = $sql;
+        if (!empty($query)){
+            $this->_difference['down'][] = $query;
+        }
     }
 
+    /**
+     * get difference between databases
+     * @return array - with two subarrays: "up" & "down"
+     */
     public function getDifference()
     {
         $this->compareTables();
@@ -62,6 +75,9 @@ class Core_Migration_Db_Diff
         return $this->_difference;
     }
 
+    /**
+     * get difference between tables in databases
+     */
     protected function compareTables()
     {
         $currentTables = $this->_currentDb->getTables();
@@ -80,13 +96,20 @@ class Core_Migration_Db_Diff
 
     }
 
+    /**
+     * add table creation action to "upgrade"
+     * @param $tableName
+     */
     protected function addCreateTable($tableName)
     {
         $this->down($this->dropTable($tableName));
         $this->up($this->dropTable($tableName));
         $this->up($this->createTable($tableName));
     }
-
+    /**
+     * add drop creation action to "upgrade"
+     * @param $tableName
+     */
     protected function addDropTable($tableName)
     {
         $this->up($this->dropTable($tableName));
@@ -94,7 +117,9 @@ class Core_Migration_Db_Diff
         $this->down($this->createTable($tableName));
     }
 
-
+    /**
+     * compare schemes of common tables
+     */
     protected function compareCommonTablesScheme()
     {
         if (sizeof($this->_commonTables) > 0)
@@ -110,7 +135,12 @@ class Core_Migration_Db_Diff
             }
     }
 
-
+    /**
+     * get difference between two schemes of tables
+     * @param $table
+     * @param $tblCurrentCols
+     * @param $tblPublishedCols
+     */
     protected function createDifferenceInsideTable($table, $tblCurrentCols, $tblPublishedCols)
     {
 
@@ -151,6 +181,10 @@ class Core_Migration_Db_Diff
         }
     }
 
+    /**
+     * get difference between table indexes
+     * @param $table
+     */
     protected function createIndexDifference($table)
     {
         $current_indexes =  $this->_currentDb->getIndexList($table);
@@ -186,6 +220,11 @@ class Core_Migration_Db_Diff
         }
     }
 
+    /**
+     * @param $column
+     * @param $colList
+     * @return bool
+     */
     protected function checkColumnExists($column, $colList)
     {
 
@@ -194,67 +233,107 @@ class Core_Migration_Db_Diff
 
     }
 
-    //-------------------------------------------
-    protected function dropTable($t)
+    /**
+     * create DROP TABLE query
+     * @param $tableName
+     * @return string
+     */
+    protected function dropTable($tableName)
     {
-        return "DROP TABLE IF EXISTS `{$t}`";
+        return "DROP TABLE IF EXISTS `{$tableName}`";
     }
 
-    protected function dropColumn($table, $column)
+    /**
+     * create query for delete column
+     * @param $tableName
+     * @param $column
+     * @return string
+     */
+    protected function dropColumn($tableName, $column)
     {
-        return "ALTER TABLE `{$table}` DROP `{$column['COLUMN_NAME']}`";
+        return "ALTER TABLE `{$tableName}` DROP `{$column['COLUMN_NAME']}`";
     }
 
-    protected function addColumn($table, $column)
+    /**
+     * create query for adding column
+     * @param $tableName
+     * @param $column
+     * @return string
+     */
+    protected function addColumn($tableName, $column)
     {
-        $sql = "ALTER TABLE `{$table}` ADD `{$column['COLUMN_NAME']}` " . addslashes($column['DATA_TYPE']);
+        $sql = "ALTER TABLE `{$tableName}` ADD `{$column['COLUMN_NAME']}` " . addslashes($column['DATA_TYPE']);
         $this->addSqlExtras($sql, $column);
         return $sql;
     }
-
+    /**
+     * add column attributes to query
+     * @param $sql
+     * @param $column
+     */
     protected function addSqlExtras(& $sql, $column)
     {
+        if ($column['LENGTH']) $sql .= ' (' . $column['LENGTH'] . ')';
+        if ($column['UNSIGNED']) $sql .= ' UNSIGNED ';
+
         if (!$column['NULLABLE']) $sql .= " NOT NULL ";
         if (!is_null($column['DEFAULT'])) $sql .= " DEFAULT \\'{$column['DEFAULT']}\\' ";
         if ($column['IDENTITY']) $sql .= ' AUTO_INCREMENT ';
 
     }
-
-    protected function changeColumn($table, $column)
+    /**
+     * create query for change column
+     * @param $tableName
+     * @param $column
+     * @return string
+     */
+    protected function changeColumn($tableName, $column)
     {
-        $sql = "ALTER TABLE `{$table}` CHANGE " .
+        $sql = "ALTER TABLE `{$tableName}` CHANGE " .
             " `{$column['COLUMN_NAME']}` `{$column['COLUMN_NAME']}` " .
             addslashes($column['DATA_TYPE']);
-        if ($column['LENGTH']) {
-            $sql .= ' (' . $column['LENGTH'] . ')';
-        }
-
         $this->addSqlExtras($sql, $column);
         return $sql;
     }
 
-    protected function createTable($tname)
+    /**
+     * create CREATE TABLE query
+     * @param $tblName
+     * @return string
+     */
+    protected function createTable($tblName)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
 
-        $trow = $db->fetchRow("SHOW CREATE TABLE `{$tname}`");
+        $trow = $db->fetchRow("SHOW CREATE TABLE `{$tblName}`");
         $query = preg_replace('#AUTO_INCREMENT=\S+#is', '', $trow['Create Table']);
-        $query = preg_replace("#\n\s*#", ' ', $query);
+        //$query = preg_replace("#\n\s*#", ' ', $query); //uncomment if you want query in one line
         $query = addcslashes($query, '\\\''); //escape slashes and single quotes
         return $query;
     }
 
-    protected function checkIndexExists($index, $index_list)
+    /**
+     * check Index exists
+     * @param $index
+     * @param $indexList
+     * @return bool | array - if index exist return index
+     */
+    protected function checkIndexExists($index, $indexList)
     {
-        foreach ($index_list as $comparing_index)
+        foreach ($indexList as $comparingIndex)
         {
-            if ($index['name'] === $comparing_index['name']) {
-                return $comparing_index;
+            if ($index['name'] === $comparingIndex['name']) {
+                return $comparingIndex;
             }
         }
         return false;
     }
 
+    /**
+     * create query for adding index
+     * @param $index
+     * @return string
+     */
     protected function addIndex($index)
     {
         if ($index['name'] === 'PRIMARY') {
@@ -285,12 +364,21 @@ class Core_Migration_Db_Diff
         }
         return $index_string;
     }
-
+    /**
+     * create query for drop index
+     * @param $index
+     * @return string
+     */
     protected function dropIndex($index)
     {
         return "DROP INDEX `{$index['name']}` ON `{$index['table']}`";
     }
-
+    /**
+     * get constraint for column
+     * @param $table
+     * @param $colName
+     * @return array|bool
+     */
     protected function getConstraintForColumn($table, $colName)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -299,7 +387,27 @@ class Core_Migration_Db_Diff
 
         $dbName = $row['dbname'];
 
-        $sql = "SELECT k.CONSTRAINT_SCHEMA,k.CONSTRAINT_NAME,k.TABLE_NAME,k.COLUMN_NAME,k.REFERENCED_TABLE_NAME,k.REFERENCED_COLUMN_NAME, r.UPDATE_RULE, r.DELETE_RULE FROM information_schema.key_column_usage k LEFT JOIN information_schema.referential_constraints r ON r.CONSTRAINT_SCHEMA = k.CONSTRAINT_SCHEMA AND k.REFERENCED_TABLE_NAME=r.REFERENCED_TABLE_NAME LEFT JOIN information_schema.table_constraints t ON t.CONSTRAINT_SCHEMA = r.CONSTRAINT_SCHEMA WHERE k.constraint_schema='$dbName' AND t.CONSTRAINT_TYPE='FOREIGN KEY' AND k.TABLE_NAME='$table' AND r.TABLE_NAME='$table' AND t.TABLE_NAME='$table' AND k.COLUMN_NAME='$colName'";
+        $sql = "SELECT k.CONSTRAINT_SCHEMA,
+                       k.CONSTRAINT_NAME,
+                       k.TABLE_NAME,
+                       k.COLUMN_NAME,
+                       k.REFERENCED_TABLE_NAME,
+                       k.REFERENCED_COLUMN_NAME,
+                       r.UPDATE_RULE,
+                       r.DELETE_RULE
+                       FROM information_schema.key_column_usage k
+                       LEFT JOIN information_schema.referential_constraints r
+                       ON r.CONSTRAINT_SCHEMA = k.CONSTRAINT_SCHEMA
+                       AND k.REFERENCED_TABLE_NAME=r.REFERENCED_TABLE_NAME
+                       LEFT JOIN information_schema.table_constraints t
+                       ON t.CONSTRAINT_SCHEMA = r.CONSTRAINT_SCHEMA
+                       WHERE
+                        k.constraint_schema='$dbName'
+                        AND t.CONSTRAINT_TYPE='FOREIGN KEY'
+                        AND k.TABLE_NAME='$table'
+                        AND r.TABLE_NAME='$table'
+                        AND t.TABLE_NAME='$table'
+                        AND k.COLUMN_NAME='$colName'";
 
         $row = $db->fetchRow($sql);
 
@@ -318,7 +426,11 @@ class Core_Migration_Db_Diff
         );
         return $constraint;
     }
-
+    /**
+     * create query for drop constraint
+     * @param $index
+     * @return string
+     */
     protected function dropConstraint($index)
     {
         if (!isset($index['constraint']['column'])
@@ -332,7 +444,11 @@ class Core_Migration_Db_Diff
 
         return $sql;
     }
-
+    /**
+     * create query for adding constraint
+     * @param $index
+     * @return string
+     */
     protected function addConstraint($index)
     {
         if (!isset($index['constraint']['column']) || !strlen($index['constraint']['column'])) return '';

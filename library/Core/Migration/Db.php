@@ -6,14 +6,37 @@
  */
 class Core_Migration_Db
 {
+    /**
+     * array with schemes of tables
+     * @var array
+     */
+    protected $_scheme = array();
 
-    protected $_data = array();
+    /**
+     * array with indexes of tables
+     * @var array
+     */
     protected $_indexes = array();
+
+    /**
+     * array with ignored tables
+     * @var array
+     */
     protected $_blackList = array();
 
+    /**
+     * array with "white listed" tables
+     * @var array
+     */
+    protected $_whiteList = array();
+
+    /**
+     * @param null $options
+     * @param bool $autoLoad
+     */
     public function __construct($options = null,$autoLoad = true)
     {
-        if (isset($options['blacklist'])) {
+        if (isset($options['blacklist']) && !isset($options['whitelist'])) {
 
             if(is_array($options['blacklist'])) {
                 $this->_blackList = $options['blacklist'];
@@ -21,7 +44,16 @@ class Core_Migration_Db
                 $this->_blackList[] = (string)$options['blacklist'];
             }
 
+        } elseif (isset($options['whitelist']) && !empty($options['whitelist'])) {
+
+            if(is_array($options['whitelist'])) {
+                $this->_whiteList = $options['whitelist'];
+            } else {
+                $this->_whiteList[] = (string)$options['whitelist'];
+            }
+
         }
+
 
         if($autoLoad) {
             $dbAdapter = Zend_Db_Table::getDefaultAdapter();
@@ -38,8 +70,14 @@ class Core_Migration_Db
             }
         }
 
-
     }
+
+    /**
+     * retrieve index list from table
+     * @param $table - table name
+     * @return array - array of indexes
+     */
+
     protected function getIndexListFromTable($table)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -66,6 +104,13 @@ class Core_Migration_Db
         return $indexes;
 
     }
+
+    /**
+     * @param $table - table name
+     * @param $colName - column name
+     * @return array|bool - return list of constrains or false, if constrains not exist
+     */
+
     protected function getConstraintForColumn($table, $colName)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
@@ -105,54 +150,128 @@ class Core_Migration_Db
         return $constraint;
     }
 
+    /**
+     * add table to DB object
+     * @param $tableName
+     * @param $scheme - table structure from DESCRIBE TABLE query
+     */
+
     public function addTable($tableName, $scheme)
     {
-        if(!in_array($tableName,$this->_blackList))
-            $this->_data[$tableName] = $scheme;
+        if($this->isTblWhiteListed($tableName) && !$this->isTblBlackListed($tableName))
+            $this->_scheme[$tableName] = $scheme;
     }
 
+    /**
+     * delete table from DB object
+     * @param $tableName
+     */
     public function deleteTable($tableName)
     {
-        unset($this->_data[$tableName]);
+        if(array_key_exists($tableName,$this->_scheme))
+            unset($this->_scheme[$tableName]);
+    }
+    /**
+     * checks for table in @blacklist
+     * @param $tableName
+     * @return bool
+     */
+    protected function isTblWhiteListed($tableName)
+    {
+        if(!empty($this->_whiteList)) {
+            return in_array($tableName,$this->_whiteList);
+        }
+        return true;
     }
 
+    /**
+     * checks for table in @whitelist
+     * @param $tableName
+     * @return bool
+     */
+    protected function isTblBlackListed($tableName)
+    {
+        if(!empty($this->_blackList)) {
+            return in_array($tableName,$this->_blackList);
+        }
+        return false;
+
+    }
+
+    /**
+     * encode object data into JSON
+     * @return string - JSON string
+     */
     public function toString()
     {
         return json_encode(
-            array('data'=>$this->_data,'indexes'=>$this->_indexes)
+            array('data'=>$this->_scheme,'indexes'=>$this->_indexes)
         );
     }
 
+    /**
+     * decode object from JSON string
+     * clear scheme and indexes if string is empty
+     * @param $jsonString
+     */
     public function fromString($jsonString)
     {
-        $dec = (array)json_decode($jsonString,true);
+        if (!empty($jsonString)) {
 
-        $this->_indexes = $dec['indexes'];
-        $dec = $dec['data'];
+            $dec = json_decode($jsonString,true);
 
-       foreach($this->_blackList as $deleteKey){
-           if(array_key_exists($deleteKey,$dec)) {
-               unset($dec[$deleteKey]);
+            $this->_indexes = $dec['indexes'];
+            $dec = $dec['data'];
+
+           foreach($this->_blackList as $deleteKey){
+               if(array_key_exists($deleteKey,$dec)) {
+                   unset($dec[$deleteKey]);
+               }
            }
-       }
-        $this->_data = $dec;
+           foreach($dec as $tblName=>$table){
+                if(!in_array($tblName,$this->_whiteList)) {
+                    unset($dec[$tblName]);
+                }
+            }
+
+            $this->_scheme = $dec;
+        } else {
+            $this->_scheme = array();
+            $this->_indexes = array();
+        }
+
     }
 
+    /**
+     * get all tables form DB
+     * @return array
+     */
     public function getTables()
     {
-        return $this->_data;
+        return $this->_scheme;
     }
 
+    /**
+     * get all columns from table
+     * @param $tableName
+     * @return array|bool - returns false if table not exist
+     */
     public function getTableColumns($tableName)
     {
-        return (isset($this->_data[$tableName])) ?
-            $this->_data[$tableName] : false;
+        return (isset($this->_scheme[$tableName])) ?
+            $this->_scheme[$tableName] : false;
 
     }
-    public function getIndexList($table)
+
+    /**
+     * get all table indexes
+     * @param $tableName
+     * @return array - returns empty array if no indexes found
+     */
+    public function getIndexList($tableName)
     {
-        if(array_key_exists($table,$this->_indexes))
-            return $this->_indexes[$table];
+        if(array_key_exists($tableName,$this->_indexes))
+            return $this->_indexes[$tableName];
         else
             return array();
     }
