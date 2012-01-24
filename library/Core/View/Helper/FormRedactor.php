@@ -77,15 +77,15 @@ class Core_View_Helper_FormRedactor extends Zend_View_Helper_FormTextarea
      */
     public function formRedactor($name, $value = null, $attribs = null)
     {
-        $info = $this->_getInfo( $name, $value, $attribs );
-        $id = $this->view->escape( $info['id'] );
+        $info = $this->_getInfo($name, $value, $attribs);
+        $id = $this->view->escape($info['id']);
         $options = array(
-            'lang' => Zend_Registry::get( 'Zend_Locale' )->getLanguage(),
+            'lang' => Zend_Registry::get('Zend_Locale')->getLanguage(),
             'path' => '/scripts/jquery/redactor/' // w/o lang prefix
         );
 
         if (!empty($attribs['redactor'])) {
-            $options = array_merge( $options, $attribs['redactor'] );
+            $options = array_merge($options, $attribs['redactor']);
             unset($attribs['redactor']);
         }
 
@@ -93,11 +93,11 @@ class Core_View_Helper_FormRedactor extends Zend_View_Helper_FormTextarea
         $this->view->plugins()->redactor();
 
         /** init plugin */
-        $options = Zend_Json::encode( $options, Zend_Json::TYPE_OBJECT );
+        $options = Zend_Json::encode($options, Zend_Json::TYPE_OBJECT);
         $this->view->headScript()
-            ->appendScript( '(function($){$(function(){$("#' . $id . '").redactor(' . $options . ');});})(jQuery)' );
+            ->appendScript('(function($){$(function(){$("#' . $id . '").redactor(' . $options . ');});})(jQuery)');
 
         /** render text area */
-        return $this->formTextarea( $name, $value, $attribs );
+        return $this->formTextarea($name, $value, $attribs);
     }
 }
