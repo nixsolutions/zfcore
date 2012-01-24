@@ -37,6 +37,6 @@ class Core_View_Helper_FlashMessenger extends Zend_View_Helper_Abstract
      */
     public function flashmessenger()
     {
-        return Zend_Controller_Action_HelperBroker::getStaticHelper( "FlashMessenger" );
+        return Zend_Controller_Action_HelperBroker::getStaticHelper("FlashMessenger");
     }
 }
