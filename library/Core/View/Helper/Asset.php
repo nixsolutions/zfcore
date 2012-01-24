@@ -40,7 +40,7 @@ class Core_View_Helper_Asset extends Zend_View_Helper_Abstract
     public function asset($package)
     {
         if (Zend_Registry::isRegistered('assets')
-            && $assets = Zend_Registry::get( 'assets' )) {
+            && $assets = Zend_Registry::get('assets')) {
             if (empty($assets[$package])) {
                 throw new Core_Exception('"' . $package . '" not found');
             }
@@ -50,16 +50,16 @@ class Core_View_Helper_Asset extends Zend_View_Helper_Abstract
 
             if (APPLICATION_ENV == 'production') {
                 $this->view->headScript()
-                    ->prependFile( $this->_normalizeUrl( $asset->getJavascriptBuild() ) );
+                    ->prependFile($this->_normalizeUrl($asset->getJavascriptBuild()));
 
                 $this->view->headLink()
-                    ->prependStylesheet( $this->_normalizeUrl( $asset->getStylesheetBuild() ) );
+                    ->prependStylesheet($this->_normalizeUrl($asset->getStylesheetBuild()));
             } else {
                 foreach ($asset->getJavascripts() as $file) {
-                    $this->view->headScript()->prependFile( $this->_normalizeUrl( $file ) );
+                    $this->view->headScript()->prependFile($this->_normalizeUrl($file));
                 }
                 foreach ($asset->getStylesheets() as $file) {
-                    $this->view->headLink()->prependStylesheet( $this->_normalizeUrl( $file ) );
+                    $this->view->headLink()->prependStylesheet($this->_normalizeUrl($file));
                 }
             }
         }
@@ -74,6 +74,6 @@ class Core_View_Helper_Asset extends Zend_View_Helper_Abstract
      */
     protected function _normalizeUrl($url)
     {
-        return $this->view->baseUrl( str_replace( PUBLIC_PATH, '', $url ) );
+        return $this->view->baseUrl(str_replace(PUBLIC_PATH, '', $url));
     }
 }
