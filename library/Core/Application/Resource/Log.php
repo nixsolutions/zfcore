@@ -43,7 +43,7 @@ class Core_Application_Resource_Log
     public function setLog(Zend_Log $log)
     {
         $this->_log = $log;
-        Zend_Registry::set( 'Log', $log );
+        Zend_Registry::set('Log', $log);
 
         return $this;
     }
