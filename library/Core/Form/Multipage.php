@@ -89,35 +89,35 @@ class Core_Form_Multipage extends Zend_Form
      */
     public function isValid($data)
     {
-        if (sizeof( $data ) == 1) {
-            $subForm = $this->getSubForm( key( $data ) );
+        if (sizeof($data) == 1) {
+            $subForm = $this->getSubForm(key($data));
         } else {
             return false;
         }
 
         if ($subForm) {
-            if ($subForm->isValid( $data )) {
+            if ($subForm->isValid($data)) {
                 $values = $subForm->getValues();
-                $key = key( $values );
+                $key = key($values);
                 $this->getSessionNamespace()->$key = $values[$key];
             } else {
-                $this->setCurrent( $subForm->getName() );
+                $this->setCurrent($subForm->getName());
             }
         } else {
             return false;
         }
 
         $this->_sort();
-        end( $this->_order );
+        end($this->_order);
 
         // Is last subform?
-        if (key( $data ) == key( $this->_order )) {
+        if (key($data) == key($this->_order)) {
             $totalData = array();
             foreach ($this->getSessionNamespace() as $key => $info) {
                 $totalData[$key] = $info;
             }
 
-            return parent::isValid( $totalData );
+            return parent::isValid($totalData);
         }
 
         return false;
@@ -138,12 +138,11 @@ class Core_Form_Multipage extends Zend_Form
     /**
      * Return current subform
      *
-     * @param  int $step
      * @return null|Zend_Form_SubForm
      */
     public function getCurrent()
     {
-        if (sizeof( $this->getSubForms() ) < 1) {
+        if (sizeof($this->getSubForms()) < 1) {
             throw new Core_Exception('Multipage form don\'t have any subforms');
         }
 
@@ -154,12 +153,12 @@ class Core_Form_Multipage extends Zend_Form
         if ((null !== $step)
             && (!empty($this->getSessionNamespace()->$step))
         ) {
-            $subForm = $this->getSubForm( $step );
-            $subForm->populate( $this->getSessionNamespace()->$step );
+            $subForm = $this->getSubForm($step);
+            $subForm->populate($this->getSessionNamespace()->$step);
         } else {
             foreach ($this->_order as $key => $order) {
-                if (!$this->isStored( $key )) {
-                    $subForm = $this->getSubForm( $key );
+                if (!$this->isStored($key)) {
+                    $subForm = $this->getSubForm($key);
                     break;
                 }
             }
@@ -167,11 +166,11 @@ class Core_Form_Multipage extends Zend_Form
 
         //FIXME: Undefined variable: subForm
         if (isset($subForm)) {
-            if (is_null( $subForm )) {
-                end( $this->_order );
-                $subForm = $this->getSubForm( key( $this->_order ) );
+            if (is_null($subForm)) {
+                end($this->_order);
+                $subForm = $this->getSubForm(key($this->_order));
             }
-            return $this->_prepareSubForm( $subForm );
+            return $this->_prepareSubForm($subForm);
         }
 
         return false;
@@ -235,7 +234,7 @@ class Core_Form_Multipage extends Zend_Form
 
             $subForms = array();
             foreach ($this->_order as $key => $order) {
-                $subForms[] = $this->getSubForm( $key );
+                $subForms[] = $this->getSubForm($key);
             }
 
             return $subForms;
