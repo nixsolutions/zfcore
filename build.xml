@@ -92,7 +92,7 @@
             <arg line="--extensions=php"/>
             <arg line="--standard=Zend ."/>
             <arg line="--report-file=${logsDir}/checkstyle.xml" />
-            <arg line="--ignore=library/Zend,library/elFinder,library/Facebook" />
+            <arg line="--ignore=bin,data,library/Zend,library/elFinder,library/Facebook" />
             <arg line="${appDir}"/>
             <arg line="${coreDir}"/>
         </exec>
