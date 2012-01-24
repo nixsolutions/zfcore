@@ -47,7 +47,7 @@ class Core_Version
     static public function getVersion()
     {
         if (null === self::$_version) {
-            self::$_version = trim( `hg parent | grep tag: | awk '{print($2)}'` );
+            self::$_version = trim(`hg parent | grep tag: | awk '{print($2)}'`);
         }
         return self::$_version;
     }
