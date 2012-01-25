@@ -375,20 +375,20 @@ class Model_Users_ManagerTest extends ControllerTestCase
      */
     public function tearDown()
     {
-    	$this->_userTable->delete(
-        	$this->_userTable->quoteInto('login=?', $this->_fixture['guest']['login'])
+        $this->_userTable->delete(
+            $this->_userTable->quoteInto('login=?', $this->_fixture['guest']['login'])
         );
 
         $this->_userTable->delete(
-        	$this->_userTable->quoteInto('login=?', $this->_fixture['blocked']['login'])
+            $this->_userTable->quoteInto('login=?', $this->_fixture['blocked']['login'])
         );
 
         $this->_userTable->delete(
-        	$this->_userTable->quoteInto('login=?', $this->_fixture['removed']['login'])
+            $this->_userTable->quoteInto('login=?', $this->_fixture['removed']['login'])
         );
 
         $this->_userTable->delete(
-        	$this->_userTable->quoteInto('login=?', $this->_fixture['admin']['login'])
+            $this->_userTable->quoteInto('login=?', $this->_fixture['admin']['login'])
         );
 
         parent::tearDown();
