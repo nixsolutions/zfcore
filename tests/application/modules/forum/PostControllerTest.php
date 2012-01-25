@@ -28,7 +28,14 @@ class Forum_PostControllerTest extends ControllerTestCase
                                    'alias' => 'title');
 
         $users= new Users_Model_Users_Table();
-        $user = $users->createRow(array('id' => 75, 'login' => 'asdasd', 'email' => 'test@email.com', 'password' => '123456'));
+        $user = $users->createRow(
+            array(
+                 'id'       => 75,
+                 'login'    => 'asdasd',
+                 'email'    => 'test@email.com',
+                 'password' => '123456'
+            )
+        );
         $user->save();
     }
 
@@ -100,13 +107,15 @@ class Forum_PostControllerTest extends ControllerTestCase
         $manager = new Forum_Model_Category_Manager();
 
         $rootCat = $manager->getRoot();
-        $cat = $manager->getDbTable()->createRow(array(
-            'id' => 33,
-            'title' => 'title',
-            'description' => 'descr',
-            'parentId' => 0,
-            'alias' => 'sdasfs'
-        ));
+        $cat = $manager->getDbTable()->createRow(
+            array(
+                'id' => 33,
+                'title' => 'title',
+                'description' => 'descr',
+                'parentId' => 0,
+                'alias' => 'sdasfs'
+            )
+        );
         $rootCat->addChild($cat);
 
 
