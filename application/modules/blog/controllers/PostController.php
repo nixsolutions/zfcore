@@ -80,21 +80,21 @@ class Blog_PostController extends Core_Controller_Action
             throw new Zend_Controller_Action_Exception('Page not found');
         }
         $posts = new Blog_Model_Post_Table();
-        if (!$row = $posts->getByAlias($alias)) {
+        if (!$post = $posts->getByAlias($alias)) {
             throw new Zend_Controller_Action_Exception('Post not found');
         }
 
-        if (!$row->isOwner()) {
+        if (!$post->isOwner()) {
             throw new Zend_Controller_Action_Exception('Page is forbidden');
         }
 
         $form = new Blog_Model_Post_Form_Edit();
-        $form->setDefaults($row->toArray());
+        $form->setDefaults($post->toArray());
 
         if ($this->getRequest()->isPost()
             && $form->isValid($this->_getAllParams())) {
 
-            $row->setFromArray($form->getValues());
+            $post->setFromArray($form->getValues());
 
             $this->_helper->flashMessenger->addMessage('Post saved');
             $this->_helper->redirector(
