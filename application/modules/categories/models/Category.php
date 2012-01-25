@@ -22,7 +22,7 @@ class Categories_Model_Category extends Core_Categories_Row
         $rowset = $this->getAllChildren($down, 'level DESC');
 
         $children = array();
-        foreach ($rowset as $i => $row) {
+        foreach ($rowset as $row) {
             if (isset($children[$row->id])) {
                 foreach ($children[$row->id] as $child) {
                     $row->addChild($child, false);
