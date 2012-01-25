@@ -86,9 +86,9 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
          * todo: do it better way
          * init grid before rendering, catch all exception in action
          */
-        $this->grid->getHeaders();
-        $this->grid->getData();
-        $this->view->grid = $this->grid;
+        $this->_grid->getHeaders();
+        $this->_grid->getData();
+        $this->view->grid = $this->_grid;
     }
 
     /**
@@ -283,7 +283,7 @@ class Menu_ManagementController extends Core_Controller_Action_Crud
      */
     protected  function _prepareGrid()
     {
-        $this->grid
+        $this->_grid
             ->removeColumn('title')
             ->removeColumn('class')
             ->removeColumn('target')

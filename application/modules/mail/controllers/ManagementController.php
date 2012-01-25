@@ -99,7 +99,7 @@ class Mail_ManagementController extends Core_Controller_Action_Crud
 
     public function _getCustomChanges()
     {
-        $this->grid
+        $this->_grid
             ->removeColumn('bodyHtml')
             ->removeColumn('fromEmail')
             ->removeColumn('fromName');

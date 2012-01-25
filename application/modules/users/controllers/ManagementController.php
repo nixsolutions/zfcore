@@ -135,7 +135,7 @@ class Users_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _prepare()
     {
-        $this->grid
+        $this->_grid
              ->removeColumn('password')
              ->removeColumn('salt')
              ->removeColumn('avatar')

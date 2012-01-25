@@ -91,7 +91,7 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
     protected function _prepareGrid()
     {
 
-        $this->grid
+        $this->_grid
              ->removeColumn('body')
              ->removeColumn('userId')
              ->removeColumn('categoryId')

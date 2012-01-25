@@ -61,7 +61,7 @@ class Debug_CrontabController extends Core_Controller_Action_Crud
      */
     public function _addAllTableColumns()
     {
-        $this->grid->setColumn(
+        $this->_grid->setColumn(
             'minute', array(
                 'name' => 'Minute',
                 'type' => Core_Grid::TYPE_DATA,

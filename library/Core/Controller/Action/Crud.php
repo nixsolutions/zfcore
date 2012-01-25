@@ -35,12 +35,12 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     /**
      * @var Core_Grid
      */
-    protected $grid;
+    protected $_grid;
 
     /**
      * @var boolean
      */
-    protected $showFilter = false;
+    protected $_showFilter = false;
 
     /**
      * init controller
@@ -73,10 +73,10 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
          * todo: do it better way
          * init grid before rendering, catch all exception in action
          */
-        $this->grid->getHeaders();
-        $this->grid->getData();
-        $this->view->grid = $this->grid;
-        $this->view->showFilter = empty($this->showFilter) ? false : true;
+        $this->_grid->getHeaders();
+        $this->_grid->getData();
+        $this->view->grid = $this->_grid;
+        $this->view->showFilter = empty($this->_showFilter) ? false : true;
     }
 
     /**
@@ -94,9 +94,9 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
          * todo: do it better way
          * init grid before rendering, catch all exception in action
          */
-        $this->grid->getHeaders();
-        $this->grid->getData();
-        $this->view->grid = $this->grid;
+        $this->_grid->getHeaders();
+        $this->_grid->getData();
+        $this->view->grid = $this->_grid;
     }
 
     /**
@@ -258,7 +258,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
             $grid->setFilter($this->_getParam('filterColumn'), $this->_getParam('filterValue'));
         }
 
-        $this->grid = $grid;
+        $this->_grid = $grid;
     }
 
     /**
@@ -269,7 +269,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     public function _addAllTableColumns()
     {
         foreach ($this->_getTable()->info(Zend_Db_Table::COLS) as $col) {
-            $this->grid->setColumn(
+            $this->_grid->setColumn(
                 $col,
                 array(
                     'name'  => ucfirst($col),
@@ -287,7 +287,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function _addEditColumn()
     {
-        $this->grid->setColumn(
+        $this->_grid->setColumn(
             'edit',
             array(
                 'name'      => 'Edit',
@@ -303,7 +303,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function _addDeleteColumn()
     {
-        $this->grid->setColumn(
+        $this->_grid->setColumn(
             'delete',
             array(
                 'name'      => 'Delete',
@@ -319,7 +319,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function _addCheckBoxColumn()
     {
-        $this->grid->setColumn(
+        $this->_grid->setColumn(
             'check',
             array(
                 'name'      => '<input type="checkbox" id="selectAllCheckbox"/>',
@@ -446,7 +446,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _showFilter()
     {
-        $this->showFilter = true;
+        $this->_showFilter = true;
     }
 
     /**

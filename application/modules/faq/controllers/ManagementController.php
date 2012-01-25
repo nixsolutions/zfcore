@@ -73,7 +73,7 @@ class Faq_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _prepareGrid()
     {
-        $this->grid
+        $this->_grid
              ->setColumn(
                  'question',
                  array(

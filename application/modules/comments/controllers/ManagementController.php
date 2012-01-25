@@ -109,10 +109,10 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _prepare()
     {
-        $this->grid->removeColumn('aliasId');
+        $this->_grid->removeColumn('aliasId');
         
         if ($this->_alias && !$this->_alias->isTitleDisplayed()) {
-            $this->grid->removeColumn('title');
+            $this->_grid->removeColumn('title');
         }
     }
     

@@ -71,7 +71,7 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
      */
     public function _addShowCommentsColumn()
     {
-        $this->grid->setColumn(
+        $this->_grid->setColumn(
             'show',
             array(
                 'name' => 'Show',
