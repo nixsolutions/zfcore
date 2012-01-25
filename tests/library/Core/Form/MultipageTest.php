@@ -186,9 +186,9 @@ class Core_Form_MultipageTest extends ControllerTestCase
         $multiform = $this->getMultiForm();
         $multiform->isValid($this->_fixture['0']);
 
-        $sfStep1 = $multiform->getSubForm('step1');
+        $sfStepOne = $multiform->getSubForm('step1');
 
-        $this->assertTrue($multiform->isStored($sfStep1));
+        $this->assertTrue($multiform->isStored($sfStepOne));
     }
 
     public function testExceptionEmptyNamespace()
