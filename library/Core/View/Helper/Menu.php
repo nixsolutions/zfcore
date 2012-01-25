@@ -55,6 +55,9 @@ class Core_View_Helper_Menu
         } else {
             $menuArray = $menuManager->getMenuById(0);
         }
+        if (is_null($menuArray)) {
+            return false;
+        }
 
         $container = new Zend_Navigation(array($menuArray));
 
