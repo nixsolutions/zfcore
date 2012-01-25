@@ -148,6 +148,70 @@ class Core_Tool_Project_Provider_MigrationProvider
     }
 
     /**
+     *  Check DB state for last migration,
+     *  if state is empty set current db state
+     *  @param string $module
+     */
+    public function check($module = null)
+    {
+        require_once 'bootstrap.php';
+        $this->message('Check database state');
+        $manager = $this->getManager();
+        if($manager->checkState($module)) {
+            $this->message('Db state is updated');
+        } else {
+            $this->message('Db state is OK');
+        }
+
+    }
+
+    /**
+     * create migration with auto-generated queries
+     * @param null $module
+     * @param string $whitelist
+     * @param string $blacklist
+     */
+    public function generate($module = null, $whitelist = '', $blacklist = '')
+    {
+        require_once 'bootstrap.php';
+
+        $manager = $this->getManager();
+        $result = $manager->generateMigration($module, $blacklist, $whitelist);
+
+        if($result) {
+            $this->message('Migration '.$result.' created! ');
+        } else {
+            $this->message('Your database has no changes from last revision!');
+        }
+
+    }
+    /**
+     * print differences on screen
+     * @param null $module
+     * @param string $whitelist
+     * @param string $blacklist
+     */
+    public function diff($module = null, $whitelist = '', $blacklist = '')
+    {
+        require_once 'bootstrap.php';
+
+        $manager = $this->getManager();
+        $result = $manager->generateMigration($module, $blacklist, $whitelist, true);
+
+        if(!empty($result)) {
+            $this->message('Queries ('.sizeof($result['up']).') :'.PHP_EOL);
+
+            if(sizeof($result['up']) > 0)
+                foreach ($result['up'] as $diff) {
+                    $this->message(stripcslashes($diff).PHP_EOL);
+                }
+
+        } else {
+            $this->message('Your database has no changes from last revision!');
+        }
+    }
+
+    /**
      * list of all avaliable migrations
      *
      * @param string $module
