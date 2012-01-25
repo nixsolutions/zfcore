@@ -1,7 +1,8 @@
 <project name="ZFCore" default="build">
     
     <property name="appDir"   value="${basedir}/application" />
-    <property name="coreDir"  value="${basedir}/library" />
+    <property name="testsDir" value="${basedir}/tests" />
+    <property name="coreDir"  value="${basedir}/library/Core" />
     <property name="buildDir" value="${basedir}/build" />
     <property name="logsDir"  value="${buildDir}/logs" />
     
@@ -90,11 +91,11 @@
         <exec dir="${basedir}" executable="phpcs" failonerror="false" output="${logsDir}/phpcs.log">
             <arg line="--report=checkstyle"/>
             <arg line="--extensions=php"/>
-            <arg line="--standard=Zend ."/>
+            <arg line="--standard=Zend"/>
             <arg line="--report-file=${logsDir}/checkstyle.xml" />
-            <arg line="--ignore=bin,data,library/Zend,library/elFinder,library/Facebook" />
             <arg line="${appDir}"/>
             <arg line="${coreDir}"/>
+            <arg line="${testsDir}"/>
         </exec>
     </target>
     <target name="phpunit" depends="prepare">
