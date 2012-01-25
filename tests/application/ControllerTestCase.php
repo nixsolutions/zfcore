@@ -72,9 +72,9 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 //        $application->bootstrap('Frontcontroller');
         $application->bootstrap();
         $acl = new Core_Controller_Plugin_Acl();
-    	$acl->getAcl();
+        $acl->getAcl();
 
-    	self::migrationUp();
+        self::migrationUp();
         self::migration(true, "menu");
     }
 
@@ -124,11 +124,13 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
                 list($migration, $module) = array($module, null);
         }
 
-        $manager = new Core_Migration_Manager(array(
-            'projectDirectoryPath'    => APPLICATION_PATH . '/../',
-            'modulesDirectoryPath'    => APPLICATION_PATH . '/modules/',
-            'migrationsDirectoryName' => 'migrations',
-        ));
+        $manager = new Core_Migration_Manager(
+            array(
+                'projectDirectoryPath'    => APPLICATION_PATH . '/../',
+                'modulesDirectoryPath'    => APPLICATION_PATH . '/modules/',
+                'migrationsDirectoryName' => 'migrations',
+            )
+        );
         if ($up) {
             $manager->up($module, $migration);
         } else {
