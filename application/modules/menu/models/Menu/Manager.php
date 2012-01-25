@@ -88,15 +88,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     }
 
     /**
-     * get parent array
-     * @return array
-     */
-    public function getParentArray()
-    {
-        return $this->_parentArray;
-    }
-
-    /**
      * Build hierarchical tree for menu of parents
      *
      * @param $array array
