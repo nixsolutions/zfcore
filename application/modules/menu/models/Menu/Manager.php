@@ -663,6 +663,23 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
         );
     }
 
+    /**Check target
+     *
+     * @param $target string
+     * @return string|null
+     */
+    protected function _checkTarget($target)
+    {
+        if ($target == Menu_Model_Menu::TARGET_BLANK ||
+            $target == Menu_Model_Menu::TARGET_PARENT ||
+            $target == Menu_Model_Menu::TARGET_SELF ||
+            $target == Menu_Model_Menu::TARGET_TOP) {
+
+            return $target;
+        } else {
+            return null;
+        }
+    }
 
 
     /**
@@ -689,13 +706,8 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
             if ($data['class']) {
                 $menu->class = $data['class'];
             }
-            if ($data['target'] == Menu_Model_Menu::TARGET_BLANK ||
-                $data['target'] == Menu_Model_Menu::TARGET_PARENT ||
-                $data['target'] == Menu_Model_Menu::TARGET_SELF ||
-                $data['target'] == Menu_Model_Menu::TARGET_TOP) {
 
-                $menu->target = $data['target'];
-            }
+            $menu->target = $this->_checkTarget($data['target']);
 
             if ($data['linkType'] == Menu_Model_Menu::TYPE_URI) {//link
                 $menu->type = Menu_Model_Menu::TYPE_URI;
@@ -774,13 +786,8 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                 if ($data['class']) {
                     $menu->class = $data['class'];
                 }
-                if ($data['target'] == Menu_Model_Menu::TARGET_BLANK ||
-                    $data['target'] == Menu_Model_Menu::TARGET_PARENT ||
-                    $data['target'] == Menu_Model_Menu::TARGET_SELF ||
-                    $data['target'] == Menu_Model_Menu::TARGET_TOP) {
 
-                    $menu->target = $data['target'];
-                }
+                $menu->target = $this->_checkTarget($data['target']);
 
                 if ($data['linkType'] == Menu_Model_Menu::TYPE_URI) {//link
                     $menu->type = Menu_Model_Menu::TYPE_URI;
@@ -799,7 +806,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                     if (!isset($routes[$data['route']])) {
                         return false;
                     }
-
 
                     $menu->routeType = $routes[$data['route']]['type'];
 
