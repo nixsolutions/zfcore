@@ -136,13 +136,15 @@ class Blog_PostControllerTest extends ControllerTestCase
         $manager = new Blog_Model_Category_Manager();
 
         $rootCat = $manager->getRoot();
-        $cat = $manager->getDbTable()->createRow(array(
-            'id' => 73,
-            'title' => 'title',
-            'description' => 'descr',
-            'parentId' => 0,
-            'alias' => 'sdasfs'
-        ));
+        $cat = $manager->getDbTable()->createRow(
+            array(
+                'id' => 73,
+                'title' => 'title',
+                'description' => 'descr',
+                'parentId' => 0,
+                'alias' => 'sdasfs'
+            )
+        );
         $rootCat->addChild($cat);
 
 
