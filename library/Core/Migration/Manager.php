@@ -376,6 +376,12 @@ class Core_Migration_Manager
         return $_migrationName;
     }
 
+    /**
+     * get last data base state
+     * @param null $module
+     * @return string
+     */
+
     protected function getLastDbState($module = null)
     {
         $lastMigration = $this->getLastMigration($module);
@@ -394,6 +400,16 @@ class Core_Migration_Manager
 
         return $dbState;
     }
+
+    /**
+     * get difference between current db state and last db state, after this
+     * create migration with auto-generated queries
+     * @param null $module
+     * @param string $blacklist
+     * @param string $whitelist
+     * @param bool $showDiff
+     * @return array|bool|string
+     */
 
     public function generateMigration($module=null, $blacklist = '', $whitelist = '',$showDiff=false)
     {
@@ -444,6 +460,13 @@ class Core_Migration_Manager
             }
         }
     }
+
+    /**
+     * check db state in last migration, if state is empty
+     * save current db state to migration
+     * @param $module
+     * @return bool
+     */
 
     public function checkState($module)
     {
