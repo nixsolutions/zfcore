@@ -101,5 +101,17 @@ class Core_Dump_ManagerTest extends ControllerTestCase
     }
 
 
+    public function testImportFail()
+    {
+        try {
+            $this->_getManager()->import('',null);
+        } catch (Exception $expected) {
+            $this->assertTrue(true);
+            return;
+        }
+
+        $this->fail("No exception!");
+    }
+
 
 }
