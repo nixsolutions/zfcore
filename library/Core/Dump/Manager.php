@@ -99,6 +99,25 @@ class Core_Dump_Manager
     }
 
     /**
+     * execute array from string
+     * @param $str
+     * @return array
+     */
+    protected function _strToArray($str)
+    {
+        if(!empty($str)){
+
+            if (strpos($str, ',')) {
+                return explode(',',$str);
+            }
+            return array($str);
+        } else {
+            return array();
+        }
+    }
+
+
+    /**
      * get options for DB
      * @param string $whitelist
      * @param string $blacklist
@@ -106,24 +125,11 @@ class Core_Dump_Manager
      */
     protected function getOptions($whitelist="", $blacklist="")
     {
-        $strToArray = function ($str)
-        {
-            if(!empty($str)){
-
-                if (strpos($str, ',')) {
-                    return explode(',',$str);
-                }
-                return array($str);
-            } else {
-                return array();
-            }
-        };
-
         $blkListedTables = array();
-        $blkListedTables =array_merge($blkListedTables, $strToArray($blacklist));
+        $blkListedTables =array_merge($blkListedTables, $this->_strToArray($blacklist));
 
         $whtListedTables = array();
-        $whtListedTables = array_merge($whtListedTables, $strToArray($whitelist));
+        $whtListedTables = array_merge($whtListedTables, $this->_strToArray($whitelist));
 
         $options = array();
 

@@ -402,6 +402,25 @@ class Core_Migration_Manager
     }
 
     /**
+     * execute array from string
+     * @param $str
+     * @return array
+     */
+    protected function _strToArray($str)
+    {
+        if(!empty($str)){
+
+            if (strpos($str, ',')) {
+                return explode(',',$str);
+            }
+            return array($str);
+        } else {
+            return array();
+        }
+    }
+
+
+    /**
      * get difference between current db state and last db state, after this
      * create migration with auto-generated queries
      * @param null $module
@@ -413,25 +432,13 @@ class Core_Migration_Manager
 
     public function generateMigration($module=null, $blacklist = '', $whitelist = '',$showDiff=false)
     {
-        $strToArray = function ($str)
-        {
-            if(!empty($str)){
-
-                if (strpos($str, ',')) {
-                    return explode(',',$str);
-                }
-                return array($str);
-            } else {
-                return array();
-            }
-        };
 
         $blkListedTables = array();
         $blkListedTables[] = $this->_options['migrationsSchemaTable'];
-        $blkListedTables =array_merge($blkListedTables, $strToArray($blacklist));
+        $blkListedTables =array_merge($blkListedTables, $this->_strToArray($blacklist));
 
         $whtListedTables = array();
-        $whtListedTables = array_merge($whtListedTables, $strToArray($whitelist));
+        $whtListedTables = array_merge($whtListedTables, $this->_strToArray($whitelist));
 
         $options = array();
         $options['blacklist'] = $blkListedTables;
@@ -475,9 +482,12 @@ class Core_Migration_Manager
         $dbState = $this->getLastDbState($module);
 
         if (!$dbState) {
+
+            $db = new Core_Db_Database();
+
             $dbAdapter->update(
                 $this->_options['migrationsSchemaTable'],
-                array('db_state' => $this->getDb()->toString()),
+                array('db_state' => $db->toString()),
                 array($dbAdapter->quoteInto('migration=?', $lastMigration),
                     $dbAdapter->quoteInto('module=?', $module))
             );
