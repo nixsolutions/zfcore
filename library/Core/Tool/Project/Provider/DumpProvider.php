@@ -32,13 +32,13 @@ class Core_Tool_Project_Provider_DumpProvider
     protected function getManager() //move to abstract class
     {
         if (null == $this->_manager) {
-            $profile = $this->_loadProfile( self::NO_PROFILE_THROW_EXCEPTION );
+            $profile = $this->_loadProfile(self::NO_PROFILE_THROW_EXCEPTION);
 
             $options = array(
                 'projectDirectoryPath'
-                => self::_getProjectDirectoryPath( $profile ),
+                => self::_getProjectDirectoryPath($profile),
                 'modulesDirectoryPath'
-                => self::_getModulesDirectoryPath( $profile ),
+                => self::_getModulesDirectoryPath($profile),
                 'dumpsDirectoryName'
                 => 'dumps',
             );
@@ -56,7 +56,7 @@ class Core_Tool_Project_Provider_DumpProvider
      * @param string $whitelist
      * @param string $blacklist
      */
-    public function create($module=null, $name='', $whitelist="", $blacklist="")
+    public function create($module = null, $name = '', $whitelist = "", $blacklist = "")
     {
         require_once 'bootstrap.php';
 
@@ -66,7 +66,7 @@ class Core_Tool_Project_Provider_DumpProvider
         $result = $manager->create($module, $name, $whitelist, $blacklist);
 
         if ($result) {
-            echo 'Database dump '.$result.' created!';
+            echo 'Database dump ' . $result . ' created!';
         }
 
     }
@@ -77,7 +77,7 @@ class Core_Tool_Project_Provider_DumpProvider
      * @param null $module
      */
 
-    public function import($name, $module=null)
+    public function import($name, $module = null)
     {
         require_once 'bootstrap.php';
 
@@ -86,7 +86,7 @@ class Core_Tool_Project_Provider_DumpProvider
         $result = $manager->import($name, $module);
 
         if ($result) {
-            echo 'Database dump '.$name.' imported!';
+            echo 'Database dump ' . $name . ' imported!';
         }
 
     }
@@ -101,16 +101,17 @@ class Core_Tool_Project_Provider_DumpProvider
         Zend_Tool_Project_Profile $profile
     )
     {
-        $projectDirectory = $profile->search( array('projectDirectory') );
+        $projectDirectory = $profile->search(array('projectDirectory'));
 
         if (!($projectDirectory instanceof Zend_Tool_Project_Profile_Resource)) {
-            throw new Zend_Tool_Project_Provider_Exception("
-                Project resource undefined.
-            ");
+            throw new Zend_Tool_Project_Provider_Exception(
+                "Project resource undefined."
+            );
         }
 
         return $projectDirectory->getPath();
     }
+
     /**
      * Method returns path to modules directory
      *
@@ -121,12 +122,12 @@ class Core_Tool_Project_Provider_DumpProvider
         Zend_Tool_Project_Profile $profile
     )
     {
-        $modulesDirectory = $profile->search( array('modulesDirectory') );
+        $modulesDirectory = $profile->search(array('modulesDirectory'));
 
         if (!($modulesDirectory instanceof Zend_Tool_Project_Profile_Resource)) {
-            throw new Zend_Tool_Project_Provider_Exception("
-                Modules resource undefined.
-            ");
+            throw new Zend_Tool_Project_Provider_Exception(
+                " Modules resource undefined."
+            );
         }
 
         return $modulesDirectory->getPath();

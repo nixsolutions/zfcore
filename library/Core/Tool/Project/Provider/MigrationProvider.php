@@ -157,7 +157,7 @@ class Core_Tool_Project_Provider_MigrationProvider
         require_once 'bootstrap.php';
         $this->message('Check database state');
         $manager = $this->getManager();
-        if($manager->checkState($module)) {
+        if ($manager->checkState($module)) {
             $this->message('Db state is updated');
         } else {
             $this->message('Db state is OK');
@@ -178,7 +178,7 @@ class Core_Tool_Project_Provider_MigrationProvider
         $manager = $this->getManager();
         $result = $manager->generateMigration($module, $blacklist, $whitelist);
 
-        if($result) {
+        if ($result) {
             $this->message('Migration '.$result.' created! ');
         } else {
             $this->message('Your database has no changes from last revision!');
@@ -198,7 +198,7 @@ class Core_Tool_Project_Provider_MigrationProvider
         $manager = $this->getManager();
         $result = $manager->generateMigration($module, $blacklist, $whitelist, true);
 
-        if(!empty($result)) {
+        if (!empty($result)) {
             $this->message('Queries ('.sizeof($result['up']).') :'.PHP_EOL);
 
             if(sizeof($result['up']) > 0)

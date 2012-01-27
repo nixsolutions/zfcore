@@ -58,12 +58,12 @@ class Core_Dump_Manager
 
             $path = $this->getDumpsDirectoryPath($module);
 
-            if(!$name) {
+            if (!$name) {
                 list($sec, $msec) = explode(".", microtime(true));
                 $name = date('Ymd_His_') . substr($msec, 0, 2).'.sql';
             }
 
-            file_put_contents($path.DIRECTORY_SEPARATOR.$name,$dump);
+            file_put_contents($path.DIRECTORY_SEPARATOR.$name, $dump);
 
             return $name;
 
@@ -84,7 +84,7 @@ class Core_Dump_Manager
     {
         $path = $this->getDumpsDirectoryPath($module);
 
-        if(file_exists($path.DIRECTORY_SEPARATOR.$name)) {
+        if (file_exists($path.DIRECTORY_SEPARATOR.$name)) {
 
             $dump = file_get_contents($path.DIRECTORY_SEPARATOR.$name);
 
@@ -105,10 +105,10 @@ class Core_Dump_Manager
      */
     protected function _strToArray($str)
     {
-        if(!empty($str)){
+        if (!empty($str)) {
 
             if (strpos($str, ',')) {
-                return explode(',',$str);
+                return explode(',', $str);
             }
             return array($str);
         } else {

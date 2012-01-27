@@ -57,7 +57,7 @@ class Core_Db_Database_Diff
      */
     protected function down($query)
     {
-        if (!empty($query)){
+        if (!empty($query)) {
             $this->_difference['down'][] = $query;
         }
     }
@@ -147,16 +147,13 @@ class Core_Db_Database_Diff
     protected function createDifferenceInsideTable($table, $tblCurrentCols, $tblPublishedCols)
     {
 
-        foreach ($tblCurrentCols as $currCol)
-        {
+        foreach ($tblCurrentCols as $currCol) {
             $colForCompare = $this->checkColumnExists($currCol, $tblPublishedCols);
 
             if (!$colForCompare) {
                 $this->up(Core_Db_Database::addColumn($table, $currCol));
                 $this->down(Core_Db_Database::dropColumn($table, $currCol));
-            }
-            else
-            {
+            } else {
                 if ($currCol === $colForCompare) continue;
                 $sql = Core_Db_Database::changeColumn($table, $currCol);
                 $this->up($sql);
@@ -166,20 +163,19 @@ class Core_Db_Database_Diff
         }
 
 
-        foreach ($tblPublishedCols as $published_column)
-        {
+        foreach ($tblPublishedCols as $publishedColumn) {
 
-            $has = $this->checkColumnExists($published_column, $tblCurrentCols);
+            $has = $this->checkColumnExists($publishedColumn, $tblCurrentCols);
 
             if (!$has) {
-                $constraint = $this->getConstraintForColumn($table, $published_column['COLUMN_NAME']);
+                $constraint = $this->getConstraintForColumn($table, $publishedColumn['COLUMN_NAME']);
 
                 if (count($constraint)) {
                     $this->down(Core_Db_Database::addConstraint(array('constraint' => $constraint)));
                     $this->up(Core_Db_Database::dropConstraint(array('constraint' => $constraint)));
                 }
-                $this->down(Core_Db_Database::addColumn($table, $published_column));
-                $this->up(Core_Db_Database::dropColumn($table, $published_column));
+                $this->down(Core_Db_Database::addColumn($table, $publishedColumn));
+                $this->up(Core_Db_Database::dropColumn($table, $publishedColumn));
             }
         }
     }
@@ -190,35 +186,30 @@ class Core_Db_Database_Diff
      */
     protected function createIndexDifference($table)
     {
-        $current_indexes =  $this->_currentDb->getIndexList($table);
-        $published_indexes = $this->_publishedDb->getIndexList($table);
+        $currentIndexes =  $this->_currentDb->getIndexList($table);
+        $publishedIndexes = $this->_publishedDb->getIndexList($table);
 
 
-        foreach ($current_indexes as $cur_index)
-        {
-            $index_for_compare = $this->checkIndexExists($cur_index, $published_indexes);
-            if (!$index_for_compare) {
-                $this->down(Core_Db_Database::dropConstraint($cur_index));
-                $this->down(Core_Db_Database::dropIndex($cur_index));
-                $this->up(Core_Db_Database::dropConstraint($cur_index));
-                $this->up(Core_Db_Database::dropIndex($cur_index));
-                $this->up(Core_Db_Database::addIndex($cur_index));
-                $this->up(Core_Db_Database::addConstraint($cur_index));
-            }
-            elseif ($index_for_compare === $cur_index)
-            {
+        foreach ($currentIndexes as $curIndex) {
+            $indexForCompare = $this->checkIndexExists($curIndex, $publishedIndexes);
+            if (!$indexForCompare) {
+                $this->down(Core_Db_Database::dropConstraint($curIndex));
+                $this->down(Core_Db_Database::dropIndex($curIndex));
+                $this->up(Core_Db_Database::dropConstraint($curIndex));
+                $this->up(Core_Db_Database::dropIndex($curIndex));
+                $this->up(Core_Db_Database::addIndex($curIndex));
+                $this->up(Core_Db_Database::addConstraint($curIndex));
+            } elseif ($indexForCompare === $curIndex) {
                 continue;
-            }
-            else // index exists but not identical
-            {
-                $this->down(Core_Db_Database::dropConstraint($cur_index));
-                $this->down(Core_Db_Database::dropIndex($cur_index));
-                $this->down(Core_Db_Database::addIndex($index_for_compare));
-                $this->down(Core_Db_Database::addConstraint($index_for_compare));
-                $this->up(Core_Db_Database::dropConstraint($cur_index));
-                $this->up(Core_Db_Database::dropIndex($cur_index));
-                $this->up(Core_Db_Database::addIndex($cur_index));
-                $this->up(Core_Db_Database::addConstraint($cur_index));
+            } else {
+                $this->down(Core_Db_Database::dropConstraint($curIndex));
+                $this->down(Core_Db_Database::dropIndex($curIndex));
+                $this->down(Core_Db_Database::addIndex($indexForCompare));
+                $this->down(Core_Db_Database::addConstraint($indexForCompare));
+                $this->up(Core_Db_Database::dropConstraint($curIndex));
+                $this->up(Core_Db_Database::dropIndex($curIndex));
+                $this->up(Core_Db_Database::addIndex($curIndex));
+                $this->up(Core_Db_Database::addConstraint($curIndex));
             }
         }
     }
@@ -244,8 +235,7 @@ class Core_Db_Database_Diff
      */
     protected function checkIndexExists($index, $indexList)
     {
-        foreach ($indexList as $comparingIndex)
-        {
+        foreach ($indexList as $comparingIndex) {
             if ($index['name'] === $comparingIndex['name']) {
                 return $comparingIndex;
             }

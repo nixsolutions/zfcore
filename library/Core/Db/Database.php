@@ -59,7 +59,7 @@ class Core_Db_Database
 
         if (isset($options['blacklist']) && !isset($options['whitelist'])) {
 
-            if(is_array($options['blacklist'])) {
+            if (is_array($options['blacklist'])) {
                 $this->_blackList = $options['blacklist'];
             } else {
                 $this->_blackList[] = (string)$options['blacklist'];
@@ -67,7 +67,7 @@ class Core_Db_Database
 
         } elseif (isset($options['whitelist']) && !empty($options['whitelist'])) {
 
-            if(is_array($options['whitelist'])) {
+            if (is_array($options['whitelist'])) {
                 $this->_whiteList = $options['whitelist'];
             } else {
                 $this->_whiteList[] = (string)$options['whitelist'];
@@ -76,15 +76,15 @@ class Core_Db_Database
         }
 
 
-        if($autoLoad) {
+        if ($autoLoad) {
 
             $tables  = $this->_db->listTables();
 
-            foreach($tables as $table) {
+            foreach ($tables as $table) {
 
                 $scheme = $this->_db->describeTable($table);
 
-                $this->addTable($table,$scheme);
+                $this->addTable($table, $scheme);
             }
         }
 
@@ -94,14 +94,14 @@ class Core_Db_Database
     {
         $dump = '';
 
-        foreach($this->_scheme as $tableName=>$fields) {
+        foreach ($this->_scheme as $tableName=>$fields) {
 
             $dump .= self::dropTable($tableName).';'.PHP_EOL;
             $dump .= self::createTable($tableName).';'.PHP_EOL;
 
-            if(sizeof($this->_data[$tableName]) > 0)
-                foreach($this->_data[$tableName] as $data)
-                    $dump .= self::insert($tableName,$data).';'.PHP_EOL;
+            if (sizeof($this->_data[$tableName]) > 0)
+                foreach ($this->_data[$tableName] as $data)
+                    $dump .= self::insert($tableName, $data).';'.PHP_EOL;
         }
 
        return stripslashes($dump);
@@ -123,7 +123,7 @@ class Core_Db_Database
         $indexesData = $db->fetchAll($sql);
         $indexes = array();
 
-        foreach($indexesData as $index) {
+        foreach ($indexesData as $index) {
             if (!isset($indexes[$index['Key_name']])) $indexes[$index['Key_name']] = array();
             $indexes[$index['Key_name']]['unique'] = !intval($index['Non_unique']);
             $indexes[$index['Key_name']]['type'] = $index['Index_type'];
@@ -195,13 +195,12 @@ class Core_Db_Database
 
     public function addTable($tableName, $scheme)
     {
-        if($this->isTblWhiteListed($tableName) && !$this->isTblBlackListed($tableName))
-        {
+        if ($this->isTblWhiteListed($tableName) && !$this->isTblBlackListed($tableName)) {
             $this->_scheme[$tableName] = $scheme;
 
             $this->_indexes[$tableName] = $this->getIndexListFromTable($tableName);
 
-            if(isset($this->_options['loaddata']) && $this->_options['loaddata'] == true) {
+            if (isset($this->_options['loaddata']) && $this->_options['loaddata'] == true) {
 
                 $this->_data[$tableName] = $this->_db->fetchAll(
                     $this->_db->select()->from($tableName)
@@ -217,7 +216,7 @@ class Core_Db_Database
      */
     public function deleteTable($tableName)
     {
-        if(array_key_exists($tableName,$this->_scheme))
+        if (array_key_exists($tableName, $this->_scheme))
             unset($this->_scheme[$tableName]);
     }
     /**
@@ -227,8 +226,8 @@ class Core_Db_Database
      */
     protected function isTblWhiteListed($tableName)
     {
-        if(!empty($this->_whiteList)) {
-            return in_array($tableName,$this->_whiteList);
+        if (!empty($this->_whiteList)) {
+            return in_array($tableName, $this->_whiteList);
         }
         return true;
     }
@@ -240,8 +239,8 @@ class Core_Db_Database
      */
     protected function isTblBlackListed($tableName)
     {
-        if(!empty($this->_blackList)) {
-            return in_array($tableName,$this->_blackList);
+        if (!empty($this->_blackList)) {
+            return in_array($tableName, $this->_blackList);
         }
         return false;
 
@@ -267,18 +266,18 @@ class Core_Db_Database
     {
         if (!empty($jsonString)) {
 
-            $dec = json_decode($jsonString,true);
+            $dec = json_decode($jsonString, true);
 
             $this->_indexes = $dec['indexes'];
             $dec = $dec['data'];
 
-            foreach($this->_blackList as $deleteKey){
-                if(array_key_exists($deleteKey,$dec)) {
+            foreach ($this->_blackList as $deleteKey) {
+                if (array_key_exists($deleteKey, $dec)) {
                     unset($dec[$deleteKey]);
                 }
             }
-            foreach($dec as $tblName=>$table){
-                if(!in_array($tblName,$this->_whiteList)) {
+            foreach ($dec as $tblName=>$table) {
+                if (!in_array($tblName, $this->_whiteList)) {
                     unset($dec[$tblName]);
                 }
             }
@@ -319,7 +318,7 @@ class Core_Db_Database
      */
     public function getIndexList($tableName)
     {
-        if(array_key_exists($tableName,$this->_indexes))
+        if (array_key_exists($tableName, $this->_indexes))
             return $this->_indexes[$tableName];
         else
             return array();
@@ -415,32 +414,30 @@ class Core_Db_Database
     public static function addIndex($index)
     {
         if ($index['name'] === 'PRIMARY') {
-            $index_string = "ALTER TABLE `{$index['table']}` ADD PRIMARY KEY";
+            $indexString = "ALTER TABLE `{$index['table']}` ADD PRIMARY KEY";
             $fields = array();
-            foreach ($index['fields'] as $f)
-            {
+            foreach ($index['fields'] as $f) {
                 $len = intval($f['length']) ? "({$f['length']})" : '';
                 $fields[] = "{$f['name']}" . $len;
             }
-            $index_string .= "(" . implode(',', $fields) . ")";
+            $indexString .= "(" . implode(',', $fields) . ")";
         } else {
-            $index_string = "CREATE ";
-            if ($index['type'] === 'FULLTEXT') $index_string .= " FULLTEXT ";
-            if ($index['unique']) $index_string .= " UNIQUE ";
-            $index_string .= " INDEX `{$index['name']}` ";
+            $indexString = "CREATE ";
+            if ($index['type'] === 'FULLTEXT') $indexString .= " FULLTEXT ";
+            if ($index['unique']) $indexString .= " UNIQUE ";
+            $indexString .= " INDEX `{$index['name']}` ";
             if (in_array($index['type'], array('RTREE', 'BTREE', 'HASH',))) {
-                $index_string .= " USING {$index['type']} ";
+                $indexString .= " USING {$index['type']} ";
             }
-            $index_string .= " on `{$index['table']}` ";
+            $indexString .= " on `{$index['table']}` ";
             $fields = array();
-            foreach ($index['fields'] as $f)
-            {
+            foreach ($index['fields'] as $f) {
                 $len = intval($f['length']) ? "({$f['length']})" : '';
                 $fields[] = "{$f['name']}" . $len;
             }
-            $index_string .= "(" . implode(',', $fields) . ")";
+            $indexString .= "(" . implode(',', $fields) . ")";
         }
-        return $index_string;
+        return $indexString;
     }
 
     /**
@@ -491,7 +488,7 @@ class Core_Db_Database
     }
 
 
-     public static function insert($table, array $bind)
+    public static function insert($table, array $bind)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
 
