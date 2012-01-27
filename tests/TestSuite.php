@@ -40,7 +40,7 @@ class TestSuite extends PHPUnit_Framework_TestSuite
         require_once 'mail/Test.php';
         $suite->addTestSuite('Mail_Test');
 
-        require_once 'menus/Test.php';
+        require_once 'menu/Test.php';
         $suite->addTestSuite('Menu_Test');
 
         require_once 'options/Test.php';
