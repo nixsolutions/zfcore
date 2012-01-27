@@ -29,13 +29,13 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
             'id'         => 2,
             'label'      => 'Registration2',
             'title'      => 'register',
-            'linkType'   => 1,
+            'linkType'   => 'mvc',
             'params'     => array("type" => "bot"),
             'parent'     => 0,
             'route'      => 'default',
             'uri'        => NULL,
             'class'      => 'register',
-            'target'     => '_parent',
+            'target'     => '_self',
             'active'     => 0,
             'visible'    => 1,
             'route_type' => 'module',
@@ -146,6 +146,8 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
         $this->assertFalse($this->_menuManager->moveToById(743, 'down'));
         $this->assertTrue($this->_menuManager->moveToById(2, 'down'));
         $this->assertTrue($this->_menuManager->moveToById(2, 'up'));
+        $this->assertFalse($this->_menuManager->moveUpItem(1, 1));
+        $this->assertFalse($this->_menuManager->moveDownItem(100500, 1));
     }
 
     /**
@@ -165,6 +167,28 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
     {
         $menuItem = $this->_menuManager->getRowById($this->_fixture['item']['id']);
         $this->assertTrue($menuItem instanceof Core_Db_Table_Row_Abstract);
+    }
+
+    /**
+     * test getMenuById()
+     */
+    public function testGetMenuById()
+    {
+        $this->assertTrue(is_array($this->_menuManager->getMenuById(1)));
+        $this->assertNull($this->_menuManager->getMenuById(100500));
+    }
+
+    /**
+     * test checkTarget()
+     */
+    public function testCheckTarget()
+    {
+        $this->assertEquals(
+            $this->_fixture['item']['target'],
+            $this->_menuManager->checkTarget($this->_fixture['item']['target'])
+        );
+        $this->assertNull($this->_menuManager->checkTarget('someString'));
+
     }
 
     /**

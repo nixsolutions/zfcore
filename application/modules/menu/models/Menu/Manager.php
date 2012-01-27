@@ -32,13 +32,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     protected $_modelName = 'Menu_Model_Menu';
 
     /**
-     * Array of menu tree
-     *
-     * @var null|array
-     */
-    protected $_menuArray = null;
-
-    /**
      * Array for creating parent's menu in select
      */
     protected $_parentArray = array();
@@ -54,12 +47,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
         'visible' => true,
         'active' => false
     );
-    /**
-     * Menu tree
-     *
-     * @var null|Menu_Model_Menu
-     */
-    protected $_menuTableRowset = null;
 
     /**
      * Constructor
@@ -67,7 +54,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     public function __construct()
     {
         $this->setDbTable(new Menu_Model_Menu_Table());
-        $this->setMenuRowset();
     }
 
     /**
@@ -77,23 +63,14 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
      */
     public function getMenuItemsForEditForm()
     {
-        $this->setMenuRowset();
+        $row = $this->_dbTable->fetchAll($this->_dbTable->select()->order('parentId ASC'));
         $array = array();
-        foreach ($this->_menuTableRowset as $data) {
+        foreach ($row as $data) {
             $array[$data['parentId']][] =  $data;
         }
         $this->buildTreeGt($array, 0);
         //$this->buildTree($array, 0, 0, 1);
         return array_merge(array(0 => '/'), $this->_parentArray);
-    }
-
-    /**
-     * get parent array
-     * @return array
-     */
-    public function getParentArray()
-    {
-        return $this->_parentArray;
     }
 
     /**
@@ -118,7 +95,6 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
             }
         }
     }
-
 
     /**
      * build tree Gt
@@ -236,9 +212,10 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
 
         return $outputArray;
     }
+
     /**
      * Verification routes on exist
-     * Enter description here ...
+     *
      * @param array $inputArray
      * @return array
      */
@@ -258,42 +235,16 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
     }
 
     /**
-     * set menu array
-     */
-    protected function setMenuArray()
-    {
-        if (null === $this->_menuArray) {
-            if ($this->_menuTableRowset instanceof Zend_Db_Table_Rowset) {
-                $array = $this->_menuTableRowset->toArray();
-                $this->_menuArray = $this->makeParentChildRelations($array);
-            } else {
-                $this->_menuArray = array();
-            }
-        }
-    }
-
-    /**
      * get menu array
-     * Return _menuArray
+     *
      * @return array
      */
     public function getMenuArray()
     {
-        $this->setMenuArray();
+        $array = $this->_dbTable->fetchAll($this->_dbTable->select()->order('parentId ASC'))->toArray();
         $menuArray = $this->_rootDirectory;
-        $menuArray['pages'] = $this->_menuArray;
+        $menuArray['pages'] = $this->makeParentChildRelations($array);
         return $menuArray;
-    }
-
-
-    /**
-     * @return void
-     */
-    public function setMenuRowset()
-    {
-        if (null === $this->_menuTableRowset) {
-            $this->_menuTableRowset = $this->_dbTable->fetchAll($this->_dbTable->select()->order('parentId ASC'));
-        }
     }
 
     /**
@@ -668,7 +619,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
      * @param $target string
      * @return string|null
      */
-    protected function _checkTarget($target)
+    public function checkTarget($target)
     {
         if ($target == Menu_Model_Menu::TARGET_BLANK ||
             $target == Menu_Model_Menu::TARGET_PARENT ||
@@ -707,7 +658,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                 $menu->class = $data['class'];
             }
 
-            $menu->target = $this->_checkTarget($data['target']);
+            $menu->target = $this->checkTarget($data['target']);
 
             if ($data['linkType'] == Menu_Model_Menu::TYPE_URI) {//link
                 $menu->type = Menu_Model_Menu::TYPE_URI;
@@ -787,7 +738,7 @@ class Menu_Model_Menu_Manager extends Core_Model_Manager
                     $menu->class = $data['class'];
                 }
 
-                $menu->target = $this->_checkTarget($data['target']);
+                $menu->target = $this->checkTarget($data['target']);
 
                 if ($data['linkType'] == Menu_Model_Menu::TYPE_URI) {//link
                     $menu->type = Menu_Model_Menu::TYPE_URI;

@@ -103,18 +103,18 @@ class Menu_Model_Menu_Form_Create extends Zend_Form
         $id = Zend_Controller_Front::getInstance()->getRequest()->getParam('id', null);
 
         if (!empty($id)) {
-            $menuRow = $this->_menuManager->getRowById($id);
-            if ($menuRow instanceof Zend_Db_Table_Row_Abstract) {
-                $label->setValue($menuRow->getLabel());
-                $parent->setValue($menuRow->getParent());
-                $title->setValue($menuRow->getTitle());
-                $class->setValue($menuRow->getClass());
-                $target->setValue($menuRow->getTarget());
-                $route->setValue($menuRow->getRoute());
-                $uri->setValue($menuRow->getUri());
-                $visible->setValue($menuRow->getVisible());
-                $linkType->setValue($menuRow->getLinkType());
-                $active->setValue($menuRow->getActive());
+            $row = $this->_menuManager->getRowById($id);
+            if ($row instanceof Zend_Db_Table_Row_Abstract) {
+                $label->setValue($row->label);
+                $parent->setValue($row->parentId);
+                $title->setValue($row->title);
+                $class->setValue($row->class);
+                $target->setValue($row->target);
+                $route->setValue($row->route);
+                $uri->setValue($row->uri);
+                $visible->setValue($row->visible);
+                $linkType->setValue($row->type);
+                $active->setValue($row->active);
                 $itemId->setValue($id);
             }
         }
