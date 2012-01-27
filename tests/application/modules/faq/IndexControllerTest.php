@@ -10,7 +10,6 @@ class Faq_IndexControllerTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        parent::migrationUp('faq');
     }
 
     public function testIndexAction()
@@ -23,7 +22,6 @@ class Faq_IndexControllerTest extends ControllerTestCase
 
     public function tearDown()
     {
-        parent::migrationDown('faq');
         parent::tearDown();
     }
 }

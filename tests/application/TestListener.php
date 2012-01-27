@@ -71,7 +71,6 @@ class TestListener implements PHPUnit_Framework_TestListener
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $time = sprintf('%0.3f sec', microtime(1) - $this->_timeSuite);
-        
         echo $this->_colorize("\nTime: ".$time, 'green');
     }
     

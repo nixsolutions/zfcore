@@ -12,4 +12,14 @@ class Faq_Test extends PHPUnit_Framework_TestSuite
         return $suite;
     }
 
+    protected function setUp()
+    {
+        ControllerTestCase::migrationUp('faq');
+    }
+
+    protected function tearDown()
+    {
+        ControllerTestCase::migrationDown('faq');
+    }
+
 }

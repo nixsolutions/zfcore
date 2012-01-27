@@ -6,8 +6,9 @@ class Pages_Test extends PHPUnit_Framework_TestSuite
     {
         require_once 'IndexControllerTest.php';
         require_once 'UploadsControllerTest.php';
+        require_once 'models/PageTest.php';
         require_once 'models/Page/TableTest.php';
-
+        
         $suite = new self('Pages');
 
         $suite->addTest(new PHPUnit_Framework_TestSuite('Pages_IndexControllerTest'));

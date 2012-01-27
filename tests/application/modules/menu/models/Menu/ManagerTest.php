@@ -11,13 +11,6 @@
 class Menu_Model_Menu_ManagerTest extends ControllerTestCase
 {
 
-
-    /*public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-        parent::migrationUp('menu');
-    }*/
-
     public function setUp()
     {
         parent::setUp();
@@ -239,12 +232,4 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
         $this->assertTrue($menuItem->id == $this->_fixture['item']['id']);
         $this->assertTrue($menuItem->label == 'edited');
     }
-
-
-    /*public static function tearDownAfterClass()
-    {
-        parent::migrationDown('menu');
-        parent::tearDownAfterClass();
-    }*/
-
 }

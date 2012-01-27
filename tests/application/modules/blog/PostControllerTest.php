@@ -11,8 +11,6 @@ class Blog_PostControllerTest extends ControllerTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        //parent::migrationUp('blog');
-        //parent::migrationUp('comments');
     }
 
     public function setUp()
@@ -215,8 +213,6 @@ class Blog_PostControllerTest extends ControllerTestCase
 
     public static function tearDownAfterClass()
     {
-        //parent::migrationDown('blog');
-        //parent::migrationDown('comments');
         parent::tearDownAfterClass();
     }
 }

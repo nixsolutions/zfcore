@@ -9,7 +9,8 @@
     processIsolation="true">
         
     <testsuite name="Main Test Suite">
-        <directory>./</directory>
+        <!--<directory>./</directory>-->
+        <file>TestSuite.php</file>
     </testsuite>
     <listeners>
       <listener class="TestListener" file="./application/TestListener.php"/>
