@@ -93,7 +93,7 @@ class Core_View_Helper_FormRedactor extends Zend_View_Helper_FormTextarea
         $this->view->plugins()->redactor();
 
         /** init plugin */
-        $options = Zend_Json::encode($options, Zend_Json::TYPE_OBJECT);
+        $options = Zend_Json::encode($options);
         $this->view->headScript()
             ->appendScript('(function($){$(function(){$("#' . $id . '").redactor(' . $options . ');});})(jQuery)');
 

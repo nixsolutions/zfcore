@@ -9,8 +9,8 @@ $class[] = 'a-' . $request->getActionName();
 ?>
 <?php echo $this->doctype() ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <?php echo $this->render('dashboard/partial/head.phtml') ?>
     <body class="<?php echo implode(' ', $class) ?>">
-        <?php echo $this->render('dashboard/partial/head.phtml') ?>
         <!-- Wrapper for the radial gradient background -->
         <div id="body-wrapper">
             <?php echo $this->render('dashboard/partial/navigation.phtml') ?>

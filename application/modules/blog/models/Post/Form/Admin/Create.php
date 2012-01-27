@@ -34,13 +34,17 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Form
             );
         $this->addElement($title);
 
-        $teaser = new Core_Form_Element_Redactor('teaser');
+        $teaser = new Core_Form_Element_Wysiwyg('teaser');
         $teaser->setLabel('Teaser')
-            ->setAttribs(array('style' => 'width:100%;height:100px'));
+               ->addToolbar(Core_Form_Element_Wysiwyg::TOOLBAR1)
+               ->addToolbar(Core_Form_Element_Wysiwyg::TOOLBAR2)
+               ->setAttribs(array('style' => 'width:90%;height:200px'));
         $this->addElement($teaser);
-        $teaser = new Core_Form_Element_Redactor('body');
+        $teaser = new Core_Form_Element_Wysiwyg('body');
+        $teaser->addToolbar(Core_Form_Element_Wysiwyg::TOOLBAR1)
+               ->addToolbar(Core_Form_Element_Wysiwyg::TOOLBAR2);
         $teaser->setLabel('Text')
-            ->setAttribs(array('style' => 'width:100%;height:340px'));
+               ->setAttribs(array('style' => 'width:90%;height:340px'));
         $this->addElement($teaser);
 
         $published = new Zend_Form_Element_Text('published');

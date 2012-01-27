@@ -22,6 +22,9 @@
 	border:1px solid #ccc;
 }
 
+.elfinder .ui-state-default {
+    border: 1px solid #AAAAAA;
+}
 
 /* help dialog */
 .elfinder-help { margin-bottom:.5em; }
@@ -874,9 +877,9 @@
 	background:url("images/quicklook-bg.png");
 	display:none;
 	overflow:hidden;
-	border-radius:7px;
-	-moz-border-radius:7px;
-	-webkit-border-radius:7px;
+	border-radius:2px;
+	-moz-border-radius:2px;
+	-webkit-border-radius:2px;
 	padding:20px 0 40px 0;
 }
 
@@ -914,12 +917,12 @@
 	top:0;
 	width:100%;
 	height:20px;
-	-moz-border-radius-topleft: 7px; 
-	-webkit-border-top-left-radius: 7px; 
-	border-top-left-radius: 7px;
-	-moz-border-radius-topright: 7px; 
-	-webkit-border-top-right-radius: 7px; 
-	border-top-right-radius: 7px;
+	-moz-border-radius-topleft: 2px; 
+	-webkit-border-top-left-radius: 2px; 
+	border-top-left-radius: 2px;
+	-moz-border-radius-topright: 2px; 
+	-webkit-border-top-right-radius: 2px; 
+	border-top-right-radius: 2px;
 	cursor:move;
 }
 
@@ -938,8 +941,6 @@
 	left : 4px;
 	top:50%;
 	margin-top:-8px;
-	width:16px;
-	height:16px;
 	cursor:default;
 }
 
@@ -1183,9 +1184,9 @@ embed.elfinder-quicklook-preview-audio {
 	float:left;
 	background:transparent;
 	padding:0;
-	-moz-border-radius: 4px; 
-	-webkit-border-radius: 4px; 
-	border-radius: 4px;
+	-moz-border-radius: 2px; 
+	-webkit-border-radius: 2px; 
+	border-radius: 2px;
 }
 
 /*.elfinder-buttonset:first-child { margin:0; }*/
@@ -1205,21 +1206,21 @@ embed.elfinder-quicklook-preview-audio {
 .elfinder .ui-icon-search { cursor:pointer;}
 
 .elfinder-button:first-child {
-	-moz-border-radius-topleft: 4px; 
-	-webkit-border-top-left-radius: 4px; 
-	border-top-left-radius: 4px;
-	-moz-border-radius-bottomleft: 4px; 
-	-webkit-border-bottom-left-radius: 4px; 
-	border-bottom-left-radius: 4px;
+	-moz-border-radius-topleft: 2px; 
+	-webkit-border-top-left-radius: 2px; 
+	border-top-left-radius: 2px;
+	-moz-border-radius-bottomleft: 2px; 
+	-webkit-border-bottom-left-radius: 2px; 
+	border-bottom-left-radius: 2px;
 }
 
 .elfinder-button:last-child {
-	-moz-border-radius-topright: 4px; 
-	-webkit-border-top-right-radius: 4px; 
-	border-top-right-radius: 4px;
-	-moz-border-radius-bottomright: 4px; 
-	-webkit-border-bottom-right-radius: 4px; 
-	border-bottom-right-radius: 4px;
+	-moz-border-radius-topright: 2px; 
+	-webkit-border-top-right-radius: 2px; 
+	border-top-right-radius: 2px;
+	-moz-border-radius-bottomright: 2px; 
+	-webkit-border-bottom-right-radius: 2px; 
+	border-bottom-right-radius: 2px;
 }
 
 /* separator between buttons, required for berder between button with ui color */
@@ -1231,6 +1232,7 @@ embed.elfinder-quicklook-preview-audio {
 	border-right:0 solid;
 	border-bottom:0 solid;
 	width:0;
+    display: none;
 }
 
 /* change icon opacity^ not button */
@@ -1349,7 +1351,7 @@ embed.elfinder-quicklook-preview-audio {
 	position:absolute;
 	height:18px;
 	top: 50%;
-	margin:-7px 4px 0 4px;
+	margin:-9px 4px 0 4px;
 	opacity: .6; 
 	filter:Alpha(Opacity=60);
 }

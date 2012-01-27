@@ -10,6 +10,26 @@
 class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
 {
     /**
+     * @var boolen
+     */
+    protected static $_wysiwyg;
+
+    /**
+     * @var boolen
+     */
+    protected static $_redactor;
+
+    /**
+     * @var boolen
+     */
+    protected static $_elfinder;
+
+    /**
+     * @var boolen
+     */
+    protected static $_fancybox;
+
+    /**
      * add some plugins
      *
      * @return Application_View_Helper_Plugins
@@ -26,11 +46,42 @@ class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
      */
     public function redactor()
     {
-        $this->view->headScript()
-            ->appendFile($this->view->baseUrl('/scripts/jquery/redactor/redactor.js'));
+        if (!self::$_redactor) {
+            $view = $this->view;
+            $view->headScript()->appendFile(
+                $view->baseUrl('scripts/jquery/redactor/redactor.js')
+            );
+            $view->headLink()->appendStylesheet(
+                $view->baseUrl('scripts/jquery/redactor/css/redactor.css')
+            );
 
-        $this->view->headLink()
-            ->appendStylesheet($this->view->baseUrl('/scripts/jquery/redactor/css/redactor.css'));
+            self::$_redactor = true;
+        }
+
+        return $this;
+    }
+
+    /**
+     * add wysiwyg
+     *
+     * @return Application_View_Helper_Plugins
+     */
+    public function wysiwyg()
+    {
+        if (!self::$_wysiwyg) {
+            $view = $this->view;
+            $view->headScript()->appendFile(
+                $view->baseUrl('scripts/jquery/wysiwyg/wysiwyg.js')
+            );
+
+            $view->headLink()->appendStylesheet(
+                $view->baseUrl('scripts/jquery/wysiwyg/buttons.css')
+            )->appendStylesheet(
+                $view->baseUrl('scripts/jquery/wysiwyg/style.css')
+            );
+
+            self::$_wysiwyg = true;
+        }
 
         return $this;
     }
@@ -42,28 +93,43 @@ class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
      */
     public function elfinder()
     {
-        $this->view->headLink()
-            ->appendStylesheet($this->view->baseUrl('scripts/jquery/elfinder/css/elfinder.full.css'))
-            ->appendStylesheet($this->view->baseUrl('scripts/jquery/elfinder/css/theme.css'));
+        if (!self::$_elfinder) {
+            $view = $this->view;
+            $view->headLink()->appendStylesheet(
+                $view->baseUrl('scripts/jquery/elfinder/css/elfinder.full.css')
+            )
+            ->appendStylesheet(
+                $view->baseUrl('scripts/jquery/elfinder/css/theme.css')
+            );
 
-        $this->view->headScript()
-            ->appendFile($this->view->baseUrl('scripts/jquery/elfinder/js/elfinder.full.js'));
+            $view->headScript()->appendFile(
+                $view->baseUrl('scripts/jquery/elfinder/js/elfinder.full.js')
+            );
+            self::$_elfinder = true;
+        }
 
         return $this;
     }
-    
+
     /**
      * Add fancybox plugin
-     * 
+     *
      * @return Application_View_Helper_Plugins
      */
     public function fancybox()
     {
-        $this->view->headLink()
-            ->appendStylesheet($this->view->baseUrl('scripts/jquery/fancybox/css/fancybox.css'));
+        if (!self::$_fancybox) {
+            $view = $this->view;
+            $view->headLink()->appendStylesheet(
+                $view->baseUrl('scripts/jquery/fancybox/css/fancybox.css')
+            );
 
-        $this->view->headScript()
-            ->appendFile($this->view->baseUrl('scripts/jquery/fancybox/js/fancybox.pack.js'));
+            $view->headScript()->appendFile(
+                $view->baseUrl('scripts/jquery/fancybox/js/fancybox.pack.js')
+            );
+
+            self::$_fancybox = true;
+        }
 
         return $this;
     }
