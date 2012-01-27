@@ -13,7 +13,7 @@ class Users_Test extends PHPUnit_Framework_TestSuite
         require_once 'models/Users/ManagerTest.php';
         require_once 'models/Users/TableTest.php';
 
-        $suite = new self('Sync');
+        $suite = new self('Users');
 
         $suite->addTest(new PHPUnit_Framework_TestSuite('Users_IndexControllerTest'));
         $suite->addTest(new PHPUnit_Framework_TestSuite('Users_LoginControllerTest'));
