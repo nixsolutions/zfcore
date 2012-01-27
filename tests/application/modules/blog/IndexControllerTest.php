@@ -10,7 +10,7 @@ class Blog_IndexControllerTest extends ControllerTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        parent::migrationUp('blog');
+        //parent::migrationUp('blog');
     }
 
     public function testIndexAction()
@@ -23,7 +23,7 @@ class Blog_IndexControllerTest extends ControllerTestCase
 
     public static function tearDownAfterClass()
     {
-        parent::migrationDown('blog');
+        //parent::migrationDown('blog');
         parent::tearDownAfterClass();
     }
 }

@@ -11,8 +11,8 @@ class Forum_PostControllerTest extends ControllerTestCase
     {
         parent::setUp();
 
-        parent::migrationUp('forum');
-        parent::migrationUp('comments');
+        //parent::migrationUp('forum');
+        //parent::migrationUp('comments');
 
         $this->_fixture['post'] = array('id' => 45,
                                    'title' => 'title',
@@ -209,8 +209,8 @@ class Forum_PostControllerTest extends ControllerTestCase
         $table->delete('id = 33');
 
 
-        parent::migrationDown('forum');
-        parent::migrationDown('comments');
+        //parent::migrationDown('forum');
+        //parent::migrationDown('comments');
 
         parent::tearDown();
     }

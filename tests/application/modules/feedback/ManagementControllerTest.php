@@ -14,7 +14,7 @@ class Feedback_ManagementControllerTest extends ControllerTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        parent::migrationUp('feedback');
+        //parent::migrationUp('feedback');
     }
 
     /**
@@ -230,7 +230,7 @@ class Feedback_ManagementControllerTest extends ControllerTestCase
 
     public static function tearDownAfterClass()
     {
-        parent::migrationDown('feedback');
+        //parent::migrationDown('feedback');
         parent::tearDownAfterClass();
     }
 }

@@ -14,7 +14,7 @@ class Pages_IndexControllerTest extends ControllerTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        parent::migrationUp('pages');
+        //parent::migrationUp('pages');
     }
 
     /**
@@ -78,7 +78,7 @@ class Pages_IndexControllerTest extends ControllerTestCase
 
     public static function tearDownAfterClass()
     {
-        parent::migrationDown('pages');
+        //parent::migrationDown('pages');
         parent::tearDownAfterClass();
     }
 }
