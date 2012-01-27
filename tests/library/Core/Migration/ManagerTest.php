@@ -89,11 +89,11 @@ class Core_Migration_ManagerTest extends ControllerTestCase
 
         $db->query(Core_Db_Database::dropTable('test_table'));
         $db->createTable('test_table');
-        $db->createColumn('test_table','col1',Core_Migration_Abstract::TYPE_INT);
-        $db->createColumn('test_table','col2',Core_Migration_Abstract::TYPE_VARCHAR,50);
+        $db->createColumn('test_table', 'col1', Core_Migration_Abstract::TYPE_INT);
+        $db->createColumn('test_table', 'col2', Core_Migration_Abstract::TYPE_VARCHAR, 50);
 
 
-        $diff = $this->_getManager()->generateMigration(null,'','test_table',true);
+        $diff = $this->_getManager()->generateMigration(null, '', 'test_table', true);
 
 
         $compareTo = array(
@@ -104,7 +104,7 @@ class Core_Migration_ManagerTest extends ControllerTestCase
             )
         );
 
-        $this->assertEquals($compareTo,$diff);
+        $this->assertEquals($compareTo, $diff);
 
 
         $db->dropTable('test_table');
