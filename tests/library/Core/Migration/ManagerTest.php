@@ -8,7 +8,10 @@ class Core_Migration_ManagerTest extends ControllerTestCase
     const FIXTURE_MODULE = 'simplemodule';
 
     protected $_manager = null;
-    
+
+    /**
+     * @return Core_Migration_Manager
+     */
     protected function _getManager()
     {
         if (null === $this->_manager) {
@@ -62,7 +65,6 @@ class Core_Migration_ManagerTest extends ControllerTestCase
                 ->query("DROP TABLE `".$tableName."`");
         }
     }
-
     /**
      * Data provider for testUpSuccess
      * @return array
@@ -75,6 +77,37 @@ class Core_Migration_ManagerTest extends ControllerTestCase
             array(self::FIXTURE_MODULE, null, 'items_s%', 5),
             array(self::FIXTURE_MODULE, '99999999_000000_01', 'items_s%', 2)
         );
+    }
+
+    /**
+     * Test for method `generate`
+     */
+
+    public function testGenerateMigrationSuccess()
+    {
+        $db = new Core_Migration_Adapter_Mysql(Zend_Db_Table::getDefaultAdapter());
+
+        $db->query(Core_Db_Database::dropTable('test_table'));
+        $db->createTable('test_table');
+        $db->createColumn('test_table','col1',Core_Migration_Abstract::TYPE_INT);
+        $db->createColumn('test_table','col2',Core_Migration_Abstract::TYPE_VARCHAR,50);
+
+
+        $diff = $this->_getManager()->generateMigration(null,'','test_table',true);
+
+
+        $compareTo = array(
+            'down'=>array(Core_Db_Database::dropTable('test_table')),
+            'up'=>array(
+                Core_Db_Database::dropTable('test_table'),
+                Core_Db_Database::createTable('test_table')
+            )
+        );
+
+        $this->assertEquals($compareTo,$diff);
+
+
+        $db->dropTable('test_table');
     }
 
     /**

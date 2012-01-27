@@ -42,7 +42,7 @@ class Core_Grid_Adapter_Array implements Core_Grid_Adapter_AdapterInterface
      *
      * @var string
      */
-    protected $_cmpFunction = 'strcmp';
+    protected $_cmpFunction = 'strnatcmp';
 
     /**
      * Constructor
@@ -91,7 +91,7 @@ class Core_Grid_Adapter_Array implements Core_Grid_Adapter_AdapterInterface
      */
     public function setCmpFunction($functionName)
     {
-        $this->_cmpFunction = (string)$functionName;
+        $this->_cmpFunction = (string) $functionName;
     }
 
 
@@ -106,13 +106,13 @@ class Core_Grid_Adapter_Array implements Core_Grid_Adapter_AdapterInterface
      */
     public function sort($column, $direction, $a, $b)
     {
-        $result = (bool)call_user_func(
+        $result = call_user_func(
             $this->_cmpFunction,
             $a[$column],
             $b[$column]
         );
         if ('desc' == $direction) {
-            $result = !$result;
+            $result = -$result;
         }
         return $result;
     }
