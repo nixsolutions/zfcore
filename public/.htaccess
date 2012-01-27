@@ -8,8 +8,6 @@ php_flag xdebug.profiler_enable_trigger 1
 php_value xdebug.var_display_max_children 128
 php_value xdebug.var_display_max_depth 5
 php_value xdebug.var_display_max_data 4096
-php_value xdebug.remote_enable = 1
-php_value xdebug.remote_host = 127.0.0.1
 
 Options +FollowSymlinks
 Options -Indexes
