@@ -233,7 +233,7 @@
                  $('<div>').load(this._getPath() + 'image.html', function() {
                     var $el = $(this).children();
 
-                    $el.dialog({
+                    $el.dialog($.extend({
                         modal: true,
                         buttons: {
                             OK: function() {
@@ -252,14 +252,14 @@
                                 $el.dialog('close');
                             }
                         }
-                    });
+                    }, editor.options.plugins.dialog));
 
-                    $('#wysiwyg-image-upload').imageUpload({
+                    $('#wysiwyg-image-upload').imageUpload($.extend({
                         callback: function(url) {
                             $('#wysiwyg-image-url').val(url);
                         },
                         url: editor.options.uploadUrl
-                    });
+                    }, editor.options.plugins.imageUpload));
                 });
             } else {
                 $el.dialog('open');
@@ -1054,7 +1054,7 @@
             });
 
             if (!this._checkBrowser()) {
-                $element.yourBrowserSucks();
+                $element.yourBrowserSucks(this.options.plugins.yourBrowserSucks);
             }
 
             $element.hide().after(
@@ -1405,11 +1405,24 @@
             var $widget = $(this.widget());
 
             if (typeof(toolbar) != 'undefined') {
-                if (typeof(toolbar) == 'string') {
-                    toolbar = $(toolbar).wysiwygToolbar();
+                var args = {};
+                if ($.isPlainObject(this.options.plugins.wysiwygToolbar)) {
+                    args = $.extend(args, this.options.plugins.wysiwygToolbar);
                 }
-                if (!(toolbar instanceof $)) {
-                    toolbar = $('<div>').wysiwygToolbar(toolbar);
+                if (typeof(toolbar) == 'string') {
+                    if ('#' == toolbar[0] || '.' == toolbar[0]) {
+                        toolbar = $(toolbar).wysiwygToolbar(args);
+                    } else {
+                        args.buttons = toolbar;
+                        toolbar = $('<div>').wysiwygToolbar(args);
+                    }
+                } else if (!(toolbar instanceof $)) {
+                    if ($.isArray(toolbar)) {
+                        args.buttons = toolbar;
+                        toolbar = $('<div>').wysiwygToolbar(args);
+                    } else {
+                        toolbar = $('<div>').wysiwygToolbar($.extend(args, toolbar));
+                    }
                 }
                 var $li = $('<li>').addClass(this.options.toolbarWrapperClass).append(toolbar);
 
@@ -1459,7 +1472,8 @@
             commandsMap: EditorCommandsMap,
             eventsMap: EditorEventsMap,
             //template: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body><p></p></body></html>'
-            template: '<!DOCTYPE html><html><head></head><body><p></p></body></html>'
+            template: '<!DOCTYPE html><html><head></head><body><p></p></body></html>',
+            plugins: {}
         }
     });
 
@@ -1754,7 +1768,8 @@
             dropdownClass: 'toolbar-dropdown',
             dropdownSliderClass: 'toolbar-dropdown-slider',
             dropdownActiveClass: 'toolbar-dropdown-active',
-            editor: null
+            editor: null,
+            plugins: {}
         }
     });
     /**
@@ -1807,8 +1822,12 @@
         _create: function() {
             var $el = $(this.element);
 
-            for (var i in this._map) {
-                $el.append(this._arrayToHtml(this._map[i]));
+            var map = this._map;
+            if (this.options.colorMap) {
+                map = this.options.colorMap;
+            }
+            for (var i in map) {
+                $el.append(this._arrayToHtml(map[i]));
             }
             this._click(this.options.click);
         },
@@ -1929,6 +1948,7 @@
          *
          */
         options: {
+            colorMap: null,
             classes:{
                 color: 'colorpick-color',
                 td:    'colorpick-td',
@@ -2124,7 +2144,7 @@
 
         _startUpload: function() {
             $(this.element).attr('disabled', true);
-            $('body').overlay();
+            $('body').overlay(this.options.plugins.overlay);
 
             this._frame = this._createFrame();
             var form = this._createForm();
@@ -2253,8 +2273,6 @@
             }
         },
 
-
-
         /**
          * Widget public API goes below
          *
@@ -2272,17 +2290,12 @@
         /**
          * Widget options
          *
-         * $('element').yourBrowserSucks({optionName: optionValue});
-         *
-         * or
-         *
-         * $('element').yourBrowserSucks('option', optionName, optionValue)
-         *
          */
         options: {
             url: null,
             secureurl: false,
-            callback: null
+            callback: null,
+            plugins: {}
         }
     });
 
