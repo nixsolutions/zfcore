@@ -1,8 +1,8 @@
 /**
  * LICENSE
- * 
+ *
  * Copyright (c) 2011 NIX Solutions Ltd., http://nixsolutions.com/
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -10,10 +10,10 @@
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -21,37 +21,37 @@
  * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- * 
+ *
  */
 
 /**
  * Wysiwyg jquery plugin
- * 
+ *
  * Wysiwyg is a composition of several plugins:
  *  - wysiwyg
  *  - wysiwygToolbar
  *  - colorPick
  *  - yourBrowserSucks
- * 
+ *
  * @author Maks Slesarenko
  */
 (function($){
     /**
      * Editor events map
-     * 
+     *
      */
     var EditorEventsMap = {
 
         /**
          * Keydown event
-         * 
+         *
          * @param object e
          * @returns false
          */
         keydown: function(e) {
             var isCtrl = (e.ctrlKey || e.metaKey);
             var cmd = param = false;
-            
+
             switch (e.keyCode) {
                 case 9: //tab
                     if (e.shiftKey) {
@@ -76,7 +76,7 @@
                     }
                     break;
             }
-            
+
             if (cmd) {
                 e.preventDefault();
                 this._exec(cmd, param);
@@ -84,14 +84,32 @@
             }
         }
     };
-    
+
     /**
      * Editor commands map
      */
     var EditorCommandsMap = {
+
+        /**
+         * For IE
+         */
+        insertPlaceholder: function() {
+            EditorCommandsMap.replacePlaceholder.call(this, '');
+            this._exec('inserthtml', '<span id="placeHolder"/>');
+        },
+
+        /**
+         * For IE
+         *
+         * @param html
+         */
+        replacePlaceholder: function(html) {
+            $($(this.element).data('frameDoc')).find('#placeHolder').after(html).remove();
+        },
+
         /**
          * Justify text
-         * 
+         *
          * @param string direction
          */
         justify: function(direction) {
@@ -107,14 +125,14 @@
                         this._exec('justify' + direction);
                         break;
                     default:
-                        throw 'Unknown justify type - ' + direction;
+                        $.error('Unknown justify type - ' + direction);
 
                 }
             }
         },
 
         /**
-         * Strike text 
+         * Strike text
          */
         strike: function() {
             this._exec('strikeThrough');
@@ -122,12 +140,12 @@
 
         /**
          * Wrap text with html tag
-         * 
+         *
          * @param string tagName
          */
-        format: function(tagName) {
+        format: function (tagName) {
             tagName = tagName.toLowerCase();
-            
+
             if ($.browser.msie) {
                 tagName = '<' + tagName + '>';
             }
@@ -135,28 +153,28 @@
                 this._exec('formatBlock', tagName);
             }
         },
-        
+
         /**
          *  Insert new html tag
-         *  
+         *
          *  @param string tagName
-         */ 
+         */
         tag: function(tagName) {
             tagName = tagName.toLowerCase();
-            
+
             if ('br' == tagName || 'hr' == tagName) {
                 this._exec('inserthtml', '<' + tagName + ' />&nbsp;');
             }
         },
-        
+
         /**
          * Quote Text
-         * 
+         *
          * @todo add quote types
          */
         quote: function() {
             var selected = this.selected();
-            
+
             if (selected) {
                 if ('"' == selected.charAt(0) || '"' == selected.charAt(selected.length -1)) {
                     selected = selected.replace(/^"*/gim, '').replace(/"*$/gim, '');
@@ -171,7 +189,7 @@
 
         /**
          * Insert list
-         * 
+         *
          * @param boolen ordered
          */
         list: function(ordered) {
@@ -182,27 +200,94 @@
             }
         },
 
+
+        insertImage: function(params) {
+            if ("string" == typeof params) {
+                params = {src: params};
+            }
+            if (!params.alt && params.title) {
+                params.alt = params.title;
+            }
+            var html = '';
+            for (var i in params) {
+                html += i + '="' + params[i] + '" ';
+            }
+            html = '<img '+ html + '/>';
+
+            if ($.browser.msie) {
+                this.exec('replacePlaceholder', html);
+            } else {
+                this._exec('inserthtml', html);
+            }
+        },
+
+        image: function() {
+            var editor = this;
+
+            if ($.browser.msie) {
+                editor.exec('insertPlaceholder');
+            }
+
+            var $el = $('#wysiwyg-image-form');
+            if (!$el.length) {
+                 $('<div>').load(this._getPath() + 'image.html', function() {
+                    var $el = $(this).children();
+
+                    $el.dialog({
+                        modal: true,
+                        buttons: {
+                            OK: function() {
+                                var url = $('#wysiwyg-image-url').val();
+                                if (url) {
+                                    editor.exec('insertImage', {
+                                            src: url,
+                                            title: $('#wysiwyg-image-title').val(),
+                                            align: $('#wysiwyg-image-align').val()
+                                        }
+                                    );
+                                }
+                                $el.dialog('close');
+                            },
+                            Cancel: function() {
+                                $el.dialog('close');
+                            }
+                        }
+                    });
+
+                    $('#wysiwyg-image-upload').imageUpload({
+                        callback: function(url) {
+                            $('#wysiwyg-image-url').val(url);
+                        },
+                        url: editor.options.uploadUrl
+                    });
+                });
+            } else {
+                $el.dialog('open');
+            }
+        },
+
         /**
          * Wrap selected text with url or unwrap
-         * 
+         *
          * @param string|null url
          */
-        link: function(url) {
+        link: function () {
             var selected = this.selected();
 
             if (selected) {
+                var url = prompt('Enter url', 'http://');
+
                 if (url) {
                     this._exec('createLink', url);
-                    //this._exec('inserthtml', '<a href="' + url + '">' + selected + '</a>');
                 } else {
                     this._exec('unlink');
                 }
             }
         },
-        
+
         /**
          * Insert html
-         * 
+         *
          * @param string html
          */
         html: function(html) {
@@ -215,30 +300,30 @@
         clean: function() {
             this._exec('removeFormat');
         },
-        
+
         /**
          * Check if font size equals to param
-         * 
+         *
          * @param number size
          * @returns boolen
          */
         isFontSize: function(size) {
             return EditorCommandsMap._checkFont(this.activeNode(), 'size', 'fontSize', size);
         },
-        
+
         /**
          * Check if font family equals to param
-         * 
+         *
          * @param string face
          * @returns boolen
          */
         isFontFace: function(face) {
             return EditorCommandsMap._checkFont(this.activeNode(), 'face', 'fontFamily', face);
         },
-        
+
         /**
          * Check if node font attribute or style equal to value recursively
-         * 
+         *
          * @param object node
          * @param string attrName
          * @param string propertyName
@@ -261,7 +346,7 @@
             }
             return false;
         },
-        
+
         /**
          * Check style of the node  equal to value recursively
          * @param node
@@ -271,7 +356,7 @@
          */
         _checkStyle: function (node, property, tag, value) {
             var tagName = node.tagName.toLowerCase();
-            
+
             if (node && 'html' != tagName) {
                 if (value === node.style[property]) {
                     return true;
@@ -293,10 +378,10 @@
             }
             return false;
         },
-        
+
         /**
          * Check if selected text is bold
-         * 
+         *
          * @returns boolen
          */
         isBold: function() {
@@ -305,25 +390,25 @@
 
         /**
          * Check if selected text is italic
-         * 
+         *
          * @returns boolen
          */
         isItalic: function() {
             return EditorCommandsMap._checkStyle(this.activeNode(), 'fontStyle', ['i', 'em'],'italic');
         },
-        
+
         /**
          * Check if selected text is underlined
-         * 
+         *
          * @returns boolen
          */
         isUnderline: function() {
             return EditorCommandsMap._checkStyle(this.activeNode(), 'textDecoration', 'u', 'underline');
         },
-        
+
         /**
          * Check if selected text is justified to direction italic
-         * 
+         *
          * @param string direction
          * @returns boolen
          */
@@ -331,28 +416,25 @@
             return EditorCommandsMap._checkStyle(this.activeNode(), 'textAlign', null, direction.toLowerCase());
         }
     };
-    
+
     var buttonsMap = {
         b: {
             status: "isBold",
             title: "Bold",
             'primary-icon': "gpui-icon gpui-icon20",
-            cmd: "bold",
-            param: true
+            cmd: "bold"
         },
         i: {
             status: "isItalic",
             title: "Italic",
             'primary-icon': "gpui-icon gpui-icon114",
-            cmd: "italic",
-            param: true
+            cmd: "italic"
         },
         u: {
             status: "isUnderline",
             title: "Underline",
             'primary-icon': "gpui-icon gpui-icon187",
-            cmd: "underline",
-            param: true
+            cmd: "underline"
         },
         biu: [
             'b', 'i', 'u'
@@ -366,6 +448,17 @@
             title: "Outdent",
             'primary-icon': "gpui-icon gpui-icon205",
             cmd: "outdent"
+        },
+        olist: {
+            title: "Ordered list",
+            'primary-icon': "gpui-icon gpui-icon201",
+            cmd: "list",
+            param: 'true'
+        },
+        ulist: {
+            title: "Outdent",
+            'primary-icon': "gpui-icon gpui-icon120",
+            cmd: "list"
         },
         justifyLeft: {
             status: "isJustify",
@@ -432,50 +525,50 @@
             html: 'BR'
         },
         heading1: {
-            cmd: "format", 
-            param: "h1", 
+            cmd: "format",
+            param: "h1",
             title: "Insert &lt;h1&gt;",
             html: "<h1>Heading 1</h1>"
         },
         heading2: {
-            cmd: "format", 
-            param: "h2", 
+            cmd: "format",
+            param: "h2",
             title: "Insert &lt;h2&gt;",
             html: '<h2>Heading 2</h2>'
         },
         heading3: {
-            cmd: "format", 
-            param: "h3", 
+            cmd: "format",
+            param: "h3",
             title: "Insert &lt;h3&gt;",
             html: "<h2>Heading 3</h3>"
         },
         heading4: {
-            cmd: "format", 
+            cmd: "format",
             param: "h4",
             title: "Insert &lt;h4&gt;",
             html: "<h2>Heading 4</h4>"
         },
         heading5: {
-            cmd: "format", 
-            param: "h5", 
+            cmd: "format",
+            param: "h5",
             title: "Insert &lt;h5&gt;",
             html: "<h2>Heading 5</h5>"
         },
         heading6: {
-            cmd: "format", 
-            param: "h6", 
+            cmd: "format",
+            param: "h6",
             title: "Insert &lt;h6&gt;",
             html: "<h6>Heading 6</h6>"
         },
         pre: {
             cmd: "format",
-            param: "pre", 
+            param: "pre",
             title: "Insert &lt;pre&gt;",
             html: "<pre>Code</pre>"
         },
         blockquote: {
             cmd: "format",
-            param: "blockquote", 
+            param: "blockquote",
             title: "Insert &lt;blockquote&gt;",
             html: "<blockquote>Blockquote</blockquote>"
         },
@@ -501,7 +594,7 @@
             html: "Monospace"
         },
         fontFaceArial: {
-            cmd: "fontName", 
+            cmd: "fontName",
             param: "Arial",
             status: "isFontFace",
             style: "font-family: Arial",
@@ -564,9 +657,9 @@
             html: "Comic Sans MS"
         },
         fontFaceTrebuchetMS: {
-            cmd: "fontName", 
+            cmd: "fontName",
             param: "Trebuchet MS",
-            status: "isFontFace", 
+            status: "isFontFace",
             style: "font-family: Trebuchet MS",
             html: "Trebuchet MS"
         },
@@ -636,7 +729,7 @@
                     'pre',
                     'blockquote'
                 ]
-            } 
+            }
         },
         fontFace: {
            title: "Change font face",
@@ -701,7 +794,7 @@
                html: '<div class="toolbar-colorpicker" name="foreColor"></div>'
            }
        },
-       
+
        toolbar1: [
            'biu',
            ['indent', 'outdent'],
@@ -719,7 +812,7 @@
            'foreColor'
        ]
     };
-    
+
     /**
      * Wysiwyg widget
      */
@@ -732,7 +825,7 @@
 
         /**
          * Check browser compatibility
-         * 
+         *
          * @returns {Boolean}
          */
         _checkBrowser: function() {
@@ -748,10 +841,10 @@
             }
             return true;
         },
-        
+
         /**
          * Add/remove jquery ui widget css classes to editor
-         * 
+         *
          */
         _decorate: function() {
             var $widget = $(this.widget());
@@ -770,7 +863,7 @@
         _setOptions: function() {
             var ui = this.options.ui;
             var resizable = this.options.resizable;
-            
+
             $.Widget.prototype._setOptions.apply(this, arguments); // parent method
 
             if (ui != this.options.ui) {
@@ -780,7 +873,7 @@
                 this._resizable();
             }
         },
-        
+
         /**
          * Set option
          *
@@ -794,7 +887,7 @@
                 this._bindEventsMap();
             }
         },
-        
+
         /**
          * Bind editor with events from eventsMap
          */
@@ -804,7 +897,7 @@
                 if (doc) {
                     var _self = this;
                     var $doc = $(doc).unbind('.' + this.options.eventNamespace);
-                    
+
                     for (var i in this.options.eventsMap) {
                         $doc.bind(i + '.' + this.options.eventNamespace, function(e) {
                             return _self.options.eventsMap[i].apply(_self, arguments);
@@ -824,10 +917,10 @@
             if (_self.options.resizable) {
                 var $element = $(_self.element);
                 var $frame = $element.data('frame');
-                
+
                 $frame = $frame.add($frame.closest('.' + _self.options.frameWrapperClass))
                                .add($widget.find('.' + _self.options.frameOverlayClass));
-                
+
                 $widget.resizable(
                     $.extend({}, _self.options.resizable, {
                         start: function(event, ui) {
@@ -850,31 +943,31 @@
                         $widget.width($element.width());
                         $widget.height($element.height());
                         $widget.resize();
-                        
+
                     }
                     var height = 0;
                     _self.toolbar().each(function() {
                         var $this = $(this);
                         height += $this.height();
                     });
-                    
+
                     $frame.height($widget.height() - height -1);
-                    
+
                 }, 2000);
             } else {
                 $widget.resizable('disable');
             }
         },
-        
+
         /**
          * Overlay frame
-         * 
+         *
          * @param boolen showOrHide
          */
         _frameOverlay: function(showOrHide) {
             var $widget = $(this.widget());
             $overlay = $widget.find('.' + this.options.frameOverlayClass);
-            
+
             $overlay.toggle(showOrHide);
         },
 
@@ -901,7 +994,7 @@
             var options = this.options;
             var $element = $(this.element);
 
-            
+
             if ($element.data('frameDoc')) {
                 this.html($element.val());
                 $element.hide().next('ul.' + options.wrapperClass).show();
@@ -926,7 +1019,7 @@
             //if ($.browser.msie) {
                 //this._exec('formatBlock', '<p>');
             //}
-            
+
             $(this.widget()).width($element.width()).height($element.height());
         },
 
@@ -953,7 +1046,7 @@
                 width: '100%',
                 height: '100%'
             });
-            
+
             var $overlay = $('<div>', {
                 'class': options.frameOverlayClass,
                 width: '100%',
@@ -963,7 +1056,7 @@
             if (!this._checkBrowser()) {
                 $element.yourBrowserSucks();
             }
-            
+
             $element.hide().after(
                  wpapper.append(
                      $('<li>').addClass(options.frameWrapperClass).append($frame).append($overlay)
@@ -980,7 +1073,7 @@
             } else {
                 frameDoc = frame.document;
             }
-            
+
             var template = options.template;
             if (options.css) {
                 template = template.replace('<head>', '<head><link rel="stylesheet" media="screen" type="text/css" href="' + options.css + '"/>');
@@ -997,7 +1090,7 @@
             frameDoc.open();
             frameDoc.write(template);
             frameDoc.close();
-            
+
             if (options.css) {
                 var head = frameDoc.getElementsByTagName("head")[0];
                 var link = frameDoc.createElement("link");
@@ -1006,7 +1099,7 @@
                     link.setAttribute("href", options.css);
                     head.appendChild(link);
             }
-            
+
             frameDoc.designMode = 'on';
 
             $element.data('frameDoc', frameDoc);
@@ -1016,23 +1109,23 @@
                 _self._decorate();
             }
             _self._resizable();
-            
+
             _self._exec('enableObjectResizing', true);
             _self._exec('enableInlineTableEditing', true);
-            
+
             if ($.browser.mozilla) {
                 _self.exec('useCSS');
                 _self.exec('styleWithCSS');
             }
-            
+
             _self._bindEventsMap();
         },
 
         /**
          * Execute command
-         * 
+         *
          * @see https://developer.mozilla.org/en/Rich-Text_Editing_in_Mozilla
-         * 
+         *
          * @param string cmd
          * @param mixed param
          */
@@ -1064,6 +1157,23 @@
         },
 
         /**
+         * Get path to wysiwyg folder
+         *
+         * @returns string
+         */
+        _getPath: function() {
+            if (!this.options.path) {
+                var $el = $('script[src*="wysiwyg\.js"]');
+                if ($el.length) {
+                    this.options.path = $el[0].src.replace(/wysiwyg\.js/, '');
+                } else {
+                    $.error('Could not determine path');
+                }
+            }
+            return this.options.path;
+        },
+
+        /**
          * Widget public API
          *
          * $('element').wysiwyg('methodName', option1, option2, ...)
@@ -1073,9 +1183,9 @@
 
         /**
          * Mix new command handlers to commands map
-         * 
+         *
          * if map is null - remove commandsMap
-         * 
+         *
          * @param object|null map
          */
         commands: function(map) {
@@ -1085,12 +1195,12 @@
                 this.options.commandsMap = null;
             }
         },
-        
+
         /**
          * Mix new event handlers to eventsMap
-         * 
+         *
          * if map is null - remove eventsMap
-         * 
+         *
          * @param object|null map
          */
         events: function(map) {
@@ -1100,30 +1210,30 @@
                 this.options.eventsMap = null;
             }
         },
-        
+
         /**
          * Remove empty tags
-         * 
+         *
          * lowercase tags in ie
          */
         clean: function() {
             var html = this.html();
 
-            html = html.replace(/[    ]*/g, ''); 
-            html = html.replace(/[\r\n]*/g, ''); 
-            html = html.replace(/\n\s*\n/g, "\n"); 
+            html = html.replace(/[    ]*/g, '');
+            html = html.replace(/[\r\n]*/g, '');
+            html = html.replace(/\n\s*\n/g, "\n");
             html = html.replace(/^[\s\n]*/, '');
             html = html.replace(/[\s\n]*$/, '');
-            
+
             // indenting
             html = html.replace(/<li/gi, "\t<li");
             html = html.replace(/<tr/gi, "\t<tr");
-            html = html.replace(/<td/gi, "\t\t<td");     
-            html = html.replace(/<\/tr>/gi, "\t</tr>");  
-            
+            html = html.replace(/<td/gi, "\t\t<td");
+            html = html.replace(/<\/tr>/gi, "\t</tr>");
+
             // empty tags
             var tags = ["pre","blockquote","ul","ol","li","table","tr","span", "strong", "i", "b", "u", "p", "div"];
-            
+
             var length = 0;
             while (length != html.length) {
                 length = html.length;
@@ -1132,7 +1242,7 @@
                     html = html.replace(new RegExp('<' + tagName + '[^>]*>\s*(<br[^>]*>|&nbsp;|)\s*</' + tagName + '>','gim'), "");
                 }
             }
-            
+
             var lb = '\r\n';
             var tags = ["html", "head", "title", "meta", "link", "style", "body", "div", "p", "form", "fieldset", "label", "legend", "object", "embed", "select", "option", "input","textarea", "br", "hr", "pre", "blockquote", "ul", "ol", "li", "dl", "dt", "dd", "\!--", "table", "thead", "tbody", "caption", "th", "tr", "td", "script", "noscript"];
             for (i = 0; i < tags.length; ++i) {
@@ -1140,23 +1250,23 @@
                 html = html.replace(new RegExp('<' + tagName, 'gi'), lb + '<' + tagName);
                 html = html.replace(new RegExp('</' + tagName, 'gi'), lb + '</' + tagName);
             }
-            
+
             if ($.browser.msie) {
                 // tags to lowercase
                 html = html.replace(/< *(\/ *)?(\w+)/g, function(tagName){ return tagName.toLowerCase() });
             }
-            
+
             this.html(html);
         },
-        
+
         /**
          * Get active node
-         * 
+         *
          * @returns object
          */
         activeNode: function() {
             var doc = $(this.element).data('frameDoc');
-            
+
             if (doc.getSelection) {
                 var selection = doc.getSelection();
                 if (selection && selection.anchorNode) {
@@ -1166,7 +1276,7 @@
                 if (document.selection) {   // Internet Explorer before version 9
                     return doc.selection.createRange().parentElement();
                 }
-                //throw 'getSelection method not found';
+                //$.error('getSelection method not found');
             }
         },
 
@@ -1198,9 +1308,9 @@
 
         /**
          * Execute command
-         * 
+         *
          * Commands can be added via commandsMap
-         * 
+         *
          * if commandsMap is set than try it first
          */
         exec: function(cmd, param) {
@@ -1221,7 +1331,7 @@
 
         /**
          * Get selected text
-         * 
+         *
          * @returns string
          */
         selected: function() {
@@ -1231,7 +1341,7 @@
 
         /**
          * Get or set editor content
-         * 
+         *
          * @param string html
          * @returns string
          */
@@ -1255,7 +1365,7 @@
 
             // now do other stuff particular to this widget
             this.hide();
-            
+
             this.toolbar().wysiwygToolbar('destroy');
 
             $(this.widget()).remove();
@@ -1269,7 +1379,7 @@
 
             var doc = $(this.element).data('frameDoc');
             doc.designMode = 'on';
-            
+
             this.toolbar().wysiwygToolbar('enable');
         },
 
@@ -1281,13 +1391,13 @@
 
             var doc = $(this.element).data('frameDoc');
             doc.designMode = 'off';
-            
+
             this.toolbar().wysiwygToolbar('disable');
         },
 
         /**
          * Add or get toolbars
-         * 
+         *
          * @param string|array toolbar
          * @returns array of toolbars in no param specified
          */
@@ -1302,16 +1412,16 @@
                     toolbar = $('<div>').wysiwygToolbar(toolbar);
                 }
                 var $li = $('<li>').addClass(this.options.toolbarWrapperClass).append(toolbar);
-                
+
                 var $frame = $widget.children('li.' + this.options.frameWrapperClass);
                 if ($frame.length) {
                     $frame.before($li);
                 } else {
                     $widget.append($li);
                 }
-                
+
                 toolbar.wysiwygToolbar('option' , 'editor', this);
-                
+
                 $frame.height($frame.height() - toolbar.height() - 1/*border*/);
 
             } else {
@@ -1330,6 +1440,9 @@
          *
          */
         options: {
+            path: null, /* base url */
+            uploadUrl: null,
+            uploadTemplate: null,
             wrapperClass: 'wysiwyg-wrapper',
             toolbarWrapperClass: 'wysiwyg-toolbar',
             frameWrapperClass: 'wysiwyg-frame',
@@ -1354,14 +1467,14 @@
      * Wysiwyg toolbar widget
      */
     $.widget("zfcore.wysiwygToolbar", {
-        
+
         /**
          * Widget private API goes below
          */
-        
+
         /**
          * Add/remove jquery ui widget css classes to toolbar, enable/disable jquery ui buttons
-         * 
+         *
          */
         _decorate: function() {
             var $widget = $(this.widget());
@@ -1369,7 +1482,7 @@
             if (this.options.ui) {
                 $widget.addClass('ui-widget ui-widget-header ui-corner-all');
                 $widget.find('a, button, input').each(function(){
-                    
+
                     var $this = $(this);
                     var text = true;
                     if ('false' == $this.attr('text') || '' == $this.html() || '&nbsp;' == $this.html()) {
@@ -1401,10 +1514,10 @@
                 this._decorate();
             }
         },
-        
+
         /**
          * Create button from options
-         * 
+         *
          * @param options
          * @returns jQuery
          */
@@ -1418,7 +1531,7 @@
                 stub = [];
             }
             options = $.extend(true, stub, options);
-            
+
             if (options.length) {
                 $button = $('<div>', {'class': this.options.buttonsetClass});
                 for (var j in options) {
@@ -1432,7 +1545,7 @@
                         if (options.slider.buttons) {
                             $slider = this._createButton(options.slider.buttons);
                             options.slider.buttons = undefined;
-                            
+
                             $slider.removeClass(this.options.buttonsetClass)
                                    .attr(options.slider);
                         } else {
@@ -1447,11 +1560,21 @@
                     $slider.addClass(this.options.dropdownSliderClass);
                     options.slider = false;
                 }
-                if (!options.type) {
-                    options.type = 'button';
+                var type = 'button';
+                if (options.type) {
+                    type = options.type;
+                    options.type = undefined;
                 }
-                $button = $('<button>', options).addClass(this.options.buttonClass);
-                
+                $button = $('<button type="'+type+'">', options).addClass(this.options.buttonClass);
+                for (var i in options) {
+                    if (i == 'html' || i == 'text') {
+                        $button[i](options[i]);
+                    } else {
+                        $button.attr(i, options[i]);
+                    }
+
+                }
+
                 if (false == options.text) {
                     $button.attr('text', 'false');
                 }
@@ -1461,7 +1584,7 @@
             }
             return $button;
         },
-        
+
         /**
          * Create widget
          */
@@ -1469,7 +1592,7 @@
             var $el = $(this.element);
             var _self = this;
             var options = _self.options;
-            
+
             if (options.buttons) {
                 if ('string' == typeof(options.buttons)) {
                     options.buttons = buttonsMap[options.buttons];
@@ -1478,15 +1601,15 @@
                     $el.append(_self._createButton(options.buttons[i]));
                 }
             }
-            
+
             $el.children().data('toolbar', this);
             var buttons = $el.find('.' + options.buttonClass).data('toolbar', this).click(function(){
-                
+
                 var $this  = $(this);
                 var action = $this.attr('action');
                 var param  = $this.attr('param');
                 var cmd    = $this.attr('cmd');
-                
+
                 if (!action) {
                     action = 'exec';
                 }
@@ -1495,29 +1618,29 @@
                 //}
                 return _self.editor(action, cmd, param);
             });
-            
+
             buttons = buttons.filter('[status]');
-            
+
             if (buttons.length) {
-                
+
                 var $dynamicDropdown = $el.find('.' + options.dropdownLabelClass).closest('.' + options.dropdownClass); //find dropdowns with dynamic labels
-                
+
                 $el.data('statusInterval', setInterval(function() {
                     //change button status (on/off)
                     var editor = _self.editor();
                     if (editor && $el.is(':visible')) {
-    
+
                         buttons.each(function() {
                             var $this = $(this);
                             $this.toggleClass(options.buttonHighlightClass, editor.exec($this.attr('status'), $this.attr('param')));
                         });
                     }
-                    
+
                     //change dropdown label (icon/value)
                     $dynamicDropdown.each(function () {
                         var $this = $(this);
                         var $activeButton = $this.children('.' + options.dropdownSliderClass).find('.' + options.buttonHighlightClass);
-       
+
                         var $icon = $this.find('.' + options.dropdownIconClass);
                         var $label = $this.find('.' + options.dropdownLabelClass);
 
@@ -1531,13 +1654,13 @@
                     });
                 }, 1000));
             }
-            
+
             $el.find("." + options.dropdownClass).find("button, input, a").click(function () {
                 var dropdown = $(this).closest('.' + options.dropdownClass);
                     dropdown.children('.' + options.dropdownSliderClass).slideToggle('fast', function(){
                         _self.editor('_frameOverlay', $(this).is(':visible'));
                     });
-                    
+
                     dropdown.toggleClass(options.dropdownActiveClass);
             });
 
@@ -1548,16 +1671,16 @@
                         $(this).removeClass(options.dropdownActiveClass);
                     }
                 });
-                
+
                 _self.editor('_frameOverlay', false);
             });
-            
+
             $el.find('.' + options.colorPickerClass).colorpick({
                 click: function (e, color) {
                     _self.editor('exec', $(this).closest('.' + options.colorPickerClass).attr('name'), '#' + color);
                 }
             });
-            
+
             this._decorate();
         },
 
@@ -1565,7 +1688,7 @@
 
         /**
          * Widget public API goes below
-         * 
+         *
          */
 
 
@@ -1602,7 +1725,7 @@
         editor: function(cmd) {
             if (cmd) {
                 if (!this.options.editor) {
-                    throw 'Editor not set';
+                    $.error('Editor not set');
                 }
                 this.options.editor[cmd].apply(this.options.editor, Array.prototype.slice.call(arguments, 1));
             }
@@ -1638,12 +1761,12 @@
      * Wysiwyg color picker widget
      */
     $.widget("zfcore.colorpick", {
-        
+
         /**
          * Widget private API goes below
-         * 
+         *
          */
-        
+
         _map: [
             [
                 [
@@ -1676,23 +1799,23 @@
                 ]
             ]
         ],
-        
+
         /**
          * Create widget
-         * 
+         *
          */
         _create: function() {
             var $el = $(this.element);
-            
+
             for (var i in this._map) {
                 $el.append(this._arrayToHtml(this._map[i]));
             }
             this._click(this.options.click);
         },
-        
+
         /**
          * Set option
-         * 
+         *
          * @param string key
          * @param mixed value
          */
@@ -1703,10 +1826,10 @@
                 this._click(value);
             }
         },
-        
+
         /**
          * Array to html
-         * 
+         *
          * @param object map
          * @returns array
          */
@@ -1718,14 +1841,14 @@
                 attrs.tr['class'] = this.options.classes.tr;
                 attrs.td['class'] = this.options.classes.td;
                 attrs.color['class'] = this.options.classes.color;
-                
-            
+
+
             var $table = $('<table>', attrs.table);
-            var tr = ''; 
+            var tr = '';
 
             for (var i in map) {
                 tr = $('<tr>', attrs.tr);
-                
+
                 for (var j in map[i]) {
                     tr.append(
                         $('<td>', attrs.td).append(
@@ -1733,16 +1856,14 @@
                         )
                     );
                 }
-                $table.append(
-                    tr
-                );
+                $table.append(tr);
             }
             return $table;
         },
-        
+
         /**
          * Set click event handler
-         * 
+         *
          * @param function callback
          */
         _click: function(callback) {
@@ -1760,7 +1881,7 @@
 
         /**
          * Widget public API goes below
-         * 
+         *
          */
 
 
@@ -1786,17 +1907,17 @@
 
             $(this.widget()).remove();
         },
-        
+
         /**
          * Set click event handler
-         * 
+         *
          * @param function callback
          */
         click: function(callback) {
             this._setOption('click', callback);
         },
-        
-        
+
+
         /**
          * Widget options
          *
@@ -1817,89 +1938,61 @@
             attrs: {
                 color: {},
                 td:    {},
-                tr:   {},
+                tr:    {},
                 table: {}
             },
             click: null,
             eventNamespace: 'zfcorecolorpick'
         }
     });
-    
+
     /**
      * Widget to notify user about his old browser
-     *  
+     *
      */
-    $.widget("zfcore.yourBrowserSucks", {
-        
+    $.widget("zfcore.overlay", {
+
         /**
          * Widget private API goes below
-         * 
+         *
          */
-        
-        _minWidth: 360,
-        _minHeight: 300,
         _widget: null,
 
         /**
          * Create widget
          */
         _create: function() {
-            $cancel = this.widget().find('.' + this.options.closeButtonClass);
-            if (this.options.strict) {
-                $cancel.remove();
-            } else {
-                var _self = this;
-                $cancel.click(function(){
-                    _self.destroy();
-                });
-            }
-        },
-        
-        /**
-         * Get widget
-         * 
-         * @returns array
-         */
-        widget: function() {
-            if (!this._widget) {
-                var $el = $(this.element);
-                
-                this._widget = $('<div>').width(Math.max($el.width(), this._minWidth))
-                                         .height(Math.max($el.height(), this._minHeight))
-                                         .html(this.options.template)
-                                         .css({
-                                             position: 'absolute',
-                                             top: $el.offset().top,
-                                             left: $el.offset().left,
-                                             background: '#fff'
-                                         }).append(this.options.downloads);
+            var $el = $(this.element);
 
-                $('body').append(this._widget);
+            this._widget = $('<div>').width($el.width())
+                                     .height($el.height())
+                                     .html(this.options.template)
+                                     .css({
+                                         position: 'absolute',
+                                         top: $el.offset().top,
+                                         left: $el.offset().left,
+                                         background: '#fff',
+                                         zIndex: 99999,
+                                         opacity: this.options.opacity
+                                     })
+                                     .addClass(this.options.overlayClass);
+
+            if ($el.is('body')) {
+                this._widget.width($(window).innerWidth())
+                            .height($(window).innerHeight())
+                            .css({top:0, left: 0});
             }
+            this._widget.appendTo(document.body);
+        },
+
+        widget: function() {
             return this._widget;
         },
 
-
-
         /**
          * Widget public API goes below
-         * 
+         *
          */
-
-
-        /**
-         * Show widget
-         */
-        show: function() {
-            $(this.widget()).show();
-        },
-
-        /**
-         * Hide widget
-         */
-        hide: function() {
-            $(this.widget()).hide();
-        },
 
         /**
          * Destroy widget
@@ -1907,7 +2000,54 @@
         destroy: function() {
             $.Widget.prototype.destroy.apply(this, arguments); // default destroy
 
-            $(this.widget()).remove();
+            this._widget.remove();
+        },
+
+        /**
+         * Widget options
+         *
+         * $('element').overlay({optionName: optionValue});
+         *
+         * or
+         *
+         * $('element').overlay('option', optionName, optionValue)
+         *
+         */
+        options: {
+            template: '',
+            opacity: 0.5,
+            overlayClass: 'zfcore-overlay'
+        }
+    });
+
+    /**
+     * Widget to notify user about his old browser
+     *
+     */
+    $.widget("zfcore.yourBrowserSucks", $.zfcore.overlay, {
+
+        /**
+         * Create widget
+         */
+        _init: function() {
+            var options = this.options;
+
+            $cancel = this._widget.find('.' + options.closeButtonClass);
+            if (options.strict) {
+                $cancel.remove();
+            } else {
+                var _self = this;
+                $cancel.click(function(){
+                    _self.destroy();
+                });
+            }
+            if (this._widget.width() < options.minWidth) {
+                this._widget.width(options.minWidth);
+            }
+
+            if (this._widget.height() < options.minHeight) {
+                this._widget.height(options.minHeight);
+            }
         },
 
         /**
@@ -1921,6 +2061,9 @@
          *
          */
         options: {
+            opacity: 1,
+            minWidth: 360,
+            minHeight: 300,
             strict: false,
             closeButtonClass: 'IWantToUseMyBrowser',
             template: '<table border="0" cellspacing="0" cellpadding="25" width="100%" height="100%" align="center" style="border: 1px solid #f00;background: #fff"> \
@@ -1940,7 +2083,209 @@
                        </table>'
         }
     });
-    
+
+    /**
+     * Widget to notify user about his old browser
+     *
+     */
+    $.widget("zfcore.imageUpload", {
+
+        /**
+         * Widget private API goes below
+         *
+         */
+
+        _frame: null,
+
+        /**
+         * Create widget
+         */
+        _create: function() {
+            var _self = this;
+            var $el = $(this.element);
+            var value = '';
+
+            if ('file' != $el.attr('type')) {
+                $.error('Plugin "imageUpload" must be applied on a input element with type "file"');
+            }
+
+            if (!$.isFunction(this.options.callback)) {
+                $.error('Callback not set');
+            }
+
+            setInterval(function() {
+                if ($el.val() && value != $el.val()) {
+                    value = $el.val();
+
+                    _self._startUpload();
+                }
+            }, 1000);
+        },
+
+        _startUpload: function() {
+            $(this.element).attr('disabled', true);
+            $('body').overlay();
+
+            this._frame = this._createFrame();
+            var form = this._createForm();
+            this._frame.append(form);
+
+            // Watch for a new set of requests
+            if (!$.active++) {
+                $.event.trigger("ajaxStart");
+            }
+            // Create the request object
+            $.event.trigger("ajaxSend", [this]);
+
+            try {
+                form.attr('target', this._frame.attr('id'));
+                form.submit();
+            } catch(e) {
+                $.error('Error submiting form');
+            }
+            var _self = this;
+            this._frame.load(function() {
+                _self._uploadCallback();
+            });
+        },
+
+        _createForm: function() {
+            var id = new Date().getTime();
+            //create form
+            var formId = 'wysiwyg-image-upload-form-' + id;
+            var fileId = 'wysiwyg-image-upload-file' + id;
+
+            var form = $('<form>', {
+                action: this.options.url,
+                method: "POST",
+                name: formId,
+                id: formId,
+                enctype: "multipart/form-data",
+                encoding: 'multipart/form-data'
+            });
+
+            if (this.options.data) {
+                for(var i in this.options.data) {
+                    $('<input type="hidden" name="' + i + '" value="' + this.options.data[i] + '" />').appendTo(form);
+                }
+            }
+            var newElement = $(this.element).clone();
+            newElement.attr('id', fileId);
+            newElement.appendTo(form);
+
+            //set attributes
+            form.css('position', 'absolute');
+            form.css('top', '-1200px');
+            form.css('left', '-1200px');
+
+            return form;
+        },
+
+        _createFrame: function() {
+            var frameId = 'wysiwyg-image-upload-frame-' + new Date().getTime();
+
+            var $frame = $('<iframe>', {
+                id: frameId,
+                name: frameId,
+                style: "position:absolute; top:-9999px; left:-9999px"
+            });
+
+            if (window.ActiveXObject) {
+                var urlType = typeof this.options.secureurl;
+
+                if (urlType == 'boolean'){
+                    $frame.attr('src', 'javascript:false');
+                } else if (urlType == 'string') {
+                    $frame.attr('src', this.options.secureurl);
+                }
+            }
+            $frame.appendTo(document.body);
+
+            return $frame;
+        },
+
+        _uploadCallback: function() {
+            var xml = {};
+            var frame = this._frame.get(0);
+
+            if (frame.contentWindow) {
+                var frameDoc = frame.contentWindow.document;
+                xml.responseText = frameDoc.body ? frameDoc.body.innerHTML : null;
+                xml.responseXML  = frameDoc.XMLDocument ? frameDoc.XMLDocument : frameDoc;
+
+            } else if (frame.contentDocument) {
+                var frameDoc = frame.contentWindow.document;
+                xml.responseText = frameDoc.body ? frameDoc.body.innerHTML : null;
+                xml.responseXML  = frameDoc.XMLDocument ? frameDoc.XMLDocument : frameDoc;
+            }
+
+            if (!$.isEmptyObject(xml)) {
+                try {
+                    $.event.trigger("ajaxSuccess", [xml, this]);
+
+                    if (this.options.callback) {
+                        this.options.callback.call(this, xml.responseText, xml);
+                    }
+                } catch(e) {
+                    //TODO
+                }
+
+                // The request was completed
+                $.event.trigger("ajaxComplete", [xml, this]);
+
+                // Handle the global AJAX counter
+                if (! --$.active) {
+                    $.event.trigger("ajaxStop");
+                }
+
+                $(this.element).attr('disabled', false);
+                $('body').overlay('destroy');
+
+                var _self = this;
+
+                setTimeout(function() {
+                    try {
+                        _self._frame.remove();
+                    } catch(e) {
+                        //
+                    }
+                }, 100);
+            }
+        },
+
+
+
+        /**
+         * Widget public API goes below
+         *
+         */
+
+        /**
+         * Destroy widget
+         */
+        destroy: function() {
+            $.Widget.prototype.destroy.apply(this, arguments); // default destroy
+
+            $(this.element).dialog('destroy');
+        },
+
+        /**
+         * Widget options
+         *
+         * $('element').yourBrowserSucks({optionName: optionValue});
+         *
+         * or
+         *
+         * $('element').yourBrowserSucks('option', optionName, optionValue)
+         *
+         */
+        options: {
+            url: null,
+            secureurl: false,
+            callback: null
+        }
+    });
+
     $.zfcore.buttons  = buttonsMap;
     $.zfcore.events   = EditorEventsMap;
     $.zfcore.commands = EditorCommandsMap;
