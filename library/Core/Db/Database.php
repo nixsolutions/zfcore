@@ -271,16 +271,19 @@ class Core_Db_Database
             $this->_indexes = $dec['indexes'];
             $dec = $dec['data'];
 
-            foreach ($this->_blackList as $deleteKey) {
-                if (array_key_exists($deleteKey, $dec)) {
-                    unset($dec[$deleteKey]);
+            if(!empty($this->_blackList))
+                foreach ($this->_blackList as $deleteKey) {
+                    if (array_key_exists($deleteKey, $dec)) {
+                        unset($dec[$deleteKey]);
+                    }
                 }
-            }
-            foreach ($dec as $tblName=>$table) {
-                if (!in_array($tblName, $this->_whiteList)) {
-                    unset($dec[$tblName]);
+
+            if(!empty($this->_whiteList))
+                foreach ($dec as $tblName=>$table) {
+                    if (!in_array($tblName, $this->_whiteList)) {
+                        unset($dec[$tblName]);
+                    }
                 }
-            }
 
             $this->_scheme = $dec;
         } else {
