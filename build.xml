@@ -103,7 +103,7 @@
             <arg line="--log-junit '${logsDir}/junit.xml'"/>
             <arg line="--coverage-clover '${logsDir}/clover.xml'"/>
             <arg line="--coverage-html '${logsDir}/clover'"/>
-            <arg line="."/>
+            <arg line="TestSuite.php"/>
         </exec>
     </target>
     <target name="phpcb" depends="phpcpd, phpmd, phpcs">

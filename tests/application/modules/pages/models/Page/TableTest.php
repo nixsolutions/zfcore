@@ -13,7 +13,7 @@ class Model_Page_ManagerTest extends ControllerTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        parent::migrationUp('pages');
+        //parent::migrationUp('pages');
     }
     /**
      * Fixtures
@@ -122,7 +122,7 @@ class Model_Page_ManagerTest extends ControllerTestCase
 
     public static function tearDownAfterClass()
     {
-        parent::migrationDown('pages');
+        //parent::migrationDown('pages');
         parent::tearDownAfterClass();
     }
 }

@@ -10,7 +10,6 @@ class Forum_IndexControllerTest extends ControllerTestCase
     public function setUp()
     {
         parent::setUp();
-        parent::migrationUp('forum');
     }
 
     public function testIndexAction()
@@ -23,7 +22,6 @@ class Forum_IndexControllerTest extends ControllerTestCase
 
     public function tearDown()
     {
-        parent::migrationDown('forum');
         parent::tearDown();
     }
 }

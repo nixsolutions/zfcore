@@ -66,12 +66,17 @@ class TestListener implements PHPUnit_Framework_TestListener
     {
         $this->_timeSuite = microtime(1);
         echo "\n\n".$this->_colorize($suite->getName());
+        ControllerTestCase::migrationUp('pages');
+        //var_dump($suite->getGroups());
     }
 
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $time = sprintf('%0.3f sec', microtime(1) - $this->_timeSuite);
+        
         echo $this->_colorize("\nTime: ".$time, 'green');
+        //ControllerTestCase::migrationDown(Zend_Registry::get('testMigrations'));
+        //var_dump($suite->getGroups(), Zend_Registry::get('testMigrations'));
     }
     
     private function _colorize($text, $color = 'yellow')
