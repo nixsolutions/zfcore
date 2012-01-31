@@ -83,6 +83,22 @@ abstract class Core_Migration_Abstract
      */
     abstract public function down();
 
+
+    /**
+     * getDescription
+     *
+     * get migration description
+     *
+     * @return string
+     */
+
+    public function getDescription()
+    {
+        return '';
+    }
+
+
+
     /**
      * __construct
      *
