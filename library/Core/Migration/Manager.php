@@ -304,9 +304,9 @@ class Core_Migration_Manager
                 = Zend_Db_Table::getDefaultAdapter()->fetchOne($select);
 
             if (empty($this->_lastMigration)) {
-                throw new Zend_Exception(
-                    "Not found migration version in database"
-                );
+                throw new Zend_Exception("
+                    Not found migration version in database
+                ");
             }
         } catch (Exception $e) {
             // maybe table is not exist; this is first revision
@@ -408,10 +408,10 @@ class Core_Migration_Manager
      */
     protected function _strToArray($str)
     {
-        if (!empty($str)) {
+        if(!empty($str)){
 
             if (strpos($str, ',')) {
-                return explode(',', $str);
+                return explode(',',$str);
             }
             return array($str);
         } else {
@@ -458,8 +458,10 @@ class Core_Migration_Manager
         if (!count($difference['up']) && !count($difference['down'])) {
             return false;
         } else {
-            if ($showDiff) {
+            if($showDiff)
+            {
                 return $difference;
+
             } else {
                 return $this->create($module, $difference);
             }
@@ -513,10 +515,10 @@ class Core_Migration_Manager
             } elseif ($lastMigration == $to) {
                 throw new Zend_Exception("Migration `'$to'` is current");
             } elseif ($lastMigration > $to) {
-                throw new Zend_Exception(
-                    "Migration `" . $to . "` is older than current "
-                    . "migration `" . $lastMigration . "`"
-                );
+                throw new Zend_Exception("
+                    Migration `" . $to . "` is older than current "
+                    . "migration `" . $lastMigration . "`
+                ");
             }
         }
 
@@ -538,9 +540,9 @@ class Core_Migration_Manager
 
         foreach ($ready as $migration) {
             if ($migration < $lastMigration) {
-                throw new Zend_Exception(
-                    "Migration `" . $migration . "` is conflicted"
-                );
+                throw new Zend_Exception("
+                    Migration `" . $migration . "` is conflicted
+                ");
             }
 
             try {
@@ -562,16 +564,29 @@ class Core_Migration_Manager
                     $migrationObject->getDbAdapter()->rollBack();
                     throw new Zend_Exception($e->getMessage());
                 }
+
+
                 array_push(
                     $this->_messages,
                     "Upgrade to revision '$migration'"
                 );
 
                 $this->_pushMigration($module, $migration);
+
+                //add db state to migration
+                $db = new Core_Db_Database(array('blacklist'=>$this->_options['migrationsSchemaTable']));
+                $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+                $dbAdapter->update(
+                    $this->_options['migrationsSchemaTable'],
+                    array('db_state' => $db->toString()),
+                    array($dbAdapter->quoteInto('migration=?', $migration),
+                        $dbAdapter->quoteInto('module=?', $module))
+                );
+
             } catch (Exception $e) {
                 throw new Zend_Exception(
                     "Migration '$migration' return exception:\n"
-                    . $e->getMessage()
+                        . $e->getMessage()
                 );
             }
 
@@ -640,10 +655,10 @@ class Core_Migration_Manager
             } elseif ($lastMigration == $to) {
                 throw new Zend_Exception("Migration `'$to'` is current");
             } elseif ($lastMigration < $to) {
-                throw new Zend_Exception(
-                    "Migration `" . $to . "` is younger than current "
-                    . "migration `" . $lastMigration . "`"
-                );
+                throw new Zend_Exception("
+                    Migration `" . $to . "` is younger than current "
+                    . "migration `" . $lastMigration . "`
+                ");
             }
         }
 
@@ -668,9 +683,9 @@ class Core_Migration_Manager
             }
 
             if (!in_array($migration, $exists)) {
-                throw new Zend_Exception(
-                    "Migration `" . $migration . "` not exists"
-                );
+                throw new Zend_Exception("
+                    Migration `" . $migration . "` not exists
+                ");
             }
 
             try {
@@ -699,7 +714,7 @@ class Core_Migration_Manager
             } catch (Exception $e) {
                 throw new Zend_Exception(
                     "Migration '$migration' return exception:\n"
-                    . $e->getMessage()
+                        . $e->getMessage()
                 );
             }
 
@@ -734,9 +749,9 @@ class Core_Migration_Manager
         foreach ($loaded as $migration) {
 
             if (!in_array($migration, $exists)) {
-                throw new Zend_Exception(
-                    "Migration `" . $migration . "` not exists"
-                );
+                throw new Zend_Exception("
+                    Migration `" . $migration . "` not exists
+                ");
             }
 
             try {
@@ -765,7 +780,7 @@ class Core_Migration_Manager
             } catch (Exception $e) {
                 throw new Zend_Exception(
                     "Migration '$migration' return exception:\n"
-                    . $e->getMessage()
+                        . $e->getMessage()
                 );
             }
 
