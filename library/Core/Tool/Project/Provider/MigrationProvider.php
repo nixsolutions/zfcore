@@ -171,12 +171,13 @@ class Core_Tool_Project_Provider_MigrationProvider
      * @param string $whitelist
      * @param string $blacklist
      */
-    public function generate($module = null, $whitelist = '', $blacklist = '')
+    public function generate($module = null, $label = '', $description = '',
+                             $whitelist = '', $blacklist = '')
     {
         require_once 'bootstrap.php';
 
         $manager = $this->getManager();
-        $result = $manager->generateMigration($module, $blacklist, $whitelist);
+        $result = $manager->generateMigration($module, $label, $description, $blacklist, $whitelist);
 
         if ($result) {
             $this->message('Migration '.$result.' created! ');
@@ -196,7 +197,7 @@ class Core_Tool_Project_Provider_MigrationProvider
         require_once 'bootstrap.php';
 
         $manager = $this->getManager();
-        $result = $manager->generateMigration($module, $blacklist, $whitelist, true);
+        $result = $manager->generateMigration($module,'', '', $blacklist, $whitelist, true);
 
         if (!empty($result)) {
             $this->message('Queries ('.sizeof($result['up']).') :'.PHP_EOL);
@@ -257,8 +258,27 @@ class Core_Tool_Project_Provider_MigrationProvider
                     $color = 'green';
                     break;
             }
+            $this->message($migration, $color, "\t");
 
-            $this->message($migration, $color);
+            try {
+                $includePath = $this->getManager()->getMigrationsDirectoryPath($module)
+                              . '/' . $migration . '.php';
+
+                include_once $includePath;
+
+                $moduleAddon = ((null !== $module) ? ucfirst($module) . '_' : '');
+
+                $migrationClass = $moduleAddon . 'Migration_' . $migration;
+                $migrationObject = new $migrationClass;
+
+                if (($description = $migrationObject->getDescription()))
+                    $this->message(chr(254).' '.$description, 'grey');
+                else
+                    $this->message('');
+
+            } catch (Exception $e) {
+
+            }
         }
     }
 
@@ -350,14 +370,15 @@ class Core_Tool_Project_Provider_MigrationProvider
      *
      * @param string $module
      */
-    public function create($module = null)
+    public function create($module = null, $label = '', $description = '')
     {
         require_once 'bootstrap.php';
 
-        $migrationName = $this->getManager()->create($module);
+        $migrationName = $this->getManager()->create($module, null, $label, $description);
 
         $message = "Migration '" . $migrationName . "' created"
             . ($module ? (" in module '" . $module . "'") : "");
+
 
         $this->message($message, 'hiWhite');
         $this->message("Note: Don't forget run 'zf up migration'", 'yellow');
@@ -452,14 +473,14 @@ class Core_Tool_Project_Provider_MigrationProvider
      * @param string $text
      * @param string $color
      */
-    protected function message($text, $color = 'white')
+    protected function message($text, $color = 'white', $delimiter = "\n")
     {
         if (function_exists('posix_isatty')) {
             if (array_key_exists($color, $this->_colorOptions)) {
-                echo "\033[" . $this->_colorOptions[$color] . $text . "\033[m\n";
+                echo "\033[" . $this->_colorOptions[$color] . $text . "\033[m".$delimiter;
             }
         } else {
-            echo $text . "\n";
+            echo $text . $delimiter;
         }
     }
 }
