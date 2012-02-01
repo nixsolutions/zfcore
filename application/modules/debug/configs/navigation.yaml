@@ -1,22 +1,23 @@
-debugmanagment:
-  label: Debug
-  uri:
-  pages:
-    session:
-      label: Sessions
-      module: debug
-      controller: session
-      action: index
-      route: default
-    file:
-      label: System Files
-      module: debug
-      controller: file
-      action: index
-      route: default
-    contrab:
-      label: Crontab
-      module: debug
-      controller: crontab
-      action: index
-      route: default
+dashboard:
+  debugmanagment:
+    label: Debug
+    uri:
+    pages:
+      session:
+        label: Sessions
+        module: debug
+        controller: session
+        action: index
+        route: default
+      file:
+        label: System Files
+        module: debug
+        controller: file
+        action: index
+        route: default
+      contrab:
+        label: Crontab
+        module: debug
+        controller: crontab
+        action: index
+        route: default

@@ -6,7 +6,11 @@
                 <li><h4>Home</h4></li>
                 <li>
                     <?php
-                        echo $this->menu('Home', 0, 50, '/default/partial/bottomMenu.phtml');
+                        echo $this->navigation()
+                            ->menu($this->menuContainer('Home'))
+                            ->setPartial('/default/partial/bottomMenu.phtml')
+                            ->setMaxDepth(50)
+                            ->setMinDepth(0);
                     ?>
                 </li>
             </ul>
@@ -14,7 +18,11 @@
                 <li><h4>Terms of use</h4></li>
                 <li>
                     <?php
-                        echo $this->menu('Terms of use', 0, 50, '/default/partial/bottomMenu.phtml');
+                    echo $this->navigation()
+                        ->menu($this->menuContainer('Terms of use'))
+                        ->setPartial('/default/partial/bottomMenu.phtml')
+                        ->setMaxDepth(50)
+                        ->setMinDepth(0);
                     ?>
                 </li>
             </ul>

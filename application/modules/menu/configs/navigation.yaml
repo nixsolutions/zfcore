@@ -1,17 +1,18 @@
-menumanagment:
-  label: Menu
-  uri:
-  pages:
-    create:
-      label: Create Menu Item
-      module: menu
-      controller: management
-      action: create
-      route: default
-    manage:
-      label: Manage Menu
-      module: menu
-      controller: management
-      action: index
-      route: default
+dashboard:
+  menumanagment:
+    label: Menu
+    uri:
+    pages:
+      create:
+        label: Create Menu Item
+        module: menu
+        controller: management
+        action: create
+        route: default
+      manage:
+        label: Manage Menu
+        module: menu
+        controller: management
+        action: index
+        route: default
       

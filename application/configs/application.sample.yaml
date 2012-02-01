@@ -51,13 +51,6 @@ production:
               action: index
             role: guest
             cache: acl
-        navigation:
-          class: Core_Controller_Plugin_Navigation
-          stackindex: 50
-          options:
-            config: navigation
-            section: dashboard
-            cache: navigation
     router:
       config: routes
       cache: router
@@ -193,6 +186,12 @@ production:
         Application_View_Filter: APPLICATION_PATH/layouts/filters
       scriptPath:
         - APPLICATION_PATH/views/scripts
+    navigation:
+      source:
+        dashboard: config
+        default: config
+      config: navigation
+      cache: navigation
 testing:
   _extends: production
   phpSettings:

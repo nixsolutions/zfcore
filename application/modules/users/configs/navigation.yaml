@@ -1,24 +1,44 @@
-usermanagment:
-  label: Users
-  uri:
-  pages:
-    create:
-      label: Create
-      module: users
-      controller: management
-      action: create
-      route: default
-    edit:
-      label: Edit
-      module: users
-      controller: management
-      action: index
-      route: default
-statistic:
-  pages:
-    users:
-      label: Users
-      module: users
-      controller: management
-      action: stats
-      route: default
+dashboard:
+  usermanagment:
+    label: Users
+    uri:
+    pages:
+      create:
+        label: Create
+        module: users
+        controller: management
+        action: create
+        route: default
+      edit:
+        label: Edit
+        module: users
+        controller: management
+        action: index
+        route: default
+  statistic:
+    pages:
+      users:
+        label: Users
+        module: users
+        controller: management
+        action: stats
+        route: default
+default:
+  userlogout:
+    label: Logout
+    route: logout
+    module: users
+    controller: login
+    action: logout
+  userlogin:
+    label: Login
+    route: login
+    module: users
+    controller: login
+    action: index
+  registration:
+    label: Registration
+    route: default
+    module: users
+    controller: register
+    action: index

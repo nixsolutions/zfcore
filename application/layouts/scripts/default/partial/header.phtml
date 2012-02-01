@@ -7,7 +7,11 @@
         <div class="menu small"></div>
         <div class="menu clearright">
             <?php
-            echo $this->menu('Home', 0, 50, '/default/partial/mainMenu.phtml');
+                echo $this->navigation($this->menuContainer('Home'))
+                ->menu()
+                ->setPartial('/default/partial/mainMenu.phtml')
+                ->setMaxDepth(10)
+                ->setMinDepth(0);
             ?>
             <br class="clear"/>
         </div>
@@ -15,7 +19,11 @@
     <div class="topgreen clear">
         <div class="cont_width">
             <?php
-            echo $this->menu('Home', 0, 10, '/default/partial/breadcrumbs.phtml','breadcrumbs');
+            echo $this->navigation($this->menuContainer('Home'))
+                ->breadcrumbs()
+                ->setPartial('/default/partial/breadcrumbs.phtml')
+                ->setMaxDepth(10)
+                ->setMinDepth(0);
             ?>
         </div>
     </div>

@@ -15,6 +15,10 @@
         </div>
 
         <!-- Accordion Menu -->
-        <?php echo $this->navigation()->menu() ?>
+        <?php //echo $this->navigation()->menu();
+        echo $this->navigation($this->menuContainer('Home'))
+                ->menu()
+                ->setPartial('/dashboard/partial/dashboardMenu.phtml');
+        ?>
     </div>
 </div>
