@@ -241,7 +241,8 @@ class Core_Migration_Manager
 
         // foreach loop for $filesDirty array
         foreach ($filesDirty as $file) {
-            if (preg_match('/\d{8}_\d{6}_\d{2}\.php/', $file)) {
+            if (preg_match('/\d{8}_\d{6}_\d{2}\.php/', $file)
+                || preg_match('/\d{8}_\d{6}_\d{2}_[A-z0-9]*\.php/', $file)) {
                 array_push($migrations, substr($file, 0, -4));
             }
         }
@@ -322,12 +323,16 @@ class Core_Migration_Manager
      * @param  string $module Module name
      * @return string Migration name
      */
-    public function create($module = null, $migrationBody = null)
+    public function create($module = null, $migrationBody = null, $label = '', $desc = '')
     {
         $path = $this->getMigrationsDirectoryPath($module);
 
         list($sec, $msec) = explode(".", microtime(true));
         $_migrationName = date('Ymd_His_') . substr($msec, 0, 2);
+
+        if (!empty($label)) {
+            $_migrationName .= '_'.$label;
+        }
 
         // Configuring after instantiation
         $methodUp = new Zend_CodeGenerator_Php_Method();
@@ -338,6 +343,13 @@ class Core_Migration_Manager
         $methodDown = new Zend_CodeGenerator_Php_Method();
         $methodDown->setName('down')
             ->setBody('// degrade');
+
+        //add description
+        if (!empty($desc)) {
+            $methodDesc = new Zend_CodeGenerator_Php_Method();
+            $methodDesc->setName('getDescription')
+                ->setBody("return '".addslashes($desc)."'; ");
+        }
 
 
         if ($migrationBody) {
@@ -367,6 +379,10 @@ class Core_Migration_Manager
             ->setExtendedClass('Core_Migration_Abstract')
             ->setMethod($methodUp)
             ->setMethod($methodDown);
+
+        if (isset($methodDesc)) {
+            $class->setMethod($methodDesc);
+        }
 
         $file = new Zend_CodeGenerator_Php_File();
         $file->setClass($class)
@@ -430,7 +446,8 @@ class Core_Migration_Manager
      * @return array|bool|string
      */
 
-    public function generateMigration($module=null, $blacklist = '', $whitelist = '',$showDiff=false)
+    public function generateMigration($module=null, $label = '', $description = '',
+                                      $blacklist = '', $whitelist = '', $showDiff=false)
     {
 
         $blkListedTables = array();
@@ -461,9 +478,8 @@ class Core_Migration_Manager
             if($showDiff)
             {
                 return $difference;
-
             } else {
-                return $this->create($module, $difference);
+                return $this->create($module, $difference, $label, $description);
             }
         }
     }
@@ -503,11 +519,15 @@ class Core_Migration_Manager
      * Method upgrade all migration or migrations to selected
      *
      * @param string $module Module name
-     * @param string $to     Migration name
+     * @param string $to     Migration name or label
      */
     public function up($module = null, $to = null)
     {
         $lastMigration = $this->getLastMigration($module);
+
+        if (($fullMigrationName = $this->getMigrationFullName($to, $module))) {
+            $to = $fullMigrationName;
+        }
 
         if ($to) {
             if (!self::isMigration($to)) {
@@ -521,6 +541,8 @@ class Core_Migration_Manager
                 ");
             }
         }
+
+
 
         $exists = $this->getExistsMigrations($module);
         $loaded = $this->getLoadedMigrations($module);
@@ -648,6 +670,10 @@ class Core_Migration_Manager
     public function down($module, $to = null)
     {
         $lastMigration = $this->getLastMigration($module);
+
+        if (($fullMigrationName = $this->getMigrationFullName($to, $module))) {
+            $to = $fullMigrationName;
+        }
 
         if (null !== $to) {
             if (!self::isMigration($to)) {
@@ -854,6 +880,25 @@ class Core_Migration_Manager
      */
     public static function isMigration($value)
     {
-        return ('0' == $value) || preg_match('/^\d{8}_\d{6}_\d{2}$/', $value);
+
+        return ('0' == $value) || preg_match('/^\d{8}_\d{6}_\d{2}$/', $value)
+            || preg_match('/^[A-z0-9]*$/', $value);
+    }
+
+
+    protected function getMigrationFullName($migrationLabel, $module = null )
+    {
+        if (preg_match('/^[A-z]*$/', $migrationLabel)) {
+
+            $existMigrations = $this->getExistsMigrations($module);
+
+            foreach ($existMigrations as $migration) {
+                if (preg_match('/^\d{8}_\d{6}_\d{2}_'.$migrationLabel.'$/', $migration)) {
+                    return $migration;
+                }
+            }
+        }
+
+        return false;
     }
 }
