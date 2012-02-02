@@ -1,6 +1,7 @@
-home:
-  label: Home
-  module: admin
-  controller: index
-  action: index
-  route: default
+dashboard:
+  home:
+    label: Home
+    module: admin
+    controller: index
+    action: index
+    route: default

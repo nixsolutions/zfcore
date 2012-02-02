@@ -1,10 +1,11 @@
-commentsmanagment:
-  label: Comments
-  uri:
-  pages:
-    aliases:
-      label: View Aliases
-      module: comments
-      controller: aliases
-      action: index
-      route: default
+dashboard:
+  commentsmanagment:
+    label: Comments
+    uri:
+    pages:
+      aliases:
+        label: View Aliases
+        module: comments
+        controller: aliases
+        action: index
+        route: default

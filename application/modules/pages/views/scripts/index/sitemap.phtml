@@ -1,7 +1,11 @@
 <div id="sitemap">
     <ul>
     <?php
-        echo $this->menu('Home', 0, 50, '/default/partial/sitemap.phtml');
+        echo $this->navigation($this->menuContainer('Home'))
+            ->menu()
+            ->setPartial('/default/partial/sitemap.phtml')
+            ->setMaxDepth(50)
+            ->setMinDepth(0);
     ?>
     </ul>
 </div>

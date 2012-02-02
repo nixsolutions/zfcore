@@ -18,7 +18,6 @@ class Users_IndexController extends Core_Controller_Action
 
     public function indexAction()
     {
-        // action body
     }
 
     /**

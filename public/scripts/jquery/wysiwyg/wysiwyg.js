@@ -229,41 +229,40 @@
             }
 
             var $el = $('#wysiwyg-image-form');
-            if (!$el.length) {
-                 $('<div>').load(this._getPath() + 'image.html', function() {
-                    var $el = $(this).children();
-
-                    $el.dialog($.extend({
-                        modal: true,
-                        buttons: {
-                            OK: function() {
-                                var url = $('#wysiwyg-image-url').val();
-                                if (url) {
-                                    editor.exec('insertImage', {
-                                            src: url,
-                                            title: $('#wysiwyg-image-title').val(),
-                                            align: $('#wysiwyg-image-align').val()
-                                        }
-                                    );
-                                }
-                                $el.dialog('close');
-                            },
-                            Cancel: function() {
-                                $el.dialog('close');
-                            }
-                        }
-                    }, editor.options.plugins.dialog));
-
-                    $('#wysiwyg-image-upload').imageUpload($.extend({
-                        callback: function(url) {
-                            $('#wysiwyg-image-url').val(url);
-                        },
-                        url: editor.options.uploadUrl
-                    }, editor.options.plugins.imageUpload));
-                });
-            } else {
-                $el.dialog('open');
+            if ($el.length) {
+                $el.dialog('destroy');
+                $el.remove();
             }
+            $('<div>').load(this._getPath() + 'image.html', function() {
+                var $el = $(this).children();
+
+                $el.dialog($.extend({
+                    modal: true,
+                    buttons: {
+                        OK: function() {
+                            var url = $('#wysiwyg-image-url').val();
+                            if (url) {
+                                editor.exec('insertImage', {
+                                        src: url,
+                                        title: $('#wysiwyg-image-title').val(),
+                                        align: $('#wysiwyg-image-align').val()
+                                    }
+                                );
+                            }
+                            $el.dialog('close');
+                        },
+                        Cancel: function() {
+                            $el.dialog('close');
+                        }
+                    }
+                }, editor.options.plugins.dialog));
+
+                $('#wysiwyg-image-upload').imageUpload($.extend({
+                    callback: function(url) {
+                        $('#wysiwyg-image-url').val(url);
+                    },
+                }, editor.options.plugins.imageUpload));
+            });
         },
 
         /**
@@ -794,7 +793,6 @@
                html: '<div class="toolbar-colorpicker" name="foreColor"></div>'
            }
        },
-
        toolbar1: [
            'biu',
            ['indent', 'outdent'],
@@ -1454,7 +1452,6 @@
          */
         options: {
             path: null, /* base url */
-            uploadUrl: null,
             uploadTemplate: null,
             wrapperClass: 'wysiwyg-wrapper',
             toolbarWrapperClass: 'wysiwyg-toolbar',

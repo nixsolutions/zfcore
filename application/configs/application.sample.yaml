@@ -51,13 +51,6 @@ production:
               action: index
             role: guest
             cache: acl
-        navigation:
-          class: Core_Controller_Plugin_Navigation
-          stackindex: 50
-          options:
-            config: navigation
-            section: dashboard
-            cache: navigation
     router:
       config: routes
       cache: router
@@ -193,6 +186,12 @@ production:
         Application_View_Filter: APPLICATION_PATH/layouts/filters
       scriptPath:
         - APPLICATION_PATH/views/scripts
+    navigation:
+      source:
+        dashboard: config
+        default: config
+      config: navigation
+      cache: navigation
 testing:
   _extends: production
   phpSettings:
@@ -201,10 +200,10 @@ testing:
   resources:
     db:
       params:
-        host: 10.10.2.35
-        username: root
-        password: 1111
-        dbname: zfc_for_testing
+        host: hippo.nixsolutions.com
+        username: d_unittest
+        password: unittest
+        dbname: p_zfc_test
         persistent: on
     frontController:
       plugins:

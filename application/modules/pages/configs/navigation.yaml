@@ -1,22 +1,64 @@
-staticpages:
-  label: Pages
-  uri:
-  pages:
-    create:
-      label: Create
-      module: pages
-      controller: management
-      action: create
-      route: default
-    edit:
-      label: Edit
-      module: pages
-      controller: management
-      action: index
-      route: default
-    uploads:
-      label: Uploads Manager
-      module: pages
-      controller: uploads
-      action: index
-      route: default
+dashboard:
+  staticpages:
+    label: Pages
+    uri:
+    pages:
+      create:
+        label: Create
+        module: pages
+        controller: management
+        action: create
+        route: default
+      edit:
+        label: Edit
+        module: pages
+        controller: management
+        action: index
+        route: default
+      uploads:
+        label: Uploads Manager
+        module: pages
+        controller: uploads
+        action: index
+        route: default
+default:
+  terms:
+    label: Terms of use
+    route: pages
+    module: pages
+    controller: index
+    action: index
+    params:
+      alias: terms
+    pages:
+      conditions:
+        label: Terms and conditions
+        route: pages
+        module: pages
+        controller: index
+        action: index
+        params:
+          alias: conditions
+      privacy:
+        label: Privacy policy
+        route: pages
+        module: pages
+        controller: index
+        action: index
+        params:
+          alias: privacy
+  sitemap:
+    label: Sitemap
+    route: sitemap
+    module: pages
+    controller: index
+    action: sitemap
+    title: sitemap
+  about:
+    label: About
+    route: pages
+    module: pages
+    controller: index
+    action: index
+    params:
+      alias: about

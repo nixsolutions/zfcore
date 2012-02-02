@@ -1,24 +1,25 @@
-blogmanagment:
-  label: Blog
-  uri:
-  pages:
-    create:
-      label: Create New Post
-      module: blog
-      controller: management
-      action: create
-      route: default
-    edit:
-      label: Edit Posts
-      module: blog
-      controller: management
-      action: index
-      route: default
-statistic:
-  pages:
-    blog:
-      label: Blog
-      module: blog
-      controller: management
-      action: stats
-      route: default
+dashboard:
+  blogmanagment:
+    label: Blog
+    uri:
+    pages:
+      create:
+        label: Create New Post
+        module: blog
+        controller: management
+        action: create
+        route: default
+      edit:
+        label: Edit Posts
+        module: blog
+        controller: management
+        action: index
+        route: default
+  statistic:
+    pages:
+      blog:
+        label: Blog
+        module: blog
+        controller: management
+        action: stats
+        route: default

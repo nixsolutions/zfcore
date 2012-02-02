@@ -1,3 +1,11 @@
-statistic:
-  label: Statistics
-  uri:
+dashboard:
+  statistic:
+    label: Statistics
+    uri:
+default:
+  admin:
+    label: Admin panel
+    module: admin
+    controller: index
+    action: index
+    route: default

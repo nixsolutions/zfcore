@@ -1,16 +1,17 @@
-catalog:
-  label: Categories
-  uri:
-  pages:
-    create:
-      label: Create Category
-      module: categories
-      controller: management
-      action: create
-      route: default
-    edit:
-      label: Edit Category
-      module: categories
-      controller: management
-      action: index
-      route: default
+dashboard:
+  catalog:
+    label: Categories
+    uri:
+    pages:
+      create:
+        label: Create Category
+        module: categories
+        controller: management
+        action: create
+        route: default
+      edit:
+        label: Edit Category
+        module: categories
+        controller: management
+        action: index
+        route: default
