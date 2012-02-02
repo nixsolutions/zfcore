@@ -59,6 +59,10 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getCreateForm()
     {
+        $this->view->plugins()->elfinder();
+
+        $this->_setDefaultScriptPath();
+
         return new Blog_Model_Post_Form_Admin_Create();
     }
 

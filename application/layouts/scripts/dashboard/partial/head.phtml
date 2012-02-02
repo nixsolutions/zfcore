@@ -12,7 +12,7 @@ $this->asset('dashboard');
 <head>
     <?php echo $this->headMeta() ?>
     <?php echo $this->headTitle($this->__('Admin Panel'))->setSeparator(': ') ?>
-    <?php echo $this->headLink()->appendStylesheet('http://maksslesarenko.github.com/google-plus-ui/css/jquery-ui-1.8.16.google.plus.css')?>
+    <?php echo $this->headLink()->prependStylesheet('http://maksslesarenko.github.com/google-plus-ui/css/jquery-ui-1.8.16.google.plus.css')?>
     <?php echo $this->headStyle() ?>
     <?php echo $this->headScript() ?>
     <base href="<?php echo $this->baseUrl() ?>"/>

@@ -58,9 +58,6 @@
  */
 class Core_Form_Element_Wysiwyg extends Zend_Form_Element
 {
-    const TOOLBAR1 = 'toolbar1';
-
-    const TOOLBAR2 = 'toolbar2';
     /**
      * view helper
      *
@@ -83,5 +80,26 @@ class Core_Form_Element_Wysiwyg extends Zend_Form_Element
 
         $this->setAttrib('toolbars', $toolbars);
         return $this;
+    }
+
+    /**
+     * Set upload path
+     *
+     * @param string $url
+     * @return Core_Form_Element_Wysiwyg
+     */
+    public function setUploadPath($url)
+    {
+        if (!$editor = $this->getAttrib('editor')) {
+            $editor = array();
+        }
+        $editor = array_merge(
+            $editor,
+            array(
+                'plugins' => array('imageUpload' => array('url' => $url))
+            )
+        );
+
+        return $this->setAttrib('editor', $editor);
     }
 }

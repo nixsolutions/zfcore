@@ -110,7 +110,7 @@ class Install_IndexController extends Core_Controller_Action
             }
         }
         //remove postfix
-        $phpVersion = substr(PHP_VERSION, 0, strpos(PHP_VERSION, '-'));
+        $phpVersion = PHP_VERSION;
         $this->view->phpversion = $phpVersion;
 
         $this->view->folders = $requirements['directories'];
