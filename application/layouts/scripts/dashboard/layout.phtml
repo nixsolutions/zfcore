@@ -17,6 +17,7 @@ $class[] = 'a-' . $request->getActionName();
             <!-- Main Content Section with everything -->
             <div id="main-content">
                 <?php echo $this->render('dashboard/partial/messages.phtml') ?>
+                <?php //echo $this->themeGallery()?>
 
                 <?php if ($this->navigation()->breadcrumbs()->render()): ?>
                     <div class="breadcrumbs shadow"><?php echo $this->navigation()->breadcrumbs()->setSeparator(' &raquo; ') ?></div>
