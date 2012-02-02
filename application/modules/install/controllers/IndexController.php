@@ -353,6 +353,9 @@ class Install_IndexController extends Core_Controller_Action
                 }
             } else {
                 $manager->up($module);
+                if ($module === 'menu') {
+                    $this->_store->config->production->resources->navigation->source->default = 'db';
+                }
             }
         }
         unset($this->_store->modules);

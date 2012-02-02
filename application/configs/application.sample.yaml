@@ -190,6 +190,7 @@ production:
       source:
         dashboard: config
         default: config
+        install: config
       config: navigation
       cache: navigation
 testing:

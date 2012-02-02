@@ -19,10 +19,6 @@ modules:
     title: 'Mail module'
     description: 'For sending e-mails.'
     required: on
-  menu:
-    title: 'Menu module'
-    description: 'For managment menu.'
-    required: on
   translate:
     title: 'Translate module'
     description: 'For managment and translate content.'
@@ -32,6 +28,10 @@ modules:
     description: 'For managment users.'
     required: on
 
+  menu:
+    title: 'Menu module'
+    description: 'For managment menu.'
+    required: off
   blog:
     title: 'Blog module'
     description: 'Module to implement the user's blog.'
