@@ -121,3 +121,9 @@
 /*button sets*/
 .wysiwyg-toolbar .ui-buttonset { margin-right: 7px; }
 .wysiwyg-toolbar .ui-buttonset .ui-button { margin-left: 0; margin-right: -.5em; }
+
+#wysiwyg-image-form table, 
+#wysiwyg-image-form tr, 
+#wysiwyg-image-form td {
+    border: 0;
+}

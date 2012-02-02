@@ -43,7 +43,7 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getCreateForm()
     {
-        return new Forum_Model_Post_Form_Admin_Create();
+        return new Forum_Form_Admin_Create();
     }
 
     /**
@@ -55,7 +55,7 @@ class Forum_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getEditForm()
     {
-        $form = new Forum_Model_Post_Form_Admin_Create();
+        $form = new Forum_Form_Admin_Create();
         $form->addElement(new Zend_Form_Element_Hidden('id'));
         return $form;
     }

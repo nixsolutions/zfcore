@@ -70,7 +70,7 @@ class Forum_PostController extends Core_Controller_Action
      */
     public function createAction()
     {
-        $form = new Forum_Model_Post_Form_Create();
+        $form = new Forum_Form_Post_Create();
         if ($this->getRequest()->isPost()
             && $form->isValid($this->_getAllParams())) {
 
@@ -104,7 +104,7 @@ class Forum_PostController extends Core_Controller_Action
             throw new Zend_Controller_Action_Exception('Page is forbidden');
         }
 
-        $form = new Forum_Model_Post_Form_Edit();
+        $form = new Forum_Form_Post_Edit();
         $form->populate($post->toArray());
 
         if ($this->getRequest()->isPost()
