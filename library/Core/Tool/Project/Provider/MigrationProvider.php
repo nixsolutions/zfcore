@@ -171,13 +171,15 @@ class Core_Tool_Project_Provider_MigrationProvider
      * @param string $whitelist
      * @param string $blacklist
      */
-    public function generate($module = null, $label = '', $description = '',
-                             $whitelist = '', $blacklist = '')
+    public function generate($module = null, $whitelist = '',
+                             $blacklist = '', $label = '', $description = '')
     {
         require_once 'bootstrap.php';
 
         $manager = $this->getManager();
-        $result = $manager->generateMigration($module, $label, $description, $blacklist, $whitelist);
+        $result = $manager->generateMigration(
+            $module,  $blacklist, $whitelist, false, $label, $description
+        );
 
         if ($result) {
             $this->message('Migration '.$result.' created! ');

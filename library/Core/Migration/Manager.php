@@ -446,8 +446,8 @@ class Core_Migration_Manager
      * @return array|bool|string
      */
 
-    public function generateMigration($module=null, $label = '', $description = '',
-                                      $blacklist = '', $whitelist = '', $showDiff=false)
+    public function generateMigration($module=null, $blacklist = '', $whitelist = '', $showDiff=false,
+                                      $label = '', $description = '')
     {
 
         $blkListedTables = array();
@@ -880,15 +880,13 @@ class Core_Migration_Manager
      */
     public static function isMigration($value)
     {
-
-        return ('0' == $value) || preg_match('/^\d{8}_\d{6}_\d{2}$/', $value)
-            || preg_match('/^[A-z0-9]*$/', $value);
+        return ('0' == $value) || preg_match('/^\d{8}_\d{6}_\d{2}$/', $value) ||
+            preg_match('/\d{8}_\d{6}_\d{2}_[A-z0-9]*$/', $value);
     }
-
 
     protected function getMigrationFullName($migrationLabel, $module = null )
     {
-        if (preg_match('/^[A-z]*$/', $migrationLabel)) {
+        if (preg_match('/^[A-z0-9]*$/', $migrationLabel)) {
 
             $existMigrations = $this->getExistsMigrations($module);
 
