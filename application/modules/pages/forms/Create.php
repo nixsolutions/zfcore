@@ -45,18 +45,30 @@ class Pages_Form_Create extends Zend_Form
                 )
             );
 
-        $content = new Core_Form_Element_Redactor('content');
+        $content = new Core_Form_Element_Wysiwyg('content');
         $content->setLabel('Content:')
             ->setRequired(true)
             ->setAttrib('cols', 100)
             ->setAttrib('rows', 25)
-            ->setAttrib(
-                'redactor',
+            ->addToolbar(
                 array(
-                    'toolbar' => 'full',
-                    'image_upload' => $this->_getUploadImageUrl()
+                    'biu',
+                    array('indent', 'outdent'),
+                    'justify',
+                    'linkToggle',
+                    'image',
+                    'removeFormat'
                 )
-            );
+            )->addToolbar(
+               array(
+                   array('p', 'quote', 'br'),
+                   'formatBlock',
+                   'fontFace',
+                   'fontSize',
+                   'hiliteColor',
+                   'foreColor'
+               )
+            )->setUploadPath($this->_getUploadImageUrl());
 
         $keywords = new Zend_Form_Element_Text('keywords');
         $keywords->setLabel('Keywords:')
