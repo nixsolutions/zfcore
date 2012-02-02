@@ -135,10 +135,6 @@ class Core_View_Helper_MenuContainer
     {
         $currentLayout = Zend_Layout::getMvcInstance()->getLayout();
         $currentLayout = preg_split('/\//', $currentLayout);
-        /*$section = $currentLayout[0];
-        if($section == 'das'){
-
-        }*/
         return $currentLayout[0];
     }
 
@@ -149,9 +145,14 @@ class Core_View_Helper_MenuContainer
     public function getSource()
     {
         $config = Core_Module_Config::getConfig('application');
-        //var_dump($this->_section);exit;
-        if (isset($config['production']['resources']['navigation']['source'][$this->_section])) {
-            return $config['production']['resources']['navigation']['source'][$this->_section];
+        if (APPLICATION_ENV == 'testing') {
+            $source = $config['testing']['resources']['navigation']['source'];
+        } else {
+            $source = $config['production']['resources']['navigation']['source'];
+        }
+
+        if (isset($source[$this->_section])) {
+            return $source[$this->_section];
         } else {
             return null;
         }

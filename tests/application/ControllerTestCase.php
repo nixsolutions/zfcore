@@ -75,7 +75,6 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
         $acl->getAcl();
 
         self::migrationUp();
-        self::migration(true, "menu");
     }
 
     /**
@@ -83,7 +82,6 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
      */
     static public function appDown()
     {
-        self::migration(false, "menu");
         self::migrationDown();
 
         try {
