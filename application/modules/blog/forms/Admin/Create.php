@@ -36,7 +36,7 @@ class Blog_Form_Admin_Create extends Zend_Form
 
         $teaser = new Core_Form_Element_Wysiwyg('teaser');
         $teaser->setLabel('Teaser')
-               ->setAttribs(array('style' => 'width:90%;height:200px'))
+               ->setAttribs(array('style' => 'width:750px;height:200px'))
                ->addToolbar(
            array(
                'biu',
@@ -69,7 +69,7 @@ class Blog_Form_Admin_Create extends Zend_Form
         )->setUploadPath('/upload');
 
         $teaser->setLabel('Text')
-               ->setAttribs(array('style' => 'width:90%;height:340px'));
+               ->setAttribs(array('style' => 'width:750px;height:340px'));
         $this->addElement($teaser);
 
         $published = new Zend_Form_Element_Text('published');

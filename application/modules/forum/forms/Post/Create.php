@@ -8,7 +8,7 @@
  *
  * @version  $Id: Create.php 162 2010-07-12 14:58:58Z AntonShevchuk $
  */
-class Forum_Model_Post_Form_Create extends Zend_Form
+class Forum_Form_Post_Create extends Zend_Form
 {
     /**
      * Form initialization

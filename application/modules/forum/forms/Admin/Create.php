@@ -8,7 +8,7 @@
  *
  * @version  $Id: Login.php 1561 2009-10-16 13:31:31Z dark $
  */
-class Forum_Model_Post_Form_Admin_Create extends Zend_Form
+class Forum_Form_Admin_Create extends Zend_Form
 {
     /**
      * Form initialization
@@ -23,7 +23,7 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Form
         $title = new Zend_Form_Element_Text('title');
         $title->setLabel('Title')
               ->setRequired(true)
-              ->setAttribs(array('style'=>'width:60%'))
+              ->setAttribs(array('style'=>'width:750px'))
               ->addValidator(
                   'regex',
                   false,
@@ -37,10 +37,29 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Form
               );
         $this->addElement($title);
 
-        $body = new Core_Form_Element_Redactor('body');
+        $body = new Core_Form_Element_Wysiwyg('body');
         $body->setLabel('Post')
              ->setRequired(true)
-             ->setAttribs(array('style' => 'width:100%;height:340px'));
+             ->setAttribs(array('style' => 'width:750px;height:340px'))
+             ->addToolbar(
+            array(
+                'biu',
+                array('indent', 'outdent'),
+                'justify',
+                'linkToggle',
+                'image',
+                'removeFormat'
+            )
+        )->addToolbar(
+           array(
+               array('p', 'quote', 'br'),
+               'formatBlock',
+               'fontFace',
+               'fontSize',
+               'hiliteColor',
+               'foreColor'
+           )
+        )->setUploadPath('/upload');
 
         $this->addElement($body);
         $this->addElement($this->_category());
@@ -71,7 +90,7 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Form
         $element->setLabel('Category')
                 ->setRequired(true)
                 ->addMultioptions($options)
-                ->setAttribs(array('style'=>'width:60%'));
+                ->setAttribs(array('style'=>'width:750px'));
 
 
         return $element;
@@ -87,7 +106,7 @@ class Forum_Model_Post_Form_Admin_Create extends Zend_Form
         $status = new Zend_Form_Element_Select('status');
         $status->setLabel('Status')
                ->setRequired(true)
-               ->setAttribs(array('style'=>'width:60%'))
+               ->setAttribs(array('style'=>'width:750px'))
                ->addMultioptions(
                    array(
                        Forum_Model_Post::STATUS_ACTIVE  => Forum_Model_Post::STATUS_ACTIVE,
