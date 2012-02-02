@@ -8,7 +8,7 @@
  *
  * @version  $Id: Login.php 1561 2009-10-16 13:31:31Z dark $
  */
-class Blog_Model_Post_Form_Admin_Create extends Zend_Form
+class Blog_Form_Admin_Create extends Zend_Form
 {
     /**
      * Form initialization

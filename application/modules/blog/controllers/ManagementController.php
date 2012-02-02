@@ -59,7 +59,7 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getCreateForm()
     {
-        return new Blog_Model_Post_Form_Admin_Create();
+        return new Blog_Form_Admin_Create();
     }
 
     /**
@@ -71,7 +71,7 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getEditForm()
     {
-        $form = new Blog_Model_Post_Form_Admin_Create();
+        $form = new Blog_Form_Admin_Create();
         $form->addElement(new Zend_Form_Element_Hidden('id'));
         return $form;
     }
