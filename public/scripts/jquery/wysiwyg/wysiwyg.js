@@ -238,6 +238,8 @@
 
                 $el.dialog($.extend({
                     modal: true,
+                    width: 400,
+                    height: 350,
                     buttons: {
                         OK: function() {
                             var url = $('#wysiwyg-image-url').val();
