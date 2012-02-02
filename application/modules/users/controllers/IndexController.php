@@ -18,14 +18,6 @@ class Users_IndexController extends Core_Controller_Action
 
     public function indexAction()
     {
-        Zend_Loader_Autoloader::getInstance()->registerNamespace('ZendDbSchema');
-
-        //$schema = new ZendDbSchema_Db_Schema_Table('forum_post');
-
-        $schema = new ZendDbSchema_Db_Schema_Table('users1');
-
-        var_dump($schema->isDirty(), $schema->__toString(), $schema->toArray());
-        // action body
     }
 
     /**
