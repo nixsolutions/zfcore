@@ -200,10 +200,10 @@ testing:
   resources:
     db:
       params:
-        host: 10.10.2.35
-        username: root
-        password: 1111
-        dbname: zfc_for_testing
+        host: hippo.nixsolutions.com
+        username: d_unittest
+        password: unittest
+        dbname: p_zfc_test
         persistent: on
     frontController:
       plugins:
