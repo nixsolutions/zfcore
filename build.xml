@@ -215,5 +215,23 @@
     </target>
 
     <target name="reset-demo" depends="show-maintanance-page,update-source,load-test-data,remove-maintanance-page"/>
+    
+    <target name="nightly" depends="update-nightly, build, save-nightly"/>
+    
+    <target name="update-nightly">
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log" failonerror="false">
+            <arg line="up -C nightly" />
+        </exec>
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log" failonerror="false">
+            <arg line="merge default" />
+        </exec>
+    </target>
+    
+    <target name="save-nightly">
+        <tstamp/>
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log" failonerror="false">
+            <arg line="commit -m '${DSTAMP}'" />
+        </exec>
+    </target>
 
 </project>
