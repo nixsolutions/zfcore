@@ -9,9 +9,11 @@
     
     <target name="clean">
         <delete dir="${buildDir}"/>
-        <delete dir="${basedir}/data/cache"/>
-        <delete dir="${basedir}/data/logs"/>
-        <delete dir="${basedir}/data/session"/>
+        <delete>
+            <fileset dir="${basedir}/data/cache" excludes=".empty"/>
+            <fileset dir="${basedir}/data/logs" excludes=".empty"/>
+            <fileset dir="${basedir}/data/session" excludes=".empty"/>
+        </delete>
     </target>
     <target name="prepare" depends="clean">
         <mkdir dir="${buildDir}"/>
