@@ -49,7 +49,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function init()
     {
-        $this->_isDashboard();
+        $this->_useDashboard();
 
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
         $this->_viewRenderer = $this->_helper->getHelper('viewRenderer');
