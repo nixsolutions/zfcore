@@ -67,7 +67,7 @@ class Users_Form_Users_Filter_ImageSize implements Zend_Filter_Interface
      * Set width
      *
      * @param integer $width
-     * @return Lizard_Images_Filter_ImageSize
+     * @return Users_Form_Users_Filter_ImageSize
      */
     public function setWidth($width)
     {
@@ -89,7 +89,7 @@ class Users_Form_Users_Filter_ImageSize implements Zend_Filter_Interface
      * Set height
      *
      * @param integer $height
-     * @return Lizard_Images_Filter_ImageSize
+     * @return Users_Form_Users_Filter_ImageSize
      */
     public function setHeight($height)
     {
@@ -111,7 +111,7 @@ class Users_Form_Users_Filter_ImageSize implements Zend_Filter_Interface
      * Set keep ratio
      *
      * @param boolen $keepRatio
-     * @return Lizard_Images_Filter_ImageSize
+     * @return Users_Form_Users_Filter_ImageSize
      */
     public function setKeepRatio($keepRatio = true)
     {
@@ -162,7 +162,7 @@ class Users_Form_Users_Filter_ImageSize implements Zend_Filter_Interface
         } elseif ($toWidth && !$toHeight) {
             $toHeight = $height / ($width / $toWidth);
         } elseif (!$toWidth && !$toHeight) {
-            throw new Lizard_Images_Exception('Destination width and height not set');
+            throw new Zend_Filter_Exception('Destination width and height not set');
         } elseif ($this->getKeepRatio()) {
             $xscale = $width / $toWidth;
             $yscale = $height / $toHeight;
