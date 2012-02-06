@@ -49,7 +49,7 @@ class Blog_PostController extends Core_Controller_Action
      */
     public function createAction()
     {
-        $form = new Blog_Model_Post_Form_Create();
+        $form = new Blog_Form_Post_Create();
         if ($this->getRequest()->isPost()
             && $form->isValid($this->_getAllParams())) {
 
@@ -88,7 +88,7 @@ class Blog_PostController extends Core_Controller_Action
             throw new Zend_Controller_Action_Exception('Page is forbidden');
         }
 
-        $form = new Blog_Model_Post_Form_Edit();
+        $form = new Blog_Form_Post_Edit();
         $form->setDefaults($post->toArray());
 
         if ($this->getRequest()->isPost()

@@ -17,7 +17,7 @@ class Install_Form_Settings_Mail extends Zend_Form
      */
     public function init()
     {
-        $this->setName('settingsForm');
+        $this->setName('mailForm');
         $this->setMethod('post');
 
         $this->addElement($this->_transport());

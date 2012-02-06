@@ -37,6 +37,9 @@ class TestSuite extends PHPUnit_Framework_TestSuite
         require_once 'forum/Test.php';
         $suite->addTestSuite('Forum_Test');
 
+        require_once 'install/Test.php';
+        $suite->addTestSuite('Install_Test');
+
         require_once 'mail/Test.php';
         $suite->addTestSuite('Mail_Test');
 

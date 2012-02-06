@@ -16,4 +16,13 @@ class Menu_Test extends PHPUnit_Framework_TestSuite
         return $suite;
     }
 
+    protected function setUp()
+    {
+        ControllerTestCase::migrationUp('menu');
+    }
+
+    protected function tearDown()
+    {
+        ControllerTestCase::migrationDown('menu');
+    }
 }

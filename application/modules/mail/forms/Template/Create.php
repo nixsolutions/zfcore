@@ -70,18 +70,30 @@ class Mail_Form_Template_Create extends Zend_Form
      */
     protected function _body()
     {
-        $body = new Core_Form_Element_Redactor('bodyHtml');
+        $body = new Core_Form_Element_Wysiwyg('bodyHtml');
         $body->setLabel('Body')
              ->setRequired(true)
              ->setAttribs(array('style'=>'width:60%'))
              ->addFilter('StringTrim')
-             ->setAttrib(
-                 'redactor',
+             ->addToolbar(
                  array(
-                    'toolbar' => 'full',
-                    'image_upload' => $this->_getUploadImageUrl()
+                     'biu',
+                     array('indent', 'outdent'),
+                     'justify',
+                     'linkToggle',
+                     'image',
+                     'removeFormat'
                  )
-             );
+             )->addToolbar(
+                 array(
+                     array('p', 'quote', 'br'),
+                     'formatBlock',
+                     'fontFace',
+                     'fontSize',
+                     'hiliteColor',
+                     'foreColor'
+                 )
+             )->setUploadPath($this->_getUploadImageUrl());
 
         return $body;
     }

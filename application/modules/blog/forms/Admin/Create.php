@@ -8,7 +8,7 @@
  *
  * @version  $Id: Login.php 1561 2009-10-16 13:31:31Z dark $
  */
-class Blog_Model_Post_Form_Admin_Create extends Zend_Form
+class Blog_Form_Admin_Create extends Zend_Form
 {
     /**
      * Form initialization
@@ -36,16 +36,16 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Form
 
         $teaser = new Core_Form_Element_Wysiwyg('teaser');
         $teaser->setLabel('Teaser')
-               ->setAttribs(array('style' => 'width:90%;height:200px'))
+               ->setAttribs(array('style' => 'width:750px;height:200px'))
                ->addToolbar(
-           array(
-               'biu',
-               array('indent', 'outdent'),
-               'justify',
-               'linkToggle',
-               'removeFormat'
-           )
-        );
+                   array(
+                       'biu',
+                       array('indent', 'outdent'),
+                       'justify',
+                       'linkToggle',
+                       'removeFormat'
+                   )
+               );
         $this->addElement($teaser);
         $teaser = new Core_Form_Element_Wysiwyg('body');
         $teaser->addToolbar(
@@ -58,18 +58,18 @@ class Blog_Model_Post_Form_Admin_Create extends Zend_Form
                 'removeFormat'
             )
         )->addToolbar(
-           array(
-               array('p', 'quote', 'br'),
-               'formatBlock',
-               'fontFace',
-               'fontSize',
-               'hiliteColor',
-               'foreColor'
-           )
+            array(
+                array('p', 'quote', 'br'),
+                'formatBlock',
+                'fontFace',
+                'fontSize',
+                'hiliteColor',
+                'foreColor'
+            )
         )->setUploadPath('/upload');
 
         $teaser->setLabel('Text')
-               ->setAttribs(array('style' => 'width:90%;height:340px'));
+               ->setAttribs(array('style' => 'width:750px;height:340px'));
         $this->addElement($teaser);
 
         $published = new Zend_Form_Element_Text('published');

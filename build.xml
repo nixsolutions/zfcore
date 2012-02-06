@@ -9,9 +9,11 @@
     
     <target name="clean">
         <delete dir="${buildDir}"/>
-        <delete dir="${basedir}/data/cache"/>
-        <delete dir="${basedir}/data/logs"/>
-        <delete dir="${basedir}/data/session"/>
+        <delete>
+            <fileset dir="${basedir}/data/cache" excludes=".empty"/>
+            <fileset dir="${basedir}/data/logs" excludes=".empty"/>
+            <fileset dir="${basedir}/data/session" excludes=".empty"/>
+        </delete>
     </target>
     <target name="prepare" depends="clean">
         <mkdir dir="${buildDir}"/>
@@ -215,5 +217,23 @@
     </target>
 
     <target name="reset-demo" depends="show-maintanance-page,update-source,load-test-data,remove-maintanance-page"/>
+    
+    <target name="nightly" depends="update-nightly, build, save-nightly"/>
+    
+    <target name="update-nightly">
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log" failonerror="true">
+            <arg line="up -C nightly" />
+        </exec>
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log" failonerror="true">
+            <arg line="merge default" />
+        </exec>
+    </target>
+    
+    <target name="save-nightly">
+        <tstamp/>
+        <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log" failonerror="true">
+            <arg line="commit -m '${DSTAMP}'" />
+        </exec>
+    </target>
 
 </project>

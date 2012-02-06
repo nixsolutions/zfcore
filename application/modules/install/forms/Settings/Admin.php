@@ -18,7 +18,7 @@ class Install_Form_Settings_Admin extends Zend_Form
      */
     public function init()
     {
-        $this->setName('userForm')->setMethod('post');
+        $this->setName('adminForm')->setMethod('post');
 
         $this->addElement($this->_login());
         $this->addElement($this->_password());

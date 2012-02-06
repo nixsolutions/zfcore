@@ -170,6 +170,13 @@ class Menu_Model_Menu_ManagerTest extends ControllerTestCase
         $this->assertTrue(is_array($this->_menuManager->getMenuById(1)));
         $this->assertNull($this->_menuManager->getMenuById(100500));
     }
+    /**
+    * test getMenuByLabel()
+    */
+    public function testGetMenuByLabel()
+    {
+        $this->assertTrue(is_array($this->_menuManager->getMenuByLabel('Home')));
+    }
 
     /**
      * test checkTarget()

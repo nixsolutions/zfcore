@@ -19,7 +19,7 @@ class Debug_FileController extends Core_Controller_Action
     */
     public function init()
     {
-        $this->_isDashboard();
+        $this->_useDashboard();
     }
 
     /**

@@ -190,6 +190,7 @@ production:
       source:
         dashboard: config
         default: config
+        install: config
       config: navigation
       cache: navigation
 testing:
@@ -210,6 +211,12 @@ testing:
         acl:
           options:
             allowAll: off
+    navigation:
+      source:
+        dashboard: config
+        default: config
+      config: navigation
+      cache: navigation
 development:
   _extends: production
   phpSettings:

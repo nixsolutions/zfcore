@@ -19,28 +19,57 @@ class Faq_Model_Question_Form_Create extends Zend_Form
         $this->setMethod('post');
 
 
-        $content = new Core_Form_Element_Redactor('question');
+        $content = new Core_Form_Element_Wysiwyg('question');
         $content->setLabel('Question:')
             ->setRequired(true)
-            ->setAttrib(
-                'redactor',
+            ->setAttribs(array('style' => 'width:750px;height:340px'))
+            ->addToolbar(
                 array(
-                    'toolbar' => 'full',
-                    'image_upload' => $this->_getUploadImageUrl()
+                    'biu',
+                    array('indent', 'outdent'),
+                    'justify',
+                    'linkToggle',
+                    'image',
+                    'removeFormat'
                 )
-            );
+            )->addToolbar(
+                array(
+                    array('p', 'quote', 'br'),
+                    'formatBlock',
+                    'fontFace',
+                    'fontSize',
+                    'hiliteColor',
+                    'foreColor'
+                )
+            )->setUploadPath($this->_getUploadImageUrl());
+
         $this->addElement($content);
 
-        $content = new Core_Form_Element_Redactor('answer');
+        $content = new Core_Form_Element_Wysiwyg('answer');
         $content->setLabel('Answer:')
             ->setRequired(true)
-            ->setAttrib(
-                'redactor',
+            ->setAttribs(array('style' => 'width:750px;height:340px'))
+            ->addToolbar(
                 array(
-                    'toolbar' => 'full',
-                    'image_upload' => $this->_getUploadImageUrl()
+                    'biu',
+                    array('indent', 'outdent'),
+                    'justify',
+                    'linkToggle',
+                    'image',
+                    'removeFormat'
                 )
-            );
+            )
+            ->addToolbar(
+                array(
+                    array('p', 'quote', 'br'),
+                    'formatBlock',
+                    'fontFace',
+                    'fontSize',
+                    'hiliteColor',
+                    'foreColor'
+                )
+            )->setUploadPath($this->_getUploadImageUrl());
+
         $this->addElement($content);
 
         $submit = new Zend_Form_Element_Submit('submit');

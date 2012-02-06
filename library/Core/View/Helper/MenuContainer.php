@@ -59,6 +59,10 @@ class Core_View_Helper_MenuContainer
             $menuArray = $this->getMenuArrayByConfig();
         }
 
+        if (!$menuArray) {
+            return null;
+        }
+
         return $this->getContainerByArray($menuArray);
 
     }
@@ -145,7 +149,18 @@ class Core_View_Helper_MenuContainer
     public function getSource()
     {
         $config = Core_Module_Config::getConfig('application');
-        return $config['production']['resources']['navigation']['source'][$this->_section];
+        if (APPLICATION_ENV == 'testing') {
+            $source = $config['testing']['resources']['navigation']['source'];
+        } else {
+            $source = $config['production']['resources']['navigation']['source'];
+        }
+
+        if (isset($source[$this->_section])) {
+            return $source[$this->_section];
+        } else {
+            return null;
+        }
+
     }
 
     /**
@@ -164,14 +179,19 @@ class Core_View_Helper_MenuContainer
             'type'    => 'uri',
             'uri'   => '/',
             'visible' => true,
-            'active' => false,
-            'pages' => $dataArray[$this->_section]
+            'active' => false
         );
-        $menuArray = $this->getArrayItemByKey($root, 'label', $this->_identifier);
-        if (is_null($menuArray)) {
-            $menuArray = $root;
+        if (isset($dataArray[$this->_section])) {
+            $root['pages'] = $dataArray[$this->_section];
+            $menuArray = $this->getArrayItemByKey($root, 'label', $this->_identifier);
+            if (is_null($menuArray)) {
+                $menuArray = $root;
+            }
+            return $menuArray;
+        } else {
+            return $root;
         }
-        return $menuArray;
+
     }
 
     /**

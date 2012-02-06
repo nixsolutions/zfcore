@@ -119,36 +119,17 @@ class Feedback_Model_Feedback_Form_Reply extends Zend_Form
     /**
      * Create feedback body element
      *
-     * @return object Core_Form_Element_Redactor
+     * @return Core_Form_Element_Wysiwyg
      */
     protected function _body()
     {
-        $element = new Core_Form_Element_Redactor(
-            'message',
-            array(
-                 'styleSheets'   => array('/layouts/default/css/style.css'),
-                 'attribs'       => array('style' => 'width:100%;height:340px'),
-                 'plugins'       => array('undo', 'redo', 'cut', 'copy', 'paste', '|',
-                                         'bold', 'italic', 'underline', 'strikethrough', '|',
-                                         'subscript', 'superscript', 'removeFormat', '|',
-                                         //'fontName', 'fontSize', 'formatBlock', 'foreColor', 'hiliteColor', '|',
-                                         'indent', 'outdent', 'justifyCenter', 'justifyFull',
-                                         'justifyLeft', 'justifyRight', 'delete', '|',
-                                         'insertOrderedList', 'insertUnorderedList', 'insertHorizontalRule', '|',
-                                         //'LinkDialog', 'UploadImage', '|',
-                                         'ImageManager',
-                                         'FullScreen', '|',
-                                         'Preview', '|',
-                                         'ViewSource')
-            )
-        );
-
-
+        $element = new Core_Form_Element_Wysiwyg('message');
 
         $element->setLabel('Body')
                 ->setRequired(true)
-                ->setAttribs(array('style' => 'width:60%;height:300px'))
-                ->addFilter('StringTrim');
+                ->setAttribs(array('style' => 'width:750px;height:300px'))
+                ->addFilter('StringTrim')
+                ->addToolbar(array('biu'));
 
         return $element;
     }

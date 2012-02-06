@@ -48,13 +48,13 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     protected $_after = array();
 
     /**
-     * _isDashboard
+     * _useDashboard
      *
      * set required options for Dashboard controllers
      *
      * @return  Core_Controller_Action
      */
-    protected function _isDashboard()
+    protected function _useDashboard()
     {
         // change layout
         $this->_helper->layout->setLayout('dashboard/layout');
@@ -90,28 +90,6 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
             'function' => $function,
             'options'  => $options
         );
-    }
-
-    /**
-     * init before filter
-     *
-     * @return void
-     */
-    protected function _initBefore()
-    {
-        $action = $this->getRequest()->getActionName();
-        $this->_execFunctions($this->_before, $action);
-    }
-
-    /**
-     * init after filter
-     *
-     * @return void
-     */
-    protected function _initAfter()
-    {
-        $action = $this->getRequest()->getActionName();
-        $this->_execFunctions($this->_after, $action);
     }
 
     /**
@@ -180,8 +158,8 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
      */
     public function preDispatch()
     {
-        parent::preDispatch();
-        $this->_initBefore();
+        $action = $this->getRequest()->getActionName();
+        $this->_execFunctions($this->_before, $action);
     }
 
     /**
@@ -191,8 +169,8 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
      */
     public function postDispatch()
     {
-        parent::postDispatch();
-        $this->_initAfter();
+        $action = $this->getRequest()->getActionName();
+        $this->_execFunctions($this->_after, $action);
     }
 
     /**

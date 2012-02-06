@@ -15,7 +15,7 @@ class Pages_UploadsController extends Core_Controller_Action
     */
     public function init()
     {
-        $this->_isDashboard();
+        $this->_useDashboard();
     }
 
     /**

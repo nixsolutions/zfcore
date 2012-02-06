@@ -42,7 +42,7 @@ class Categories_Form_Category_Create extends Zend_Form
         $subject->setLabel('Title')
                 ->setRequired(true)
 //                ->setTrim(true)
-                ->setAttribs(array('style'=>'width:60%'))
+                ->setAttribs(array('style'=>'width:750px;'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
         return $subject;
@@ -56,7 +56,7 @@ class Categories_Form_Category_Create extends Zend_Form
     {
         $subject = new Zend_Form_Element_Text('alias');
         $subject->setLabel('Alias')
-                ->setAttribs(array('style'=>'width:60%'))
+                ->setAttribs(array('style'=>'width:750px;'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addValidator(
@@ -76,11 +76,12 @@ class Categories_Form_Category_Create extends Zend_Form
      */
     protected function _description()
     {
-        $body = new Core_Form_Element_Redactor('description');
+        $body = new Core_Form_Element_Wysiwyg('description');
         $body->setLabel('Description')
              ->setRequired(false)
-             ->setAttribs(array('style'=>'width:60%'))
-             ->addFilter('StringTrim');
+             ->setAttribs(array('style' => 'width:750px;height:200px'))
+             ->addFilter('StringTrim')
+             ->addToolbar(array('biu'));
         return $body;
     }
 
@@ -93,7 +94,7 @@ class Categories_Form_Category_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Select('parentId');
         $element->setLabel('Parent Category')
-             ->setAttribs(array('style' => 'width:60%'))
+             ->setAttribs(array('style' => 'width:750px'))
              ->setRequired(false);
 
         $element->addMultiOption('', '');
