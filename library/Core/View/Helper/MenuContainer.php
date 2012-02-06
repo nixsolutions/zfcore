@@ -59,6 +59,10 @@ class Core_View_Helper_MenuContainer
             $menuArray = $this->getMenuArrayByConfig();
         }
 
+        if (!$menuArray) {
+            return null;
+        }
+
         return $this->getContainerByArray($menuArray);
 
     }
