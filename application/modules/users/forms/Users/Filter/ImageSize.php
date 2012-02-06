@@ -1,10 +1,10 @@
 <?php
 /**
- * Users_Model_Users_Form_Filter_ImageSize
+ * Users_Form_Users_Filter_ImageSize
  *
  * @version $id$
  */
-class Users_Model_Users_Form_Filter_ImageSize implements Zend_Filter_Interface
+class Users_Form_Users_Filter_ImageSize implements Zend_Filter_Interface
 {
     /**
      * @var integer

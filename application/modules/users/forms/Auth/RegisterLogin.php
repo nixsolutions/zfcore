@@ -8,7 +8,7 @@
  *
  * @version  $Id: Register.php 153 2010-07-08 11:51:49Z AntonShevchuk $
  */
-class Users_Form_Users_RegisterLogin extends Zend_Form
+class Users_Form_Auth_RegisterLogin extends Zend_Form
 {
     /**
      * Form initialization
@@ -18,8 +18,8 @@ class Users_Form_Users_RegisterLogin extends Zend_Form
     public function init()
     {
         $this->addElementPrefixPath(
-            'Users_Model_Users_Form_Validate',
-            APPLICATION_PATH . "/modules/users/models/Users/Form/Validate",
+            'Users_Form_Auth_Validate',
+            dirname(__FILE__) . "/Validate",
             'validate'
         );
 

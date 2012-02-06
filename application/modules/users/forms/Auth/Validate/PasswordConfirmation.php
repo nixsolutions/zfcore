@@ -3,14 +3,14 @@
  * Validates if passwords matches
  *
  * Required by register controller, register form
- * 
+ *
  * @category Application
  * @package Model
  * @subpackage Form
- * 
+ *
  * @version  $Id: PasswordConfirmation.php 47 2010-02-12 13:17:34Z AntonShevchuk $
  */
-class Users_Model_Users_Form_Validate_PasswordConfirmation 
+class Users_Form_Auth_Validate_PasswordConfirmation
     extends Zend_Validate_Abstract
 {
     const NOT_MATCH = 'notMatch';

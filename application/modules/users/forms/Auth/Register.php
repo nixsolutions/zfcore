@@ -1,18 +1,18 @@
 <?php
 /**
  * Register user form
- * 
+ *
  * @category Application
  * @package Model
  * @subpackage Form
- * 
- * @todo Refactoring with DB validators 
+ *
+ * @todo Refactoring with DB validators
  * http://framework.zend.com/manual/en/zend.validate.set.html
  * #zend.validate.db.excluding-records
- * 
+ *
  * @version  $Id: Register.php 153 2010-07-08 11:51:49Z AntonShevchuk $
  */
-class Users_Model_Users_Form_Register extends Zend_Form
+class Users_Form_Auth_Register extends Zend_Form
 {
     /**
      * Form initialization
@@ -22,8 +22,8 @@ class Users_Model_Users_Form_Register extends Zend_Form
     public function init()
     {
         $this->addElementPrefixPath(
-            'Users_Model_Users_Form_Validate',
-            APPLICATION_PATH . "/modules/users/models/Users/Form/Validate",
+            'Users_Form_Auth_Validate',
+            dirname(__FILE__) . "/Validate",
             'validate'
         );
 
@@ -84,7 +84,7 @@ class Users_Model_Users_Form_Register extends Zend_Form
 
         $imgDir = dirname(APPLICATION_PATH) . "/public/images/captcha";
 
-        // check captcha path is writeable        
+        // check captcha path is writeable
         if (is_writable($imgDir)) {
             $captcha = new Zend_Form_Element_Captcha(
                 'captcha',
@@ -96,7 +96,7 @@ class Users_Model_Users_Form_Register extends Zend_Form
                         'wordLen' => 6,
                         'timeout' => 300,
                         'imgDir' => $imgDir,
-                        'font' => dirname(APPLICATION_PATH) . 
+                        'font' => dirname(APPLICATION_PATH) .
                                   "/data/fonts/Aksent_Normal.ttf",
                     ),
                 )
@@ -114,7 +114,7 @@ class Users_Model_Users_Form_Register extends Zend_Form
                 )
             );
         }
-        
+
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Register');
 

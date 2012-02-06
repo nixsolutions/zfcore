@@ -1,14 +1,14 @@
 <?php
 /**
  * Forget password form
- * 
+ *
  * @category Application
  * @package Model
  * @subpackage Form
- * 
+ *
  * @version  $Id: Forget.php 160 2010-07-12 10:47:54Z AntonShevchuk $
  */
-class Users_Model_Users_Form_Forget extends Zend_Form
+class Users_Form_Auth_Forget extends Zend_Form
 {
     /**
      * Form initialization
@@ -18,13 +18,13 @@ class Users_Model_Users_Form_Forget extends Zend_Form
     public function init()
     {
         $this->addElementPrefixPath(
-            'Users_Model_Users_Form_Validate',
-            APPLICATION_PATH . "/modules/users/models/Users/Form/Validate",
+            'Users_Form_Auth_Validate',
+            dirname(__FILE__) . "/Validate",
             'validate'
         );
 
         $this->setName('userForgetPasswordForm');
-        
+
         $email = new Zend_Form_Element_Text('email');
         $email->setLabel('Email')
               ->setRequired(true)

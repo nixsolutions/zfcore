@@ -12,7 +12,7 @@
  *
  * @version  $Id: Register.php 153 2010-07-08 11:51:49Z AntonShevchuk $
  */
-class Users_Model_Users_Form_Profile extends Users_Model_Users_Form_Register
+class Users_Form_Users_Profile extends Users_Form_Auth_Register
 {
     /**
      * @var Users_Model_User
@@ -53,7 +53,7 @@ class Users_Model_Users_Form_Profile extends Users_Model_Users_Form_Register
      * Set user row
      *
      * @param Users_Model_User $row
-     * @return Users_Model_Users_Form_Profile
+     * @return Users_Form_Users_Profile
      */
     public function setUser(Users_Model_User $row)
     {
@@ -134,7 +134,7 @@ class Users_Model_Users_Form_Profile extends Users_Model_Users_Form_Register
         $element->setLabel('Last Name')
                 ->addValidator('isImage')
                 ->addFilter(new Zend_Filter_File_Rename(array('target' => md5(time()))))
-                ->addFilter(new Users_Model_Users_Form_Filter_ImageSize(80, 80))
+                ->addFilter(new Users_Form_Users_Filter_ImageSize(80, 80))
                 ->setDestination(APPLICATION_PATH . '/../public/uploads');
 
         return $element;
