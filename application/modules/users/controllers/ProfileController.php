@@ -53,7 +53,7 @@ class Users_ProfileController extends Core_Controller_Action
         $users = new Users_Model_Users_Table();
         $row = $users->getById($identity->id);
 
-        $form = new Users_Model_Users_Form_Profile();
+        $form = new Users_Form_Users_Profile();
         $form->setUser($row);
 
         if ($this->_request->isPost()

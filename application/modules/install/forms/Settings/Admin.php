@@ -14,7 +14,7 @@ class Install_Form_Settings_Admin extends Zend_Form
     /**
      * Form initialization
      *
-     * @return Users_Form_Users_Create
+     * @return Install_Form_Settings_Admin
      */
     public function init()
     {

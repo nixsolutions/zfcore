@@ -2,7 +2,7 @@
 /**
  * NewPassword form
  */
-class Users_Model_Users_Form_NewPassword extends Zend_Form
+class Users_Form_Auth_NewPassword extends Zend_Form
 {
     /**
      * Form initialization

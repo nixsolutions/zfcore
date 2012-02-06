@@ -33,7 +33,7 @@ class Users_LoginController extends Core_Controller_Action
      */
     public function indexAction()
     {
-        $form = new Users_Model_Users_Form_Login();
+        $form = new Users_Form_Auth_Login();
         $form->setAction($this->view->url(array(), 'login'));
 
         if ($this->_request->isPost()) {
@@ -117,7 +117,7 @@ class Users_LoginController extends Core_Controller_Action
     public function recoverPasswordAction()
     {
         $hash = $this->_getParam('hash');
-        $form = new Users_Model_Users_Form_NewPassword();
+        $form = new Users_Form_Auth_NewPassword();
 
         if ($this->_request->isPost()) {
             if ($form->isValid($this->_getAllParams())) {
@@ -181,7 +181,7 @@ class Users_LoginController extends Core_Controller_Action
 
             if ($users->getByLogin($info->login)) {
 
-                $form = new Users_Form_Users_RegisterLogin();
+                $form = new Users_Form_Auth_RegisterLogin();
                 if ($this->getRequest()->isPost()
                     && $form->isValid($this->_getAllParams())) {
 

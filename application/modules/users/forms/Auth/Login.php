@@ -8,7 +8,7 @@
  *
  * @version  $Id: Login.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
-class Users_Model_Users_Form_Login extends Zend_Form
+class Users_Form_Auth_Login extends Zend_Form
 {
     /**
      * Form initialization

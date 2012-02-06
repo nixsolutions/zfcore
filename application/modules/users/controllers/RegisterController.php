@@ -28,7 +28,7 @@ class Users_RegisterController extends Core_Controller_Action
      */
     public function indexAction()
     {
-        $form = new Users_Model_Users_Form_Register();
+        $form = new Users_Form_Auth_Register();
 
         if ($this->_request->isPost()) {
 
@@ -92,7 +92,7 @@ class Users_RegisterController extends Core_Controller_Action
      */
     public function forgetPasswordAction()
     {
-        $form = new Users_Model_Users_Form_Forget();
+        $form = new Users_Form_Auth_Forget();
 
         if ($this->_request->isPost()) {
             if ($form->isValid($this->_getAllParams())) {
