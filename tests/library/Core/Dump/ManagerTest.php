@@ -88,7 +88,7 @@ class Core_Dump_ManagerTest extends ControllerTestCase
 
             $dump = file_get_contents($dumpFullPath);
 
-            $this->_getManager()->import(self::DUMP_FILE_NAME,self::FIXTURE_MODULE);
+            $this->_getManager()->import(self::DUMP_FILE_NAME, self::FIXTURE_MODULE);
 
             $result = Zend_Db_Table_Abstract::getDefaultAdapter()
                 ->query("SHOW TABLES LIKE '".self::TABLE_NAME."';");
@@ -104,7 +104,7 @@ class Core_Dump_ManagerTest extends ControllerTestCase
     public function testImportFail()
     {
         try {
-            $this->_getManager()->import('',null);
+            $this->_getManager()->import('', null);
         } catch (Exception $expected) {
             $this->assertTrue(true);
             return;
