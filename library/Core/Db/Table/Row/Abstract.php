@@ -44,8 +44,8 @@ class Core_Db_Table_Row_Abstract
      */
     public function __construct(array $config = array())
     {
-        $this->_tableClass = get_class( $this ) . '_Table';
-        parent::__construct( $config );
+        $this->_tableClass = get_class($this) . '_Table';
+        parent::__construct($config);
     }
 
     /**
@@ -55,7 +55,7 @@ class Core_Db_Table_Row_Abstract
      */
     public function init()
     {
-        $cols = $this->getTable()->info( Zend_Db_Table::COLS );
+        $cols = $this->getTable()->info(Zend_Db_Table::COLS);
 
         foreach ($cols as $col) {
             if (!isset($this->_data[$col])) {

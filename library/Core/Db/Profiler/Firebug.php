@@ -42,7 +42,7 @@ class Core_Db_Profiler_Firebug extends Zend_Db_Profiler_Firebug
      */
     public function queryStart($queryText, $queryType = null)
     {
-        $result = parent::queryStart( $queryText, $queryType );
+        $result = parent::queryStart($queryText, $queryType);
 
         $backtrace = debug_backtrace();
         $trace = array();
@@ -57,24 +57,24 @@ class Core_Db_Profiler_Firebug extends Zend_Db_Profiler_Firebug
                     $t['call'] .= $rec['function'];
                 }
                 $t['call'] .= '(';
-                if (sizeof( $rec['args'] )) {
+                if (sizeof($rec['args'])) {
                     foreach ($rec['args'] as $arg) {
-                        if (is_object( $arg )) {
-                            $t['call'] .= get_class( $arg );
+                        if (is_object($arg)) {
+                            $t['call'] .= get_class($arg);
                         } else {
-                            $arg = str_replace( "\n", ' ', (string)$arg );
-                            $t['call'] .= '"' . (strlen( $arg ) <= 30 ? $arg : substr( $arg, 0, 25 ) . '[...]') . '"';
+                            $arg = str_replace("\n", ' ', (string)$arg);
+                            $t['call'] .= '"' . (strlen($arg) <= 30 ? $arg : substr($arg, 0, 25) . '[...]') . '"';
                         }
                         $t['call'] .= ', ';
                     }
-                    $t['call'] = substr( $t['call'], 0, -2 );
+                    $t['call'] = substr($t['call'], 0, -2);
                 }
                 $t['call'] .= ")";
             }
             $t['file'] = @$rec['file'] . ':' . @$rec['line'];
             $trace[] = $t;
         }
-        $this->getLastQueryProfile()->bindParam( 'trace', $trace );
+        $this->getLastQueryProfile()->bindParam('trace', $trace);
 
         return $result;
     }
