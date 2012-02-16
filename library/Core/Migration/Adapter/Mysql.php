@@ -44,7 +44,7 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
      */
     public function insert($table, array $params)
     {
-        return $this->getDbAdapter()->insert( $table, $params );
+        return $this->getDbAdapter()->insert($table, $params);
     }
 
     /**
@@ -57,7 +57,7 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
      */
     public function update($table, array $bind, $where = '')
     {
-        return $this->getDbAdapter()->update( $table, $bind, $where );
+        return $this->getDbAdapter()->update($table, $bind, $where);
     }
 
     /**
@@ -70,9 +70,9 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
     {
         $this->query(
             'CREATE TABLE ' .
-                $table .
-                ' ( `id` bigint NOT NULL AUTO_INCREMENT , PRIMARY KEY (`id`))' .
-                ' Engine=InnoDB'
+            $table .
+            ' ( `id` bigint NOT NULL AUTO_INCREMENT , PRIMARY KEY (`id`))' .
+            ' Engine=InnoDB'
         );
         return $this;
     }
@@ -85,7 +85,7 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
      */
     public function dropTable($table)
     {
-        $this->query( 'DROP TABLE ' . $table );
+        $this->query('DROP TABLE ' . $table);
         return $this;
     }
 
@@ -116,8 +116,8 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
 
         // alter table $table add column $column $options
         // alter table `p_zfc`.`asd` add column `name` varchar(123) NOT NULL after `id`
-        $column = $this->getDbAdapter()->quoteIdentifier( $column );
-        $query = 'ALTER TABLE ' . $this->getDbAdapter()->quoteIdentifier( $table )
+        $column = $this->getDbAdapter()->quoteIdentifier($column);
+        $query = 'ALTER TABLE ' . $this->getDbAdapter()->quoteIdentifier($table)
             . ' ADD COLUMN ' . $column;
 
         // switch statement for $datatype
@@ -131,9 +131,9 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
                 $query .= " float($length)";
                 break;
             case Core_Migration_Abstract::TYPE_ENUM:
-                if (is_array( $length )) {
+                if (is_array($length)) {
                     // array to string 'el','el',...
-                    $length = "'" . join( "','", $length ) . "'";
+                    $length = "'" . join("','", $length) . "'";
                 }
                 $query .= " enum($length)";
                 break;
@@ -142,14 +142,14 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
                 break;
         }
 
-        if (!is_null( $default )) {
+        if (!is_null($default)) {
             // switch statement for $datatype
             switch ($datatype) {
                 case (Core_Migration_Abstract::TYPE_TIMESTAMP && $default == 'CURRENT_TIMESTAMP'):
                     $query .= " default CURRENT_TIMESTAMP";
                     break;
                 default:
-                    $query .= ' default ' . $this->getDbAdapter()->quote( $default );
+                    $query .= ' default ' . $this->getDbAdapter()->quote($default);
                     break;
             }
         }
@@ -162,22 +162,22 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
 
         if ($primary) {
             // TODO: drop primary key, add primary key (`all keys`,`$column`)
-            $fields = $this->getDbAdapter()->describeTable( $table );
+            $fields = $this->getDbAdapter()->describeTable($table);
             $primary = array();
             foreach ($fields as $field => $options) {
                 if ($options['PRIMARY'])
-                    array_push( $primary, $field );
+                    array_push($primary, $field);
             }
 
-            if (sizeof( $primary )) {
-                $keys = $quotedColumns = $this->_quoteIdentifierArray( $primary );
+            if (sizeof($primary)) {
+                $keys = $quotedColumns = $this->_quoteIdentifierArray($primary);
                 $query .= ", drop primary key, add primary key ($keys, $column)";
             } else {
                 $query .= ", add primary key ($column)";
             }
         }
 
-        $this->query( $query );
+        $this->query($query);
 
         return $this;
     }
@@ -192,8 +192,8 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
     public function dropColumn($table, $name)
     {
         $this->query(
-            'ALTER TABLE ' . $this->getDbAdapter()->quoteIdentifier( $table ) .
-                ' DROP COLUMN ' . $this->getDbAdapter()->quoteIdentifier( $name )
+            'ALTER TABLE ' . $this->getDbAdapter()->quoteIdentifier($table) .
+            ' DROP COLUMN ' . $this->getDbAdapter()->quoteIdentifier($name)
         );
         return $this;
     }
@@ -209,14 +209,14 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
     public function createUniqueIndexes($table, array $columns, $indName = null)
     {
         if (!$indName) {
-            $indName = strtoupper( $table . '_' . implode( '_', $columns ) );
+            $indName = strtoupper($table . '_' . implode('_', $columns));
         }
         //quoting a columns 
-        $quotedColumns = $this->_quoteIdentifierArray( $columns );
-        $query = 'ALTER TABLE ' . $this->getDbAdapter()->quoteIdentifier( $table )
-            . ' ADD UNIQUE ' . $this->getDbAdapter()->quoteIdentifier( $indName )
+        $quotedColumns = $this->_quoteIdentifierArray($columns);
+        $query = 'ALTER TABLE ' . $this->getDbAdapter()->quoteIdentifier($table)
+            . ' ADD UNIQUE ' . $this->getDbAdapter()->quoteIdentifier($indName)
             . '(' . $quotedColumns . ')';
-        $this->query( $query );
+        $this->query($query);
 
         return $this;
     }
@@ -230,12 +230,12 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
     public function dropUniqueIndexes($table, $indName)
     {
         if ($table && $indName) {
-            $query = 'DROP INDEX ' . $this->getDbAdapter()->quoteIdentifier( $indName )
-                . ' ON ' . $this->getDbAdapter()->quoteIdentifier( $table );
-            $this->query( $query );
+            $query = 'DROP INDEX ' . $this->getDbAdapter()->quoteIdentifier($indName)
+                . ' ON ' . $this->getDbAdapter()->quoteIdentifier($table);
+            $this->query($query);
         } else {
-            throw new Core_Exception("
-                Can't drop index " . $indName . " ON " . $table
+            throw new Core_Exception(
+                "Can't drop index " . $indName . " ON " . $table
             );
         }
         return $this;
@@ -251,9 +251,9 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
     {
         $quotedColumns = array();
         foreach ($columns as $value) {
-            $quotedColumns[] = $this->getDbAdapter()->quoteIdentifier( $value );
+            $quotedColumns[] = $this->getDbAdapter()->quoteIdentifier($value);
         }
 
-        return implode( ',', $quotedColumns );
+        return implode(',', $quotedColumns);
     }
 }

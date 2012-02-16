@@ -42,7 +42,7 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
      */
     public function insert($table, array $params)
     {
-        return $this->getDbAdapter()->insert( $table, $params );
+        return $this->getDbAdapter()->insert($table, $params);
     }
 
     /**
@@ -55,7 +55,7 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
      */
     public function update($table, array $bind, $where = '')
     {
-        return $this->getDbAdapter()->update( $table, $bind, $where );
+        return $this->getDbAdapter()->update($table, $bind, $where);
     }
 
     /**
@@ -68,14 +68,14 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
     {
         $this->query(
             'CREATE TABLE ' .
-                $this->getDbAdapter()->quoteIdentifier( $table ) .
-                ' (
+            $this->getDbAdapter()->quoteIdentifier($table) .
+            ' (
                id serial NOT NULL,
                 PRIMARY KEY (id)
-             )
-             WITH (
-               OIDS = FALSE
-             )'
+            )
+            WITH (
+              OIDS = FALSE
+            )'
         );
 
         return $this;
@@ -89,7 +89,7 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
      */
     public function dropSequence($sequence)
     {
-        $this->query( 'DROP SEQUENCE ' . $sequence );
+        $this->query('DROP SEQUENCE ' . $sequence);
     }
 
     /**
@@ -100,7 +100,7 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
      */
     public function dropTable($table)
     {
-        $this->query( 'DROP TABLE ' . $this->getDbAdapter()->quoteIdentifier( $table ) );
+        $this->query('DROP TABLE ' . $this->getDbAdapter()->quoteIdentifier($table));
         return $this;
     }
 
@@ -133,8 +133,8 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
 
         // ALTER TABLE foo ADD COLUMN test character varying(255) NOT NULL;
 
-        $query = 'ALTER TABLE ' . $this->getDbAdapter()->quoteIdentifier( $table ) .
-            ' ADD COLUMN ' . $this->getDbAdapter()->quoteIdentifier( $column );
+        $query = 'ALTER TABLE ' . $this->getDbAdapter()->quoteIdentifier($table) .
+            ' ADD COLUMN ' . $this->getDbAdapter()->quoteIdentifier($column);
 
         // switch statement for $datatype
         switch ($datatype) {
@@ -155,7 +155,7 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
                 $query .= ' double precision';
                 break;
             case Core_Migration_Abstract::TYPE_ENUM:
-                $this->createEnumType( $table . '_' . $column, $length );
+                $this->createEnumType($table . '_' . $column, $length);
                 $query .= $table . '_' . $column . '_type';
                 break;
             default:
@@ -163,14 +163,14 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
                 break;
         }
 
-        if (!is_null( $default )) {
+        if (!is_null($default)) {
             // switch statement for $datatype
             switch ($datatype) {
                 case Core_Migration_Abstract::TYPE_TIMESTAMP && $default == 'CURRENT_TIMESTAMP':
                     $query .= " default extract(epoch FROM now())";
                     break;
                 default:
-                    $query .= ' default ' . $this->getDbAdapter()->quote( $default );
+                    $query .= ' default ' . $this->getDbAdapter()->quote($default);
                     break;
             }
         }
@@ -179,10 +179,10 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
             $query .= " NOT NULL";
         }
 
-        $this->query( $query );
+        $this->query($query);
 
         if ($primary) {
-            $this->addConstraintPrimary( $table, $column );
+            $this->addConstraintPrimary($table, $column);
         }
 
         return $this;
@@ -198,8 +198,8 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
     public function dropColumn($table, $name)
     {
         $this->query(
-            'ALTER TABLE ' . $this->getDbAdapter()->quoteIdentifier( $table ) .
-                ' DROP COLUMN ' . $this->getDbAdapter()->quoteIdentifier( $name )
+            'ALTER TABLE ' . $this->getDbAdapter()->quoteIdentifier($table) .
+            ' DROP COLUMN ' . $this->getDbAdapter()->quoteIdentifier($name)
         );
         return $this;
     }
@@ -215,17 +215,17 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
     public function createUniqueIndexes($table, array $columns, $indName = null)
     {
         if (!$indName) {
-            $indName = strtoupper( $table . '_' . implode( '_', $columns ) );
+            $indName = strtoupper($table . '_' . implode('_', $columns));
         }
 
-        $indName = $this->getDbAdapter()->quoteIdentifier( $indName );
+        $indName = $this->getDbAdapter()->quoteIdentifier($indName);
 
         //quoting a columns
-        $quotedColumns = $this->_quoteIdentifierArray( $columns );
+        $quotedColumns = $this->_quoteIdentifierArray($columns);
         $query = 'CREATE UNIQUE INDEX ' . $indName
-            . ' ON ' . $this->getDbAdapter()->quoteIdentifier( $table )
+            . ' ON ' . $this->getDbAdapter()->quoteIdentifier($table)
             . ' (' . $quotedColumns . ')';
-        $this->query( $query );
+        $this->query($query);
 
         return $this;
     }
@@ -240,11 +240,11 @@ class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
     {
         if ($indName) {
             $query = 'DROP INDEX IF EXISTS '
-                . $this->getDbAdapter()->quoteIdentifier( $indName );
-            $this->query( $query );
+                . $this->getDbAdapter()->quoteIdentifier($indName);
+            $this->query($query);
         } else {
-            throw new Core_Exception("
-                Can't drop index " . $indName . " ON " . $table
+            throw new Core_Exception(
+                "Can't drop index " . $indName . " ON " . $table
             );
         }
         return $this;
@@ -275,7 +275,7 @@ CREATE INDEX fki_foraaa ON foo(fortest); */
 
         $query = 'ALTER TABLE ' . $table . ' ADD';
 
-        if (!is_null( $name )) {
+        if (!is_null($name)) {
             $query .= ' CONSTRAINT ' . $name;
         }
 
@@ -283,7 +283,7 @@ CREATE INDEX fki_foraaa ON foo(fortest); */
             . ' (' . $referencesField . ') '
             . 'ON UPDATE ' . $onUpdate . ' ON DELETE ' . $onDelete;
 
-        $this->query( $query );
+        $this->query($query);
 
         return $this;
     }
@@ -307,7 +307,7 @@ CREATE INDEX fki_foraaa ON foo(fortest); */
                     r.oid = c.conrelid 
                     AND relname = '" . $table . "'
                     AND contype = 'p'";
-        $pkName = $this->getDbAdapter()->fetchOne( $query );
+        $pkName = $this->getDbAdapter()->fetchOne($query);
 
         if (!empty($pkName)) { // if we already have Pk
             $query = "SELECT
@@ -319,25 +319,25 @@ CREATE INDEX fki_foraaa ON foo(fortest); */
                     AND pg_attribute.attrelid = pg_class.oid
                     AND pg_attribute.attnum = any(pg_index.indkey)
                     AND indisprimary";
-            $currKeys = $this->getDbAdapter()->fetchCol( $query );
-            array_push( $currKeys, $column );
+            $currKeys = $this->getDbAdapter()->fetchCol($query);
+            array_push($currKeys, $column);
 
             $query = 'ALTER TABLE ' . $table . ' DROP CONSTRAINT ' . $pkName;
-            $this->query( $query );
+            $this->query($query);
 
             $query = 'ALTER TABLE ' . $table . ' ADD CONSTRAINT ' . $pkName
-                . ' PRIMARY KEY (' . join( ',', $currKeys ) . ')';
-            $this->query( $query );
+                . ' PRIMARY KEY (' . join(',', $currKeys) . ')';
+            $this->query($query);
 
             return $this;
         } else { // If we have no primary keys
-            if (is_null( $name )) {
+            if (is_null($name)) {
                 $name = $table . '_pkey';
             }
 
             $query = 'ALTER TABLE ' . $table . ' ADD CONSTRAINT ' . $name
                 . ' PRIMARY KEY (' . $column . ')';
-            $this->query( $query );
+            $this->query($query);
         }
 
         return $this;
@@ -353,15 +353,15 @@ CREATE INDEX fki_foraaa ON foo(fortest); */
     public function createEnumType($name, $values)
     {
 
-        if (is_array( $values )) {
+        if (is_array($values)) {
             // array to string 'el','el',...
-            $values = "'" . join( "','", $values ) . "'";
+            $values = "'" . join("','", $values) . "'";
         }
 
         $name .= '_type';
 
         $query = 'CREATE TYPE ' . $name . ' AS ENUM (' . $values . ')';
-        $this->query( $query );
+        $this->query($query);
         return $this;
     }
 
@@ -375,10 +375,10 @@ CREATE INDEX fki_foraaa ON foo(fortest); */
     {
         $quotedColumns = array();
         foreach ($columns as $value) {
-            $quotedColumns[] = $this->getDbAdapter()->quoteIdentifier( $value );
+            $quotedColumns[] = $this->getDbAdapter()->quoteIdentifier($value);
         }
 
-        return implode( ',', $quotedColumns );
+        return implode(',', $quotedColumns);
     }
 
 }

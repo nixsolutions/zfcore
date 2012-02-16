@@ -85,7 +85,7 @@ abstract class Core_Migration_Adapter_Abstract
      */
     public function query($query)
     {
-        $this->getDbAdapter()->query( $query );
+        $this->getDbAdapter()->query($query);
         return $this;
     }
 

@@ -193,7 +193,7 @@ abstract class Core_Migration_Abstract
      */
     public function query($query)
     {
-        $this->getMigrationAdapter()->query( $query );
+        $this->getMigrationAdapter()->query($query);
         return $this;
     }
 
@@ -206,7 +206,7 @@ abstract class Core_Migration_Abstract
      */
     public function insert($table, array $params)
     {
-        $this->getMigrationAdapter()->insert( $table, $params );
+        $this->getMigrationAdapter()->insert($table, $params);
 
         return $this;
     }
@@ -221,7 +221,7 @@ abstract class Core_Migration_Abstract
      */
     public function update($table, array $bind, $where = '')
     {
-        $this->getMigrationAdapter()->update( $table, $bind, $where );
+        $this->getMigrationAdapter()->update($table, $bind, $where);
 
         return $this;
     }
@@ -234,7 +234,7 @@ abstract class Core_Migration_Abstract
      */
     public function createTable($table)
     {
-        $this->getMigrationAdapter()->createTable( $table );
+        $this->getMigrationAdapter()->createTable($table);
 
         return $this;
 
@@ -248,7 +248,7 @@ abstract class Core_Migration_Abstract
      */
     public function dropTable($table)
     {
-        $this->getMigrationAdapter()->dropTable( $table );
+        $this->getMigrationAdapter()->dropTable($table);
 
         return $this;
     }
@@ -278,9 +278,9 @@ abstract class Core_Migration_Abstract
     )
     {
 
-        //        if ($default && self::DEFAULT_CURRENT_TIMESTAMP == $default) {
-        //            $default = $this->getMigrationAdapter()->getCurrentTimestamp();
-        //        }
+        //if ($default && self::DEFAULT_CURRENT_TIMESTAMP == $default) {
+        //    $default = $this->getMigrationAdapter()->getCurrentTimestamp();
+        //}
         $this->getMigrationAdapter()->createColumn(
             $table,
             $column,
@@ -303,7 +303,7 @@ abstract class Core_Migration_Abstract
      */
     public function dropColumn($table, $name)
     {
-        $this->getMigrationAdapter()->dropColumn( $table, $name );
+        $this->getMigrationAdapter()->dropColumn($table, $name);
 
         return $this;
     }
@@ -319,7 +319,7 @@ abstract class Core_Migration_Abstract
     public function createUniqueIndexes($table, array $columns, $indName = null)
     {
         $this->getMigrationAdapter()
-            ->createUniqueIndexes( $table, $columns, $indName );
+            ->createUniqueIndexes($table, $columns, $indName);
 
         return $this;
     }
@@ -333,7 +333,7 @@ abstract class Core_Migration_Abstract
      */
     public function dropUniqueIndexes($table, $indName)
     {
-        $this->getMigrationAdapter()->dropUniqueIndexes( $table, $indName );
+        $this->getMigrationAdapter()->dropUniqueIndexes($table, $indName);
 
         return $this;
     }
