@@ -185,13 +185,35 @@ label {
     padding-left: 4px;
 }
 
+input[type=text],
+input[type=password],
+input[type=color],
+input[type=date],
+input[type=datetime],
+input[type=email],
+input[type=month],
+input[type=number],
+input[type=range],
+input[type=search],
+input[type=tel],
+input[type=time],
+input[type=url],
+input[type=week] {
+	background: #fff;
+	border:1px solid #ddd;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+    padding: 1px;
+}
+
 .zend_form dd {
     padding: 4px 2px;
 }
-
-.zend_form input {
-    padding: 1px;
+.zend_form dt {
+    font-size: 14px;
 }
+
 
 .zend_form .errors {
     color: #f55;
