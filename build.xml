@@ -28,15 +28,11 @@
         <mkdir dir="${buildDir}/pdepend"/>
 
         <!--Requirements-->
-        <mkdir dir="${basedir}/data/cache"/>
         <chmod dir="${basedir}/data/cache" perm="777"/>
-        <mkdir dir="${basedir}/data/logs"/>
         <chmod dir="${basedir}/data/logs" perm="777"/>
-        <mkdir dir="${basedir}/data/session"/>
         <chmod dir="${basedir}/data/session" perm="777"/>
-        <mkdir dir="${basedir}/public/images/captcha"/>
-        <chmod dir="${basedir}/public/images/captcha" perm="777"/>
-        <mkdir dir="${basedir}/public/uploads"/>
+        <chmod dir="${basedir}/data/uploads" perm="777"/>
+        <chmod dir="${basedir}/public/captcha" perm="777"/>
         <chmod dir="${basedir}/public/uploads" perm="777"/>
         
         <!--Configuration-->

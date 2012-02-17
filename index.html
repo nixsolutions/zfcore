@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Zend Framework Installer</title>
@@ -13,17 +13,13 @@
                 <code>ln -s /path/to/zf/public /var/www/htdocs</code>
             </p>
 
-            <h2>Create directories</h2>
+            <h2>Check directories</h2>
             <p>
                 Run index.sh script
-                <code>
-
-
-                </code>
                 Directories <span>cache</span>, <span>logs</span> and <span>captcha</span> (for forms) should be writable:
                 <code>
                     chmod a+w /path/to/zf/data/*<br/>
-                    chmod a+w /path/to/zf/public/images/captcha/
+                    chmod a+w /path/to/zf/public/captcha/
                 </code>
             </p>
 

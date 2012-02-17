@@ -82,7 +82,7 @@ class Users_Form_Auth_Register extends Zend_Form
                   )
               );
 
-        $imgDir = dirname(APPLICATION_PATH) . "/public/images/captcha";
+        $imgDir = dirname(APPLICATION_PATH) . "/public/captcha";
 
         // check captcha path is writeable
         if (is_writable($imgDir)) {

@@ -125,8 +125,8 @@ class Feedback_Model_Feedback_Form_Contactus extends Zend_Form
             'timeout' => 120, // TTL of session
             'expiration' => 300, // TTL of file
             'font' => APPLICATION_PATH . '/../data/fonts/Glasten_Bold.ttf', // full path to font
-            'imgDir' => APPLICATION_PATH . '/../public/images/captcha/', // full path to images
-            'imgUrl' => '/images/captcha/', // URL of folder
+            'imgDir' => APPLICATION_PATH . '/../public/captcha/', // full path to images
+            'imgUrl' => '/captcha/', // URL of folder
             'gcFreq' => 5, // frequency of garbage collector
             'fontSize' => 20 // in px
         );

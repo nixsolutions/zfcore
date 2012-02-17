@@ -7,19 +7,25 @@
 #############################################################################
 
 # Server data
-mkdir ./data/cache/ -m 0777
-mkdir ./data/logs/ -m 0777
-mkdir ./data/session/ -m 0777
-mkdir ./data/uploads/ -m 0777
+echo "Permissions for ./data/"
+
+chmod a+w ./data/cache/   && echo " ./cache/"
+chmod a+w ./data/logs/    && echo " ./logs/"
+chmod a+w ./data/session/ && echo " ./session/"
+chmod a+w ./data/uploads/ && echo " ./uploads/"
 
 # Public data
-mkdir -p ./public/images/captcha/ -m 0777
-mkdir -p ./public/uploads/ -m 0777
+echo "Permissions for ./public/"
+chmod a+w ./public/captcha/ && echo " ./captcha/"
+chmod a+w ./public/uploads/ && echo " ./uploads/"
+
 
 # Binary
-chmod a+x ./bin/zf.sh
-chmod a+x ./bin/zfc.sh
+#chmod a+x ./bin/zf.sh
+#chmod a+x ./bin/zfc.sh
 
 # Run migration
-cd ./bin/
-./zfc.sh up migration
+#cd ./bin/
+#./zfc.sh up migration
+
+echo "done"
