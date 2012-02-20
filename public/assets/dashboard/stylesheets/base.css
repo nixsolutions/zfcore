@@ -36,33 +36,12 @@ hr {
     height: 1px;
 }
 
-h1 {
-    font-size: 2.0em
-}
-
-h2 {
-    font-size: 1.8em
-}
-
-h3 {
-    font-size: 1.6em;
-    margin: 12px 0
-}
-
-h4 {
-    font-size: 1.4em;
-    margin: 8px 0
-}
-
-h5 {
-    font-size: 1.2em;
-    margin: 6px 0
-}
-
-h6 {
-    font-size: 1.2em;
-    margin: 4px 0
-}
+h1 { font-size: 2.0em }
+h2 { font-size: 1.8em }
+h3 { font-size: 1.6em; margin: 12px 0 }
+h4 { font-size: 1.4em; margin: 8px 0 }
+h5 { font-size: 1.2em; margin: 6px 0 }
+h6 { font-size: 1.2em; margin: 4px 0 }
 
 pre {
     font-size: 1.0em;
@@ -89,15 +68,15 @@ div.aligncenter {
     margin-right: auto;
 }
 
-.alignleft, .left {
+.al, .alignleft, .left {
     float: left
 }
 
-.alignright, .right {
+.ar, .alignright, .right {
     float: right
 }
 
-.clear {
+.cl, .clear {
     clear: both
 }
 

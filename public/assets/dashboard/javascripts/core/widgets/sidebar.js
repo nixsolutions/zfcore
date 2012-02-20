@@ -46,12 +46,12 @@
 
         /** move text on hover */
         $("ul.navigation > li > a, ul.navigation > li > span").mouseover(function() {
-            $(this).animate({
-                paddingRight : '+=15'
+            $(this).stop(true,true).animate({
+                paddingRight : '26'
             }, 300);
         }).mouseout(function() {
             $(this).animate({
-                paddingRight : '-=15'
+                paddingRight : '15'
             }, 300);
         });
     };
