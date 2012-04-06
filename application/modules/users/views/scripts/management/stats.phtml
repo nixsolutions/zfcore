@@ -1,9 +1,15 @@
-<div class="b-stats">
-    <h4 class="b-stats__title">Users</h4>
-    <dl>
-        <dt class="b-stats__key">Total Users:</dt>
-        <dd class="b-stats__value"><?php echo $this->totalUsers ?></dd>
-        <dt class="b-stats__key">Active Users:</dt>
-        <dd class="b-stats__value"><?php echo $this->activeUsers ?></dd>
-    </dl>
+<div class="span3">
+<h4>Users</h4>
+<table class="table table-condensed">
+  <tbody>
+    <tr>
+      <td>Total Users</td>
+      <td><?php echo $this->totalUsers ?></td>
+    </tr>
+    <tr>
+      <td>Active Users</td>
+      <td><?php echo $this->activeUsers ?></td>
+    </tr>
+  </tbody>
+</table>
 </div>

@@ -1,0 +1,4 @@
+mvc:
+  index:
+    index:
+      allow: guest

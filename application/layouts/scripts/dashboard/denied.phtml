@@ -1,19 +1,18 @@
-<?php echo $this->doctype() ?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <body class="tundra">
-        <?php echo $this->render('dashboard/partial/head.phtml') ?>
-        <!-- Wrapper for the radial gradient background -->
-        <div id="body-wrapper">
-            <!-- Main Content Section with everything -->
-            <div id="main-content">
-                <?php echo $this->render('dashboard/partial/messages.phtml') ?>
-
-                <div class="content shadow"><?php echo $this->layout()->content ?></div>
-                <div class="clear"></div>
-
-                <?php echo $this->render('dashboard/partial/footer.phtml') ?>
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+    <?php echo $this->render('dashboard/partial/head.phtml') ?>
+    <body>
+    <?php echo $this->render('dashboard/partial/messages.phtml') ?>
+    <div class="container">
+        <div class="row">
+            <div class="span4 offset4">
+                <?php echo $this->layout()->content ?>
             </div>
-            <!-- End #main-content -->
         </div>
+        <hr />
+        <footer>
+            <p align="center">&copy; <?=gmdate('Y')?> NIX Solutions Ltd</p>
+        </footer>
+    </div>
     </body>
 </html>

@@ -1,24 +1,7 @@
-<div id="sidebar">
-    <div id="sidebar-wrapper"><!-- Sidebar with logo and menu -->
-
-        <a id="logo"
-           href="<?php echo $this->url(array('module' => 'admin', 'controller' => 'index', 'action' => 'index')) ?>"
-           title="Nixsolutions.com"><!-- Logo (194px*104px wide) -->
-        </a>
-
-        <!-- Sidebar Profile links -->
-        <div id="profile-links">
-            <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'index', 'action' => 'index')) ?>"
-               title="View the Site">View the Site</a> |
-            <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'logout'), 'logout') ?>"
-               title="Sign Out">Sign Out</a>
-        </div>
-
-        <!-- Accordion Menu -->
-        <?php //echo $this->navigation()->menu();
-        echo $this->navigation($this->menuContainer('Home'))
-                ->menu()
-                ->setPartial('/dashboard/partial/dashboardMenu.phtml');
-        ?>
-    </div>
+<div class="well" style="padding: 8px 0;">
+<?php
+echo $this->navigation($this->menuContainer('Home'))
+        ->menu()
+        ->setPartial('/dashboard/partial/dashboardMenu.phtml');
+?>
 </div>

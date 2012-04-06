@@ -1,6 +1,0 @@
-mvc:
-  faq:
-    index:
-      allow: guest
-    management:
-      allow: admin

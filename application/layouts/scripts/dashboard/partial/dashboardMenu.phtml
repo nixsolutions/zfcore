@@ -1,48 +1,36 @@
+<ul class="nav nav-list">
 <?php
-    echo '<ul class="navigation">';
-    foreach ($this->container as $page) {
-        // check if it is active (not recursive)
-        $isActive = $page->isActive(false);
-        $liClass = $isActive ? ' class="active"' : '';
-        if ($page->_label !== null && $page->isVisible(true)) {
-        	echo '<li ' . $liClass . '>' . $this->menu()->htmlify($page) . '</li>', PHP_EOL;
-        }
+    foreach ($this->container as $pages) {
         // loop next level
-        foreach ($page as $page) {
-            // check if it is active (recursive)
-            $isActive = $page->isActive(true);
-            $liClass = $isActive ? ' class="active"' : '';
+        foreach ($pages as $page) {
+            // check if it is active (not recursive)
+            $liClass = array();
+
+            if ($page->isActive(false)) {
+                $liClass[] = 'active';
+            }
+
+            if (!$page->getHref()) {
+                $liClass[] = 'nav-header';
+            }
+
             if ($page->_label !== null && $page->isVisible(true)) {
-                echo '<li ' . $liClass . '>' . $this->menu()->htmlify($page);
-                if ($page->_pages) {
-                    echo '<ul>';
-                        foreach ($page as $page) {
-                            // check if it is active (recursive)
-                            $isActive = $page->isActive(true);
-                            $liClass = $isActive ? ' class="active"' : '';
-                            if ($page->_label !== null && $page->isVisible(true)) {
-                                echo '<li ' . $liClass . '>' . $this->menu()->htmlify($page);
-                                if ($page->_pages) {
-                                    echo '<ul>';
-                                    foreach ($page as $page) {
-                                        // check if it is active (recursive)
-                                        $isActive = $page->isActive(true);
-                                        $liClass = $isActive ? ' class="active"' : '';
-                                        if ($page->_label !== null && $page->isVisible(true)) {
-                                            echo '<li ' . $liClass . '>' . $this->menu()->htmlify($page) . '</li>', PHP_EOL;
-                                        }
-                                    }
-                                    echo '</ul>';
-                                }
-                                echo '</li>', PHP_EOL;
-                            }
-                        }
-                    echo '</ul>';
+                echo '<li class="' . join(' ', $liClass) . '">' . $this->menu()->htmlify($page) . '</li>', PHP_EOL;
+            }
+
+            if ($page->_pages) {
+                foreach ($page as $page) {
+                    // check if it is active (recursive)
+                    $isActive = $page->isActive(true);
+                    $liClass = $isActive ? ' class="active"' : '';
+                    if ($page->_label !== null && $page->isVisible(true)) {
+                        echo '<li ' . $liClass . '>' . $this->menu()->htmlify($page);
+                        echo '</li>', PHP_EOL;
+                    }
                 }
-                echo '</li>', PHP_EOL;
             }
 
         }
     }
-echo '</ul>';
 ?>
+</ul>

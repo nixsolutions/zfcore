@@ -1,12 +1,10 @@
 <?php
 /**
- * UsersController for users module
+ * Index controller for users module
  *
  * @category   Application
  * @package    Users
  * @subpackage Controller
- *
- * @version  $Id: IndexController.php 48 2010-02-12 13:23:39Z AntonShevchuk $
  */
 class Users_IndexController extends Core_Controller_Action
 {

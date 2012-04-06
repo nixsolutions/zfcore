@@ -1,8 +1,0 @@
-mvc:
-  menu:
-    management:
-      allow: admin
-    index:
-      allow: admin
-    error:
-      allow: admin

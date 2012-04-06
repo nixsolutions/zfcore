@@ -1,0 +1,28 @@
+<?php
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$class = array();
+$class[] = 'm-' . $request->getModuleName();
+$class[] = 'c-' . $request->getControllerName();
+$class[] = 'a-' . $request->getActionName();
+
+?>
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+    <?php echo $this->render('bootstrap/partial/head.phtml') ?>
+    <body class="<?php echo implode(' ', $class) ?>" data-spy="scroll" data-target=".subnav" data-offset="50">
+    <?php echo $this->render('bootstrap/partial/messages.phtml') ?>
+    <?php echo $this->render('bootstrap/partial/menu.phtml') ?>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="content">
+                <?php echo $this->layout()->content ?>
+            </div>
+        </div>
+        <hr />
+        <footer>
+            <p align="center">&copy; <?=gmdate('Y')?> NIX Solutions Ltd</p>
+        </footer>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,4 @@
+mvc:
+  tests:
+    index:
+      allow: guest

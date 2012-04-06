@@ -23,6 +23,7 @@ class Helper_Twitter extends Zend_Controller_Action_Helper_Abstract
 
     /**
      * Init Zend_Oauth_Consumer
+     * @return \Zend_Oauth_Consumer
      */
     public function direct()
     {

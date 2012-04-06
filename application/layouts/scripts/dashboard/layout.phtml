@@ -7,27 +7,28 @@ $class[] = 'c-' . $request->getControllerName();
 $class[] = 'a-' . $request->getActionName();
 
 ?>
-<?php echo $this->doctype() ?>
-<html>
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
     <?php echo $this->render('dashboard/partial/head.phtml') ?>
-    <body class="<?php echo implode(' ', $class) ?>">
-        <!-- Wrapper for the radial gradient background -->
-        <div id="body-wrapper">
-            <?php echo $this->render('dashboard/partial/navigation.phtml') ?>
-            <!-- Main Content Section with everything -->
-            <div id="main-content">
-                <?php echo $this->render('dashboard/partial/messages.phtml') ?>
-
-                <?php if ($this->navigation()->breadcrumbs()->render()): ?>
-                    <div class="breadcrumbs shadow"><?php echo $this->navigation()->breadcrumbs()->setSeparator(' &raquo; ') ?></div>
-                <?php endif; ?>
-
-                <div class="content shadow"><?php echo $this->layout()->content ?></div>
-                <div class="clear"></div>
-
-                <?php echo $this->render('dashboard/partial/footer.phtml') ?>
+    <body class="<?php echo implode(' ', $class) ?>" data-spy="scroll" data-target=".subnav" data-offset="50">
+    <?php echo $this->render('dashboard/partial/messages.phtml') ?>
+    <?php echo $this->render('dashboard/partial/menu.phtml') ?>
+    <?php if ($this->navigation()->breadcrumbs()->render()): ?>
+        <div class="breadcrumbs shadow"><?php echo $this->navigation()->breadcrumbs()->setSeparator(' &raquo; ') ?></div>
+    <?php endif; ?>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span2">
+                <?php echo $this->render('dashboard/partial/navigation.phtml') ?>
             </div>
-            <!-- End #main-content -->
+            <div class="span10">
+                <?php echo $this->layout()->content ?>
+            </div>
         </div>
+        <hr />
+        <footer>
+            <p align="center">&copy; <?=gmdate('Y')?> NIX Solutions Ltd</p>
+        </footer>
+    </div>
     </body>
 </html>

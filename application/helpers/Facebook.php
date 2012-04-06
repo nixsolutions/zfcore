@@ -15,6 +15,7 @@ class Helper_Facebook extends Zend_Controller_Action_Helper_Abstract
 
     /**
      * Init fb client
+     * @return \Facebook_Facebook
      */
     public function direct()
     {
