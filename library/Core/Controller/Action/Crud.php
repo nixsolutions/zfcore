@@ -37,6 +37,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected $_grid;
 
+    protected $_limit = 20;
+
     /**
      * @var boolean
      */
@@ -69,10 +71,12 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
          */
         $this->_changeViewScriptPathSpec();
 
-        //$this->_grid->getHeaders();
-       // $this->_grid->getData();
-       // $this->view->grid = $this->_grid;
-       // $this->view->showFilter = empty($this->_showFilter) ? false : true;
+        $this->_loadGrid();
+        $this->_prepareGrid();
+        $this->_grid->getHeaders();
+        $this->_grid->getData();
+        $this->view->grid = $this->_grid;
+        $this->view->showFilter = empty($this->_showFilter) ? false : true;
     }
 
     /**
@@ -253,6 +257,11 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     abstract protected function _getEditForm();
 
     /**
+     * @abstract
+     */
+    abstract protected function _prepareGrid();
+
+    /**
      * load grid
      *
      * @return void
@@ -262,7 +271,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $grid = new Core_Grid();
         $grid->setAdapter($this->_getSource())
             ->setCurrentPageNumber($this->_getParam('page', 1))
-            ->setItemCountPerPage(10);
+            ->setItemCountPerPage($this->_limit);
 
         if ($this->_getParam('orderColumn')) {
             $grid->setOrder($this->_getParam('orderColumn'), $this->_getParam('orderDirection', 'asc'));

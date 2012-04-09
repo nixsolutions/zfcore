@@ -9,27 +9,6 @@
 class Pages_ManagementController extends Core_Controller_Action_Crud
 {
     /**
-     * init controller
-     *
-     * @return void
-     */
-    public function init()
-    {
-        parent::init();
-
-        $this->_beforeGridFilter(
-            array(
-                '_addAllTableColumns',
-                '_prepareGrid',
-                '_addEditColumn',
-                '_addDeleteColumn',
-                '_addCreateButton',
-                '_showFilter'
-            )
-        );
-    }
-
-    /**
      * get table
      *
      * @return Pages_Model_Page_Table
@@ -66,6 +45,9 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _prepareGrid()
     {
+        $this->_addAllTableColumns();
+
+
         $this->_grid
             ->setDefaultOrder('title')
             ->removeColumn('pid')
@@ -78,6 +60,12 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
                         array('stripTagsFormatter' ,'trimFormatter')
                     )
                 )
-            );
+            )
+        ;
+
+        $this->_addEditColumn();
+        $this->_addDeleteColumn();
+        $this->_addCreateButton();
+        $this->_showFilter();
     }
 }

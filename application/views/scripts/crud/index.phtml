@@ -1,5 +1,4 @@
 <?php
-
 $columns = array();
 foreach ($this->grid->getHeaders() as $header) {
     if ($header->type === Core_Grid::TYPE_DATA) {
@@ -13,9 +12,9 @@ foreach ($this->grid->getHeaders() as $header) {
         <?php if ($this->showFilter): ?>
             <?php echo $this->formSelect('filter-column', null, null, $columns) ?>
             <input type="text" id="filter-value" />
-            <a href="#" id="filter-button" class="button"><?php echo $this->__('Ok')?></a>
-            <a href="#" id="filter-reset" class="button"><?php echo $this->__('Reset')?></a>
-           <?php endif; ?>
+            <a href="#" id="filter-button" class="btn"><?php echo $this->__('Ok')?></a>
+            <a href="#" id="filter-reset" class="btn"><?php echo $this->__('Reset')?></a>
+       <?php endif; ?>
     </span>
 </div>
 <div id="grid" data-url="<?php echo $this->url(array('action' => 'grid'), 'default') ?>"></div>
