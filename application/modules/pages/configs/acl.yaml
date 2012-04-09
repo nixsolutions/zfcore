@@ -2,7 +2,9 @@ mvc:
   pages:
     index:
       allow: guest
-    uploads:
+    images:
+      allow: admin
+    files:
       allow: admin
     management:
       allow: admin

@@ -8,6 +8,12 @@
  */
 class Pages_Form_Create extends Zend_Form
 {
+    protected $_inputDecorators = array(
+        array('HtmlTag', array('tag' => 'dd', 'class'=>'control-group')),
+        array('Label', array('tag' => 'dt', 'class'=>'control-group')),
+        array('Errors', array('class'=>'help-inline')),
+    );
+
     /**
      * Form initialization
      *
@@ -18,6 +24,7 @@ class Pages_Form_Create extends Zend_Form
         $title = new Zend_Form_Element_Text('title');
         $title->setLabel('Title:')
             ->setRequired(true)
+            ->addDecorators($this->_inputDecorators)
             ->addValidator(
                 'regex',
                 false,
@@ -32,6 +39,7 @@ class Pages_Form_Create extends Zend_Form
 
         $alias = new Zend_Form_Element_Text('alias');
         $alias->setLabel('Alias(permalink):')
+            ->addDecorators($this->_inputDecorators)
             ->setRequired(true)
             ->addValidator(
                 'regex',
@@ -45,33 +53,24 @@ class Pages_Form_Create extends Zend_Form
                 )
             );
 
-        $content = new Core_Form_Element_Wysiwyg('content');
-        $content->setLabel('Content:')
-            ->setRequired(true)
-            ->setAttrib('cols', 100)
-            ->setAttrib('rows', 25)
-            ->addToolbar(
-                array(
-                    'biu',
-                    array('indent', 'outdent'),
-                    'justify',
-                    'linkToggle',
-                    'image',
-                    'removeFormat'
-                )
-            )->addToolbar(
-                array(
-                    array('p', 'quote', 'br'),
-                    'formatBlock',
-                    'fontFace',
-                    'fontSize',
-                    'hiliteColor',
-                    'foreColor'
-                )
-            )->setUploadPath($this->_getUploadImageUrl());
+        $content = new Core_Form_Element_Redactor('content', array(
+           'label' => 'Content:',
+           'cols'  => 50,
+           'rows'  => 25,
+           'required' => true,
+           'filters' => array('StringTrim'),
+           'redactor' => array(
+               'imageUpload'  => '/pages/images/upload/', // url or false
+               'fileUpload'   => '/pages/files/upload/',
+               'fileDownload' => '/pages/files/download/?file=',
+               'fileDelete'   => '/pages/files/delete/?file=',
+           )
+        ));
+        $content->addDecorators($this->_inputDecorators);
 
         $keywords = new Zend_Form_Element_Text('keywords');
         $keywords->setLabel('Keywords:')
+                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(true)
                  ->addValidator(
                      'regex', false, array(
@@ -84,6 +83,7 @@ class Pages_Form_Create extends Zend_Form
 
         $description = new Zend_Form_Element_Text('description');
         $description->setLabel('Description:')
+                    ->addDecorators($this->_inputDecorators)
                     ->setRequired(true)
                     ->addValidator(
                         'regex', false, array(
@@ -99,22 +99,12 @@ class Pages_Form_Create extends Zend_Form
 
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Create');
+        $submit->setAttrib('class','btn btn-primary');
 
         $this->addElements(
             array(
                 $title, $alias, $content, $keywords, $description, $submit, $pid
             )
         );
-    }
-
-    /**
-     * get upload image url
-     *
-     * @return string
-     */
-    protected function _getUploadImageUrl()
-    {
-        return Zend_Controller_Front::getInstance()->getParam('bootstrap')
-                                                   ->getOption('uploadDir');
     }
 }

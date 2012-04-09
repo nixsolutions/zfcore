@@ -301,3 +301,8 @@ input.noactive, button.noactive, .button.noactive {
 .btn-info:hover {
   color: #ffffff !important;
 }
+
+/* Forms */
+ul.help-inline {
+	list-style: none;
+}

@@ -114,11 +114,22 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         if ($this->_request->isPost() &&
             $form->isValid($this->_getAllParams())
         ) {
+            // create record in DB
             $table->createRow($form->getValues())
                 ->save();
 
             $this->_helper->flashMessenger('Successfully');
             $this->_helper->redirector('index');
+        } elseif ($this->_request->isPost()) {
+            // show errors
+            $errors = $form->getErrors();
+            foreach($errors as $fn => $error) {
+                if (empty($error)) continue;
+                $el = $form->getElement($fn);
+                $dec = $el->getDecorator('HtmlTag');
+                $cls = $dec->getOption('class');
+                $dec->setOption('class', $cls .' error');
+            }
         }
 
         $this->view->form = $form;

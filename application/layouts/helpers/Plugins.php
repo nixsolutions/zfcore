@@ -10,22 +10,22 @@
 class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
 {
     /**
-     * @var boolen
+     * @var boolean
      */
     protected static $_wysiwyg;
 
     /**
-     * @var boolen
+     * @var boolean
      */
     protected static $_redactor;
 
     /**
-     * @var boolen
+     * @var boolean
      */
     protected static $_elfinder;
 
     /**
-     * @var boolen
+     * @var boolean
      */
     protected static $_fancybox;
 
@@ -49,10 +49,10 @@ class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
         if (!self::$_redactor) {
             $view = $this->view;
             $view->headScript()->appendFile(
-                $view->baseUrl('scripts/jquery/redactor/redactor.js')
+                $view->baseUrl('js/redactor/redactor.js')
             );
             $view->headLink()->appendStylesheet(
-                $view->baseUrl('scripts/jquery/redactor/css/redactor.css')
+                $view->baseUrl('js/redactor/css/redactor.css')
             );
 
             self::$_redactor = true;
@@ -71,13 +71,13 @@ class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
         if (!self::$_wysiwyg) {
             $view = $this->view;
             $view->headScript()->appendFile(
-                $view->baseUrl('scripts/jquery/wysiwyg/wysiwyg.js')
+                $view->baseUrl('js/wysiwyg/wysiwyg.js')
             );
 
             $view->headLink()->appendStylesheet(
-                $view->baseUrl('scripts/jquery/wysiwyg/buttons.css')
+                $view->baseUrl('js/wysiwyg/buttons.css')
             )->appendStylesheet(
-                $view->baseUrl('scripts/jquery/wysiwyg/style.css')
+                $view->baseUrl('js/wysiwyg/style.css')
             );
 
             self::$_wysiwyg = true;
@@ -96,14 +96,14 @@ class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
         if (!self::$_elfinder) {
             $view = $this->view;
             $view->headLink()->appendStylesheet(
-                $view->baseUrl('scripts/jquery/elfinder/css/elfinder.full.css')
+                $view->baseUrl('js/elfinder/css/elfinder.full.css')
             )
             ->appendStylesheet(
-                $view->baseUrl('scripts/jquery/elfinder/css/theme.css')
+                $view->baseUrl('js/elfinder/css/theme.css')
             );
 
             $view->headScript()->appendFile(
-                $view->baseUrl('scripts/jquery/elfinder/js/elfinder.full.js')
+                $view->baseUrl('js/elfinder/js/elfinder.full.js')
             );
             self::$_elfinder = true;
         }
@@ -121,11 +121,11 @@ class Application_View_Helper_Plugins extends Zend_View_Helper_Abstract
         if (!self::$_fancybox) {
             $view = $this->view;
             $view->headLink()->appendStylesheet(
-                $view->baseUrl('scripts/jquery/fancybox/css/fancybox.css')
+                $view->baseUrl('js/fancybox/css/fancybox.css')
             );
 
             $view->headScript()->appendFile(
-                $view->baseUrl('scripts/jquery/fancybox/js/fancybox.pack.js')
+                $view->baseUrl('js/fancybox/js/fancybox.pack.js')
             );
 
             self::$_fancybox = true;

@@ -79,9 +79,14 @@ class Core_View_Helper_FormRedactor extends Zend_View_Helper_FormTextarea
     {
         $info = $this->_getInfo($name, $value, $attribs);
         $id = $this->view->escape($info['id']);
+        if (Zend_Registry::isRegistered('Zend_Locale')) {
+            $lang = Zend_Registry::get('Zend_Locale')->getLanguage();
+        } else {
+            $lang = 'en';
+        }
         $options = array(
-            'lang' => Zend_Registry::get('Zend_Locale')->getLanguage(),
-            'path' => '/scripts/jquery/redactor/' // w/o lang prefix
+            'lang' => $lang,
+            'path' => '/js/redactor/' // w/o lang prefix
         );
 
         if (!empty($attribs['redactor'])) {
@@ -95,7 +100,7 @@ class Core_View_Helper_FormRedactor extends Zend_View_Helper_FormTextarea
         /** init plugin */
         $options = Zend_Json::encode($options, Zend_Json::TYPE_OBJECT);
         $this->view->headScript()
-            ->appendScript('(function($){$(function(){$("#' . $id . '").redactor(' . $options . ');});})(jQuery)');
+             ->appendScript('(function($){$(function(){$("#' . $id . '").redactor(' . $options . ');});})(jQuery)');
 
         /** render text area */
         return $this->formTextarea($name, $value, $attribs);
