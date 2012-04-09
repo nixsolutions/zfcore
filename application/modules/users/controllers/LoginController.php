@@ -51,7 +51,7 @@ class Users_LoginController extends Core_Controller_Action
                     if (empty($url) || strpos($url, 'login') !== false) {
                         $url = $this->getHelper('url')->url(
                             array(
-                                'module' => 'users',
+                                'module' => 'index',
                                 'controller' => 'index',
                                 'action' => 'index'
                             ),

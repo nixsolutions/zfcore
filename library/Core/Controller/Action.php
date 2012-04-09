@@ -34,20 +34,6 @@
 abstract class Core_Controller_Action extends Zend_Controller_Action
 {
     /**
-     * before stack
-     *
-     * @var array
-     */
-    protected $_before = array();
-
-    /**
-     * after stack
-     *
-     * @var array
-     */
-    protected $_after = array();
-
-    /**
      * _useDashboard
      *
      * set required options for Dashboard controllers
@@ -63,123 +49,12 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     }
 
     /**
-     * add function to stack
-     *
-     * @param       $function
-     * @param array $options
-     * @return void
-     */
-    protected function _before($function, $options = array())
-    {
-        $this->_before[] = array(
-            'function' => $function,
-            'options'  => $options
-        );
-    }
-
-    /**
-     * add function to stack
-     *
-     * @param       $function
-     * @param array $options
-     * @return void
-     */
-    protected function _after($function, $options = array())
-    {
-        $this->_after[] = array(
-            'function' => $function,
-            'options'  => $options
-        );
-    }
-
-    /**
-     * execute functions in stack
-     *
-     * @param $stack
-     * @param $action
-     * @return bool
-     */
-    protected function _execFunctions($stack, $action)
-    {
-        foreach ($stack as $item) {
-
-            /** check if function is only for current action */
-            if (!empty($item['options']['only'])) {
-                $only = (array)$item['options']['only'];
-                if (!in_array($action, $only)) {
-                    continue;
-                }
-            }
-
-            /** check if function is skipped for current action */
-            if (!empty($item['options']['skip'])) {
-                $skip = (array)$item['options']['skip'];
-                if (in_array($action, $skip)) {
-                    continue;
-                }
-            }
-
-            /** execute */
-            $functions = (array)$item['function'];
-            foreach ($functions as $function) {
-
-                /** next functions won't be executed if current one returns false */
-                if (false === $this->$function()) {
-                    return false;
-                }
-            }
-        }
-    }
-
-    /**
-     * clear before filter
-     *
-     * @return void
-     */
-    protected function _clearBefore()
-    {
-        $this->_before = array();
-    }
-
-    /**
-     * clear after filter
-     *
-     * @return void
-     */
-    protected function _clearAfter()
-    {
-        $this->_after = array();
-    }
-
-    /**
-     * pre-dispatch routines
-     *
-     * @return void
-     */
-    public function preDispatch()
-    {
-        $action = $this->getRequest()->getActionName();
-        $this->_execFunctions($this->_before, $action);
-    }
-
-    /**
-     * post-dispatch routines
-     *
-     * @return void
-     */
-    public function postDispatch()
-    {
-        $action = $this->getRequest()->getActionName();
-        $this->_execFunctions($this->_after, $action);
-    }
-
-    /**
      * forward to not found page
      *
      * @return void
      */
     protected function _forwardNotFound()
     {
-        $this->_forward('notfound', 'error', 'users');
+        $this->_forward('notfound', 'error', 'index');
     }
 }

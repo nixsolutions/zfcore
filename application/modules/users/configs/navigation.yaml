@@ -2,6 +2,8 @@ dashboard:
   usermanagment:
     label: Users
     uri:
+    class: user
+    order: 2
     pages:
       create:
         label: Create

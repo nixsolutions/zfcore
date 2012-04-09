@@ -54,12 +54,6 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
         $this->_viewRenderer = $this->_helper->getHelper('viewRenderer');
         $this->_redirector = $this->_helper->getHelper('redirector');
-
-        /** change view script path specification */
-        $this->_after('_changeViewScriptPathSpec', array('only' => array('index', 'grid', 'create', 'edit')));
-
-        /** load grid */
-        $this->_beforeGridFilter('_loadGrid');
     }
 
     /**
@@ -73,10 +67,12 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
          * todo: do it better way
          * init grid before rendering, catch all exception in action
          */
-        $this->_grid->getHeaders();
-        $this->_grid->getData();
-        $this->view->grid = $this->_grid;
-        $this->view->showFilter = empty($this->_showFilter) ? false : true;
+        $this->_changeViewScriptPathSpec();
+
+        //$this->_grid->getHeaders();
+       // $this->_grid->getData();
+       // $this->view->grid = $this->_grid;
+       // $this->view->showFilter = empty($this->_showFilter) ? false : true;
     }
 
     /**
@@ -86,6 +82,9 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function gridAction()
     {
+        $this->_changeViewScriptPathSpec();
+        $this->_loadGrid();
+
         if ($this->getRequest()->isXmlHttpRequest()) {
             $this->_helper->layout->disableLayout();
         }
@@ -106,6 +105,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function createAction()
     {
+        $this->_changeViewScriptPathSpec();
+
         $table = $this->_getTable();
         $form = $this->_getCreateForm()
             ->setAction($this->view->url());
@@ -130,6 +131,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function editAction()
     {
+        $this->_changeViewScriptPathSpec();
+
         $model = $this->_loadModel();
 
         $form = $this->_getEditForm()
@@ -358,7 +361,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function deleteLinkFormatter($value, $row)
     {
-        $link = '<a href="%s" class="delete">Delete</a>';
+        $link = '<a href="%s" class="btn btn-danger">Delete</a>';
         $url = $this->getHelper('url')->url(
             array(
                 'action' => 'delete',
@@ -416,7 +419,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _addCreateButton()
     {
-        $link = '<a href="%s" class="button">Create</a>';
+        $link = '<a href="%s" class="btn btn-primary">Create</a>';
         $url = $this->getHelper('url')->url(array('action' => 'create'), 'default');
         $this->view->placeholder('grid_buttons')->create = sprintf($link, $url);
     }
@@ -428,7 +431,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _addDeleteButton()
     {
-        $link = '<a href="%s" class="button" id="delete-all-button">Delete All</a>';
+        $link = '<a href="%s" class="btn btn-danger" id="delete-all-button">Delete All</a>';
         $url = $this->getHelper('url')->url(
             array(
                 'action' => 'delete-all'
@@ -486,7 +489,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _beforeGridFilter($function)
     {
-        $this->_before($function, array('only' => array('index', 'grid')));
+//        $this->_before($function, array('only' => array('index', 'grid')));
     }
 
 

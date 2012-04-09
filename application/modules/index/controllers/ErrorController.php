@@ -8,7 +8,7 @@
  *
  * @version  $Id: ErrorController.php 185 2010-08-09 14:14:47Z AntonShevchuk $
  */
-class Users_ErrorController extends Core_Controller_Action
+class Index_ErrorController extends Core_Controller_Action
 {
     /**
      * errorAction

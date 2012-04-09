@@ -31,7 +31,7 @@ class Users_ManagementController extends Core_Controller_Action_Crud
             )
         );
 
-        $this->_after('_setDefaultScriptPath', array('only' => array('create', 'edit')));
+//        $this->_after('_setDefaultScriptPath', array('only' => array('create', 'edit')));
     }
 
     /**

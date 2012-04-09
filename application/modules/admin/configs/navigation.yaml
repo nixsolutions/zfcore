@@ -2,6 +2,8 @@ dashboard:
   statistic:
     label: Statistics
     uri:
+    class: signal
+    order: 100
 default:
   admin:
     label: Admin panel

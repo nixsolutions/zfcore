@@ -2,6 +2,8 @@ dashboard:
   mailmanagment:
     label: Mail
     uri:
+    class: envelope
+    order: 98
     pages:
       edit:
         label: Edit Templates

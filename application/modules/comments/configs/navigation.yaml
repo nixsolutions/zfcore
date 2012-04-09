@@ -2,6 +2,8 @@ dashboard:
   commentsmanagment:
     label: Comments
     uri:
+    class: comment
+    order: 95
     pages:
       aliases:
         label: View Aliases

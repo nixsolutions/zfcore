@@ -2,6 +2,8 @@ dashboard:
   blogmanagment:
     label: Blog
     uri:
+    class: pencil
+    order: 50
     pages:
       create:
         label: Create New Post

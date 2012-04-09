@@ -2,6 +2,8 @@ dashboard:
   catalog:
     label: Categories
     uri:
+    class: folder-open
+    order: 96
     pages:
       create:
         label: Create Category

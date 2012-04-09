@@ -16,16 +16,8 @@ class Users_IndexController extends Core_Controller_Action
 
     public function indexAction()
     {
-    }
-
-    /**
-     * Render profile of user
-     */
-    public function profileAction()
-    {
         // action body
     }
-
 }
 
 

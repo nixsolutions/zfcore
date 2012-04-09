@@ -2,6 +2,8 @@ dashboard:
   staticpages:
     label: Pages
     uri:
+    class: file
+    order: 1
     pages:
       create:
         label: Create

@@ -24,5 +24,3 @@ mvc:
       deny: user
     management:
       allow: admin
-    error:
-      allow: guest

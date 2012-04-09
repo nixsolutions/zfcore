@@ -6,6 +6,8 @@
             // check if it is active (not recursive)
             $liClass = array();
 
+            $cls = $page->getClass();
+
             if ($page->isActive(false)) {
                 $liClass[] = 'active';
             }
@@ -15,7 +17,10 @@
             }
 
             if ($page->_label !== null && $page->isVisible(true)) {
-                echo '<li class="' . join(' ', $liClass) . '">' . $this->menu()->htmlify($page) . '</li>', PHP_EOL;
+                echo '<li class="' . join(' ', $liClass) . '">';
+                echo ($cls?"<i class='icon-$cls'></i>&nbsp;":"");
+                echo $this->menu()->htmlify($page);
+                echo '</li>', PHP_EOL;
             }
 
             if ($page->_pages) {

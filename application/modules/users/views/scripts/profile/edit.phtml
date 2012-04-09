@@ -2,7 +2,7 @@
 <div>
     <div class="left">
         <?php $this->user = $this->user();?>
-        <img src="<?php echo $this->avatar($this->user)?>" title="<?php echo $this->__('Avatar for')?> <?php echo $this->user->login?>"/>
+        <img src="<?php echo $this->avatar($this->user)?>" alt="<?php echo $this->__('Avatar for')?> <?php echo $this->user->login?>"/>
     </div>
     <div class="left">
         <?php echo $this->form; ?>
