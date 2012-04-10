@@ -27,30 +27,6 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
-     * init invironment
-     *
-     * @return void
-     */
-    public function init()
-    {
-        /* Initialize */
-        parent::init();
-
-        $this->_beforeGridFilter(
-            array(
-                '_addCheckBoxColumn',
-                '_addAllTableColumns',
-                '_prepareGrid',
-                '_addEditColumn',
-                '_addDeleteColumn',
-                '_addCreateButton',
-                '_addDeleteButton',
-                '_showFilter'
-            )
-        );
-    }
-
-    /**
      * _getCreateForm
      *
      * return create form for scaffolding
@@ -81,17 +57,37 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
      *
      * return manager for scaffolding
      *
-     * @return  Core_Model_Abstract
+     * @return  Blog_Model_Post_Table
      */
     protected function _getTable()
     {
         return new Blog_Model_Post_Table();
     }
 
+    /**
+     * custom grid filters
+     *
+     * @return void
+     */
+    protected function _prepareHeader()
+    {
+        $this->_addCreateButton();
+        $this->_addDeleteButton();
+        $this->_addFilter('title', 'Title');
+        $this->_addFilter('alias', 'Alias');
+    }
+
+    /**
+     * setup grid
+     *
+     * @return void
+     */
     protected function _prepareGrid()
     {
-
+        $this->_addCheckBoxColumn();
+        $this->_addAllTableColumns();
         $this->_grid
+             ->removeColumn('alias')
              ->removeColumn('body')
              ->removeColumn('userId')
              ->removeColumn('categoryId')
@@ -100,12 +96,7 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
              ->removeColumn('created')
              ->removeColumn('updated')
              ->removeColumn('published')
-             ->setColumn(
-                 'teaser',
-                 array(
-                     'formatter' => array($this, 'trimFormatter')
-                 )
-             );
+             ->removeColumn('teaser');
     }
 
 

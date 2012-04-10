@@ -32,18 +32,18 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
             ->current();
         
         // setup the grid
-        $this->_beforeGridFilter(
-            array(
-                '_addCheckBoxColumn',
-                '_addAllTableColumns',
-                '_prepare',
-                '_addEditColumn',
-                '_addDeleteColumn',
-                '_addBackButton',
-                '_addDeleteButton',
-                '_showFilter'
-            )
-        );
+//        $this->_beforeGridFilter(
+//            array(
+//                '_addCheckBoxColumn',
+//                '_addAllTableColumns',
+//                '_prepare',
+//                '_addEditColumn',
+//                '_addDeleteColumn',
+//                '_addBackButton',
+//                '_addDeleteButton',
+//                '_showFilter'
+//            )
+//        );
 
     }
     
@@ -101,21 +101,32 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
         
         return $form;
     }
-    
+
+    /**
+     * custom grid filters
+     *
+     * @return void
+     */
+    protected function _prepareHeader()
+    {
+        $this->_addCreateButton();
+    }
+
     /**
      * Prepare grid - remove not needed columns
      * 
      * @return void
      */
-    protected function _prepare()
+    protected function _prepareGrid()
     {
+        $this->_addAllTableColumns();
         $this->_grid->removeColumn('aliasId');
         
         if ($this->_alias && !$this->_alias->isTitleDisplayed()) {
             $this->_grid->removeColumn('title');
         }
     }
-    
+
     /**
      * Add "back" button
      *

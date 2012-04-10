@@ -6,13 +6,13 @@ dashboard:
     order: 1
     pages:
       create:
-        label: Create
+        label: Add New
         module: pages
         controller: management
         action: create
         route: default
       edit:
-        label: Edit
+        label: All Pages
         module: pages
         controller: management
         action: index

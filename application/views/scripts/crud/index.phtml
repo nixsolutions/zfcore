@@ -1,23 +1,18 @@
 <?php
-$columns = array();
-foreach ($this->grid->getHeaders() as $header) {
-    if ($header->type === Core_Grid::TYPE_DATA) {
-        $columns[$header->id] = $header->name;
-    }
-}
+$this->headScript()->appendFile($this->baseUrl('/js/grid.js'));
 ?>
-<div class="filter-wrapper">
-    <span class="grid-buttons"><?php echo $this->placeholder('grid_buttons') ?></span>
-    <span class="grid-filter">
-        <?php if ($this->showFilter): ?>
-            <?php echo $this->formSelect('filter-column', null, null, $columns) ?>
-            <input type="text" id="filter-value" />
-            <a href="#" id="filter-button" class="btn"><?php echo $this->__('Ok')?></a>
+<div class="form-inline">
+    <?php echo $this->placeholder('grid_buttons') ?>
+    <?php if (sizeof($this->filters)): ?>
+        <form action="" class="span8">
+            <?php echo $this->formSelect('filter-column', null, array(), $this->filters) ?>
+            <input type="text" id="filter-value" class="span3" value=""/>
+            <a href="#" id="filter-button" class="btn"><?php echo $this->__('Go')?></a>
             <a href="#" id="filter-reset" class="btn"><?php echo $this->__('Reset')?></a>
-       <?php endif; ?>
-    </span>
+        </form>
+   <?php endif; ?>
 </div>
-<div id="grid" data-url="<?php echo $this->url(array('action' => 'grid'), 'default') ?>"></div>
+<div id="grid" class="clear" data-url="<?php echo $this->url(array('action' => 'grid'), 'default') ?>"></div>
 <script>
 $(function() {
     $('#grid').grid().delegate('a.delete', 'click', function() {

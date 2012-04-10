@@ -13,19 +13,6 @@
 class Options_ManagementController extends Core_Controller_Action_Crud
 {
     /**
-     * init controller
-     *
-     * @return void
-     */
-    public function init()
-    {
-        /* Initialize */
-        parent::init();
-
-        $this->_beforeGridFilter(array('_addAllTableColumns','_addEditColumn', '_addDeleteColumn'));
-    }
-
-    /**
      * _getCreateForm
      *
      * return create form for crud
@@ -54,11 +41,33 @@ class Options_ManagementController extends Core_Controller_Action_Crud
      *
      * return manager for crud
      *
-     * @return  Core_Model_Abstract
+     * @return  Options_Model_Options_Table
      */
     protected function _getTable()
     {
         return new Options_Model_Options_Table();
+    }
+
+    /**
+     * custom grid filters
+     *
+     * @return void
+     */
+    protected function _prepareHeader()
+    {
+        $this->_addCreateButton();
+    }
+
+    /**
+     * custom grid preparation
+     *
+     * @return void
+     */
+    protected function _prepareGrid()
+    {
+        $this->_addAllTableColumns();
+        $this->_addEditColumn();
+        $this->_addDeleteColumn();
     }
 }
 

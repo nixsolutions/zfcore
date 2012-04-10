@@ -20,6 +20,6 @@ class Pages_Form_Edit extends Pages_Form_Create
         $this->addElement(new Zend_Form_Element_Hidden('id'));
 
         $this->getElement('submit')
-             ->setLabel('Edit');
+             ->setLabel('Save');
     }
 }

@@ -9,10 +9,10 @@ $class[] = 'a-' . $request->getActionName();
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
-    <?php echo $this->render('bootstrap/partial/head.phtml') ?>
+    <?php echo $this->render('default/partial/head.phtml') ?>
     <body class="<?php echo implode(' ', $class) ?>" data-spy="scroll" data-target=".subnav" data-offset="50">
-    <?php echo $this->render('bootstrap/partial/messages.phtml') ?>
-    <?php echo $this->render('bootstrap/partial/menu.phtml') ?>
+    <?php echo $this->render('default/partial/messages.phtml') ?>
+    <?php echo $this->render('default/partial/menu.phtml') ?>
     <div class="container-fluid">
         <div class="row-fluid">
             <div class="content">

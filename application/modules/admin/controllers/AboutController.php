@@ -1,12 +1,12 @@
 <?php
 /**
- * IndexController for admin module
+ * AboutController for admin module
  *
  * @category   Application
  * @package    Dashboard
  * @subpackage Controller
  */
-class Admin_IndexController extends Core_Controller_Action
+class Admin_AboutController extends Core_Controller_Action
 {
     public function init()
     {

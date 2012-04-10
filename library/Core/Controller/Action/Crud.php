@@ -40,9 +40,9 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     protected $_limit = 20;
 
     /**
-     * @var boolean
+     * @var array
      */
-    protected $_showFilter = false;
+    protected $_filters = array();
 
     /**
      * init controller
@@ -70,13 +70,9 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
          * init grid before rendering, catch all exception in action
          */
         $this->_changeViewScriptPathSpec();
+        $this->_prepareHeader();
 
-        $this->_loadGrid();
-        $this->_prepareGrid();
-        $this->_grid->getHeaders();
-        $this->_grid->getData();
-        $this->view->grid = $this->_grid;
-        $this->view->showFilter = empty($this->_showFilter) ? false : true;
+        $this->view->filters = $this->_filters;
     }
 
     /**
@@ -88,6 +84,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     {
         $this->_changeViewScriptPathSpec();
         $this->_loadGrid();
+        $this->_prepareGrid();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             $this->_helper->layout->disableLayout();
@@ -160,7 +157,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
             $model->setFromArray($form->getValues())
                 ->save();
 
-            $this->_helper->flashMessenger('Successfully');
+            $this->_helper->flashMessenger('Record was updated');
             $this->_helper->redirector('index');
         }
 
@@ -227,20 +224,6 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     }
 
     /**
-     * add create button
-     *
-     * @return void
-     */
-//    protected function _addDeleteAllButton()
-//    {
-//        $link = '<a href="%s" class="button" id="delete-all-button">Delete All</a>';
-//                $url = $this->getHelper('url')->url(array(
-//            'action' => 'delete'
-//        ), 'default');
-//        $this->view->placeholder('grid_buttons')->deleteAll = sprintf($link, $url);
-//    }
-
-    /**
      * get create form
      *
      * @abstract
@@ -255,6 +238,21 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      * @return Zend_Form
      */
     abstract protected function _getEditForm();
+
+    /**
+     * get table
+     *
+     * @abstract
+     * @return Core_Db_Table_Abstract
+     */
+    abstract protected function _getTable();
+
+    /**
+     * @abstract
+     */
+    protected function _prepareHeader() {
+        // can be empty
+    }
 
     /**
      * @abstract
@@ -285,6 +283,23 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     }
 
     /**
+     * add radio column to grid
+     *
+     * @return void
+     */
+    public function _addCheckBoxColumn()
+    {
+        $this->_grid->setColumn(
+            'check',
+            array(
+                'name'      => '<input type="checkbox" id="selectAllCheckbox"/>',
+                'formatter' => array($this, 'checkBoxLinkFormatter')
+            )
+        );
+        return $this;
+    }
+
+    /**
      * add all table columns to grid
      *
      * @return void
@@ -301,7 +316,9 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
                 )
             );
         }
+        return $this;
     }
+
 
     /**
      * add edit column to grid
@@ -317,6 +334,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
                 'formatter' => array($this, 'editLinkFormatter')
             )
         );
+        return $this;
     }
 
     /**
@@ -333,23 +351,9 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
                 'formatter' => array($this, 'deleteLinkFormatter')
             )
         );
+        return $this;
     }
 
-    /**
-     * add radio column to grid
-     *
-     * @return void
-     */
-    public function _addCheckBoxColumn()
-    {
-        $this->_grid->setColumn(
-            'check',
-            array(
-                'name'      => '<input type="checkbox" id="selectAllCheckbox"/>',
-                'formatter' => array($this, 'checkBoxLinkFormatter')
-            )
-        );
-    }
 
     /**
      * edit link formatter
@@ -360,7 +364,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function editLinkFormatter($value, $row)
     {
-        $link = '<a href="%s" class="edit">Edit</a>';
+        $link = '<a href="%s" class="btn">Edit</a>';
         $url = $this->getHelper('url')->url(
             array(
                 'action' => 'edit',
@@ -439,7 +443,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _addCreateButton()
     {
-        $link = '<a href="%s" class="btn btn-primary">Create</a>';
+        $link = '<a href="%s" class="btn btn-primary span1">Create</a>';
         $url = $this->getHelper('url')->url(array('action' => 'create'), 'default');
         $this->view->placeholder('grid_buttons')->create = sprintf($link, $url);
     }
@@ -451,7 +455,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected function _addDeleteButton()
     {
-        $link = '<a href="%s" class="btn btn-danger" id="delete-all-button">Delete All</a>';
+        $link = '<a href="%s" class="btn btn-danger span1" id="delete-all-button">Delete All</a>';
         $url = $this->getHelper('url')->url(
             array(
                 'action' => 'delete-all'
@@ -463,22 +467,18 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
 
 
     /**
-     * show filter
+     * add filter to stack
      *
-     * @return void
+     * @param $field
+     * @param $label
+     * @return \Core_Controller_Action_Crud
      */
-    protected function _showFilter()
+    protected function _addFilter($field, $label)
     {
-        $this->_showFilter = true;
+        $this->_filters[$field] = $label;
+        return $this;
     }
 
-    /**
-     * get table
-     *
-     * @abstract
-     * @return Core_Db_Table_Abstract
-     */
-    abstract protected function _getTable();
 
     /**
      * get source
@@ -500,17 +500,4 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $this->_viewRenderer->setViewScriptPathSpec('/:controller/:action.:suffix');
         return $this;
     }
-
-    /**
-     * before grid filter
-     *
-     * @param $function
-     * @return void
-     */
-    protected function _beforeGridFilter($function)
-    {
-//        $this->_before($function, array('only' => array('index', 'grid')));
-    }
-
-
 }

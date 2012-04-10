@@ -8,7 +8,7 @@
  *
  * @version  $Id: CommentAlias.php 2011-11-21 11:59:34Z pavel.machekhin $
  */
-class Comments_Model_CommentAlias_Form_Create extends Zend_Form
+class Comments_Model_CommentAlias_Form_Create extends Core_Form
 {
     /**
      * Form initialization
@@ -40,6 +40,7 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Text('alias');
         $element->setLabel('Alias')
+                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(true)
                  ->addFilter('StringTrim')
                  ->addValidator(
@@ -71,6 +72,7 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
                 )
             )
         );
+        $element->addDecorators($this->_inputDecorators);
         $element->setLabel('Options');
 
         return $element;
@@ -85,6 +87,7 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Text('countPerPage');
         $element->setLabel('Items per page')
+                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(false)
                  ->addValidator(
                      'Digits'
@@ -102,6 +105,7 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Text('relatedTable');
         $element->setLabel('Related table')
+                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(false)
                  ->setFilters(array('StringTrim', 'StringToLower'))
                  ->addValidator(
@@ -114,24 +118,12 @@ class Comments_Model_CommentAlias_Form_Create extends Zend_Form
 
         return $element;
     }
-    
-    /**
-     * Create submit element
-     *
-     * @return Zend_Form_Element_Submit
-     */
-    protected function _submit()
-    {
-        $element = new Zend_Form_Element_Submit('submit');
-        $element->setLabel('Save');
-        $element->setOrder(100);
 
-        return $element;
-    }
     
     /**
      *
-     * @param string $tableName 
+     * @param string $tableName
+     * @return bool
      */
     protected function _validateRelatedTable($tableName)
     {

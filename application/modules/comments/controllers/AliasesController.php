@@ -18,20 +18,6 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
     public function init()
     {
         parent::init();
-
-        // setup the grid
-        $this->_beforeGridFilter(
-            array(
-                '_addCheckBoxColumn',
-                '_addAllTableColumns',
-                '_addShowCommentsColumn',
-                '_addEditColumn',
-                '_addDeleteColumn',
-                '_addCreateButton',
-                '_addDeleteButton',
-                '_showFilter'
-            )
-        );
     }
     
     /**
@@ -89,7 +75,7 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
      */
     public function showCommentsFormatter($value, $row)
     {
-        $link = '<a href="%s" class="Show">Show</a>';
+        $link = '<a href="%s" class="btn">Show</a>';
         $url = $this->getHelper('url')->url(
             array(
                 'controller' => 'management',
@@ -100,5 +86,35 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
         );
 
         return sprintf($link, $url);
+    }
+
+    /**
+     * custom grid filters
+     *
+     * @return void
+     */
+    protected function _prepareHeader()
+    {
+        $this->_addCreateButton();
+        $this->_addDeleteButton();
+    }
+
+    /**
+     * Prepare grid - remove not needed columns
+     *
+     * @return void
+     */
+    protected function _prepareGrid()
+    {
+        $this->_addCheckBoxColumn();
+        $this->_addAllTableColumns();
+        $this->_addShowCommentsColumn();
+        $this->_addEditColumn();
+        $this->_addDeleteColumn();
+        $this->_grid->removeColumn('aliasId');
+
+//        if ($this->_alias && !$this->_alias->isTitleDisplayed()) {
+//            $this->_grid->removeColumn('title');
+//        }
     }
 }

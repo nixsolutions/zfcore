@@ -12,6 +12,11 @@
  */
 class Pages_Model_Page extends Core_Db_Table_Row_Abstract
 {
+    /** statuses */
+    const STATUS_ACTIVE  = 'active';
+    const STATUS_CLOSED  = 'closed';
+    const STATUS_DELETED = 'deleted';
+
     /**
      * Allows pre-insert logic to be applied to row.
      * Subclasses may override this method. 

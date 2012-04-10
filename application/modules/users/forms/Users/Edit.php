@@ -26,6 +26,8 @@ class Users_Form_Users_Edit extends Users_Form_Users_Create
 
     /**
      * @see Zend_Form::setDefaults()
+     * @param $defaults
+     * @return \Zend_Form
      */
     public function setDefaults($defaults)
     {

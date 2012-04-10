@@ -20,16 +20,16 @@ class Users_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter(
-            array(
-                '_addAllTableColumns',
-                '_addEditColumn',
-                '_prepare',
-                '_addDeleteColumn',
-                '_addCreateButton',
-                '_showFilter'
-            )
-        );
+//        $this->_beforeGridFilter(
+//            array(
+//                '_addAllTableColumns',
+//                '_addEditColumn',
+//                '_prepare',
+//                '_addDeleteColumn',
+//                '_addCreateButton',
+//                '_showFilter'
+//            )
+//        );
 
 //        $this->_after('_setDefaultScriptPath', array('only' => array('create', 'edit')));
     }
@@ -131,10 +131,25 @@ class Users_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
+     * custom grid filters
+     *
+     * @return void
+     */
+    protected function _prepareHeader()
+    {
+        $this->_addCreateButton();
+        $this->_addFilter('login', 'Login');
+        $this->_addFilter('email', 'E-mail');
+        $this->_addFilter('firstname', 'Firstname');
+        $this->_addFilter('lastname', 'Lastname');
+    }
+
+    /**
      *
      */
-    protected function _prepare()
+    protected function _prepareGrid()
     {
+        $this->_addAllTableColumns();
         $this->_grid
              ->removeColumn('password')
              ->removeColumn('salt')
@@ -149,6 +164,9 @@ class Users_ManagementController extends Core_Controller_Action_Crud
              ->removeColumn('fbUid')
              ->removeColumn('twId')
              ->removeColumn('gId');
+
+
+        $this->_addEditColumn();
     }
 
 }

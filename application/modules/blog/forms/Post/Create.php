@@ -31,35 +31,36 @@ class Blog_Form_Post_Create extends Zend_Form
             )
         );
 
-        $teaser = new Core_Form_Element_TinyMCE(
-            'teaser', array(
-                'label' => 'teaser',
-                'cols'  => '75',
-                'rows'  => '5',
-                'required' => true,
-                'filters'  => array('StringTrim'),
-                'tinyMCE' => array(
-                    'mode' => "textareas",
-                    'theme' => "simple",
-                ),
-            )
-        );
+        $teaser = new Core_Form_Element_Redactor('teaser', array(
+                   'label' => 'Teaser',
+                   'cols'  => 50,
+                   'rows'  => 5,
+                   'required' => true,
+                   'filters' => array('StringTrim'),
+                   'redactor' => array(
+                       'imageUpload'  => false, // url or false
+                       'fileUpload'   => false,
+                   )
+                ));
+        $teaser->addDecorators($this->_inputDecorators);
         $this->addElement($teaser);
 
-        $text = new Core_Form_Element_TinyMCE(
-            'body', array(
-                'label' => 'text',
-                'cols'  => '75',
-                'rows'  => '20',
-                'required' => true,
-                'filters'  => array('StringTrim'),
-                'tinyMCE' => array(
-                    'mode' => "textareas",
-                    'theme' => "simple",
-                ),
-            )
-        );
-        $this->addElement($text);
+        $body = new Core_Form_Element_Redactor('body', array(
+                   'label' => 'Text',
+                   'cols'  => 50,
+                   'rows'  => 25,
+                   'required' => true,
+                   'filters' => array('StringTrim'),
+                   'redactor' => array(
+                       'imageUpload'  => '/blog/images/upload/', // url or false
+                       'fileUpload'   => '/blog/files/upload/',
+                       'fileDownload' => '/blog/files/download/?file=',
+                       'fileDelete'   => '/blog/files/delete/?file=',
+                   )
+                ));
+        $body->addDecorators($this->_inputDecorators);
+
+        $this->addElement($body);
 
         $this->addElement($this->_status());
 
@@ -70,9 +71,9 @@ class Blog_Form_Post_Create extends Zend_Form
 
     protected function _submit()
     {
-        $sudmit = new Zend_Form_Element_Submit('submit');
-        $sudmit->setLabel('create');
-        return $sudmit;
+        $submit = new Zend_Form_Element_Submit('submit');
+        $submit->setLabel('Create');
+        return $submit;
     }
 
     protected function _category()

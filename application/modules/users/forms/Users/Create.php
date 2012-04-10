@@ -5,10 +5,8 @@
  * @category Application
  * @package Model
  * @subpackage Form
- *
- * @version  $Id: Create.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
-class Users_Form_Users_Create extends Zend_Form
+class Users_Form_Users_Create extends Core_Form
 {
     /**
      * Form initialization
@@ -40,6 +38,7 @@ class Users_Form_Users_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Text('login');
         $element->setLabel('Login')
+                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(true)
                  ->addFilter('StringTrim')
                  ->addValidator('Alnum')
@@ -69,6 +68,7 @@ class Users_Form_Users_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Text('firstname');
         $element->setLabel('First name')
+                ->addDecorators($this->_inputDecorators)
                 ->setRequired(false)
                 ->addFilter('StringTrim')
                 ->addValidator('Alnum')
@@ -89,6 +89,7 @@ class Users_Form_Users_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Text('lastname');
         $element->setLabel('Last name')
+                ->addDecorators($this->_inputDecorators)
                 ->setRequired(false)
                 ->addFilter('StringTrim')
                 ->addValidator('Alnum')
@@ -145,6 +146,7 @@ class Users_Form_Users_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Text('password');
         $element->setLabel('Password')
+                ->addDecorators($this->_inputDecorators)
                 ->setRequired(true)
                 ->addValidator(
                     'StringLength',
@@ -164,6 +166,7 @@ class Users_Form_Users_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Text('email');
         $element->setLabel('Email')
+                ->addDecorators($this->_inputDecorators)
                 ->setRequired(true)
                 ->addValidator('EmailAddress')
                 ->addValidator(
@@ -227,19 +230,6 @@ class Users_Form_Users_Create extends Zend_Form
     {
         $element = new Zend_Form_Element_Text('count');
         $element->setLabel('Login count');
-
-        return $element;
-    }
-
-    /**
-     * Create submit element
-     *
-     * @return Zend_Form_Element_Submit
-     */
-    protected function _submit()
-    {
-        $element = new Zend_Form_Element_Submit('submit');
-        $element->setLabel('Save');
 
         return $element;
     }

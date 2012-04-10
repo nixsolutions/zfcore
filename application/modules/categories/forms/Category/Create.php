@@ -8,7 +8,7 @@
  *
  * @version  $Id: Create.php 206 2010-10-20 10:55:55Z AntonShevchuk $
  */
-class Categories_Form_Category_Create extends Zend_Form
+class Categories_Form_Category_Create extends Core_Form
 {
     /**
      * Form initialization
@@ -104,18 +104,5 @@ class Categories_Form_Category_Create extends Zend_Form
             $element->addMultiOption($row->id, str_repeat("-", $row->level) . " " . $row->title);
         }
         return $element;
-    }
-
-    /**
-     * Create submit element
-     *
-     * @return object Zend_Form_Element_Text
-     */
-    protected function _submit()
-    {
-        $submit = new Zend_Form_Element_Submit('submit');
-        $submit->setLabel('Save');
-
-        return $submit;
     }
 }

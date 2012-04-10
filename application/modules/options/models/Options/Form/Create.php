@@ -12,6 +12,12 @@
  */
 class Options_Model_Options_Form_Create extends Zend_Form
 {
+    protected $_inputDecorators = array(
+        array('HtmlTag', array('tag' => 'dd', 'class'=>'control-group')),
+        array('Label', array('tag' => 'dt', 'class'=>'control-group')),
+        array('Errors', array('class'=>'help-inline')),
+    );
+
     /**
      * Maximum of name length
      * @var integer
@@ -29,7 +35,6 @@ class Options_Model_Options_Form_Create extends Zend_Form
      * @var integer
      */
     const MAX_NAMESPACE_LENGTH = 32;
-
 
     /**
      * Form initialization
@@ -61,8 +66,9 @@ class Options_Model_Options_Form_Create extends Zend_Form
     {
         $name = new Zend_Form_Element_Text('name');
         $name->setLabel('Name')
+             ->addDecorators($this->_inputDecorators)
                 ->setRequired(true)
-                ->setAttribs(array('style' => 'width:60%'))
+                ->setAttribs(array('class' => 'span3'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addValidator('regex', false, array('/([a-zA-Z0-9 _-])+/'))
@@ -87,8 +93,9 @@ class Options_Model_Options_Form_Create extends Zend_Form
     {
         $value = new Zend_Form_Element_Text('value');
         $value->setLabel('Value')
+                ->addDecorators($this->_inputDecorators)
                 ->setRequired(true)
-                ->setAttribs(array('style' => 'width:60%'))
+                ->setAttribs(array('class' => 'span3'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addValidator(
@@ -123,8 +130,9 @@ class Options_Model_Options_Form_Create extends Zend_Form
     {
         $value = new Zend_Form_Element_Select('type');
         $value->setLabel('Type')
+                ->addDecorators($this->_inputDecorators)
                 ->setRequired(true)
-                ->setAttribs(array('style' => 'width:60%'))
+                ->setAttribs(array('class' => 'span3'))
                 ->setMultiOptions(
                     array(
                          Options_Model_Options_Manager::TYPE_ARRAY =>
@@ -151,8 +159,9 @@ class Options_Model_Options_Form_Create extends Zend_Form
     {
         $namespace = new Zend_Form_Element_Text('namespace');
         $namespace->setLabel('Namespace')
+                ->addDecorators($this->_inputDecorators)
                 ->setRequired(true)
-                ->setAttribs(array('style' => 'width:60%'))
+                ->setAttribs(array('class' => 'span3'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addValidator(
@@ -180,6 +189,7 @@ class Options_Model_Options_Form_Create extends Zend_Form
     {
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Create');
+        $submit->setAttrib('class','btn btn-primary');
 
         return $submit;
     }

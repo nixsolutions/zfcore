@@ -2,5 +2,7 @@ mvc:
   admin:
     index:
       allow: admin
+    about:
+      allow: admin
     error:
       allow: admin

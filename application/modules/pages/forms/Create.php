@@ -6,14 +6,8 @@
  * @package Model
  * @subpackage Form
  */
-class Pages_Form_Create extends Zend_Form
+class Pages_Form_Create extends Core_Form
 {
-    protected $_inputDecorators = array(
-        array('HtmlTag', array('tag' => 'dd', 'class'=>'control-group')),
-        array('Label', array('tag' => 'dt', 'class'=>'control-group')),
-        array('Errors', array('class'=>'help-inline')),
-    );
-
     /**
      * Form initialization
      *
@@ -36,6 +30,7 @@ class Pages_Form_Create extends Zend_Form
                     )
                 )
             );
+        $title->setAttrib('class','span4');
 
         $alias = new Zend_Form_Element_Text('alias');
         $alias->setLabel('Alias(permalink):')
@@ -52,6 +47,7 @@ class Pages_Form_Create extends Zend_Form
                     )
                 )
             );
+        $alias->setAttrib('class','span4');
 
         $content = new Core_Form_Element_Redactor('content', array(
            'label' => 'Content:',
@@ -66,12 +62,12 @@ class Pages_Form_Create extends Zend_Form
                'fileDelete'   => '/pages/files/delete/?file=',
            )
         ));
-        $content->addDecorators($this->_inputDecorators);
+
 
         $keywords = new Zend_Form_Element_Text('keywords');
         $keywords->setLabel('Keywords:')
-                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(true)
+                 ->addDecorators($this->_inputDecorators)
                  ->addValidator(
                      'regex', false, array(
                          '/^[\w\s\,\.\-\_]+$/i', 'messages' => array(
@@ -80,11 +76,12 @@ class Pages_Form_Create extends Zend_Form
                          )
                      )
                  );
+        $keywords->setAttrib('class','span6');
 
         $description = new Zend_Form_Element_Text('description');
         $description->setLabel('Description:')
-                    ->addDecorators($this->_inputDecorators)
                     ->setRequired(true)
+                    ->addDecorators($this->_inputDecorators)
                     ->addValidator(
                         'regex', false, array(
                             '/^[\w\s\,\.\-\_]+$/i',
@@ -95,15 +92,12 @@ class Pages_Form_Create extends Zend_Form
                         )
                     );
 
+        $description->setAttrib('class','span6');
         $pid = new Zend_Form_Element_Hidden('pid');
-
-        $submit = new Zend_Form_Element_Submit('submit');
-        $submit->setLabel('Create');
-        $submit->setAttrib('class','btn btn-primary');
 
         $this->addElements(
             array(
-                $title, $alias, $content, $keywords, $description, $submit, $pid
+                $title, $alias, $content, $keywords, $description, $this->_submit(), $pid
             )
         );
     }

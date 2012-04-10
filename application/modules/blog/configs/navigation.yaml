@@ -6,13 +6,13 @@ dashboard:
     order: 50
     pages:
       create:
-        label: Create New Post
+        label: Add New Post
         module: blog
         controller: management
         action: create
         route: default
       edit:
-        label: Edit Posts
+        label: All Posts
         module: blog
         controller: management
         action: index

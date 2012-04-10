@@ -18,18 +18,18 @@ class Categories_ManagementController extends Core_Controller_Action_Crud
         /* Initialize */
         parent::init();
 
-        $this->_beforeGridFilter(
-            array(
-                '_addCheckBoxColumn',
-                '_addAllTableColumns',
-                //'_prepareGrid',
-                '_addEditColumn',
-                '_addDeleteColumn',
-                '_addCreateButton',
-                '_addDeleteButton',
-                '_showFilter'
-            )
-        );
+//        $this->_beforeGridFilter(
+//            array(
+//                '_addCheckBoxColumn',
+//                '_addAllTableColumns',
+//                //'_prepareGrid',
+//                '_addEditColumn',
+//                '_addDeleteColumn',
+//                '_addCreateButton',
+//                '_addDeleteButton',
+//                '_showFilter'
+//            )
+//        );
 
     }
 
@@ -69,5 +69,29 @@ class Categories_ManagementController extends Core_Controller_Action_Crud
     protected function _getTable()
     {
         return new Categories_Model_Category_Table();
+    }
+
+
+    /**
+     * custom grid filters
+     *
+     * @return void
+     */
+    protected function _prepareHeader()
+    {
+        $this->_addCreateButton();
+        $this->_addDeleteButton();
+    }
+
+    /**
+     * Prepare grid - remove not needed columns
+     *
+     * @return void
+     */
+    protected function _prepareGrid()
+    {
+        $this->_addAllTableColumns();
+        $this->_addEditColumn();
+        $this->_addDeleteColumn();
     }
 }

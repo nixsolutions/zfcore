@@ -39,6 +39,18 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
+     * custom grid filters
+     *
+     * @return void
+     */
+    protected function _prepareHeader()
+    {
+        $this->_addCreateButton();
+        $this->_addFilter('title', 'Title');
+        $this->_addFilter('alias', 'Alias');
+    }
+
+    /**
      * custom grid preparation
      *
      * @return void
@@ -52,20 +64,11 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
             ->setDefaultOrder('title')
             ->removeColumn('pid')
             ->removeColumn('user_id')
-            ->setColumn(
-                'content',
-                array(
-                    'formatter' => array(
-                        $this,
-                        array('stripTagsFormatter' ,'trimFormatter')
-                    )
-                )
-            )
+            ->removeColumn('content')
+            ->removeColumn('keywords')
         ;
 
         $this->_addEditColumn();
         $this->_addDeleteColumn();
-        $this->_addCreateButton();
-        $this->_showFilter();
     }
 }
