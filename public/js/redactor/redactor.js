@@ -1,6 +1,6 @@
 /*
-	Redactor v7.5.2
-	Updated 19.03.2012
+	Redactor v7.5.3
+	Updated 09.04.2012
 	
 	In English http://imperavi.com/
 	In Russian http://imperavi.ru/	
@@ -31,7 +31,7 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 			lang: 'ru', // ru, en, fr, ua, pt_br, pl, lt
 			air: false,
 			toolbar: 'main', // false, main, mini, air
-			path: '',
+			path: false,
 			focus: true,			
 			resize: true,
 			handler: false, // false or url
@@ -133,14 +133,17 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 		init: function()
 		{
 			// get path to langs, plugins and toolbars
-			$('script').each(function(i,s) 
-			{ 
-				if (s.src) 
-				{
-					if (s.src.match(/\/redactor\.min\.js.*$/)) this.opts.path = s.src.replace(/redactor\.min\.js(\?.*)?$/, ''); 
-					else if (s.src.match(/\/redactor\.js.*$/)) this.opts.path = s.src.replace(/redactor\.js(\?.*)?$/, ''); 
-				}
-			}.bind2(this));
+			if (this.opts.path === false)
+			{
+				$('script').each(function(i,s) 
+				{ 
+					if (s.src) 
+					{
+						if (s.src.match(/\/redactor\.min\.js.*$/)) this.opts.path = s.src.replace(/redactor\.min\.js(\?.*)?$/, ''); 
+						else if (s.src.match(/\/redactor\.js.*$/)) this.opts.path = s.src.replace(/redactor\.js(\?.*)?$/, ''); 
+					}
+				}.bind2(this));
+			}
 			
 			
 			// get dimensions
@@ -212,23 +215,21 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 		    {
 				var key = e.keyCode || e.which;
 
-				if (navigator.userAgent.indexOf('Safari'))
+				if (navigator.userAgent.indexOf('AppleWebKit') != -1)
 				{
 					if (e.shiftKey && key == 13)
 					{
 						if (e.preventDefault) e.preventDefault();
 					
-						var node1 = $('<span></span>')
+						var node1 = $('<span><br /></span>')
 						this.insertNodeAtCaret(node1.get(0));
-						
-						var node2 = $('<br>')
-						this.insertNodeAtCaret(node2.get(0));					
 						
 						this.setFocusNode(node1.get(0));
 						
 						return false;
 					}
 				}
+
 						
 		        if (key == 13 && !e.shiftKey && !e.ctrlKey && !e.metaKey)
 		        {
@@ -236,7 +237,7 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 		        	{
 		        		if (e.preventDefault) e.preventDefault();
 		        		
-			        	var node = $('<p>&nbsp;</p>')
+			        	var node = $('<p><br /></p>')
 			        	this.insertNodeAtCaret(node.get(0));
 			        	
 			        	return false;
@@ -258,7 +259,7 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 					{
 						if (e.preventDefault) e.preventDefault();
 						
-						var node = $('<p>&nbsp;</p>').get(0);
+						var node = $('<p><br /></p>').get(0);
 						$(this.doc.body).append(node);
 						this.setFocusNode(node);
 						
@@ -280,7 +281,7 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 						{
 						    newElement = $('<p>').append(element.clone().get(0).childNodes);
 						    element.replaceWith(newElement);		
-   						    newElement.html('&nbsp;');					    
+   						    newElement.html('<br />');					    
 						    this.setFocusNode(newElement.get(0));
 						    
 						    return false;				
@@ -415,7 +416,7 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 	   			if (this.opts.autoformat === true) 
 	   			{
 	   				if ($.browser.msie) html = "<p></p>";
-		   			else html = "<p>&nbsp;</p>";
+		   			else html = "<p><br /></p>";
 		   		}
 	   		}
 	   		
@@ -849,7 +850,7 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 				
  				if (typeof(s.separator) != 'undefined')
    				{
-					var li = $('<li class="separator"></li>');
+					var li = $('<li class="redactor_separator"></li>');
 	   				this.$toolbar.append(li);	   					
 	   			}
 				
@@ -974,7 +975,46 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 		{
 			if (this.$frame.get(0).contentWindow.getSelection) return this.$frame.get(0).contentWindow.getSelection();
 			else if (this.$frame.get(0).contentWindow.document.selection) return this.$frame.get(0).contentWindow.document.selection.createRange();
-		},			
+		},	
+		replaceSelection: function(html) 
+		{
+			var sel, range, node;
+			
+			if (typeof this.$frame.get(0).contentWindow.getSelection != "undefined") 
+			{
+			    // IE 9 and other non-IE browsers
+			    sel = window.getSelection();
+			
+			    // Test that the Selection object contains at least one Range
+			    if (sel.getRangeAt && sel.rangeCount) {
+			        // Get the first Range (only Firefox supports more than one)
+			        range = this.$frame.get(0).contentWindow.getSelection().getRangeAt(0);
+			        range.deleteContents();
+			
+			        // Create a DocumentFragment to insert and populate it with HTML
+			        // Need to test for the existence of range.createContextualFragment
+			        // because it's non-standard and IE 9 does not support it
+			        if (range.createContextualFragment) {
+			            node = range.createContextualFragment(html);
+			        } else {
+			            // In IE 9 we need to use innerHTML of a temporary element
+			            var div = this.$frame.get(0).contentWindow.document.createElement("div"), child;
+			            div.innerHTML = html;
+			            node = this.$frame.get(0).contentWindow.document.createDocumentFragment();
+			            while ( (child = div.firstChild) ) {
+			                node.appendChild(child);
+			            }
+			        }
+			        range.insertNode(node);
+			    }
+			} 
+			else if (this.$frame.get(0).contentWindow.document.selection && this.$frame.get(0).contentWindow.document.selection.type != "Control") 
+			{
+			    // IE 8 and below
+			    range = this.$frame.get(0).contentWindow.document.selection.createRange();
+			    range.pasteHTML(html);
+			}
+		},				
 		saveSelection: function() 
 		{
 			if (window.getSelection) 
@@ -1367,16 +1407,17 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 		{
 			top.location.href = this.opts.fileDownload + file_id;				
 		},			
-		
- 
-  
+
+
         // INSERT IMAGE 
         imageEdit: function(e)
         {
 			var handler = function()
 			{
 				var elObj = $(e.target);
+				
 				$('#redactor_file_alt').val(elObj.attr('alt'));
+				$('#redactor_image_edit_src').attr('href', elObj.attr('src'));				
 				$('#redactor_form_image_align').val(elObj.css('float'));
 				$('#redactor_image_edit_delete').click(function() { this.deleteImage(e.target); }.bind2(this));
 				$('#redactorSaveBtn').click(function() { this.imageSave(e.target); }.bind2(this)); 
@@ -1385,6 +1426,7 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 
 			redactorActive = this;      
             this.modalInit(RLANG.image, this.opts.path + 'plugins/image_edit.html', 380, 290, handler);
+            
         },
         imageSave: function(el)
         {
@@ -1503,30 +1545,30 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 		// INSERT LINK				
 		showLink: function()
 		{
-            if (jQuery.browser.msie) 
-            {
-				this.spanid = Math.floor(Math.random() * 99999);            
-            	this.execCommand('inserthtml', '<span id="span' + this.spanid + '"></span>');		
-            }
-            		
 			redactorActive = this;
 
 			var handler = function()
 			{
 				var sel = this.getSelection();
+				
 				if ($.browser.msie)
 				{
-						var temp = sel.htmlText.match(/href="(.*?)"/gi);
-						if (temp != null)
-						{
-							temp = new String(temp);
-							temp = temp.replace(/href="(.*?)"/gi, '$1');
-						}
-
-  					 	var text = sel.text;
-						if (temp != null) var url = temp;
-						else  var url = '';
-						var title = '';
+					if (this.getParentNodeName() == 'A')
+					{
+						this.insert_link_node = $(this.getParentNode());
+						var text = this.insert_link_node.text();
+						var url = this.insert_link_node.attr('href');						
+					}
+					else
+					{
+						var text = sel.text;
+						var url = '';
+						
+						this.spanid = Math.floor(Math.random() * 99999);
+						
+						if (sel.text != '') this.replaceSelection('<span id="span' + this.spanid + '">' + sel.text + '</span>');
+						else this.execCommand('inserthtml', '<span id="span' + this.spanid + '"></span>');
+					}
 				}
 				else
 				{
@@ -1535,7 +1577,6 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 						var url = sel.anchorNode.parentNode.href;
 						var text = sel.anchorNode.parentNode.text;
 						if (sel.toString() == '') this.insert_link_node = sel.anchorNode.parentNode
-
 					}
 					else
 					{
@@ -1560,36 +1601,29 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 			if ($('#redactor_link_id_url').get(0).checked)  var mailto = '';
 			else var mailto = 'mailto:';
 			
-			var a = '<a href="' + mailto + $('#redactor_link_url').val() + '">' + value + '</a> ';
+			var a = '<a href="' + mailto + $('#redactor_link_url').val() + '">' + $.trim(value) + '</a> ';
 	
 			if (a)
 			{
-				if (this.insert_link_node)
+				if (redactorActive.insert_link_node)
 				{
-					$(this.insert_link_node).text(value);
-					$(this.insert_link_node).attr('href', $('#redactor_link_url').val());
-					
-					this.modalClose();
+					$(redactorActive.insert_link_node).text(value);
+					$(redactorActive.insert_link_node).attr('href', $('#redactor_link_url').val());								
 				}
 				else
 				{
-        		    if ($.browser.msie)
-		            {       
-                		$(redactorActive.doc.getElementById('span' + redactorActive.spanid)).after(a);
-        		        $(redactorActive.doc.getElementById('span' + redactorActive.spanid)).remove();
+ 					if ($.browser.msie)
+		            {     
+		            	$(redactorActive.doc.getElementById('span' + redactorActive.spanid)).replaceWith(a);
 		            }   				
 		            else 
 		            {	
-		            	redactorActive.insertNodeAtCaret($(a).get(0));
-		            	var node = $('<span></span>').get(0);
-		            	redactorActive.insertNodeAtCaret(node);
-		            	redactorActive.setFocusNode(node);
-		            	//redactorActive.execCommand('inserthtml', a);
-		            }
+				      	redactorActive.execCommand('inserthtml', a);
+		           }
 				}
 			}
 			
-			this.modalClose();
+			redactorActive.modalClose();
 		},		
 		
 		// INSERT VIDEO		
@@ -1652,11 +1686,11 @@ var $table, $table_tr, $table_td, $tbody, $thead, $current_tr, $current_td;
 			{
 				this.$el.hide();			
 				
-				this.setCodeEditor(this.getCodeTextarea(false));	
+				this.setCodeEditor(this._clean(this.getCodeTextarea(false)));	
 									
 				this.$frame.show();
 				
-				if ($(this.doc.body).html() == '') this.setCodeEditor('<p>&nbsp;</p>');					
+				if ($(this.doc.body).html() == '') this.setCodeEditor('<p><br /></p>');					
 				
 				this.focus();
 				

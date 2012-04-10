@@ -12,6 +12,8 @@ var RLANG = {
 	code: 'C&oacute;digo',
 	header1: 'T&iacute;tulo 1',
 	header2: 'T&iacute;tulo 2',
+	header3: 'T&iacute;tulo 3',
+	header4: 'T&iacute;tulo 4',	
 	format: 'Formato',
 	bold:  'Negrito',
 	italic: 'It&aacute;lico',

@@ -59,8 +59,9 @@ body .redactor_box_fullscreen .redactor_resizer {
 	position: relative;
 	z-index: 1002;
 	height: 30px;
-	margin: 0;
-	line-height: 0;
+	margin: 0 !important;
+	padding: 0 !important;
+	line-height: 0 !important;
 	list-style: none;
 	font-size: 0;
 	background: url(../i/bg_toolbar.png) repeat-x bottom #f4f4f4;
@@ -73,7 +74,7 @@ body .redactor_box_fullscreen .redactor_resizer {
 	padding: 1px;
 	padding-right: 0;
 }
-.redactor_toolbar li.separator {
+.redactor_toolbar li.redactor_separator {
 	float: left;
 	background: url(../i/separator.png) center no-repeat;
 	width: 2px;
@@ -175,7 +176,7 @@ body .redactor_toolbar li a.redactor_btn_normalscreen span		 { background-positi
 	left: 0;
 	z-index: 1003;
 	position: absolute;
-	width: 180px;
+	width: 200px;
 	background-color: #fff;
 	border: 1px solid #ccc;
 	font-size: 13px;

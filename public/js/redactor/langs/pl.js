@@ -12,6 +12,8 @@ var RLANG = {
 	code: 'Kod źródłowy',
 	header1: 'Nagłówek 1',
 	header2: 'Nagłówek 2',
+	header3: 'Nagłówek 3',
+	header4: 'Nagłówek 4',	
 	format: 'Format',
 	bold:  'Pogrubiony',
 	italic: 'Pochylony',

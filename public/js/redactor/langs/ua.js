@@ -12,6 +12,8 @@ var RLANG = {
 	code: 'Код',
 	header1: 'Заголовок 1',
 	header2: 'Заголовок 2',
+	header3: 'Заголовок 3',
+	header4: 'Заголовок 4',		
 	format: 'Формат',
 	bold:  'Жирний',
 	italic: 'Похилий',

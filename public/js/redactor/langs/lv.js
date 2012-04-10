@@ -12,6 +12,8 @@ var RLANG = {
 	code: 'Kods',
 	header1: 'Virsraksts 1',
 	header2: 'Virsraksts 2',
+	header3: 'Virsraksts 3',
+	header4: 'Virsraksts 4',		
 	format: 'Formāts',
 	bold:  'Pustrekns',
 	italic: 'Slīps',
