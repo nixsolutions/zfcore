@@ -285,7 +285,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     /**
      * add radio column to grid
      *
-     * @return void
+     * @return Core_Controller_Action_Crud
      */
     public function _addCheckBoxColumn()
     {
@@ -293,7 +293,26 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
             'check',
             array(
                 'name'      => '<input type="checkbox" id="selectAllCheckbox"/>',
-                'formatter' => array($this, 'checkBoxLinkFormatter')
+                'formatter' => array($this, 'checkBoxLinkFormatter'),
+                'attribs'   => array('width' => '14px')
+            )
+        );
+        return $this;
+    }
+    /**
+     * add column for created date
+     *
+     * @return Core_Controller_Action_Crud
+     */
+    public function _addCreatedColumn()
+    {
+        $this->_grid->setColumn(
+            'created',
+            array(
+                'name'  => 'Created',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'created',
+                'attribs' => array('width'=>'120px')
             )
         );
         return $this;
@@ -302,7 +321,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     /**
      * add all table columns to grid
      *
-     * @return void
+     * @return Core_Controller_Action_Crud
      */
     public function _addAllTableColumns()
     {
@@ -323,7 +342,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     /**
      * add edit column to grid
      *
-     * @return void
+     * @return Core_Controller_Action_Crud
      */
     public function _addEditColumn()
     {
@@ -331,7 +350,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
             'edit',
             array(
                 'name'      => 'Edit',
-                'formatter' => array($this, 'editLinkFormatter')
+                'formatter' => array($this, 'editLinkFormatter'),
+                'attribs'   => array('width' => '60px')
             )
         );
         return $this;
@@ -340,7 +360,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     /**
      * add delete column to grid
      *
-     * @return void
+     * @return Core_Controller_Action_Crud
      */
     public function _addDeleteColumn()
     {
@@ -348,7 +368,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
             'delete',
             array(
                 'name'      => 'Delete',
-                'formatter' => array($this, 'deleteLinkFormatter')
+                'formatter' => array($this, 'deleteLinkFormatter'),
+                'attribs'   => array('width' => '60px')
             )
         );
         return $this;
@@ -364,7 +385,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function editLinkFormatter($value, $row)
     {
-        $link = '<a href="%s" class="btn">Edit</a>';
+        $link = '<a href="%s" class="btn span1">Edit</a>';
         $url = $this->getHelper('url')->url(
             array(
                 'action' => 'edit',
@@ -385,7 +406,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function deleteLinkFormatter($value, $row)
     {
-        $link = '<a href="%s" class="btn btn-danger">Delete</a>';
+        $link = '<a href="%s" class="btn btn-danger span1">Delete</a>';
         $url = $this->getHelper('url')->url(
             array(
                 'action' => 'delete',

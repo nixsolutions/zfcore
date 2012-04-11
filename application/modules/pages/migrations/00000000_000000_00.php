@@ -18,7 +18,7 @@ class Pages_Migration_00000000_000000_00 extends Core_Migration_Abstract
               `description` TEXT,
               `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
               `updated` TIMESTAMP NOT NULL DEFAULT '2000-01-01 00:00:00',
-              `user_id` BIGINT(20) NOT NULL DEFAULT '1',
+              `userId` BIGINT(20) NOT NULL DEFAULT '1',
               PRIMARY KEY  (`id`,`pid`),
               UNIQUE KEY `unique` (`pid`,`alias`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8"

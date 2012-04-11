@@ -16,6 +16,10 @@ defined('APPLICATION_ENV')
 defined('PUBLIC_PATH')
     || define('PUBLIC_PATH', dirname(__FILE__));
 
+// Define short alias for DIRECTORY_SEPARATOR
+defined('DS')
+    || define('DS', DIRECTORY_SEPARATOR);
+
 // Ensure library/ is on include_path
 set_include_path(
     implode(
@@ -44,7 +48,7 @@ require_once 'Zend/Application.php';
 
 try {
     $config = APPLICATION_PATH . '/configs/application.yaml';
-/*
+
     if (realpath($config)) {
         require_once 'Zend/Cache.php';
         $frontendOptions = array("lifetime" => 60*60*24,
@@ -76,7 +80,7 @@ try {
     } else {
         $config .= '.dist';
     }
-*/
+
     // Create application, bootstrap, and run
     $application = new Zend_Application(
         APPLICATION_ENV,

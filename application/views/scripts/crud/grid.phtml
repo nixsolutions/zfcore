@@ -5,11 +5,18 @@
         <tr>
             <?php foreach ($this->grid->getHeaders() as $header): ?>
                 <?php
-                    $attrs = array();
-                    $attrs['class'] = 'header';
+                    $attrs = $header->attribs;
+
+                    if (isset($attrs['class'])) {
+                        $attrs['class'] .= ' header';
+                    } else {
+                        $attrs['class'] = 'header';
+                    }
+
                     if ($header->isOrdered) {
                         $attrs['class'] .= $header->orderDirection == 'ASC' ? ' down' : ' up';
                     }
+
                     if ($header->type === Core_Grid::TYPE_DATA) {
                         $attrs['class'] .= ' orderable';
                         $attrs['data-column'] = $header->id;

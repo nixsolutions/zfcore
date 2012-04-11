@@ -1,7 +1,7 @@
 <?php
 $this->headScript()->appendFile($this->baseUrl('/js/grid.js'));
 ?>
-<div class="form-inline">
+<div class="grid-controls form-inline">
     <?php echo $this->placeholder('grid_buttons') ?>
     <?php if (sizeof($this->filters)): ?>
         <form action="" class="span8">

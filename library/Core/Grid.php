@@ -67,6 +67,7 @@ class Core_Grid extends Core_Grid_Abstract
                 $header->type = $this->_getColumnType($columnId);
                 $header->isOrdered = isset($column['order']) && $column['order'] ? true : false;
                 $header->orderDirection = isset($column['order']) ? $column['order'] : '';
+                $header->attribs = isset($column['attribs']) ? $column['attribs'] : array();
                 $this->_headers[] = $header;
             }
         }

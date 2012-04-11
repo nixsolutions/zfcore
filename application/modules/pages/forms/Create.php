@@ -57,6 +57,7 @@ class Pages_Form_Create extends Core_Form
            'filters' => array('StringTrim'),
            'redactor' => array(
                'imageUpload'  => '/pages/images/upload/', // url or false
+               'imageGetJson' => '/pages/images/list/',
                'fileUpload'   => '/pages/files/upload/',
                'fileDownload' => '/pages/files/download/?file=',
                'fileDelete'   => '/pages/files/delete/?file=',

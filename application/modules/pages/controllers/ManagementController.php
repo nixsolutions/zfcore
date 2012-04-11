@@ -39,6 +39,21 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
+     * Declare the source used to fetch the comments
+     *
+     * @return Core_Grid_Adapter_AdapterInterface
+     */
+    protected function _getSource()
+    {
+        return new Core_Grid_Adapter_Select(
+            $this->_getTable()
+                 ->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+                 ->setIntegrityCheck(false)
+                 ->joinLeft('users','users.id=pages.userId', array('login'))
+        );
+    }
+
+    /**
      * custom grid filters
      *
      * @return void
@@ -46,6 +61,7 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
     protected function _prepareHeader()
     {
         $this->_addCreateButton();
+        $this->_addDeleteButton();
         $this->_addFilter('title', 'Title');
         $this->_addFilter('alias', 'Alias');
     }
@@ -57,17 +73,38 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _prepareGrid()
     {
-        $this->_addAllTableColumns();
+        $this->_addCheckBoxColumn();
+        $this->_grid->setColumn(
+                                'login',
+                                array(
+                                    'name'  => 'Author',
+                                    'type'  => Core_Grid::TYPE_DATA,
+                                    'index' => 'login',
+                                    'attribs' => array('width'=>'120px')
+                                )
+                            );
 
+        $this->_grid->setColumn(
+                        'title',
+                        array(
+                            'name'  => 'Title',
+                            'type'  => Core_Grid::TYPE_DATA,
+                            'index' => 'title',
+                            'formatter' => array($this, 'trimFormatter'),
+                        )
+                    );
 
-        $this->_grid
-            ->setDefaultOrder('title')
-            ->removeColumn('pid')
-            ->removeColumn('user_id')
-            ->removeColumn('content')
-            ->removeColumn('keywords')
-        ;
+        $this->_grid->setColumn(
+                        'description',
+                        array(
+                            'name'  => 'Description',
+                            'type'  => Core_Grid::TYPE_DATA,
+                            'index' => 'description',
+                            'formatter' => array($this, 'trimFormatter'),
+                        )
+                    );
 
+        $this->_addCreatedColumn();
         $this->_addEditColumn();
         $this->_addDeleteColumn();
     }

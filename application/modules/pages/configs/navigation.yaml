@@ -17,12 +17,6 @@ dashboard:
         controller: management
         action: index
         route: default
-      uploads:
-        label: Uploads Manager
-        module: pages
-        controller: uploads
-        action: index
-        route: default
 default:
   terms:
     label: Terms of use

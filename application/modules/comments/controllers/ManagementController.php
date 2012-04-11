@@ -30,21 +30,6 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
         $this->_alias = $aliasManager->getDbTable()
             ->find($this->getRequest()->getParam('alias'))
             ->current();
-        
-        // setup the grid
-//        $this->_beforeGridFilter(
-//            array(
-//                '_addCheckBoxColumn',
-//                '_addAllTableColumns',
-//                '_prepare',
-//                '_addEditColumn',
-//                '_addDeleteColumn',
-//                '_addBackButton',
-//                '_addDeleteButton',
-//                '_showFilter'
-//            )
-//        );
-
     }
     
     /**
@@ -56,9 +41,11 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
     {
         return new Core_Grid_Adapter_Select(
             $this->_getTable()
-            ->select()
-            ->where('aliasId = ?', $this->_alias->id)
-            ->order('created DESC')
+                 ->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+                 ->setIntegrityCheck(false)
+                 ->joinLeft('users','users.id=comments.userId', array('login'))
+                 ->where('comments.aliasId = ?', $this->_alias->id)
+                 ->order('comments.created DESC')
         );
     }
     
@@ -109,7 +96,10 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _prepareHeader()
     {
+        $this->_addBackButton();
         $this->_addCreateButton();
+        $this->_addDeleteButton();
+        $this->_addFilter('body', 'Text');
     }
 
     /**
@@ -119,8 +109,28 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _prepareGrid()
     {
-        $this->_addAllTableColumns();
-        $this->_grid->removeColumn('aliasId');
+        $this->_addCheckBoxColumn();
+        $this->_grid->setColumn(
+                        'login',
+                        array(
+                            'name'  => 'Author',
+                            'type'  => Core_Grid::TYPE_DATA,
+                            'index' => 'login',
+                            'attribs' => array('width'=>'120px')
+                        )
+                    );
+        $this->_grid->setColumn(
+                        'body',
+                        array(
+                            'name'  => 'Text',
+                            'type'  => Core_Grid::TYPE_DATA,
+                            'index' => 'body',
+                            'formatter' => array($this, 'trimFormatter'),
+                        )
+                    );
+        $this->_addCreatedColumn();
+        $this->_addEditColumn();
+        $this->_addDeleteColumn();
         
         if ($this->_alias && !$this->_alias->isTitleDisplayed()) {
             $this->_grid->removeColumn('title');
@@ -134,7 +144,7 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _addBackButton()
     {
-        $link = '<a href="%s" class="button">&larr; Back</a>';
+        $link = '<a href="%s" class="btn span1">&larr; Back</a>';
         $url = $this->getHelper('url')->url(
             array(
                 'module' => 'comments', 
