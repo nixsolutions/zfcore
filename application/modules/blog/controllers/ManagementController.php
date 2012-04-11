@@ -53,6 +53,22 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
+     * Declare the source used to fetch the authors
+     *
+     * @return Core_Grid_Adapter_AdapterInterface
+     */
+    protected function _getSource()
+    {
+        return new Core_Grid_Adapter_Select(
+            $this->_getTable()
+                 ->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+                 ->setIntegrityCheck(false)
+                 ->joinLeft('users','users.id=blog_post.userId', array('login'))
+                 ->joinLeft('categories','categories.id=blog_post.categoryId', array('category'=>'title'))
+        );
+    }
+
+    /**
      * _getTable
      *
      * return manager for scaffolding
@@ -85,20 +101,84 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
     protected function _prepareGrid()
     {
         $this->_addCheckBoxColumn();
-        $this->_addAllTableColumns();
-        $this->_grid
-             ->removeColumn('alias')
-             ->removeColumn('body')
-             ->removeColumn('userId')
-             ->removeColumn('categoryId')
-             ->removeColumn('views')
-             ->removeColumn('replies')
-             ->removeColumn('created')
-             ->removeColumn('updated')
-             ->removeColumn('published')
-             ->removeColumn('teaser');
+        $this->_grid->setColumn(
+                        'title',
+                        array(
+                            'name'  => 'Title',
+                            'type'  => Core_Grid::TYPE_DATA,
+                            'index' => 'title',
+                            'formatter' => array($this, 'titleFormatter'),
+                        )
+                    );
+        $this->_grid->setColumn(
+                                'login',
+                                array(
+                                    'name'  => 'Author',
+                                    'type'  => Core_Grid::TYPE_DATA,
+                                    'index' => 'login',
+                                    'attribs' => array('width'=>'120px')
+                                )
+                            );
+        $this->_grid->setColumn(
+                                'category',
+                                array(
+                                    'name'  => 'Category',
+                                    'type'  => Core_Grid::TYPE_DATA,
+                                    'index' => 'category',
+                                    'attribs' => array('width'=>'120px')
+                                )
+                            );
+        $this->_grid->setColumn(
+                                'comments',
+                                array(
+                                    'name'  => 'Comments',
+                                    'type'  => Core_Grid::TYPE_DATA,
+                                    'index' => 'comments',
+                                    'attribs' => array('width'=>'50px'),
+                                    'formatter' => array($this, 'badgeFormatter'),
+                                )
+                            );
+        $this->_addCreatedColumn();
+        $this->_addEditColumn();
+        $this->_addDeleteColumn();
     }
 
 
+
+    /**
+     * title link formatter
+     *
+     * @param $value
+     * @param $row
+     * @return string
+     */
+    public function titleFormatter($value, $row)
+    {
+        $link = '<a href="%s">%s</a>';
+        $url = $this->getHelper('url')->url(
+            // blog/post/:alias
+            array(
+                'module' => 'blog',
+                'controller' => 'post',
+                'alias' => $row['alias'],
+            ),
+            'blogpost'
+        );
+
+        return sprintf($link, $url, $value);
+    }
+
+    /**
+     * comments count formatter
+     *
+     * @param $value
+     * @param $row
+     * @return string
+     */
+    public function badgeFormatter($value, $row)
+    {
+        $badge = '<span class="badge badge-info">%s</span>';
+        return sprintf($badge, $value);
+    }
 }
 

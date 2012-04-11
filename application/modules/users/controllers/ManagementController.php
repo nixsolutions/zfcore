@@ -149,24 +149,106 @@ class Users_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _prepareGrid()
     {
-        $this->_addAllTableColumns();
-        $this->_grid
-             ->removeColumn('password')
-             ->removeColumn('salt')
-             ->removeColumn('avatar')
-             ->removeColumn('created')
-             ->removeColumn('updated')
-             ->removeColumn('logined')
-             ->removeColumn('ip')
-             ->removeColumn('count')
-             ->removeColumn('hashCode')
-             ->removeColumn('inform')
-             ->removeColumn('fbUid')
-             ->removeColumn('twId')
-             ->removeColumn('gId');
 
+        $this->_grid->setColumn(
+                                'login',
+                                array(
+                                    'name'  => 'Username',
+                                    'type'  => Core_Grid::TYPE_DATA,
+                                    'index' => 'login',
+                                    'attribs' => array('width'=>'120px')
+                                )
+                            );
+        $this->_grid->setColumn(
+                                'lastname',
+                                array(
+                                    'name'  => 'Name',
+                                    'type'  => Core_Grid::TYPE_DATA,
+                                    'index' => 'lastname',
+                                    'formatter' => array($this, 'nameFormatter')
+                                )
+                            );
+        $this->_grid->setColumn(
+                                'email',
+                                array(
+                                    'name'  => 'Email',
+                                    'type'  => Core_Grid::TYPE_DATA,
+                                    'index' => 'email',
+                                    'attribs' => array('width'=>'180px'),
+                                    'formatter' => array($this, 'emailFormatter')
+                                )
+                            );
+
+        $this->_grid->setColumn(
+                                'role',
+                                array(
+                                    'name'  => 'Role',
+                                    'type'  => Core_Grid::TYPE_DATA,
+                                    'index' => 'role',
+                                    'attribs' => array('width'=>'80px')
+                                )
+                            );
+        $this->_grid->setColumn(
+                                'status',
+                                array(
+                                    'name'  => 'Status',
+                                    'type'  => Core_Grid::TYPE_DATA,
+                                    'index' => 'status',
+                                    'attribs' => array('width'=>'80px'),
+                                    'formatter' => array($this, 'statusFormatter')
+                                )
+                            );
 
         $this->_addEditColumn();
+        $this->_addDeleteColumn();
     }
 
+    /**
+     * @param $value
+     * @param $row
+     * @return string
+     */
+    public function nameFormatter($value, $row)
+    {
+        return $row['firstname'] .' '. $row['lastname'];
+    }
+    
+    /**
+     * @param $value
+     * @param $row
+     * @return string
+     */
+    public function emailFormatter($value, $row)
+    {
+        return "<a href=\"mailto:$value\" title=\"Send email\">$value</a>";
+    }
+
+    /**
+     * badge formatter
+     *
+     * @param $value
+     * @param $row
+     * @return string
+     */
+    public function statusFormatter($value, $row)
+    {
+        switch ($row['status']) {
+            case (Users_Model_User::STATUS_REGISTER):
+                $badge = '<span class="badge badge-warning">%s</span>';
+                break;
+            case (Users_Model_User::STATUS_BLOCKED):
+                $badge = '<span class="badge badge-error">%s</span>';
+                break;
+            case (Users_Model_User::STATUS_REMOVED):
+                $badge = '<span class="badge badge-inverse">%s</span>';
+                break;
+            case (Users_Model_User::STATUS_ACTIVE):
+            default:
+                $badge = '<span class="badge badge-info">%s</span>';
+                break;
+        }
+
+
+        return sprintf($badge, $value);
+    }
 }

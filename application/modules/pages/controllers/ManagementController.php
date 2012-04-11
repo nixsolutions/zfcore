@@ -39,7 +39,7 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
     }
 
     /**
-     * Declare the source used to fetch the comments
+     * Declare the source used to fetch the authors
      *
      * @return Core_Grid_Adapter_AdapterInterface
      */
@@ -74,15 +74,6 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
     protected function _prepareGrid()
     {
         $this->_addCheckBoxColumn();
-        $this->_grid->setColumn(
-                                'login',
-                                array(
-                                    'name'  => 'Author',
-                                    'type'  => Core_Grid::TYPE_DATA,
-                                    'index' => 'login',
-                                    'attribs' => array('width'=>'120px')
-                                )
-                            );
 
         $this->_grid->setColumn(
                         'title',
@@ -93,6 +84,15 @@ class Pages_ManagementController extends Core_Controller_Action_Crud
                             'formatter' => array($this, 'trimFormatter'),
                         )
                     );
+        $this->_grid->setColumn(
+                                'login',
+                                array(
+                                    'name'  => 'Author',
+                                    'type'  => Core_Grid::TYPE_DATA,
+                                    'index' => 'login',
+                                    'attribs' => array('width'=>'120px')
+                                )
+                            );
 
         $this->_grid->setColumn(
                         'description',

@@ -6,13 +6,13 @@ dashboard:
     order: 96
     pages:
       create:
-        label: Create Category
+        label: Add New
         module: categories
         controller: management
         action: create
         route: default
       edit:
-        label: Edit Category
+        label: All Categories
         module: categories
         controller: management
         action: index
