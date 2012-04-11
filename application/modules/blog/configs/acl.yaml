@@ -6,5 +6,7 @@ mvc:
       allow: guest
     rss:
       allow: guest
+    images:
+      allow: admin
     management:
       allow: admin

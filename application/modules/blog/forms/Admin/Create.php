@@ -42,7 +42,8 @@ class Blog_Form_Admin_Create extends Core_Form
            'required' => true,
            'filters' => array('StringTrim'),
            'redactor' => array(
-               'imageUpload'  => false, // url or false
+               'imageUpload'  => '/blog/images/upload/', // url or false
+               'imageGetJson' => '/blog/images/list/',
                'fileUpload'   => false,
            )
         ));

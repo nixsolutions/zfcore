@@ -6,7 +6,7 @@ dashboard:
     order: 1
     pages:
       create:
-        label: Add New
+        label: Add New Page
         module: pages
         controller: management
         action: create

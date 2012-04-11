@@ -138,7 +138,7 @@ class Core_Controller_Action_Images extends Core_Controller_Action
                 // create thumb
                 $this->_createThumb($fullFilePath);
 
-                echo "<img src='/$publicPath/$renameFile' alt='' />";
+                echo "<img src='$publicPath/$renameFile' alt='' />";
             } catch (Exception $e) {
                 $this->_forwardError($e->getMessage());
             }

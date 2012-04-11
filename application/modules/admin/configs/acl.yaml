@@ -4,5 +4,7 @@ mvc:
       allow: admin
     about:
       allow: admin
+    files:
+      allow: admin
     error:
       allow: admin
