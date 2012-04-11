@@ -6,7 +6,7 @@
  * @package    Pages
  * @subpackage Controller
  */
-class Pages_FilesController extends Core_Controller_Action
+class Admin_FilesController extends Core_Controller_Action
 {
     /**
      * upload

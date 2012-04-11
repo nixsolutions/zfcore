@@ -11,25 +11,8 @@
 class Mail_ManagementController extends Core_Controller_Action_Crud
 {
     /**
-     * init environment
-     */
-    public function init()
-    {
-        /* Initialize */
-        parent::init();
-
-        $this->_beforeGridFilter(
-            array(
-                '_addAllTableColumns',
-                '_getCustomChanges',
-                '_addEditColumn',
-                '_addDeleteColumn'
-            )
-        );
-    }
-
-    /**
      * send action
+     * @return void
      */
     public function sendAction()
     {
@@ -45,7 +28,7 @@ class Mail_ManagementController extends Core_Controller_Action_Crud
                 $this->_flashMessenger->addMessage('Mail Send');
                 $this->_helper->getHelper('redirector')->direct('index');
             } catch (Exception $e) {
-                return $this->_forward(
+                $this->_forward(
                     'internal',
                     'error',
                     'admin',
@@ -55,7 +38,7 @@ class Mail_ManagementController extends Core_Controller_Action_Crud
         }
         if ($alias = $this->_getParam('alias')) {
             if (!$defaults = $this->_getTable()->getByAlias($alias)) {
-                return $this->_forward(
+                $this->_forward(
                     'internal',
                     'error',
                     'admin',
@@ -72,7 +55,7 @@ class Mail_ManagementController extends Core_Controller_Action_Crud
      *
      * return dbTable for scaffolding
      *
-     * @return  Core_Model_Abstract
+     * @return  Mail_Model_Templates_Table
      */
     protected function _getTable()
     {
@@ -90,20 +73,24 @@ class Mail_ManagementController extends Core_Controller_Action_Crud
     /**
      * Get mail edit form
      *
-     * @return object Model_Form_Admin_Mail_Edit
+     * @return Mail_Form_Template_Edit
      */
     protected function _getEditForm()
     {
         return new Mail_Form_Template_Edit();
     }
 
-    public function _getCustomChanges()
+    /**
+     *
+     */
+    protected function _prepareGrid()
     {
-        $this->_grid
-            ->removeColumn('bodyHtml')
-            ->removeColumn('fromEmail')
-            ->removeColumn('fromName');
+        $this->_addAllTableColumns();
+        $this->_grid->removeColumn('bodyHtml')
+                    ->removeColumn('bodyText')
+                    ->removeColumn('fromEmail')
+                    ->removeColumn('fromName');
+        $this->_addEditColumn();
     }
-
 }
 

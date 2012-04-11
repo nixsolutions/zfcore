@@ -58,9 +58,10 @@ class Blog_Form_Admin_Create extends Core_Form
            'filters' => array('StringTrim'),
            'redactor' => array(
                'imageUpload'  => '/blog/images/upload/', // url or false
-               'fileUpload'   => '/blog/files/upload/',
-               'fileDownload' => '/blog/files/download/?file=',
-               'fileDelete'   => '/blog/files/delete/?file=',
+               'imageGetJson' => '/blog/images/list/',
+               'fileUpload'   => '/admin/files/upload/',
+               'fileDownload' => '/admin/files/download/?file=',
+               'fileDelete'   => '/admin/files/delete/?file=',
            )
         ));
         $body->addDecorators($this->_inputDecorators);

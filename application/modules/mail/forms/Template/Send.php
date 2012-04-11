@@ -30,7 +30,6 @@ class Mail_Form_Template_Send extends Mail_Form_Template_Create
                 $this->_submit()
             )
         );
-        return $this;
     }
 
     /**

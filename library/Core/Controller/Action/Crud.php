@@ -406,7 +406,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     public function deleteLinkFormatter($value, $row)
     {
-        $link = '<a href="%s" class="btn btn-danger span1">Delete</a>';
+        $link = '<a href="%s" class="btn btn-danger span1 delete">Delete</a>';
         $url = $this->getHelper('url')->url(
             array(
                 'action' => 'delete',

@@ -6,7 +6,7 @@ dashboard:
     order: 98
     pages:
       edit:
-        label: Edit Templates
+        label: All Templates
         module: mail
         controller: management
         action: index

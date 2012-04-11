@@ -58,12 +58,13 @@ class Pages_Form_Create extends Core_Form
            'redactor' => array(
                'imageUpload'  => '/pages/images/upload/', // url or false
                'imageGetJson' => '/pages/images/list/',
-               'fileUpload'   => '/pages/files/upload/',
-               'fileDownload' => '/pages/files/download/?file=',
-               'fileDelete'   => '/pages/files/delete/?file=',
+               'fileUpload'   => '/admin/files/upload/',
+               'fileDownload' => '/admin/files/download/?file=',
+               'fileDelete'   => '/admin/files/delete/?file=',
            )
         ));
 
+        $content->setRequired(true);
 
         $keywords = new Zend_Form_Element_Text('keywords');
         $keywords->setLabel('Keywords:')
