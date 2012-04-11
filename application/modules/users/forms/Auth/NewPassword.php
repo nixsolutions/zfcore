@@ -39,6 +39,7 @@ class Users_Form_Auth_NewPassword extends Zend_Form
 
         $change = new Zend_Form_Element_Submit('change');
         $change->setLabel('Change');
+        $change->setAttrib('class', 'btn btn-primary');
 
         $this->addElements(array($passw, $passwAgain, $change));
 

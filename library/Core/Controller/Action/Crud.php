@@ -37,7 +37,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
      */
     protected $_grid;
 
-    protected $_limit = 20;
+    protected $_limit = 15;
 
     /**
      * @var array

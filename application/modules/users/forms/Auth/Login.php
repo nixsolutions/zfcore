@@ -5,8 +5,6 @@
  * @category Application
  * @package Model
  * @subpackage Form
- *
- * @version  $Id: Login.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
 class Users_Form_Auth_Login extends Zend_Form
 {
@@ -34,6 +32,7 @@ class Users_Form_Auth_Login extends Zend_Form
 
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Login');
+        $submit->setAttrib('class', 'btn btn-primary');
 
         $this->addElements(array($username, $password, $rememberMe, $submit));
 

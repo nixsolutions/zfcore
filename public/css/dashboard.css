@@ -98,34 +98,7 @@ body {
 	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 	padding-bottom: 20px;
 }
-
-body > section {
-    width:90%;
-    margin:0 auto;
-	background:#fff;
-	border: 1px solid #555;
-	-webkit-border-radius: 3px;
-	   -moz-border-radius: 3px;
-			border-radius: 3px;
-}
 /*/Main*/
-
-/*/Forms elements*/
-/*Loader*/
-.navbar .noactive{
-    background: #777;
-	-moz-box-shadow:inset 0 0 10px #333;
-	-webkit-box-shadow:inset 0 0 10px #333;
-	box-shadow:inset 0 0 10px #333;
-}
-.navbar-fixed-top .dropdown-menu {
-	z-index: 1040;
-}
-#loader {
-    
-}
-/*/Loader*/
-
 /*Messages*/
 #messages {
     padding:0;
@@ -158,7 +131,7 @@ body > section {
         color: #468847;
     }
 /*/Messages*/
-/* Loading */
+/*Loading*/
 #loading {
 	width: 180px;
 	height: 40px;
@@ -166,17 +139,17 @@ body > section {
 	background: url("../img/loading.gif") 50% 50% no-repeat;
 	display: none;
 }
-/*/Loading */
-
-/* Forms */
+/*/Loading*/
+/*Forms*/
 ul.help-inline {
 	list-style: none;
 }
-
-/* Grid */
+/*/Forms*/
+/*Grid*/
 .grid-controls {
 	overflow: hidden;
 }
 #grid .alert{
 	margin-top: 8px;
 }
+/*/Grid /

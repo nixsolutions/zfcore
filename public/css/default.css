@@ -21,6 +21,7 @@ input,button,textarea,select{*font-size:100%;}
 
 body {
     font: 62.5%/1.5em Helvetica, Arial, sans-serif;
+	background: url(default/grids.gif) repeat;
 }
 
 hr {
@@ -97,15 +98,11 @@ body {
 	padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 	padding-bottom: 20px;
 }
-
-body > section {
-    width:90%;
-    margin:0 auto;
-	background:#fff;
-	border: 1px solid #555;
-	-webkit-border-radius: 3px;
-	   -moz-border-radius: 3px;
-			border-radius: 3px;
+.navbar a.brand {
+	background: url(default/zf-logo-small.png) no-repeat;
+	font-weight: 600;
+	font-size: 24px;
+	padding: 14px 60px 2px;
 }
 /*/Main*/
 /*Messages*/
@@ -248,5 +245,4 @@ body > section {
   .subnav-fixed .nav {
     width: 1168px; /* 2px less to account for left/right borders being removed when in fixed mode */
   }
-
 }

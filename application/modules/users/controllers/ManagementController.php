@@ -11,30 +11,6 @@
 class Users_ManagementController extends Core_Controller_Action_Crud
 {
     /**
-     * init invironment
-     *
-     * @return void
-     */
-    public function init()
-    {
-        /* Initialize */
-        parent::init();
-
-//        $this->_beforeGridFilter(
-//            array(
-//                '_addAllTableColumns',
-//                '_addEditColumn',
-//                '_prepare',
-//                '_addDeleteColumn',
-//                '_addCreateButton',
-//                '_showFilter'
-//            )
-//        );
-
-//        $this->_after('_setDefaultScriptPath', array('only' => array('create', 'edit')));
-    }
-
-    /**
      * module statistic
      *
      * @return void

@@ -117,6 +117,7 @@ class Users_Form_Auth_Register extends Zend_Form
 
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Register');
+        $submit->setAttrib('class', 'btn btn-primary');
 
         $this->addElements(
             array(

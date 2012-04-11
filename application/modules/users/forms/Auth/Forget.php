@@ -41,6 +41,7 @@ class Users_Form_Auth_Forget extends Zend_Form
 
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Restore');
+        $submit->setAttrib('class', 'btn btn-primary');
 
         $this->addElements(array($email, $submit));
 

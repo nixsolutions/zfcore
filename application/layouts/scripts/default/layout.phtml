@@ -13,16 +13,16 @@ $class[] = 'a-' . $request->getActionName();
     <body class="<?php echo implode(' ', $class) ?>" data-spy="scroll" data-target=".subnav" data-offset="50">
     <?php echo $this->render('default/partial/messages.phtml') ?>
     <?php echo $this->render('default/partial/menu.phtml') ?>
-    <div class="container-fluid">
+    <div class="container well">
         <div class="row-fluid">
             <div class="content">
                 <?php echo $this->layout()->content ?>
             </div>
         </div>
-        <hr />
-        <footer>
-            <p align="center">&copy; <?=gmdate('Y')?> NIX Solutions Ltd</p>
-        </footer>
     </div>
+    <hr />
+    <footer class="container">
+        <p align="center">&copy; <?=gmdate('Y')?> NIX Solutions Ltd</p>
+    </footer>
     </body>
 </html>
