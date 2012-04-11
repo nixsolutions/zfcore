@@ -1,8 +1,12 @@
 <?php
 /**
  * NewPassword form
+ *
+ * @category Application
+ * @package Form
+ * @subpackage Users
  */
-class Users_Form_Auth_NewPassword extends Zend_Form
+class Users_Form_Auth_NewPassword extends Core_Form
 {
     /**
      * Form initialization
@@ -15,6 +19,7 @@ class Users_Form_Auth_NewPassword extends Zend_Form
 
         $passw = new Zend_Form_Element_Password('passw');
         $passw->setLabel('Password')
+            ->addDecorators($this->_inputDecorators)
             ->setRequired(true)
             ->setValue(null)
             ->addValidator(
@@ -25,6 +30,7 @@ class Users_Form_Auth_NewPassword extends Zend_Form
 
         $passwAgain = new Zend_Form_Element_Password('passw_again');
         $passwAgain->setLabel('Password again')
+            ->addDecorators($this->_inputDecorators)
             ->setRequired(true)
             ->setValue(null)
             ->setValidators(

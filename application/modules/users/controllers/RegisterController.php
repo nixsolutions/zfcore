@@ -31,7 +31,6 @@ class Users_RegisterController extends Core_Controller_Action
         $form = new Users_Form_Auth_Register();
 
         if ($this->_request->isPost()) {
-
             if ($form->isValid($this->_getAllParams()) ) {
                 if ($user = $this->_manager->register($form->getValues())) {
                     // confirm email sends to user
@@ -48,6 +47,16 @@ class Users_RegisterController extends Core_Controller_Action
                 }
             } else {
                 $message = 'Registration error. Please check the form fields';
+
+                // show errors
+                $errors = $form->getErrors();
+                foreach($errors as $fn => $error) {
+                    if (empty($error)) continue;
+                    $el = $form->getElement($fn);
+                    $dec = $el->getDecorator('HtmlTag');
+                    $cls = $dec->getOption('class');
+                    $dec->setOption('class', $cls .' error');
+                }
             }
             $this->view->messages = $message;
         }
@@ -109,8 +118,17 @@ class Users_RegisterController extends Core_Controller_Action
 
                     $this->_helper->redirector->gotoRoute(array(), 'login');
                 }
+            } else {
+                // show errors
+                $errors = $form->getErrors();
+                foreach($errors as $fn => $error) {
+                    if (empty($error)) continue;
+                    $el = $form->getElement($fn);
+                    $dec = $el->getDecorator('HtmlTag');
+                    $cls = $dec->getOption('class');
+                    $dec->setOption('class', $cls .' error');
+                }
             }
-            $this->_flashMessenger->addMessage('Your email is not registered');
         }
         $this->view->form = $form;
     }

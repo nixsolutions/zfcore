@@ -5,10 +5,8 @@
  * @category Application
  * @package Form
  * @subpackage Users
- *
- * @version  $Id: Register.php 153 2010-07-08 11:51:49Z AntonShevchuk $
  */
-class Users_Form_Auth_RegisterLogin extends Zend_Form
+class Users_Form_Auth_RegisterLogin extends Core_Form
 {
     /**
      * Form initialization
@@ -27,6 +25,7 @@ class Users_Form_Auth_RegisterLogin extends Zend_Form
 
         $username = new Zend_Form_Element_Text('login');
         $username->setLabel('User name')
+                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(true)
                  ->addFilter('StripTags')
                  ->addFilter('StringTrim')

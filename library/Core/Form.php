@@ -10,7 +10,6 @@
  */
 class Core_Form extends Zend_Form
 {
-
     protected $_inputDecorators = array(
         array('HtmlTag', array('tag' => 'dd', 'class'=>'control-group form-inline')),
         array('Label', array('tag' => 'dt', 'class'=>'control-group')),

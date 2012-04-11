@@ -5,10 +5,8 @@
  * @category Application
  * @package Model
  * @subpackage Form
- *
- * @version  $Id: Forget.php 160 2010-07-12 10:47:54Z AntonShevchuk $
  */
-class Users_Form_Auth_Forget extends Zend_Form
+class Users_Form_Auth_Forget extends Core_Form
 {
     /**
      * Form initialization
@@ -26,7 +24,8 @@ class Users_Form_Auth_Forget extends Zend_Form
         $this->setName('userForgetPasswordForm');
 
         $email = new Zend_Form_Element_Text('email');
-        $email->setLabel('Email')
+        $email->setLabel('Enter your email')
+              ->addDecorators($this->_inputDecorators)
               ->setRequired(true)
               ->setValue(null)
               ->addValidator('StringLength', false, array(6))

@@ -6,7 +6,7 @@
  * @package Model
  * @subpackage Form
  */
-class Users_Form_Auth_Login extends Zend_Form
+class Users_Form_Auth_Login extends Core_Form
 {
     /**
      * Form initialization
@@ -19,12 +19,14 @@ class Users_Form_Auth_Login extends Zend_Form
 
         $username = new Zend_Form_Element_Text('login');
         $username->setLabel('User name')
+                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(true)
                  ->addFilter('StripTags')
                  ->addFilter('StringTrim');
 
         $password = new Zend_Form_Element_Password('password');
         $password->setLabel('Password')
+                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(true);
 
         $rememberMe = new Zend_Form_Element_Checkbox('rememberMe');

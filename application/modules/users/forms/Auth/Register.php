@@ -9,10 +9,8 @@
  * @todo Refactoring with DB validators
  * http://framework.zend.com/manual/en/zend.validate.set.html
  * #zend.validate.db.excluding-records
- *
- * @version  $Id: Register.php 153 2010-07-08 11:51:49Z AntonShevchuk $
  */
-class Users_Form_Auth_Register extends Zend_Form
+class Users_Form_Auth_Register extends Core_Form
 {
     /**
      * Form initialization
@@ -31,6 +29,7 @@ class Users_Form_Auth_Register extends Zend_Form
 
         $username = new Zend_Form_Element_Text('login');
         $username->setLabel('User name')
+                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(true)
                  ->addFilter('StripTags')
                  ->addFilter('StringTrim')
@@ -51,6 +50,7 @@ class Users_Form_Auth_Register extends Zend_Form
 
         $password = new Zend_Form_Element_Password('password');
         $password->setLabel('Password')
+                 ->addDecorators($this->_inputDecorators)
                  ->setRequired(true)
                  ->setValue(null)
                  ->addValidator(
@@ -62,6 +62,7 @@ class Users_Form_Auth_Register extends Zend_Form
 
         $confirmPassword = new Zend_Form_Element_Password('password2');
         $confirmPassword->setLabel('Password again')
+                  ->addDecorators($this->_inputDecorators)
                   ->setRequired(true)
                   ->setValue(null)
                   ->addValidator(
@@ -71,6 +72,7 @@ class Users_Form_Auth_Register extends Zend_Form
 
         $email = new Zend_Form_Element_Text('email');
         $email->setLabel('Email')
+              ->addDecorators($this->_inputDecorators)
               ->setRequired(true)
               ->setValue(null)
               ->addValidator('StringLength', false, array(6))
@@ -114,6 +116,8 @@ class Users_Form_Auth_Register extends Zend_Form
                 )
             );
         }
+
+        $captcha->addDecorators($this->_inputDecorators);
 
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Register');
