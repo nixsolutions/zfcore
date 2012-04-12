@@ -19,8 +19,6 @@ class Pages_IndexController extends Core_Controller_Action
         $this->_helper->contextSwitch
             ->setActionContext('sitemapxml', 'xml')
             ->initContext('xml');
-
-        $this->_before('_loadPage', array('only' => 'index'));
     }
 
     /**
@@ -30,7 +28,16 @@ class Pages_IndexController extends Core_Controller_Action
      */
     public function indexAction()
     {
-        $this->view->page = $this->page;
+        if (!$alias = $this->_getParam('alias')) {
+            $this->_forwardNotFound();
+        }
+
+        $table = new Pages_Model_Page_Table();
+
+        if (!$page = $table->getByAlias($alias)) {
+            $this->_forwardNotFound();
+        }
+        $this->view->page = $page;
     }
 
     /**
@@ -55,25 +62,5 @@ class Pages_IndexController extends Core_Controller_Action
     public function sitemapAction()
     {
         
-    }
-
-    /**
-     * load page
-     *
-     * @return void
-     */
-    protected function _loadPage()
-    {
-        if (!$alias = $this->_getParam('alias')) {
-            $this->_forwardNotFound();
-        }
-
-        $table = new Pages_Model_Page_Table();
-
-        if (!$page = $table->getByAlias($alias)) {
-            $this->_forwardNotFound();
-        }
-
-        $this->page = $page;
     }
 }

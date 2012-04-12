@@ -1,0 +1,25 @@
+default:
+  tests:
+    label: Tests
+    uri:
+    class: user
+    order: 2
+    pages:
+      index:
+        label: Elements
+        module: tests
+        controller: index
+        action: index
+        route: default
+      controls:
+        label: Controls
+        module: tests
+        controller: index
+        action: controls
+        route: default
+      markup:
+        label: Markup
+        module: tests
+        controller: index
+        action: markup
+        route: default

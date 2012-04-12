@@ -1,0 +1,45 @@
+<ul class="nav">
+<?php
+    // loop root level (only has Home, but later may have an Admin root page?)
+    foreach ($this->container as $pages) {
+        // loop next level
+        foreach ($pages as $uid => $page) {
+            /* @var Zend_Navigation_Page $page */
+            // check if it is active (recursive)
+
+            $liClass = array();
+            $liClass[] = $page->getClass();
+
+            if ($page->isActive(false)) {
+                $liClass[] = 'active';
+            }
+
+
+            // check for subpages
+            $dropdown = (bool) $page->count();
+
+            if ($page->getLabel() !== null && $page->isVisible(true)) {
+
+                if ($dropdown) {
+                    $liClass[] = 'dropdown';
+                    echo '<li class="'. join(' ', $liClass) .'" id="menu-'. $uid .'">', PHP_EOL;
+                        echo '<a class="dropdown-toggle" data-toggle="dropdown" href="#menu-'.$uid.'">';
+                        echo $page->getLabel();
+                        echo '&nbsp;<b class="caret"></b></a>';
+
+                    echo '<ul class="dropdown-menu">', PHP_EOL;
+                    foreach ($page as $subPage) {
+                        echo '<li>' . $this->menu()->htmlify($subPage) . '</li>', PHP_EOL;
+                    }
+                    echo '</ul>', PHP_EOL;
+                    echo '</li>', PHP_EOL;
+                } else {
+                    echo '<li class='. join(' ',$liClass) .'>' . $this->menu()->htmlify($page) . '</li>', PHP_EOL;
+                }
+            }
+        }
+    }
+?>
+</ul>
+
+

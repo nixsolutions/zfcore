@@ -3,6 +3,7 @@
     foreach ($this->container as $pages) {
         // loop next level
         foreach ($pages as $page) {
+            /* @var Zend_Navigation_Page $page */
             // check if it is active (not recursive)
             $liClass = array();
 
@@ -16,19 +17,19 @@
                 $liClass[] = 'nav-header';
             }
 
-            if ($page->_label !== null && $page->isVisible(true)) {
+            if ($page->getLabel() !== null && $page->isVisible(true)) {
                 echo '<li class="' . join(' ', $liClass) . '">';
                 echo ($cls?"<i class='icon-$cls'></i>&nbsp;":"");
                 echo $this->menu()->htmlify($page);
                 echo '</li>', PHP_EOL;
             }
 
-            if ($page->_pages) {
+            if ($page->getPages()) {
                 foreach ($page as $page) {
                     // check if it is active (recursive)
                     $isActive = $page->isActive(true);
                     $liClass = $isActive ? ' class="active"' : '';
-                    if ($page->_label !== null && $page->isVisible(true)) {
+                    if ($page->getLabel() !== null && $page->isVisible(true)) {
                         echo '<li ' . $liClass . '>' . $this->menu()->htmlify($page);
                         echo '</li>', PHP_EOL;
                     }
