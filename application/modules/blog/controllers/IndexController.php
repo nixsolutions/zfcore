@@ -50,6 +50,8 @@ class Blog_IndexController extends Core_Controller_Action
 
         $this->view->paginator = $paginator;
         $this->view->category = $row;
+
+        $this->render('index');
     }
 
     /**

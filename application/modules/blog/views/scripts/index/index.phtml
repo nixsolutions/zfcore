@@ -1,33 +1,37 @@
-<h1>Blog [<a href="<?php echo $this->url(array(), 'blogrss')?>">rss</a>]</h1>
+<?php $this->headLink()->appendStylesheet('/css/blog.css'); ?>
+
+<h1>Blog
+    <?php if (isset($this->category)) : $url = $this->url(array('alias' => $this->category->alias), 'blogcategoryrss'); ?>
+        : <?php echo $this->category->title?>
+    <?php else: $url = $this->url(array(), 'blogrss')?>
+    <?php endif; ?>
+    <a href="<?php echo $url ?>" class="pull-right badge badge-warning"><i class="icon-fire icon-white"></i>&nbsp;RSS</a>
+
+</h1>
 
 <hr />
-<div id="posts">
+<div class="blog-posts">
     <?php if ($this->paginator->count()): ?>
         <?php foreach($this->paginator as $row): $url = $this->url(array('alias'=> $row->alias), 'blogpost');?>
         <article>
-            <header>
-                <h3>
-                    <a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategory')?>"><?php echo $row->categoryTitle?></a>
-                    [<a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategoryrss')?>">rss</a>] /
-                    <a href="<?php echo $url?>"><?php echo $row->title?></a>
-                </h3>
-                <div><?php echo $this->__('Posted on')?> <?php echo $this->date($row->published)?></div>
-            </header>
-          <div>
-            <?php echo $row->teaser?>
-          </div>
-          <div>
-              <?php echo $this->__('Posted by')?>
-              <a href="<?php echo $this->url(array('login' => $row->login), 'blogauthor') ?>"><?php echo ucfirst($row->login)?></a>
-              <?php echo $this->__('in')?>
-              <a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategory') ?>"><?php echo $row->categoryTitle?></a>
-              |
-              <a href="<?php echo $url?>"><?php echo $this->__('Comments')?> (<span><?php echo $this->commentsCounter($row->id, 'blog-post', $this->paginator->getCurrentItems()->toArray(), 'id') ?></span>)</a>
-          </div>
+            <h3>
+                <a href="<?php echo $url?>"><?php echo $row->title?></a> //
+                <a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategory')?>"><?php echo $row->categoryTitle?></a>
+            </h3>
+            <div class="blog-posts-content">
+                <?php echo $row->teaser?>
+            </div>
+            <footer>
+                <?php echo $this->__('Posted in')?> <?php echo $this->date($row->published)?>
+                <?php echo $this->__('by')?>
+                <a href="<?php echo $this->url(array('login' => $row->login), 'blogauthor') ?>"><?php echo ucfirst($row->login)?></a>
+
+                <a href="<?php echo $url?>" class="pull-right"><?php echo $this->__('Comments')?> (<span><?php echo $this->commentsCounter($row->id, 'blog-post', $this->paginator->getCurrentItems()->toArray(), 'id') ?></span>)</a>
+            </footer>
         </article>
         <?php endforeach;?>
     <?php else:?>
         <h4><?php echo $this->__('No posts')?></h4>
     <?php endif?>
+    <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
 </div>
-<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>

@@ -1,14 +1,10 @@
 <?php
 /**
- * Login form
- *
  * @category Application
  * @package Model
  * @subpackage Form
- *
- * @version  $Id: Create.php 162 2010-07-12 14:58:58Z AntonShevchuk $
  */
-class Blog_Form_Post_Create extends Zend_Form
+class Blog_Form_Post_Create extends Core_Form
 {
     /**
      * Form initialization
@@ -20,16 +16,18 @@ class Blog_Form_Post_Create extends Zend_Form
         $this->setName('postForm');
         $this->setMethod('post');
 
-        $this->addElement($this->_category());
 
         $this->addElement(
             'text', 'title',
             array(
-                'label' => 'title',
+                'label' => 'Title',
                 'required' => true,
                 'filters' => array('StringTrim'),
+                'attribs' => array('class'=>'span4')
             )
         );
+
+        $this->addElement($this->_category());
 
         $teaser = new Core_Form_Element_Redactor('teaser', array(
                    'label' => 'Teaser',
@@ -38,7 +36,8 @@ class Blog_Form_Post_Create extends Zend_Form
                    'required' => true,
                    'filters' => array('StringTrim'),
                    'redactor' => array(
-                       'imageUpload'  => false, // url or false
+                       'imageUpload'  => '/blog/images/upload/', // url or false
+                       'imageGetJson' => '/blog/images/list/',
                        'fileUpload'   => false,
                    )
                 ));
@@ -53,9 +52,8 @@ class Blog_Form_Post_Create extends Zend_Form
                    'filters' => array('StringTrim'),
                    'redactor' => array(
                        'imageUpload'  => '/blog/images/upload/', // url or false
-                       'fileUpload'   => '/blog/files/upload/',
-                       'fileDownload' => '/blog/files/download/?file=',
-                       'fileDelete'   => '/blog/files/delete/?file=',
+                       'imageGetJson' => '/blog/images/list/',
+                       'fileUpload'   => false,
                    )
                 ));
         $body->addDecorators($this->_inputDecorators);
@@ -69,18 +67,11 @@ class Blog_Form_Post_Create extends Zend_Form
         return $this;
     }
 
-    protected function _submit()
-    {
-        $submit = new Zend_Form_Element_Submit('submit');
-        $submit->setLabel('Create');
-        return $submit;
-    }
-
     protected function _category()
     {
         $category = new Zend_Form_Element_Select('categoryId');
-        $category->setLabel('categoryId');
-        $category->setRequired(true)->setAttrib('style', 'width:100%');
+        $category->setLabel('Category');
+        $category->setRequired(true)->setAttrib('class', 'span4');
 
         $cats = new Blog_Model_Category_Manager();
         foreach ($cats->getAll() as $cat) {

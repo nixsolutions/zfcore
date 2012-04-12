@@ -16,7 +16,6 @@ class Comments_Model_Comment_Form_Edit extends Comments_Model_Comment_Form_Creat
         
         // change the label of `submit` button
         $this->getElement('submit')->setLabel('Save comment');
-        
         $this->addElements(
             array(
                 $this->_status()

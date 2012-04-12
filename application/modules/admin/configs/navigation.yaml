@@ -11,3 +11,4 @@ default:
     controller: index
     action: index
     route: default
+    order: 99

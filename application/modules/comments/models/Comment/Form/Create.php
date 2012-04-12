@@ -5,8 +5,6 @@
  * @category Application
  * @package Model
  * @subpackage Form
- *
- * @version  $Id: Comment.php 2011-11-21 11:59:34Z pavel.machekhin $
  */
 class Comments_Model_Comment_Form_Create extends Zend_Form
 {
@@ -73,10 +71,11 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
                 'required'   => true,
                 'filters'    => array('StringTrim', 'HtmlEntities'),
                 'validators' => array(
-                    array('validator' => 'StringLength', 'options' => array(1, 250))
+                    array('validator' => 'StringLength', 'options' => array(1, 400))
                 )
             )
         );
+        $element->setAttrib('class', 'span9');
         
         return $element;
     }
@@ -137,6 +136,7 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
                 'label' => 'Add comment',
             )
         );
+        $element->setAttrib('class', 'btn btn-primary');
         
         return $element;
     }

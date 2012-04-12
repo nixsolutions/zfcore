@@ -1,10 +1,10 @@
 <?php foreach($this->paginator as $i => $row) : ?>
-    <li id="li-comment-<?php echo $row->id ?>" class="comment">
-        
-        <img src="<?php echo $this->avatar($row->avatar, $row->email)?>" 
-                alt="<?php echo $this->__('Avatar for')?> <?php echo $row->firstname . ' ' . $row->lastname ?>"
-                title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>" class="avatar"/>
-
+    <li id="li-comment-<?php echo $row->id ?>" class="row">
+        <a href="<?php echo $this->url(array('module'=>'users','controller'=>'profile', 'action'=>'view', 'id'=>$row->userId), 'default')?>" class="thumbnail pull-left">
+            <img src="<?php echo $this->avatar($row->avatar, $row->email)?>"
+                    alt="<?php echo $this->__('Avatar for')?> <?php echo $row->firstname . ' ' . $row->lastname ?>"
+                    class=""/>
+        </a>
         <article class="comment" id="comment-<?php echo $row->id ?>">
             <header>
                 <div class="right">#<a href="#comment-<?php echo $i + 1 ?>"><?php echo $i + 1 ?></a></div>

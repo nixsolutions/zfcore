@@ -18,38 +18,31 @@ dashboard:
         action: index
         route: default
 default:
-  terms:
-    label: Terms of use
-    route: pages
-    module: pages
-    controller: index
-    action: index
-    params:
-      alias: terms
-    pages:
-      conditions:
-        label: Terms and conditions
-        route: pages
-        module: pages
-        controller: index
-        action: index
-        params:
-          alias: conditions
-      privacy:
-        label: Privacy policy
-        route: pages
-        module: pages
-        controller: index
-        action: index
-        params:
-          alias: privacy
-  sitemap:
-    label: Sitemap
-    route: sitemap
-    module: pages
-    controller: index
-    action: sitemap
-    title: sitemap
+#  terms:
+#    label: Terms of use
+#    route: pages
+#    module: pages
+#    controller: index
+#    action: index
+#    params:
+#      alias: terms
+#    pages:
+#      conditions:
+#        label: Terms and conditions
+#        route: pages
+#        module: pages
+#        controller: index
+#        action: index
+#        params:
+#          alias: conditions
+#      privacy:
+#        label: Privacy policy
+#        route: pages
+#        module: pages
+#        controller: index
+#        action: index
+#        params:
+#          alias: privacy
   about:
     label: About
     route: pages
@@ -58,3 +51,12 @@ default:
     action: index
     params:
       alias: about
+    order: 1
+  sitemap:
+    label: Sitemap
+    route: sitemap
+    module: pages
+    controller: index
+    action: sitemap
+    title: sitemap
+    order: 95

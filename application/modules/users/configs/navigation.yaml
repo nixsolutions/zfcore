@@ -32,15 +32,18 @@ default:
     module: users
     controller: login
     action: logout
+    order: 100
   userlogin:
     label: Login
     route: login
     module: users
     controller: login
     action: index
+    order: 100
   registration:
     label: Registration
     route: default
     module: users
     controller: register
     action: index
+    order: 99

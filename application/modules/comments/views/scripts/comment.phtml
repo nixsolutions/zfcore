@@ -2,7 +2,7 @@
 
     <img src="<?php echo $this->avatar($row->avatar, $row->email)?>" 
             alt="<?php echo $this->__('Avatar for')?> <?php echo $row->getUserName() ?>"
-            title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>" class="avatar"/>
+            class="avatar thumbnail"/>
 
     <article class="comment" id="comment-<?php echo $row->id ?>">
         <?php echo ucfirst($row->login)?> <?php echo $this->__('on')?> <?php echo $this->date($row->created)?>

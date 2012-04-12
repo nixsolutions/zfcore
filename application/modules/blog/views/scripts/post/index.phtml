@@ -1,21 +1,22 @@
-<article>
-    <header>
-        <h3><?php echo $this->row->title?></h3>
-        <div><?php echo $this->__('Posted on')?> <?php echo $this->date($this->row->published)?></div>
-    </header>
-    <br />
-  <div>
-    <?php echo $this->row->body?>
-  </div>
-  <br />
-  <footer>
-      <?php echo $this->__('Posted by')?>
-      <a href="<?php echo $this->url(array('login' => $this->user->login), 'blogauthor') ?>"><?php echo $this->user->login?></a>
-      <?php echo $this->__('in')?>
-      <a href="<?php echo $this->url(array('alias' => $this->category->alias), 'blogcategory') ?>"><?php echo $this->category->title?></a>
-  </footer>
-</article>
+<?php $this->headLink()->appendStylesheet('/css/blog.css'); ?>
 
+<h1><?php echo $this->row->title?></h1>
+
+<hr />
+<div class="blog-posts">
+    <article>
+        <div class="blog-posts-content">
+            <?php echo $this->row->body?>
+        </div>
+        <footer>
+            <?php echo $this->__('Posted on')?> <?php echo $this->date($this->row->published)?>
+            <?php echo $this->__('by')?>
+            <a href="<?php echo $this->url(array('login' => $this->user->login), 'blogauthor') ?>"><?php echo $this->user->login?></a>
+            <?php echo $this->__('in')?>
+            <a href="<?php echo $this->url(array('alias' => $this->category->alias), 'blogcategory') ?>"><?php echo $this->category->title?></a>
+        </footer>
+    </article>
+</div>
 <?php echo $this->getComments('blog-post', 
     array(
         'key' => $this->row->id,

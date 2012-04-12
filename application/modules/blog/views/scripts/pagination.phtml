@@ -1,23 +1,25 @@
 <?php if ($this->pageCount > 1): ?>
-    <div id="pagination">
-        <?php if (isset($this->previous)): ?>
-            <a href="<?php echo $this->url(array('page' => $this->previous)); ?>">&lt; <?php echo $this->__('Back');?></a>
-        <?php else: ?>
-            <span class="disabled">&lt; <?php echo $this->__('Back');?></span>
-        <?php endif; ?>
-
-        <?php foreach ($this->pagesInRange as $page): ?>
-            <?php if ($page != $this->current): ?>
-                <a href="<?php echo $this->url(array('page' => $page)); ?>"><?php echo $page; ?></a>
+    <div class="pagination">
+        <ul>
+            <?php if (isset($this->previous)): ?>
+                <li class="prev"><a href="#" data-page="<?php echo $this->previous ?>">&laquo;</a></li>
             <?php else: ?>
-                <?php echo $page; ?>
+                <li class="prev disabled"><a href="#">&laquo;</a></li>
             <?php endif; ?>
-        <?php endforeach; ?>
 
-        <?php if (isset($this->next)):?>
-            <a href="<?php echo $this->url(array('page' => $this->next)); ?>"><?php echo $this->__('Next');?> &gt;</a>
-        <?php else:?>
-            <span class="disabled"><?php echo $this->__('Next');?> &gt;</span>
-        <?php endif;?>
+            <?php foreach ($this->pagesInRange as $page): ?>
+                <?php if ($page == $this->current): ?>
+                    <li class="active"><a href="#"><?php echo $page ?></a></li>
+                <?php else: ?>
+                    <li><a href="#" data-page="<?php echo $page ?>"><?php echo $page ?></a></li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+
+            <?php if (isset($this->next)): ?>
+                <li class="next"><a href="#" data-page="<?php echo $this->next ?>">&raquo;</a></li>
+            <?php else: ?>
+                <li class="next disabled"><a href="#">&raquo;</a></li>
+            <?php endif; ?>
+        </ul>
     </div>
 <?php endif;?>

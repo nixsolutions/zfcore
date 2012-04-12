@@ -9,31 +9,6 @@
 class Categories_ManagementController extends Core_Controller_Action_Crud
 {
     /**
-     * init invironment
-     *
-     * @return void
-     */
-    public function init()
-    {
-        /* Initialize */
-        parent::init();
-
-//        $this->_beforeGridFilter(
-//            array(
-//                '_addCheckBoxColumn',
-//                '_addAllTableColumns',
-//                //'_prepareGrid',
-//                '_addEditColumn',
-//                '_addDeleteColumn',
-//                '_addCreateButton',
-//                '_addDeleteButton',
-//                '_showFilter'
-//            )
-//        );
-
-    }
-
-    /**
      * _getCreateForm
      *
      * return create form for scaffolding
@@ -90,7 +65,10 @@ class Categories_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _prepareGrid()
     {
+        $this->_addCheckBoxColumn();
+
         $this->_addAllTableColumns();
+
         $this->_addEditColumn();
         $this->_addDeleteColumn();
     }
