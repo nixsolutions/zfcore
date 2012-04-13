@@ -153,3 +153,12 @@ ul.help-inline {
 	margin-top: 8px;
 }
 /*/Grid /
+/*NIX*/
+.nix {
+	background: url('dashboard/nix-logo.png') no-repeat 0 0;
+	width: 200px;
+	height: 90px;
+	text-indent: -9999%;
+	margin: 0 auto;
+}
+/*/NIX*/
