@@ -38,18 +38,29 @@ class Core_Controller_Action_Images extends Core_Controller_Action
     protected $_thumbHeight = 90;
     protected $_thumbQuality = 100;
 
+
+    /**
+     * return upload dir
+     *
+     * @return string
+     */
+    protected function _getUploadDir()
+    {
+        return $this->_uploadDir;
+    }
+
     /**
      * list all images
      */
     public function listAction()
     {
-        $images = glob(PUBLIC_PATH . $this->_uploadPath .DS. $this->_uploadDir .DS. '*.*');
+        $images = glob(PUBLIC_PATH . $this->_uploadPath .DS. $this->_getUploadDir() .DS. '*.*');
         $data = array();
         foreach ($images as $image) {
             $thumb = $this->_createThumb($image);
             $src = pathinfo($image, PATHINFO_BASENAME);
             $data[] = array(
-                'image' => $this->_uploadPath .'/'. $this->_uploadDir .'/'. $src,
+                'image' => $this->_uploadPath .'/'. $this->_getUploadDir() .'/'. $src,
                 'thumb' => $thumb
             );
         }
@@ -67,8 +78,8 @@ class Core_Controller_Action_Images extends Core_Controller_Action
         $this->_helper->layout->disableLayout();
         if ($this->_request->isPost()) {
             try {
-                $destination = PUBLIC_PATH . $this->_uploadPath .DS. $this->_uploadDir;
-                $publicPath = $this->_uploadPath .DS. $this->_uploadDir;
+                $destination = PUBLIC_PATH . $this->_uploadPath .DS. $this->_getUploadDir();
+                $publicPath = $this->_uploadPath .DS. $this->_getUploadDir();
 
                 /* Check destination folder */
                 if (!is_dir($destination)) {
@@ -160,8 +171,8 @@ class Core_Controller_Action_Images extends Core_Controller_Action
 
         $tWidth = $this->_thumbWidth;
         $tHeight = $this->_thumbWidth;
-        $fullPath = PUBLIC_PATH . $this->_uploadPath .DS. $this->_uploadDir .DS. $this->_thumbDir;
-        $path = $this->_uploadPath .DS. $this->_uploadDir .DS. $this->_thumbDir;
+        $fullPath = PUBLIC_PATH . $this->_uploadPath .DS. $this->_getUploadDir() .DS. $this->_thumbDir;
+        $path = $this->_uploadPath .DS. $this->_getUploadDir() .DS. $this->_thumbDir;
 
         $name = pathinfo($file, PATHINFO_FILENAME);
         $ext  = pathinfo($file, PATHINFO_EXTENSION);
@@ -179,7 +190,7 @@ class Core_Controller_Action_Images extends Core_Controller_Action
 
         // try to create directory for thumbnails
         if (!is_dir($fullPath)) {
-            if (is_writable(PUBLIC_PATH . $this->_uploadPath .DS. $this->_uploadDir)) {
+            if (is_writable(PUBLIC_PATH . $this->_uploadPath .DS. $this->_getUploadDir())) {
                 mkdir($fullPath);
             } else {
                 throw new Exception("Uploads directory is not writable");

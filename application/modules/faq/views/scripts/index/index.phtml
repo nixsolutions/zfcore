@@ -1,0 +1,18 @@
+<h1><?php $this->_e('FAQ'); ?></h1>
+<hr/>
+    <ul>
+    <?php
+        foreach($this->question as $i => $question){
+            echo '<li><a href="#faq-' . $i . '">' . $question->question . '</a></li>';
+        }
+    ?>
+    </ul>
+<hr/>
+<div class="faq">
+    <?php    
+        foreach($this->question as $i => $question){
+            echo '<h3><a name="faq-' . $i . '">' . $question->question . '</a></h3>';
+            echo '<article>' . $question->answer . '</article>';
+        }
+    ?>
+</div>

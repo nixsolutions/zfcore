@@ -5,7 +5,7 @@
 </h1>
 
 <hr />
-<div id="posts">
+<div class="blog">
     <?php if ($this->paginator->count()): ?>
         <?php foreach($this->paginator as $row): $url = $this->url(array('alias'=> $row->alias), 'blogpost');?>
         <article>

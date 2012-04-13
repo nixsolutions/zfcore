@@ -10,6 +10,9 @@
  */
 class Blog_IndexController extends Core_Controller_Action
 {
+    protected $_itemsPerPage = 10;
+
+
     /**
      * Index
      */
@@ -20,7 +23,7 @@ class Blog_IndexController extends Core_Controller_Action
         $source = $post->getSelect();
         $paginator = Zend_Paginator::factory($source);
 
-        $paginator->setItemCountPerPage(10);
+        $paginator->setItemCountPerPage($this->_itemsPerPage);
         $paginator->setCurrentPageNumber($this->_getParam('page'));
 
         $this->view->paginator = $paginator;
@@ -45,7 +48,7 @@ class Blog_IndexController extends Core_Controller_Action
         $source = $post->getSelect($row);
         $paginator = Zend_Paginator::factory($source);
 
-        $paginator->setItemCountPerPage(10);
+        $paginator->setItemCountPerPage($this->_itemsPerPage);
         $paginator->setCurrentPageNumber($this->_getParam('page'));
 
         $this->view->paginator = $paginator;
@@ -73,10 +76,12 @@ class Blog_IndexController extends Core_Controller_Action
         $source = $post->getSelect(null, $row->id);
         $paginator = Zend_Paginator::factory($source);
 
-        $paginator->setItemCountPerPage(10);
+        $paginator->setItemCountPerPage($this->_itemsPerPage);
         $paginator->setCurrentPageNumber($this->_getParam('page'));
 
         $this->view->paginator = $paginator;
         $this->view->author = $row;
+
+        $this->render('index');
     }
 }

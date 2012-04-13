@@ -1,0 +1,27 @@
+dashboard:
+  faqmanagment:
+    label: Faq
+    uri:
+    order: 90
+    class: question-sign
+    pages:
+      create:
+        label: Add New Question
+        module: faq
+        controller: management
+        action: create
+        route: default
+      edit:
+        label: All Questions
+        module: faq
+        controller: management
+        action: index
+        route: default
+default:
+  faq:
+    label: Faq
+    route: default
+    module: faq
+    controller: index
+    action: index
+    order: 90

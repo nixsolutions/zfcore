@@ -104,6 +104,14 @@ body {
 	font-size: 24px;
 	padding: 14px 60px 2px;
 }
+
+article {
+	background: none repeat scroll 0 0 #fff;
+	border: 1px solid #DDDDDD;
+	border-radius: 3px 3px 3px 3px;
+	margin:1.625em 0;
+	padding: 1.625em;
+}
 /*/Main*/
 /*Messages*/
 #messages {

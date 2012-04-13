@@ -2,7 +2,9 @@
 
 <h1>Blog
     <?php if (isset($this->category)) : $url = $this->url(array('alias' => $this->category->alias), 'blogcategoryrss'); ?>
-        : <?php echo $this->category->title?>
+        : <?php echo $this->category->title ?>
+    <?php elseif (isset($this->author)) : $url = $this->url(array('login' => $this->author->login), 'blogauthorrss'); ?>
+        : <?php echo $this->author->login ?>
     <?php else: $url = $this->url(array(), 'blogrss')?>
     <?php endif; ?>
     <a href="<?php echo $url ?>" class="pull-right badge badge-warning"><i class="icon-fire icon-white"></i>&nbsp;RSS</a>
@@ -10,7 +12,7 @@
 </h1>
 
 <hr />
-<div class="blog-posts">
+<div class="blog">
     <?php if ($this->paginator->count()): ?>
         <?php foreach($this->paginator as $row): $url = $this->url(array('alias'=> $row->alias), 'blogpost');?>
         <article>
@@ -18,7 +20,7 @@
                 <a href="<?php echo $url?>"><?php echo $row->title?></a> //
                 <a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategory')?>"><?php echo $row->categoryTitle?></a>
             </h3>
-            <div class="blog-posts-content">
+            <div class="blog-content">
                 <?php echo $row->teaser?>
             </div>
             <footer>
