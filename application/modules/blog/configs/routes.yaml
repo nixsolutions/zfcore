@@ -1,5 +1,5 @@
 blog:
- route: blog
+ route: blog/*
  defaults:
    module: blog
    controller: index
@@ -11,7 +11,7 @@ blogcategory:
    controller: index
    action: category
 blogauthor:
- route: blog/author/:login
+ route: blog/author/:login/*
  defaults:
    module: blog
    controller: index

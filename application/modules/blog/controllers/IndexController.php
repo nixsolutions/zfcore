@@ -22,7 +22,7 @@ class Blog_IndexController extends Core_Controller_Action
 
         $source = $post->getSelect();
         $paginator = Zend_Paginator::factory($source);
-
+        $paginator->getView()->route = 'blog';
         $paginator->setItemCountPerPage($this->_itemsPerPage);
         $paginator->setCurrentPageNumber($this->_getParam('page'));
 
@@ -47,7 +47,7 @@ class Blog_IndexController extends Core_Controller_Action
 
         $source = $post->getSelect($row);
         $paginator = Zend_Paginator::factory($source);
-
+        $paginator->getView()->route = 'blogcategory';
         $paginator->setItemCountPerPage($this->_itemsPerPage);
         $paginator->setCurrentPageNumber($this->_getParam('page'));
 
@@ -75,7 +75,7 @@ class Blog_IndexController extends Core_Controller_Action
 
         $source = $post->getSelect(null, $row->id);
         $paginator = Zend_Paginator::factory($source);
-
+        $paginator->getView()->route = 'blogauthor';
         $paginator->setItemCountPerPage($this->_itemsPerPage);
         $paginator->setCurrentPageNumber($this->_getParam('page'));
 
