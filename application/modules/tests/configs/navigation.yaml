@@ -23,3 +23,10 @@ default:
         controller: index
         action: markup
         route: default
+      ajax:
+        label: Ajax Messages
+        module: tests
+        controller: index
+        action: ajax
+        route: default
+        class: ajax

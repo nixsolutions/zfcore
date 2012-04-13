@@ -254,3 +254,8 @@ article {
     width: 1168px; /* 2px less to account for left/right borders being removed when in fixed mode */
   }
 }
+/*bootstrap patch*/
+div.pull-right .dropdown-menu {
+	left:0
+}
+/*/bootstrap patch*/

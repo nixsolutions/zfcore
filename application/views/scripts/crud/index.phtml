@@ -10,6 +10,9 @@ $this->headScript()->appendFile($this->baseUrl('/js/grid.js'));
             <a href="#" id="filter-button" class="btn"><?php echo $this->__('Go')?></a>
             <a href="#" id="filter-reset" class="btn"><?php echo $this->__('Reset')?></a>
         </form>
+        <p class="pull-left alert fade in">
+            Support wildcard search (* and ?)
+        </p>
    <?php endif; ?>
 </div>
 <div id="grid" class="clear" data-url="<?php echo $this->url(array('action' => 'grid'), 'default') ?>"></div>

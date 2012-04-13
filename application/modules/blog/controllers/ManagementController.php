@@ -90,7 +90,7 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
         $this->_addCreateButton();
         $this->_addDeleteButton();
         $this->_addFilter('title', 'Title');
-        $this->_addFilter('alias', 'Alias');
+        $this->_addFilter('login', 'Author');
     }
 
     /**

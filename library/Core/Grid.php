@@ -107,6 +107,7 @@ class Core_Grid extends Core_Grid_Abstract
                         $value = $item[$index];
                     }
 
+                    // apply formatters
                     if (isset($column['formatter'])) {
                         if (is_array($column['formatter'][1])) {
                             $obj = $column['formatter'][0];
