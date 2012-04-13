@@ -25,3 +25,11 @@ dashboard:
         controller: management
         action: stats
         route: default
+default:
+  blog:
+    label: Blog
+    module: blog
+    controller: index
+    action: index
+    route: default
+    order: 2
