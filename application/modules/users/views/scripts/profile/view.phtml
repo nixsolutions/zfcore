@@ -5,36 +5,35 @@
         ( <a href="<?php echo $this->url(array(), 'editprofile')?>"><?php echo $this->__('Edit')?></a> )
     <?php endif?>
 </h1>
-<div>
-    <div class="left">
+<hr/>
+<article>
+    <div class="left thumbnail">
         <img src="<?php echo $this->avatar($this->row)?>" alt="<?php echo $this->__('Avatar for')?> <?php echo $this->row->login?>"/>
     </div>
-    <div class="left">
-        <dl>
-            <dt><?php echo $this->__('Login')?>:</dt>
-            <dd><?php echo $this->row->login?></dd>
+    <dl class="left dl-horizontal">
+        <dt><?php echo $this->__('Login')?>:</dt>
+        <dd><?php echo $this->row->login?></dd>
 
-            <?php if ($this->row->firstname):?>
-                <dt><?php echo $this->__('First Name')?>:</dt>
-                <dd><?php echo $this->row->firstname?></dd>
-            <?php endif?>
+        <?php if ($this->row->firstname):?>
+            <dt><?php echo $this->__('First Name')?>:</dt>
+            <dd><?php echo $this->row->firstname?></dd>
+        <?php endif?>
 
-            <?php if ($this->row->lastname):?>
-                <dt><?php echo $this->__('Last Name')?>:</dt>
-                <dd><?php echo $this->row->lastname?></dd>
-            <?php endif?>
+        <?php if ($this->row->lastname):?>
+            <dt><?php echo $this->__('Last Name')?>:</dt>
+            <dd><?php echo $this->row->lastname?></dd>
+        <?php endif?>
 
-            <dt><?php echo $this->__('Role')?>:</dt>
-            <dd><?php echo $this->row->role?></dd>
+        <dt><?php echo $this->__('Role')?>:</dt>
+        <dd><?php echo $this->row->role?></dd>
 
-            <dt><?php echo $this->__('Status')?>:</dt>
-            <dd><?php echo $this->row->status?></dd>
+        <dt><?php echo $this->__('Status')?>:</dt>
+        <dd><?php echo $this->row->status?></dd>
 
-            <dt><?php echo $this->__('Registered')?>:</dt>
-            <dd><?php echo $this->row->created?></dd>
+        <dt><?php echo $this->__('Registered')?>:</dt>
+        <dd><?php echo $this->row->created?></dd>
 
-            <dt><?php echo $this->__('Last Online')?>:</dt>
-            <dd><?php echo $this->row->logined?></dd>
-        </dl>
-    </div>
-</div>
+        <dt><?php echo $this->__('Last Online')?>:</dt>
+        <dd><?php echo $this->row->logined?></dd>
+    </dl>
+</article>

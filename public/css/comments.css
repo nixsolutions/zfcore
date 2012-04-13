@@ -9,11 +9,7 @@
 	height: 80px;
 }
 .commentlist .comment {
-    background: none repeat scroll 0 0 #fff;
-    border: 1px solid #DDDDDD;
-    border-radius: 3px 3px 3px 3px;
-    margin-left:120px;
-    padding: 1.625em;
+    margin:0 0 0 120px;
 }
 .commentlist .comment:before {
     content: url("comments/arrow.png");
@@ -22,6 +18,11 @@
 }
 .commentlist .comment {
     position: relative;
+}
+
+.commentlist header {
+    color:#777;
+	margin-bottom: 8px;
 }
 
 .commentlist .actions {
