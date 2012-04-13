@@ -25,11 +25,13 @@ class Blog_PostController extends Core_Controller_Action
     public function indexAction()
     {
         if (!$alias = $this->_getParam('alias')) {
-            throw new Zend_Controller_Action_Exception('Page not found');
+            $this->_forwardNotFound();
+            return;
         }
         $posts = new Blog_Model_Post_Table();
         if (!$row = $posts->getByAlias($alias)) {
-            throw new Zend_Controller_Action_Exception('Post not found');
+            $this->_forwardNotFound();
+            return;
         }
         $users = new Users_Model_Users_Table();
         $this->view->user = $users->getById($row->userId);
