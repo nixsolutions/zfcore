@@ -110,7 +110,7 @@ class Users_Form_Users_Filter_ImageSize implements Zend_Filter_Interface
     /**
      * Set keep ratio
      *
-     * @param boolen $keepRatio
+     * @param boolean $keepRatio
      * @return Users_Form_Users_Filter_ImageSize
      */
     public function setKeepRatio($keepRatio = true)
@@ -123,7 +123,7 @@ class Users_Form_Users_Filter_ImageSize implements Zend_Filter_Interface
     /**
      * Get keep ratio
      *
-     * @return boolen
+     * @return boolean
      */
     public function getKeepRatio()
     {

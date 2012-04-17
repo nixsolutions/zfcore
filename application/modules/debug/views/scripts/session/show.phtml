@@ -1,0 +1,18 @@
+<?php
+/* @var Zend_Session_Namespace $namespace */
+$namespace = $this->namespace;
+?>
+<div>
+<dl style="padding:10px;max-height: 600px">
+    <?php foreach ($namespace as $key => $value) : ?>
+    <dt><?php echo $key ?>:</dt>
+    <dd><?php
+        if (is_object($value) or is_array($value)) {
+            var_dump($value);
+        } else {
+            echo $value;
+        }
+        ?></dd>
+    <?php endforeach;?>
+</dl>
+</div>

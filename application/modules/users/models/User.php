@@ -66,7 +66,7 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
      * Is password
      *
      * @param string $value
-     * @return boolen
+     * @return boolean
      */
     public function isPassword($value)
     {

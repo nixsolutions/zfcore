@@ -42,7 +42,7 @@ class Users_Form_Users_Profile extends Users_Form_Auth_Register
     /**
      * Confirm password
      *
-     * @return boolen
+     * @return boolean
      */
     public function confirmPassword($value, $context)
     {

@@ -1,0 +1,25 @@
+dashboard:
+  debugmanagment:
+    label: Debug
+    uri:
+    class: eye-open
+    order: 101
+    pages:
+      contrab:
+        label: Crontab
+        module: debug
+        controller: crontab
+        action: index
+        route: default
+      session:
+        label: Sessions
+        module: debug
+        controller: session
+        action: index
+        route: default
+      file:
+        label: System Files
+        module: debug
+        controller: file
+        action: index
+        route: default

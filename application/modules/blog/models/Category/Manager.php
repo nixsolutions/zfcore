@@ -79,7 +79,7 @@ class Blog_Model_Category_Manager extends Core_Categories_Manager
     /**
      * Get categories list
      *
-     * @param boolen $fetch
+     * @param boolean $fetch
      * @return Zend_Db_Table_Select|Zend_Db_Table_Rowset
      */
     public function getList($fetch = false)
