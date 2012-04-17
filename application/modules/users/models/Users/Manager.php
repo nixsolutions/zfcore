@@ -59,7 +59,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
             $user = $this->getDbTable()->getByLogin($data['login']);
             $user->login();
 
-            if (!empty($data['remember'])) {
+            if (!empty($data['rememberMe'])) {
                 Zend_Session::rememberMe(60*60*24*14);
             }
             return true;

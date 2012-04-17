@@ -76,8 +76,9 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     /**
      * Is column value equal to
      *
+     * @param        $column
      * @param string $value
-     * @return boolen
+     * @return boolean
      */
     public function is($column, $value)
     {
@@ -131,6 +132,9 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
 
     /**
      * @see Zend_Db_Table_Row_Abstract::__call()
+     * @param $method
+     * @param $args
+     * @return mixed
      */
     public function __call($method, $args)
     {
@@ -188,7 +192,7 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     /**
      * Login user
      *
-     * @param boolen $update
+     * @param boolean $update
      * @return Users_Model_User
      */
     public function login($update = true)
