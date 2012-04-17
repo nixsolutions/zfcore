@@ -5,7 +5,7 @@
         : <?php echo $this->category->title ?>
     <?php elseif (isset($this->author)) : $url = $this->url(array('login' => $this->author->login), 'blogauthorrss'); ?>
         : <?php echo $this->author->login ?>
-    <?php else: $url = $this->url(array(), 'blogrss')?>
+    <?php else: $url = $this->url(array('controller'=>'rss'))?>
     <?php endif; ?>
     <a href="<?php echo $url ?>" class="pull-right badge badge-warning"><i class="icon-fire icon-white"></i>&nbsp;RSS</a>
 </h1>

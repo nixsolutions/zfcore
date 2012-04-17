@@ -1,9 +1,3 @@
-blog:
- route: blog/*
- defaults:
-   module: blog
-   controller: index
-   action: index
 blogcategory:
  route: blog/category/:alias/*
  defaults:
@@ -21,24 +15,6 @@ blogpost:
  defaults:
    module: blog
    controller: post
-   action: index
-blogpostcreate:
- route: blog/post/create
- defaults:
-   module: blog
-   controller: post
-   action: create
-blogpostedit:
- route: blog/post/edit/:alias
- defaults:
-   module: blog
-   controller: post
-   action: edit
-blogrss:
- route: blog/rss
- defaults:
-   module: blog
-   controller: rss
    action: index
 blogauthorrss:
  route: blog/rss/author/:login
