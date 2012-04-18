@@ -7,6 +7,6 @@ mvc:
     post:
       allow: guest
     images:
-      allow: admin
+      allow: user
     management:
       allow: admin

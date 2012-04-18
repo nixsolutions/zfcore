@@ -4,7 +4,7 @@
  * @package Model
  * @subpackage Form
  */
-class Forum_Form_Post_Create extends Zend_Form
+class Forum_Form_Post_Create extends Core_Form
 {
     /**
      * Form initialization
@@ -19,65 +19,30 @@ class Forum_Form_Post_Create extends Zend_Form
         $this->addElement(
             'text', 'title',
             array(
-                'label' => 'title',
+                'label' => 'Topic title',
                 'required' => true,
                 'filters' => array('StringTrim'),
+                'attribs' => array('class'=>'span6')
             )
         );
 
-        $text = new Core_Form_Element_TinyMCE(
-            'body', array(
-                'label' => 'text',
-                'cols'  => '75',
-                'rows'  => '20',
-                'required' => true,
-                'filters'  => array('StringTrim'),
-                'tinyMCE' => array(
-                    'mode' => "textareas",
-                    'theme' => "simple",
-                ),
-            )
-        );
-        $this->addElement($text);
+        $body = new Core_Form_Element_Redactor('body', array(
+           'label' => 'Text',
+           'cols'  => 50,
+           'rows'  => 25,
+           'required' => true,
+           'filters' => array('StringTrim'),
+           'redactor' => array(
+               'imageUpload'  => '/forum/images/upload/', // url or false
+               'imageGetJson' => '/forum/images/list/',
+               'fileUpload'   => false
+           )
+        ));
 
-        $this->addElement($this->_category());
-
-        $this->addElement(
-            'select', 'status',
-            array(
-                'label' => 'status',
-                'required' => true,
-                'multiOptions' => array(
-                    Forum_Model_Post::STATUS_ACTIVE  => Forum_Model_Post::STATUS_ACTIVE,
-                    Forum_Model_Post::STATUS_CLOSED  => Forum_Model_Post::STATUS_CLOSED,
-                    Forum_Model_Post::STATUS_DELETED => Forum_Model_Post::STATUS_DELETED,
-                ),
-            )
-        );
-
+        $this->addElement($body);
         $this->addElement($this->_submit());
 
         return $this;
     }
 
-    protected function _submit()
-    {
-        $sudmit = new Zend_Form_Element_Submit('submit');
-        $sudmit->setLabel('create');
-        return $sudmit;
-    }
-
-    protected function _category()
-    {
-        $category = new Zend_Form_Element_Select('categoryId');
-        $category->setLabel('categoryId');
-        $category->setRequired(true);
-
-        $cats = new Forum_Model_Category_Manager();
-        foreach ($cats->getAll() as $cat) {
-            $category->addMultiOption($cat->id, $cat->title);
-        }
-
-        return $category;
-    }
 }

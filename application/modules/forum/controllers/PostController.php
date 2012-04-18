@@ -74,8 +74,14 @@ class Forum_PostController extends Core_Controller_Action
         if ($this->getRequest()->isPost()
             && $form->isValid($this->_getAllParams())) {
 
+            $values = $form->getValues();
+
+            $categoryId = $this->_getParam('category');
+            // @todo check category ID
+            $values['categoryId'] = $categoryId;
+
             $post = new Forum_Model_Post();
-            $post->setFromArray($form->getValues());
+            $post->setFromArray($values);
             $post->save();
 
             $this->_helper->flashMessenger->addMessage('Post created');

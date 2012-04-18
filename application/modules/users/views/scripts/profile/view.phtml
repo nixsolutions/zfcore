@@ -2,7 +2,7 @@
     <?php echo $this->row->getName()?>
 
     <?php if ($this->user() && $this->user()->isId($this->row->id)):?>
-        ( <a href="<?php echo $this->url(array(), 'editprofile')?>"><?php echo $this->__('Edit')?></a> )
+        <a href="<?php echo $this->url(array(), 'editprofile')?>" class="btn pull-right"><?php echo $this->__('Edit')?></a>
     <?php endif?>
 </h1>
 <hr/>
@@ -36,4 +36,5 @@
         <dt><?php echo $this->__('Last Online')?>:</dt>
         <dd><?php echo $this->row->logined?></dd>
     </dl>
+    <hr/>
 </article>

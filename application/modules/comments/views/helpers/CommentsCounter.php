@@ -27,7 +27,7 @@ class Comments_View_Helper_CommentsCounter extends Zend_View_Helper_Abstract
         $aliasRow = $aliasManager->getByAlias($alias);
         
         // check if alias registered
-        if (!Zend_Registry::isRegistered($alias)) {
+        if (!Zend_Registry::isRegistered($alias.'.'.$fieldName)) {
             $userId = ($this->view->user()) ? $this->view->user()->id : 0;
             $commentsManager = new Comments_Model_Comment_Manager();
             
@@ -41,7 +41,6 @@ class Comments_View_Helper_CommentsCounter extends Zend_View_Helper_Abstract
                     array_push($values, $value);
                 }
             }
-            
             // fetch gropped comments amount
             $commentsAmount = $commentsManager->getGrouppedCommentsAmount(
                 $aliasRow, 
@@ -51,13 +50,13 @@ class Comments_View_Helper_CommentsCounter extends Zend_View_Helper_Abstract
             );
             
             Zend_Registry::set(
-                $alias, 
+                $alias.'.'.$fieldName,
                 $commentsAmount
             );
         }
         
         // fetch the data from registry
-        $commentsAmount = Zend_Registry::get($alias);
+        $commentsAmount = Zend_Registry::get($alias.'.'.$fieldName);
         
         if (isset($commentsAmount[$key])) {
             return $commentsAmount[$key];

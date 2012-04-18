@@ -32,11 +32,6 @@
     right: 0;
 }
 
-.commentlist a.thumbnail {
-	width: 80px;
-	height: 80px;
-	background: #fff;
-}
 .comment .unknown-user {
     content: url("users/unknown.png");
     border-radius: 3px 3px 3px 3px;

@@ -74,11 +74,14 @@
         <?php endforeach;?>
     </tbody>
 </table>
+<hr/>
 <?php endif; ?>
 
 <h2>
     <?php echo $this->__( 'Topics' );?>
+    <a href="<?php echo $this->url(array('category' => $this->category->id), 'forumpostcreate', true) ?>" class="btn btn-primary pull-right"><?php $this->_e('Create new topic')?></a>
 </h2>
+
 <table class="table table-bordered">
     <thead>
     <tr>
@@ -95,6 +98,7 @@
                 <strong><a href="<?php echo $this->url( array('id'=> $row->id), 'forumpost' )?>"
                    title="<?php echo $row->getTeaser()?>"><?php echo $row->title?></a></strong>
                 <br/>
+                &nbsp;&#8627;
                 <?php echo $this->__( 'by' )?>  <a href="<?php echo $this->url(
                     array('module' => 'users', 'controller' => 'profile', 'action'=>'view', 'id'=>$row->userId), 'default', true) ?>"><?php echo $row->author?></a>
                 <?php echo $this->elapsed( $row->created )?> <?php echo $this->__( 'ago' ) ?>

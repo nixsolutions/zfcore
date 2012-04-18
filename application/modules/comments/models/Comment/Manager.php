@@ -14,6 +14,8 @@ class Comments_Model_Comment_Manager extends Core_Model_Manager
      * Get comments select by commentAlias row
      *
      * @param Comments_Model_CommentAlias $commentAlias
+     * @param                             $userId
+     * @param int                         $key
      * @return Zend_Db_Select
      */
     public function getSelect(Comments_Model_CommentAlias $commentAlias, $userId, $key = 0)
@@ -47,12 +49,12 @@ class Comments_Model_Comment_Manager extends Core_Model_Manager
         
         return $select;
     }
-    
+
     /**
      * Get the select for fetching comments
-     * 
+     *
      * @param Comments_Model_CommentAlias $commentAlias
-     * @param string $userId
+     * @param int|string                  $userId
      * @return Zend_Db_Select
      */
     protected function _getCommentsAmountSelect(Comments_Model_CommentAlias $commentAlias, $userId = 0)

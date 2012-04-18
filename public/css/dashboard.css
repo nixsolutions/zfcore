@@ -47,9 +47,6 @@ pre {
 }
 
 blockquote{ padding-left:6px }
-dl { font-size:1.2em;}
-dt { font-weight:700 !important; }
-dd { }
 del { text-decoration: line-through; }
 table {
 	border-collapse: collapse;

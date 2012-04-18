@@ -9,8 +9,6 @@
  * @todo Refactoring with DB validators
  * http://framework.zend.com/manual/en/zend.validate.set.html
  * #zend.validate.db.excluding-records
- *
- * @version  $Id: Register.php 153 2010-07-08 11:51:49Z AntonShevchuk $
  */
 class Users_Form_Users_Profile extends Users_Form_Auth_Register
 {
@@ -42,6 +40,8 @@ class Users_Form_Users_Profile extends Users_Form_Auth_Register
     /**
      * Confirm password
      *
+     * @param $value
+     * @param $context
      * @return boolean
      */
     public function confirmPassword($value, $context)
@@ -71,6 +71,8 @@ class Users_Form_Users_Profile extends Users_Form_Auth_Register
 
     /**
      * @see Zend_Form::isValid()
+     * @param $data
+     * @return bool
      */
     public function isValid($data)
     {
@@ -131,7 +133,7 @@ class Users_Form_Users_Profile extends Users_Form_Auth_Register
     protected function _avatar()
     {
         $element = new Zend_Form_Element_File('avatar');
-        $element->setLabel('Last Name')
+        $element->setLabel('Avatar')
                 ->addValidator('isImage')
                 ->addFilter(new Zend_Filter_File_Rename(array('target' => md5(time()))))
                 ->addFilter(new Users_Form_Users_Filter_ImageSize(80, 80))
@@ -179,6 +181,7 @@ class Users_Form_Users_Profile extends Users_Form_Auth_Register
     /**
      * Get old password element
      *
+     * @param \Users_Model_User $row
      * @return Zend_Form_Element_Password
      */
     protected function _currentPassword(Users_Model_User $row)
@@ -223,7 +226,7 @@ class Users_Form_Users_Profile extends Users_Form_Auth_Register
      */
     protected function _submit()
     {
-        $element = new Zend_Form_Element_Submit('submit');
+        $element = parent::_submit();
         $element->setLabel('Update');
 
         return $element;

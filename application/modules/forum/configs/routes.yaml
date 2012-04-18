@@ -10,6 +10,12 @@ forumpost:
    module: forum
    controller: post
    action: index
+forumpostcreate:
+ route: forum/post/create/*
+ defaults:
+   module: forum
+   controller: post
+   action: create
 forumcategoryrss:
  route: forum/rss/category/:alias/*
  defaults:

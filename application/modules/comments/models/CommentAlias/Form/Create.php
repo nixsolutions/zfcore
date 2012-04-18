@@ -65,10 +65,10 @@ class Comments_Model_CommentAlias_Form_Create extends Core_Form
             'options', 
             array(
                 'multiOptions' => array(
-                    'keyRequired' => 'Key Required',
-                    'preModerationRequired' => 'Pre-moderation',
-                    'titleDisplayed' => 'Title Displayed',
-                    'paginatorEnabled' => 'Page Navigation'
+                    'keyRequired' => ' Key Required',
+                    'preModerationRequired' => ' Pre-moderation',
+                    'titleDisplayed' => ' Title Displayed',
+                    'paginatorEnabled' => ' Page Navigation'
                 )
             )
         );
