@@ -1,0 +1,9 @@
+table.table {
+	background: #fff;
+}
+tr.category-level-2 td:first-child{
+	border-left: 8px solid #DDDDDD
+}
+tr.category-level-3 td:first-child{
+	border-left: 16px solid #DDDDDD
+}

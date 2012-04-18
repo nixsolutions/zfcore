@@ -1,22 +1,22 @@
 <?php foreach($this->paginator as $i => $row) : ?>
-    <li id="li-comment-<?php echo $row->id ?>" class="comment">
-        <img src="<?php echo $this->avatar($row->avatar, $row->email)?>" 
-                alt="<?php echo $this->__('Avatar for')?> <?php echo $row->getUserName() ?>"
-                title="<?php echo $this->__('Avatar for')?> <?php echo $row->login?>" class="avatar"/>
-
-        <article id="comment-<?php echo $i = $i+2?>">
+    <li id="li-comment-<?php echo $row->id ?>" class="row">
+        <a href="<?php echo $this->url(array('module'=>'users','controller'=>'profile', 'action'=>'view', 'id'=>$row->userId), 'default')?>" class="thumbnail pull-left">
+            <img src="<?php echo $this->avatar($row->avatar, $row->email)?>"
+                    alt="<?php echo $this->__('Avatar for')?> <?php echo $row->firstname . ' ' . $row->lastname ?>"
+                    class=""/>
+        </a>
+        <article class="comment" id="comment-<?php echo $row->id ?>">
             <header>
-                <div class="right">#<a href="#comment-<?php echo $i?>"><?php echo $i?></a></div>
+                <div class="right">#<a href="#comment-<?php echo $i + 1 ?>"><?php echo $i + 1 ?></a></div>
                 
                 <?php echo $this->commentStatus($row) ?>
-                
-                <h5><?php echo $row->title; ?></h5>
-                <?php echo $this->user->login; ?>
-                <?php echo $this->__('at')?>
-                <?php echo $this->date($row->created); ?>
+
+                <a href="<?php echo $this->url(array('id' => $row->userId), 'userprofile') ?>"><?php echo $row->login ?></a>
+                 <?php echo $this->__('on')?> <?php echo $this->date($row->created)?>
+                <span class="says"><?php echo $this->__('said')?>:</span>
             </header>
-            <br />
-            <div style="position:relative;"><?php echo $row->body; ?></div>
+
+            <p><?php echo $row->body ?></p>
         </article>
     </li>
 <?php endforeach;?>

@@ -1,0 +1,116 @@
+<?php $this->headLink()->appendStylesheet('/css/forum.css'); ?>
+<h2>
+    <a href="<?php echo $this->url( array('module'=> 'forum'), 'default', true)?>"><?php echo $this->__( 'Forum' )?></a>
+
+
+    <?php $category = $this->category?>
+
+    <?php for ($i = $category->level; $i > 1; $i--): ?>
+    <?php if (!$category = $category->getParent()) break; ?>
+    / <a href="<?php echo $this->url( array('alias' => $category->alias), 'forumcategory' )?>"><?php echo $category->title;?></a>
+    <?php endfor;?>
+
+    / <?php echo $this->category->title?>
+    <a href="<?php echo $this->url(  array('alias'=> $this->category->alias), 'forumcategoryrss' ) ?>" class="pull-right badge badge-warning">
+        <i class="icon-fire icon-white"></i>&nbsp;<?php echo $this->category->title?> RSS</a>
+</h2>
+<hr/>
+<?php if ($this->categories->count()): ?>
+<h2>
+    <?php echo $this->__( 'Categories' );?>
+</h2>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th width="360"><?php echo $this->__( 'Category' )?></th>
+        <th><?php echo $this->__( 'Last topic' )?></th>
+        <th width="60"><?php echo $this->__( 'Topics' )?></th>
+        <th width="60"><?php echo $this->__( 'Comments' )?></th>
+    </tr>
+    </thead>
+    <tbody>
+        <?php $startLevel = $this->categories->current()->level - 1?>
+        <?php foreach ($this->categories as $row): ?>
+        <tr class="category category-level-<?php echo $row->level - $startLevel?>">
+            <td>
+                <h4>
+                    <a href="<?php echo $this->url( array('alias'=> $row->alias), 'forumcategory' )?>"><?php echo $row->title?></a>
+                </h4>
+                <?php echo $row->description?>
+            </td>
+            <td>
+                <?php $post = isset($this->posts[$row->id]) ? $this->posts[$row->id] : null;?>
+
+                <?php if ($post): ?>
+
+                    <a href="<?php echo $this->url( array('id'=> $post->id), 'forumpost' )?>"
+                       title="<?php echo $post->getTeaser()?>">
+                        <?php echo $post->title?>
+                    </a>
+                    <br/>
+                    <?php echo $this->__( 'by' ) ?>
+                    <a href="<?php echo $this->url(
+                                        array('module' => 'users', 'controller' => 'profile', 'action'=>'view', 'id'=>$post->userId), 'default', true) ?>">
+                        <?php echo $post->login?>
+                    </a>
+
+                    <?php echo $this->elapsed( $post->created )?> <?php echo $this->__( 'ago' ) ?>
+                <?php else: ?>
+                    <?php echo $this->__( 'No Posts Yet' )?>
+                <?php endif;?>
+            </td>
+            <td>
+                <span class="badge">
+                <?php echo ($post) ? $post->postsCount : 0?>
+                </span>
+            </td>
+            <td>
+                <span class="badge badge-info">
+                    <?php echo ($post) ? $this->commentsCounter( $post->categoryId, 'forum-post', $this->posts, 'categoryId' ) : '-' ?>
+                </span>
+            </td>
+        </tr>
+        <?php endforeach;?>
+    </tbody>
+</table>
+<?php endif; ?>
+
+<h2>
+    <?php echo $this->__( 'Topics' );?>
+</h2>
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th><?php echo $this->__( 'Topic' )?></th>
+        <th width="60"><?php echo $this->__( 'Views' )?></th>
+        <th width="60"><?php echo $this->__( 'Comments' )?></th>
+    </tr>
+    </thead>
+    <tbody>
+    <?php if ($this->paginator->count()): ?>
+        <?php foreach ($this->paginator as $row): ?>
+        <tr>
+            <td>
+                <strong><a href="<?php echo $this->url( array('id'=> $row->id), 'forumpost' )?>"
+                   title="<?php echo $row->getTeaser()?>"><?php echo $row->title?></a></strong>
+                <br/>
+                <?php echo $this->__( 'by' )?>  <a href="<?php echo $this->url(
+                    array('module' => 'users', 'controller' => 'profile', 'action'=>'view', 'id'=>$row->userId), 'default', true) ?>"><?php echo $row->author?></a>
+                <?php echo $this->elapsed( $row->created )?> <?php echo $this->__( 'ago' ) ?>
+            </td>
+            <td><span class="badge"><?php echo $row->views?></span></td>
+            <td>
+                <span class="badge badge-info"><?php echo $this->commentsCounter( $row->id, 'forum-post', $this->paginator->getCurrentItems()->toArray(), 'id' ) ?></span>
+            </td>
+        </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+    <tr>
+        <td colspan="5" align="center"><?php echo $this->__( 'No Posts Yet' )?></td>
+    </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
+
+<?php echo $this->paginationControl( $this->paginator, 'Sliding', 'pagination.phtml' ); ?>

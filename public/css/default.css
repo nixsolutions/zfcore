@@ -259,4 +259,7 @@ article {
 div.pull-right .dropdown-menu {
 	left:0
 }
+.well .pagination a{
+	background: #fff;
+}
 /*/bootstrap patch*/

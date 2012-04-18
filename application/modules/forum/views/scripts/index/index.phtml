@@ -1,0 +1,71 @@
+<?php $this->headLink()->appendStylesheet('/css/forum.css'); ?>
+
+<h1>
+    <?php echo $this->__( 'Forum' )?>
+    <a href="<?php echo $this->url( array('module'    => 'forum',
+                                          'controller'=> 'rss',
+                                          'action'    => 'index') ) ?>" class="pull-right badge badge-warning"><i
+        class="icon-fire icon-white"></i>&nbsp;RSS</a>
+</h1>
+<hr/>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th width="360"><?php echo $this->__( 'Category' )?></th>
+        <th><?php echo $this->__( 'Last topic' )?></th>
+        <th width="60"><?php echo $this->__( 'Topics' )?></th>
+        <th width="60"><?php echo $this->__( 'Comments' )?></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <?php if ($this->categories->count()): ?>
+        <?php foreach ($this->categories as $row): ?>
+        <tr class="category category-level-<?php echo $row->level?>">
+            <td>
+                <h4>
+                    <a href="<?php echo $this->url( array('alias'=> $row->alias), 'forumcategory' )?>"><?php echo $row->title?></a>
+                </h4>
+                <?php echo $row->description?>
+            </td>
+            <td>
+                <?php $post = isset($this->posts[$row->id]) ? $this->posts[$row->id] : null;?>
+
+                <?php if ($post): ?>
+
+                    <a href="<?php echo $this->url( array('id'=> $post->id), 'forumpost' )?>"
+                       title="<?php echo $post->getTeaser()?>">
+                        <?php echo $post->title?>
+                    </a>
+                    <br/>
+                    <?php echo $this->__( 'by' ) ?>
+                    <a href="<?php echo $this->url(
+                                        array('module' => 'users', 'controller' => 'profile', 'action'=>'view', 'id'=>$post->userId), 'default', true) ?>">
+                        <?php echo $post->login?>
+                    </a>
+
+                    <?php echo $this->elapsed( $post->created )?> <?php echo $this->__( 'ago' ) ?>
+                <?php else: ?>
+                    <?php echo $this->__( 'No Posts Yet' )?>
+                <?php endif;?>
+            </td>
+            <td>
+                <span class="badge">
+                <?php echo ($post) ? $post->postsCount : 0?>
+                </span>
+            </td>
+            <td>
+                <span class="badge badge-info">
+                    <?php echo ($post) ? $this->commentsCounter( $post->categoryId, 'forum-post', $this->posts, 'categoryId' ) : '-' ?>
+                </span>
+            </td>
+        </tr>
+            <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <th colspan="5"><?php echo $this->__( 'No Categories Yet' )?></th>
+        </tr>
+    <?php endif; ?>
+    </tbody>
+</table>

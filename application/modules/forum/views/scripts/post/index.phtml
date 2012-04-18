@@ -1,0 +1,35 @@
+<h2>
+	<a href="<?php echo $this->url(array('alias'=> $this->category->alias), 'forumcategory') ?>"><?php echo $this->category->title; ?></a>
+    /  <?php echo $this->post->title; ?>
+    <a href="<?php echo $this->url(array('id'=> $this->post->id), 'forumpostrss') ?>" class="pull-right badge badge-warning">
+        <i class="icon-fire icon-white"></i>&nbsp;Comments RSS</a>
+</h2>
+<hr/>
+<ul class="commentlist">
+    <li class="row">
+
+        <a href="<?php echo $this->url(array('module'=>'users','controller'=>'profile', 'action'=>'view', 'id'=>$this->author->id), 'default')?>" class="thumbnail pull-left">
+            <img src="<?php echo $this->avatar($this->author->avatar, $this->author->email)?>"
+                    alt="<?php echo $this->__('Avatar for')?> <?php echo $this->author->firstname . ' ' . $this->author->lastname ?>"
+                    class=""/>
+        </a>
+        <article class="comment">
+            <header>
+                <a href="<?php echo $this->url(array('module'=>'users','controller'=>'profile', 'action'=>'view', 'id'=>$this->author->id), 'default')?>">
+                <?php echo $this->author->login; ?>
+                </a>
+                <?php echo $this->__('at')?>
+                <?php echo $this->date($this->post->created); ?>
+            </header>
+            <br />
+            <p><?php echo $this->post->body; ?></p>
+        </article>
+    </li>
+</ul>
+
+<?php echo $this->getComments('forum-post', 
+    array(
+        'key' => $this->post->id,
+        'template' => 'forum'
+    )
+) ?>

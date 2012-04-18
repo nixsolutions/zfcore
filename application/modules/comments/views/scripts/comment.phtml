@@ -1,17 +1,20 @@
-<li id="li-comment-<?php echo $row->id ?>" class="comment">
-
-    <img src="<?php echo $this->avatar($row->avatar, $row->email)?>" 
-            alt="<?php echo $this->__('Avatar for')?> <?php echo $row->getUserName() ?>"
-            class="avatar thumbnail"/>
-
+<li id="li-comment-<?php echo $row->id ?>" class="row">
+    <a href="<?php echo $this->url(array('module'=>'users','controller'=>'profile', 'action'=>'view', 'id'=>$row->userId), 'default')?>" class="thumbnail pull-left">
+        <img src="<?php echo $this->avatar($row->avatar, $row->email)?>"
+                alt="<?php echo $this->__('Avatar for')?> <?php echo $row->firstname . ' ' . $row->lastname ?>"
+                class=""/>
+    </a>
     <article class="comment" id="comment-<?php echo $row->id ?>">
-        <?php echo ucfirst($row->login)?> <?php echo $this->__('on')?> <?php echo $this->date($row->created)?>
-        <span class="says"><?php echo $this->__('said')?>:</span>
+        <header>
+            <div class="right">#<a href="#comment-<?php echo $i + 1 ?>"><?php echo $i + 1 ?></a></div>
+
+            <?php echo $this->commentStatus($row) ?>
+
+            <a href="<?php echo $this->url(array('id' => $row->userId), 'userprofile') ?>"><?php echo $row->login ?></a>
+             <?php echo $this->__('on')?> <?php echo $this->date($row->created)?>
+            <span class="says"><?php echo $this->__('said')?>:</span>
+        </header>
 
         <p><?php echo $row->body ?></p>
-
-        <!--<div class="actions">
-            <input type="button" value="Reply" class="reply" data-commentId="<?php echo $row->id ?>" />
-        </div>-->
     </article>
 </li>

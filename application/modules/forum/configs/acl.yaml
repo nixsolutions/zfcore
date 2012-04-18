@@ -1,0 +1,12 @@
+mvc:
+  forum:
+    index:
+      allow: guest
+    rss:
+      allow: guest
+    post:
+      allow: guest
+    images:
+      allow: admin
+    management:
+      allow: admin

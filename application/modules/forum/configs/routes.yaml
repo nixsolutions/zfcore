@@ -1,0 +1,24 @@
+forumcategory:
+ route: forum/category/:alias/*
+ defaults:
+   module: forum
+   controller: index
+   action: category
+forumpost:
+ route: forum/post/:id/*
+ defaults:
+   module: forum
+   controller: post
+   action: index
+forumcategoryrss:
+ route: forum/rss/category/:alias/*
+ defaults:
+   module: forum
+   controller: rss
+   action: category
+forumpostrss:
+ route: forum/rss/post/:id/*
+ defaults:
+   module: forum
+   controller: rss
+   action: post
