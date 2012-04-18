@@ -1,13 +1,26 @@
-<?php $this->headLink()->appendStylesheet('/css/blog.css'); ?>
+<?php
+    $this->headLink()->appendStylesheet('/css/blog.css');
+    $User = Zend_Auth::getInstance()->getIdentity();
+?>
 
 <h1>Blog
+
     <?php if (isset($this->category)) : $url = $this->url(array('alias' => $this->category->alias), 'blogcategoryrss'); ?>
         : <?php echo $this->category->title ?>
     <?php elseif (isset($this->author)) : $url = $this->url(array('login' => $this->author->login), 'blogauthorrss'); ?>
         : <?php echo $this->author->login ?>
     <?php else: $url = $this->url(array('controller'=>'rss'))?>
     <?php endif; ?>
-    <a href="<?php echo $url ?>" class="pull-right badge badge-warning"><i class="icon-fire icon-white"></i>&nbsp;RSS</a>
+    <a href="<?php echo $url ?>" class="pull-right badge badge-warning span1 textcenter" style="margin-left: 24px"><i class="icon-fire icon-white"></i>&nbsp;RSS</a>
+
+    <?php if ($User && $User->role != Users_Model_User::ROLE_GUEST) : ?>
+            <a href="<?php echo $this->url(array(
+                                    'module' => 'blog',
+                                    'controller' => 'post',
+                                    'action' => 'create'), 'default', true) ?>" title="<?php $this->_e('New Post')?>" class="btn btn-primary btn-large pull-right">
+                <?php $this->_e('New Post')?>
+            </a>
+        <?php endif; ?>
 </h1>
 
 <hr />

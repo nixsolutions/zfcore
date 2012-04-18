@@ -1,6 +1,16 @@
-<?php $this->headLink()->appendStylesheet('/css/blog.css'); ?>
-
-<h1><?php echo $this->row->title?></h1>
+<?php
+    $this->headLink()->appendStylesheet('/css/blog.css');
+?>
+<h1>
+    <?php echo $this->row->title?>
+    <?php if ($this->row->isOwner()) : ?>
+        <a href="<?php echo $this->url(array(
+                                'module' => 'blog',
+                                'controller' => 'post',
+                                'action' => 'edit',
+                                'alias'  => $this->row->alias), 'default', true) ?>" title="<?php $this->_e('Edit Post')?>" class="btn pull-right"><?php $this->_e('Edit Post')?></a>
+    <?php endif; ?>
+</h1>
 
 <hr />
 <div class="blog">

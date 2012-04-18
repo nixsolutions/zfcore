@@ -97,14 +97,13 @@ class Blog_PostController extends Core_Controller_Action
             && $form->isValid($this->_getAllParams())) {
 
             $post->setFromArray($form->getValues());
+            $post->save();
 
             $this->_helper->flashMessenger->addMessage('Post saved');
-            $this->_helper->redirector(
-                'index',
-                null,
-                null,
-                array('alias' => $post->alias)
-            );
+            $this->_helper->redirector->gotoRoute(
+                        array('alias' => $post->alias),
+                        'blogpost'
+                    );
         }
         $this->view->form = $form;
     }

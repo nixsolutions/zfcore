@@ -16,6 +16,12 @@ blogpost:
    module: blog
    controller: post
    action: index
+blogpostcreate:
+ route: blog/post/create
+ defaults:
+   module: blog
+   controller: post
+   action: create
 blogauthorrss:
  route: blog/rss/author/:login
  defaults:

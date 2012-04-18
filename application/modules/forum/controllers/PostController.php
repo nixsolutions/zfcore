@@ -100,14 +100,14 @@ class Forum_PostController extends Core_Controller_Action
     public function editAction()
     {
         if (!$postId = $this->_getParam('id')) {
-            throw new Zend_Controller_Action_Exception('Page not found');
+            throw new Zend_Controller_Action_Exception('Topic not found');
         }
         $posts = new Forum_Model_Post_Table();
         if (!$post = $posts->getById($postId)) {
-            throw new Zend_Controller_Action_Exception('Post not found');
+            throw new Zend_Controller_Action_Exception('Topic not found');
         }
         if (!$post->isOwner()) {
-            throw new Zend_Controller_Action_Exception('Page is forbidden');
+            throw new Zend_Controller_Action_Exception('Access is forbidden');
         }
 
         $form = new Forum_Form_Post_Edit();
@@ -117,7 +117,8 @@ class Forum_PostController extends Core_Controller_Action
             && $form->isValid($this->_getAllParams())) {
 
             $post->setFromArray($form->getValues());
-            $this->_helper->flashMessenger->addMessage('Post saved');
+            $post->save();
+            $this->_helper->flashMessenger->addMessage('Topic was saved');
 
             $this->_helper->redirector
                  ->gotoRoute(array('id' => $post->id), 'forumpost');

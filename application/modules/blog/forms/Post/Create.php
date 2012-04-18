@@ -41,7 +41,6 @@ class Blog_Form_Post_Create extends Core_Form
                        'fileUpload'   => false,
                    )
                 ));
-        $teaser->addDecorators($this->_inputDecorators);
         $this->addElement($teaser);
 
         $body = new Core_Form_Element_Redactor('body', array(
@@ -56,8 +55,6 @@ class Blog_Form_Post_Create extends Core_Form
                        'fileUpload'   => false,
                    )
                 ));
-        $body->addDecorators($this->_inputDecorators);
-
         $this->addElement($body);
 
         $this->addElement($this->_status());

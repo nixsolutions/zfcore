@@ -16,6 +16,12 @@ forumpostcreate:
    module: forum
    controller: post
    action: create
+forumpostedit:
+ route: forum/post/edit/*
+ defaults:
+   module: forum
+   controller: post
+   action: edit
 forumcategoryrss:
  route: forum/rss/category/:alias/*
  defaults:

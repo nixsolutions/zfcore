@@ -20,6 +20,9 @@
                 </a>
                 <?php echo $this->__('at')?>
                 <?php echo $this->date($this->post->created); ?>
+                <?php if ($this->post->isOwner()) : ?>
+                <a href="<?php echo $this->url(array('id' => $this->post->id), 'forumpostedit') ?>" class="label pull-right"><?php $this->_e('edit topic')?></a>
+                <?php endif; ?>
             </header>
             <br />
             <p><?php echo $this->post->body; ?></p>
