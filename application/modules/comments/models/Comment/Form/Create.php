@@ -71,7 +71,7 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
                 'required'   => true,
                 'filters'    => array('StringTrim', 'HtmlEntities'),
                 'validators' => array(
-                    array('validator' => 'StringLength', 'options' => array(1, 400))
+                    array('validator' => 'StringLength', 'options' => array(5, 400))
                 )
             )
         );

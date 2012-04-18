@@ -1,6 +1,6 @@
 <?php
 /**
- * ManagementController for module
+ * Management controller for cetgories module
  *
  * @category   Application
  * @package    Categories
@@ -25,7 +25,7 @@ class Categories_ManagementController extends Core_Controller_Action_Crud
      *
      * return edit form for scaffolding
      *
-     * @return  Zend_Form
+     * @return  Categories_Form_Category_Edit
      */
     protected function _getEditForm()
     {
@@ -39,7 +39,7 @@ class Categories_ManagementController extends Core_Controller_Action_Crud
      *
      * return manager for scaffolding
      *
-     * @return  Core_Model_Abstract
+     * @return  Categories_Model_Category_Table
      */
     protected function _getTable()
     {
@@ -67,7 +67,28 @@ class Categories_ManagementController extends Core_Controller_Action_Crud
     {
         $this->_addCheckBoxColumn();
 
-        $this->_addAllTableColumns();
+        $this->_grid->setColumn(
+            'title', array(
+                'name'  => 'Category name',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'title'
+            )
+        );
+        $this->_grid->setColumn(
+            'description', array(
+                'name'  => 'Description',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'description',
+                'formatter' => array($this, 'trimFormatter')
+            )
+        );
+        $this->_grid->setColumn(
+            'path', array(
+                'name'  => 'Path',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'path'
+            )
+        );
 
         $this->_addEditColumn();
         $this->_addDeleteColumn();

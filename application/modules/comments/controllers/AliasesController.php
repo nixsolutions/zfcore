@@ -61,7 +61,8 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
             'show',
             array(
                 'name' => 'Show',
-                'formatter' => array($this, 'showCommentsFormatter')
+                'formatter' => array($this, 'showCommentsFormatter'),
+                'attribs'   => array('width' => '60px')
             )
         );
     }
@@ -80,7 +81,7 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
             array(
                 'controller' => 'management',
                 'action' => 'index',
-                'alias' => $row['id']
+                'alias' => $row['id'],
             ),
             'default'
         );
@@ -107,7 +108,24 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
     protected function _prepareGrid()
     {
         $this->_addCheckBoxColumn();
-        $this->_addAllTableColumns();
+        $this->_grid->setColumn(
+                        'alias',
+                        array(
+                            'name'  => 'Section Alias',
+                            'type'  => Core_Grid::TYPE_DATA,
+                            'index' => 'alias'
+                        )
+                    );
+        $this->_grid->setColumn(
+                        'options',
+                        array(
+                            'name'  => 'Options',
+                            'type'  => Core_Grid::TYPE_DATA,
+                            'index' => 'options',
+                            'formatter' => array($this, 'toStringFormatter')
+                        )
+                    );
+        $this->_addCreatedColumn();
         $this->_addShowCommentsColumn();
         $this->_addEditColumn();
         $this->_addDeleteColumn();
@@ -116,5 +134,22 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
 //        if ($this->_alias && !$this->_alias->isTitleDisplayed()) {
 //            $this->_grid->removeColumn('title');
 //        }
+    }
+
+    /**
+     * toStringFormatter
+     *
+     * @param $value
+     * @param $row
+     * @return string
+     */
+    function toStringFormatter($value, $row)
+    {
+        $res = json_decode($value);
+        if ($res) {
+            return join(', ', $res);
+        } else {
+            return '';
+        }
     }
 }

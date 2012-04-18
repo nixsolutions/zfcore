@@ -47,7 +47,7 @@ class Forum_PostController extends Core_Controller_Action
         }
 
         $manager = new Forum_Model_Category_Manager();
-        if (!$category = $manager->getByAlias($alias)) {
+        if (!$category = $manager->getByAlias($categoryAlias)) {
             throw new Zend_Controller_Action_Exception('Category not found');
         }
 

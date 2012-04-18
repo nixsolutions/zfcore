@@ -6,7 +6,7 @@ dashboard:
     order: 95
     pages:
       aliases:
-        label: View Aliases
+        label: All Sections
         module: comments
         controller: aliases
         action: index

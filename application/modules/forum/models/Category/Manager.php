@@ -7,8 +7,6 @@
  * @subpackage Category
  *
  * @author Ivan Nosov aka rewolf <i.k.nosov@gmail.com>
- *
- * @version  $Id: Manager.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
 class Forum_Model_Category_Manager extends Core_Categories_Manager
 {
@@ -27,7 +25,7 @@ class Forum_Model_Category_Manager extends Core_Categories_Manager
     /**
      * Constructor
      *
-     * @param Zend_Db_Table $table
+     * @param Zend_Db_Table_Abstract $table
      */
     public function __construct(Zend_Db_Table_Abstract $table = null)
     {

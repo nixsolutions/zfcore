@@ -9,6 +9,7 @@
 	height: 80px;
 }
 .commentlist .comment {
+	position: relative;
     margin:0 0 0 120px;
 }
 .commentlist .comment:before {
@@ -29,6 +30,12 @@
     position: absolute;
     top: 0;
     right: 0;
+}
+
+.commentlist a.thumbnail {
+	width: 80px;
+	height: 80px;
+	background: #fff;
 }
 .comment .unknown-user {
     content: url("users/unknown.png");

@@ -20,9 +20,9 @@
                     <?php echo $this->gravatar($this->user->email, array(), array('title' => $this->__('Avatar for') . ' '  . $this->user->getName(), 'class' => 'avatar')) ?>
                 <?php endif?>
                 </a>
-                <div class="comment">
+                <article class="comment">
                     <?php echo $this->form;?>
-                </div>
+                </article>
             </li>
         <?php endif;?>
     </ul>

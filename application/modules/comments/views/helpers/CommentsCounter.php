@@ -17,7 +17,7 @@ class Comments_View_Helper_CommentsCounter extends Zend_View_Helper_Abstract
      * @param string $alias
      * @param array $items
      * @param string $fieldName
-     * @return array
+     * @return integer
      * @throws Zend_Controller_Action_Exception 
      */
     public function commentsCounter($key, $alias, $items, $fieldName = 'id')

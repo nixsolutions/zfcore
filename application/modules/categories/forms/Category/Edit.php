@@ -5,8 +5,6 @@
  * @category Application
  * @package Model
  * @subpackage Form
- *
- * @version  $Id: Create.php 206 2010-10-20 10:55:55Z AntonShevchuk $
  */
 class Categories_Form_Category_Edit extends Categories_Form_Category_Create
 {

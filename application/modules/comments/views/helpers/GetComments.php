@@ -21,12 +21,12 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
      *
      * @param string $aliasKey
      * @param array $options
-     * @return type
+     * @return string
      * @throws Zend_Controller_Action_Exception
      */
     public function getComments($aliasKey, $options = array())
     {
-        $user = $this->view->user;
+        $user = Zend_Auth::getInstance()->getIdentity();
 
         $request = Zend_Controller_Front::getInstance()->getRequest();
 
@@ -35,7 +35,7 @@ class Comments_View_Helper_GetComments extends Zend_View_Helper_Abstract
 
         $alias = $aliasManager->getByAlias($aliasKey);
         $page = $request->getParam('page');
-        $userId = ($user) ? $user['id'] : 0;
+        $userId = ($user) ? $user->id : 0;
 
         $this->_checkOptions($options);
 

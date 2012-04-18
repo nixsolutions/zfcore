@@ -2,7 +2,7 @@
     <div class="pagination">
         <ul>
             <?php if (isset($this->previous)): ?>
-                <li class="prev"><a href="<?php echo $this->url(array('module'=>'forum', 'controller'=>'index', 'action'=>'category', 'page' => $this->previous)); ?>">&laquo;</a></li>
+                <li class="prev"><a href="<?php echo $this->url(array('page' => $this->previous)); ?>">&laquo;</a></li>
             <?php else: ?>
                 <li class="prev disabled"><a href="#">&laquo;</a></li>
             <?php endif; ?>
@@ -11,12 +11,12 @@
                 <?php if ($page == $this->current): ?>
                     <li class="active"><a href="#"><?php echo $page ?></a></li>
                 <?php else: ?>
-                    <li><a href="<?php echo $this->url(array('module'=>'forum', 'controller'=>'index', 'action'=>'category', 'page' => $page)); ?>"><?php echo $page; ?></a></li>
+                    <li><a href="<?php echo $this->url(array('page' => $page)); ?>"><?php echo $page; ?></a></li>
                 <?php endif; ?>
             <?php endforeach; ?>
 
             <?php if (isset($this->next)): ?>
-                <li class="next"><a href="<?php echo $this->url(array('module'=>'forum', 'controller'=>'index', 'action'=>'category', 'page' => $this->next)); ?>">&raquo;</a></li>
+                <li class="next"><a href="<?php echo $this->url(array('page' => $this->next)); ?>">&raquo;</a></li>
             <?php else: ?>
                 <li class="next disabled"><a href="#">&raquo;</a></li>
             <?php endif; ?>

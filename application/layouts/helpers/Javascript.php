@@ -26,7 +26,7 @@ class Application_View_Helper_Javascript extends Zend_View_Helper_Abstract
      *
      * @param   string $method 
      * @param   mixed  $args
-     * @return  rettype  return
+     * @return  void
      */
     public function __call($method, $args) 
     {
