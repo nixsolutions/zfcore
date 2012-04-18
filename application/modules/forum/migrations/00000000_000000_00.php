@@ -22,26 +22,10 @@ class Forum_Migration_00000000_000000_00 extends Core_Migration_Abstract
             ) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8
             "
         );
-
-
-        // comment table
-        $this->query(
-            "CREATE TABLE `forum_comment` (
-                 `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-                 `postId` INT(10) NOT NULL,
-                 `userId` INT(10) NOT NULL,
-                 `title` VARCHAR(250) DEFAULT NULL,
-                 `body` TEXT,
-                 `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-                 `updated` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-                 PRIMARY KEY (`id`)
-               ) ENGINE=INNODB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8"
-        );
     }
 
     public function down()
     {
         $this->dropTable('forum_post');
-        $this->dropTable('forum_comment');
     }
 }

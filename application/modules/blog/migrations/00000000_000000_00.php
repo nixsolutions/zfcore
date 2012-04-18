@@ -24,24 +24,11 @@ class Blog_Migration_00000000_000000_00 extends Core_Migration_Abstract
              PRIMARY KEY (`id`)
            ) ENGINE=INNODB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8"
         );
-
-        $this->query(
-            "CREATE TABLE `blog_comment` (
-            `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-            `postId` INT(10) NOT NULL,
-            `userId` INT(10) NOT NULL,
-            `body` TEXT,
-            `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-            `updated` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-            PRIMARY KEY (`id`)
-          ) ENGINE=INNODB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8"
-        );
     }
 
     public function down()
     {
         $this->dropTable('blog_post');
-        $this->dropTable('blog_comment');
     }
 }
 
