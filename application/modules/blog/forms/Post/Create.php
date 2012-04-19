@@ -23,7 +23,7 @@ class Blog_Form_Post_Create extends Core_Form
                 'label' => 'Title',
                 'required' => true,
                 'filters' => array('StringTrim'),
-                'attribs' => array('class'=>'span4')
+                'attribs' => array('class'=>'span6')
             )
         );
 
@@ -78,7 +78,7 @@ class Blog_Form_Post_Create extends Core_Form
         $select->where('path LIKE (?)', Blog_Model_Category_Manager::CATEGORY_ALIAS.'/%');
 
         foreach ($categories->getDbTable()->fetchAll($select) as $row) {
-            $element->addMultiOption($row->id, str_repeat("…", $row->level-1) . " " . $row->title);
+            $element->addMultiOption($row->id, str_repeat("â€¦", $row->level-1) . " " . $row->title);
         }
         return $element;
     }
