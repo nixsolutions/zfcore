@@ -3,8 +3,6 @@
  * @category Application
  * @package  Core_View
  * @subpackage Helper
- *
- * @version  $Id$
  */
 class Application_View_Helper_User extends Zend_View_Helper_Abstract
 {

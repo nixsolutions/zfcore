@@ -21,7 +21,7 @@ input,button,textarea,select{*font-size:100%;}
 
 body {
     font: 62.5%/1.5em Helvetica, Arial, sans-serif;
-	background: url(default/grids.gif) repeat;
+	background: url(grids.gif) repeat;
 }
 
 hr {
@@ -96,7 +96,7 @@ body {
 	padding-bottom: 20px;
 }
 .navbar a.brand {
-	background: url(default/zf-logo-small.png) no-repeat;
+	background: url(zf-logo-small.png) no-repeat;
 	font-weight: 600;
 	font-size: 24px;
 	padding: 14px 60px 2px;
@@ -153,7 +153,7 @@ footer {
 	width: 180px;
 	height: 40px;
 	float:right;
-	background: url("../img/loading.gif") 50% 50% no-repeat;
+	background: url("../../img/loading.gif") 50% 50% no-repeat;
 	display: none;
 }
 /*/Loading */

@@ -13,7 +13,7 @@
     margin:0 0 0 120px;
 }
 .commentlist .comment:before {
-    content: url("comments/arrow.png");
+    content: url("arrow.png");
     left: -21px;
     position: absolute;
 }
@@ -33,7 +33,7 @@
 }
 
 .comment .unknown-user {
-    content: url("users/unknown.png");
+    content: url("unknown.png");
     border-radius: 3px 3px 3px 3px;
     box-shadow: 0 1px 2px #CCCCCC;
     left: -107px;

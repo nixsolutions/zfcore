@@ -49,8 +49,9 @@ class Core_View_Helper_AForm extends Zend_View_Helper_FormElement
     /**
      * Set form
      *
-     * @param Zend_Form_Element $element
-     * @return Lizard_Crud_View_Helper_AForm
+     * @param null|\Zend_Form $form
+     * @internal param \Zend_Form_Element $element
+     * @return Core_View_Helper_AForm
      */
     public function aForm(Zend_Form $form = null)
     {

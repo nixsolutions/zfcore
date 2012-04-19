@@ -21,7 +21,7 @@ input,button,textarea,select{*font-size:100%;}
 
 body {
     font: 62.5%/1.5em Helvetica, Arial, sans-serif;
-	background: url('dashboard/bg-body.jpg') repeat-y 0 0;
+	background: url('bg-body.jpg') repeat-y 0 0;
 }
 
 hr {
@@ -133,7 +133,7 @@ body {
 	width: 180px;
 	height: 40px;
 	float:right;
-	background: url("../img/loading.gif") 50% 50% no-repeat;
+	background: url("../../img/loading.gif") 50% 50% no-repeat;
 	display: none;
 }
 /*/Loading*/
@@ -152,7 +152,7 @@ ul.help-inline {
 /*/Grid /
 /*NIX*/
 .nix {
-	background: url('dashboard/nix-logo.png') no-repeat 0 0;
+	background: url('nix-logo.png') no-repeat 0 0;
 	width: 200px;
 	height: 90px;
 	text-indent: -9999%;
