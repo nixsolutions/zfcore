@@ -161,6 +161,11 @@ class Core_Debug extends Zend_Debug
 
         list ($mTotal, $mSec) = self::getMemoryUsage();
 
+        if (!isset(self::$_time) && defined('START_TIMER')) {
+            self::$_time["start"] = START_TIMER;
+            self::$_time["section"] = START_TIMER;
+        }
+
         if (!isset(self::$_time)) {
             self::$_time["start"] = $_time;
             self::$_time["section"] = $_time;
@@ -175,6 +180,8 @@ class Core_Debug extends Zend_Debug
                 )
             );
         } else {
+
+
             $start = self::$_time["section"];
             self::$_time["section"] = $_time;
 

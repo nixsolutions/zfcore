@@ -20,6 +20,10 @@ defined('PUBLIC_PATH')
 defined('DS')
     || define('DS', DIRECTORY_SEPARATOR);
 
+// Define short alias for DIRECTORY_SEPARATOR
+defined('START_TIMER')
+    || define('START_TIMER', microtime(true));
+
 // Ensure library/ is on include_path
 set_include_path(
     implode(
