@@ -98,6 +98,7 @@ class Users_Form_Auth_Register extends Core_Form
                         'wordLen' => 6,
                         'timeout' => 300,
                         'imgDir' => $imgDir,
+                        'imgUrl' => '/captcha/',
                         'font' => dirname(APPLICATION_PATH) .
                                   "/data/fonts/Aksent_Normal.ttf",
                     ),
