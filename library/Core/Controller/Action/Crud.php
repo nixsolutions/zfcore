@@ -42,6 +42,11 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     /**
      * @var array
      */
+    protected $_orders = array();
+
+    /**
+     * @var array
+     */
     protected $_filters = array();
 
     /**
@@ -273,6 +278,10 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
 
         if ($this->_getParam('orderColumn')) {
             $grid->setOrder($this->_getParam('orderColumn'), $this->_getParam('orderDirection', 'asc'));
+        } elseif (sizeof($this->_orders)) {
+            foreach ($this->_orders as $column => $direction) {
+                $grid->setOrder($column, $direction);
+            }
         }
 
         if ($this->_getParam('filterColumn')) {

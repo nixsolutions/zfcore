@@ -8,11 +8,9 @@
     ?>
     </ul>
 <hr/>
-<div class="faq">
-    <?php    
-        foreach($this->question as $i => $question){
-            echo '<h3><a name="faq-' . $i . '">' . $question->question . '</a></h3>';
-            echo '<article>' . $question->answer . '</article>';
-        }
-    ?>
-</div>
+<?php
+    foreach($this->question as $i => $question){
+        echo '<h3><a name="faq-' . $i . '">' . $question->question . '</a></h3>';
+        echo '<article>' . $question->answer . '</article>';
+    }
+?>

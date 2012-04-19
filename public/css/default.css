@@ -109,6 +109,12 @@ article {
 	margin:1.625em 0;
 	padding: 1.625em;
 }
+	article .content {
+		padding: 1em 0;
+	}
+footer {
+	color: #777;
+}
 /*/Main*/
 /*Messages*/
 #messages {

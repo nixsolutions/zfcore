@@ -35,6 +35,7 @@ class Blog_Form_Admin_Create extends Core_Form
             );
         $this->addElement($title);
 
+        $this->addElement($this->_category());
         $teaser = new Core_Form_Element_Redactor('teaser', array(
            'label' => 'Teaser',
            'cols'  => 50,
@@ -72,12 +73,14 @@ class Blog_Form_Admin_Create extends Core_Form
         $published = new Zend_Form_Element_Text('published');
         $published->setLabel('Published Date')
             ->setRequired(true)
-            ->addDecorators($this->_inputDecorators);
+            ->addDecorators($this->_inputDecorators)
+            ->setAttribs(array('class' => 'span2'))
+            ->setValue(date('Y-m-d H:i:s'))
+        ;
         $this->addElement($published);
 
-        $this->addElement($this->_category());
         $this->addElement($this->_status());
-        $this->addElement($this->_user());
+//        $this->addElement($this->_user());
 
         $this->addElement($this->_submit());
 
@@ -91,21 +94,20 @@ class Blog_Form_Admin_Create extends Core_Form
      */
     protected function _category()
     {
-        $categories = new Blog_Model_Category_Manager();
-
-        $options = array();
-        foreach ($categories->getAll() as $category) {
-            $options[$category->id] = $category->title;
-        }
-
         $element = new Zend_Form_Element_Select('categoryId');
         $element->setLabel('Category')
                 ->setRequired(true)
                 ->addDecorators($this->_inputDecorators)
-                ->addMultioptions($options)
-                ->setAttribs(array('class' => 'span2'));
+                ->setAttribs(array('class' => 'span4'));
 
+        $categories = new Blog_Model_Category_Manager();
+        $select = $categories->getDbTable()->select()->order('path');
+        $select->order('path');
+        $select->where('path LIKE (?)', Blog_Model_Category_Manager::CATEGORY_ALIAS.'/%');
 
+        foreach ($categories->getDbTable()->fetchAll($select) as $row) {
+            $element->addMultiOption($row->id, str_repeat("…", $row->level-1) . " " . $row->title);
+        }
         return $element;
     }
 

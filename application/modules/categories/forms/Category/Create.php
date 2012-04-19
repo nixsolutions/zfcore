@@ -40,7 +40,7 @@ class Categories_Form_Category_Create extends Core_Form
         $subject->setLabel('Title')
                 ->setRequired(true)
 //                ->setTrim(true)
-                ->setAttribs(array('style'=>'width:750px;'))
+                ->setAttribs(array('class'=>'span6'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim');
         return $subject;
@@ -54,7 +54,7 @@ class Categories_Form_Category_Create extends Core_Form
     {
         $subject = new Zend_Form_Element_Text('alias');
         $subject->setLabel('Alias')
-                ->setAttribs(array('style'=>'width:750px;'))
+                ->setAttribs(array('class'=>'span4'))
                 ->addFilter('StripTags')
                 ->addFilter('StringTrim')
                 ->addValidator(
@@ -74,13 +74,18 @@ class Categories_Form_Category_Create extends Core_Form
      */
     protected function _description()
     {
-        $body = new Core_Form_Element_Wysiwyg('description');
-        $body->setLabel('Description')
-             ->setRequired(false)
-             ->setAttribs(array('style' => 'width:750px;height:200px'))
-             ->addFilter('StringTrim')
-             ->addToolbar(array('biu'));
-        return $body;
+        $description = new Core_Form_Element_Redactor('description', array(
+           'label' => 'Description',
+           'cols'  => 50,
+           'rows'  => 5,
+           'required' => true,
+           'filters' => array('StringTrim'),
+           'redactor' => array(
+               'imageUpload'  => false,
+               'fileUpload'   => false,
+           )
+        ));
+        return $description;
     }
 
     /**
@@ -92,14 +97,14 @@ class Categories_Form_Category_Create extends Core_Form
     {
         $element = new Zend_Form_Element_Select('parentId');
         $element->setLabel('Parent Category')
-             ->setAttribs(array('style' => 'width:750px'))
+             ->setAttribs(array('class'=>'span4'))
              ->setRequired(false);
 
         $element->addMultiOption('', '');
         $categories = new Categories_Model_Category_Table();
         $select = $categories->select()->order('path');
         foreach ($categories->fetchAll($select) as $row) {
-            $element->addMultiOption($row->id, str_repeat("-", $row->level) . " " . $row->title);
+            $element->addMultiOption($row->id, str_repeat("…", $row->level) . " " . $row->title);
         }
         return $element;
     }

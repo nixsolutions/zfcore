@@ -1,5 +1,4 @@
 <?php
-    $this->headLink()->appendStylesheet('/css/blog.css');
     $User = Zend_Auth::getInstance()->getIdentity();
 ?>
 
@@ -24,28 +23,26 @@
 </h1>
 
 <hr />
-<div class="blog">
-    <?php if ($this->paginator->count()): ?>
-        <?php foreach($this->paginator as $row): $url = $this->url(array('alias'=> $row->alias), 'blogpost');?>
-        <article>
-            <h3>
-                <a href="<?php echo $url?>"><?php echo $row->title?></a> //
-                <a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategory')?>"><?php echo $row->categoryTitle?></a>
-            </h3>
-            <div class="blog-content">
-                <?php echo $row->teaser?>
-            </div>
-            <footer>
-                <?php echo $this->__('Posted in')?> <?php echo $this->date($row->published)?>
-                <?php echo $this->__('by')?>
-                <a href="<?php echo $this->url(array('login' => $row->login), 'blogauthor') ?>"><?php echo $row->login?></a>
+<?php if ($this->paginator->count()): ?>
+    <?php foreach($this->paginator as $row): $url = $this->url(array('alias'=> $row->alias), 'blogpost');?>
+    <article>
+        <h3>
+            <a href="<?php echo $url?>"><?php echo $row->title?></a> //
+            <a href="<?php echo $this->url(array('alias' => $row->categoryAlias), 'blogcategory')?>"><?php echo $row->categoryTitle?></a>
+        </h3>
+        <div class="content">
+            <?php echo $row->teaser?>
+        </div>
+        <footer>
+            <?php echo $this->__('Posted in')?> <?php echo $this->date($row->published)?>
+            <?php echo $this->__('by')?>
+            <a href="<?php echo $this->url(array('login' => $row->login), 'blogauthor') ?>"><?php echo $row->login?></a>
 
-                <a href="<?php echo $url?>" class="pull-right"><?php echo $this->__('Comments')?> (<span><?php echo $this->commentsCounter($row->id, 'blog-post', $this->paginator->getCurrentItems()->toArray(), 'id') ?></span>)</a>
-            </footer>
-        </article>
-        <?php endforeach;?>
-    <?php else:?>
-        <h4><?php echo $this->__('No posts')?></h4>
-    <?php endif?>
-    <?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>
-</div>
+            <a href="<?php echo $url?>" class="pull-right"><?php echo $this->__('Comments')?> (<span><?php echo $this->commentsCounter($row->id, 'blog-post', $this->paginator->getCurrentItems()->toArray(), 'id') ?></span>)</a>
+        </footer>
+    </article>
+    <?php endforeach;?>
+<?php else:?>
+    <h4><?php echo $this->__('No posts')?></h4>
+<?php endif?>
+<?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagination.phtml'); ?>

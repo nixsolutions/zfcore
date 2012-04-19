@@ -1,8 +1,6 @@
 <?php
 /**
  * Blog_Model_Category_Manager
- *
- * @version $Id$
  */
 class Blog_Model_Category_Manager extends Core_Categories_Manager
 {
@@ -21,7 +19,7 @@ class Blog_Model_Category_Manager extends Core_Categories_Manager
     /**
      * Constructor
      *
-     * @param Zend_Db_Table $table
+     * @param null|\Zend_Db_Table|\Zend_Db_Table_Abstract $table
      */
     public function __construct(Zend_Db_Table_Abstract $table = null)
     {

@@ -1,8 +1,6 @@
 <?php
 /**
  * Categories_Model_Category
- *
- * @version $Id$
  */
 class Categories_Model_Category extends Core_Categories_Row
 {
@@ -43,10 +41,10 @@ class Categories_Model_Category extends Core_Categories_Row
     /**
      * Add child
      *
+     * @param Categories_Model_Category $row
      * @param bool $loadChildren default true
-     * @param self $row
      * @throws Zend_Db_Table_Row_Exception
-     * @return self
+     * @return Categories_Model_Category
      */
     public function addChild(self $row, $loadChildren = true)
     {

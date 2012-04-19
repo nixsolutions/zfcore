@@ -6,9 +6,9 @@
  * @package Model
  * @subpackage Category
  */
-class Blog_Model_Category_Manager extends Core_Categories_Manager
+class Pages_Model_Category_Manager extends Core_Categories_Manager
 {
-    const CATEGORY_ALIAS = 'blog';
+    const CATEGORY_ALIAS = 'pages';
 
     /**
      * @var Categories_Model_Category

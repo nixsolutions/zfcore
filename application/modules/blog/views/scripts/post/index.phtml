@@ -1,6 +1,3 @@
-<?php
-    $this->headLink()->appendStylesheet('/css/blog.css');
-?>
 <h1>
     <?php echo $this->row->title?>
     <?php if ($this->row->isOwner()) : ?>
@@ -11,22 +8,19 @@
                                 'alias'  => $this->row->alias), 'default', true) ?>" title="<?php $this->_e('Edit Post')?>" class="btn pull-right"><?php $this->_e('Edit Post')?></a>
     <?php endif; ?>
 </h1>
-
 <hr />
-<div class="blog">
-    <article>
-        <div class="blog-content">
-            <?php echo $this->row->body?>
-        </div>
-        <footer>
-            <?php echo $this->__('Posted on')?> <?php echo $this->date($this->row->published)?>
-            <?php echo $this->__('by')?>
-            <a href="<?php echo $this->url(array('login' => $this->user->login), 'blogauthor') ?>"><?php echo $this->user->login?></a>
-            <?php echo $this->__('in')?>
-            <a href="<?php echo $this->url(array('alias' => $this->category->alias), 'blogcategory') ?>"><?php echo $this->category->title?></a>
-        </footer>
-    </article>
-</div>
+<article>
+    <div class="content">
+        <?php echo $this->row->body?>
+    </div>
+    <footer>
+        <?php echo $this->__('Posted on')?> <?php echo $this->date($this->row->published)?>
+        <?php echo $this->__('by')?>
+        <a href="<?php echo $this->url(array('login' => $this->user->login), 'blogauthor') ?>"><?php echo $this->user->login?></a>
+        <?php echo $this->__('in')?>
+        <a href="<?php echo $this->url(array('alias' => $this->category->alias), 'blogcategory') ?>"><?php echo $this->category->title?></a>
+    </footer>
+</article>
 <?php echo $this->getComments('blog-post', 
     array(
         'key' => $this->row->id,

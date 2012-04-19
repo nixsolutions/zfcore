@@ -1,6 +1,7 @@
 <h1>Login</h1>
 <h3>Use <strong>admin:123456</strong> for login</h3>
-<div>
+<hr/>
+<article>
 <?php echo $this->form; ?>
 
 <p class="small">
@@ -25,7 +26,7 @@
         </a>
     <?php endif;?>
 
-    <?php if ($this->twitter):?>        |
+    <?php if ($this->facebook):?>        |
         <?php echo $this->fbConnect()->login(
             $this->__('Login with Facebook'),
             array('email', 'user_checkins'),
@@ -33,4 +34,4 @@
         );?>
     <?php endif;?>
 </p>
-</div>
+</article>

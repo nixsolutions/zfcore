@@ -9,6 +9,11 @@
 class Categories_ManagementController extends Core_Controller_Action_Crud
 {
     /**
+     * @var array
+     */
+    protected $_orders = array('path' => 'ASC');
+
+    /**
      * _getCreateForm
      *
      * return create form for scaffolding

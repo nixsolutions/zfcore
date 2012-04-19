@@ -9,7 +9,7 @@ class Blog_Form_Post_Create extends Core_Form
     /**
      * Form initialization
      *
-     * @return void
+     * @return Blog_Form_Post_Create
      */
     public function init()
     {
@@ -66,16 +66,21 @@ class Blog_Form_Post_Create extends Core_Form
 
     protected function _category()
     {
-        $category = new Zend_Form_Element_Select('categoryId');
-        $category->setLabel('Category');
-        $category->setRequired(true)->setAttrib('class', 'span4');
+        $element = new Zend_Form_Element_Select('categoryId');
+        $element->setLabel('Category')
+                ->setRequired(true)
+                ->addDecorators($this->_inputDecorators)
+                ->setAttribs(array('class' => 'span3'));
 
-        $cats = new Blog_Model_Category_Manager();
-        foreach ($cats->getAll() as $cat) {
-            $category->addMultiOption($cat->id, $cat->title);
+        $categories = new Blog_Model_Category_Manager();
+        $select = $categories->getDbTable()->select()->order('path');
+        $select->order('path');
+        $select->where('path LIKE (?)', Blog_Model_Category_Manager::CATEGORY_ALIAS.'/%');
+
+        foreach ($categories->getDbTable()->fetchAll($select) as $row) {
+            $element->addMultiOption($row->id, str_repeat("…", $row->level-1) . " " . $row->title);
         }
-
-        return $category;
+        return $element;
     }
 
     /**
@@ -86,7 +91,7 @@ class Blog_Form_Post_Create extends Core_Form
     protected function _status()
     {
         $element = new Zend_Form_Element_Select('status');
-        $element->setLabel('Status')->setRequired(true);
+        $element->setLabel('Status')->setRequired(true)->setAttribs(array('class' => 'span3'));;
 
         $element->addMultiOption(Blog_Model_Post::STATUS_DRAFT, 'Draft');
         $element->addMultiOption(Blog_Model_Post::STATUS_PUBLISHED, 'Published');
