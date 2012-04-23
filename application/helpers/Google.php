@@ -1,8 +1,6 @@
 <?php
 /**
  * Helper_Google
- *
- * @version $Id$
  */
 class Helper_Google extends Zend_Controller_Action_Helper_Abstract
 {

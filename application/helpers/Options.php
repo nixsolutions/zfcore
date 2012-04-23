@@ -1,8 +1,6 @@
 <?php
 /**
  * Helper_Options
- *
- * @version $Id$
  */
 class Helper_Options extends Zend_Controller_Action_Helper_Abstract
 {

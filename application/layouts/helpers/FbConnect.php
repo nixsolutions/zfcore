@@ -1,13 +1,11 @@
 <?php
 /**
  * Application_View_Helper_FbConnect
- *
- * @version $id$
  */
 class Application_View_Helper_FbConnect extends Zend_View_Helper_Abstract
 {
     /**
-     * @var boolen
+     * @var boolean
      */
     protected $_xfbml = true;
 
@@ -17,31 +15,31 @@ class Application_View_Helper_FbConnect extends Zend_View_Helper_Abstract
     protected $_appId;
 
     /**
-     * @var boolen
+     * @var boolean
      */
     protected $_cookie;
 
     /**
-     * @var boolen
+     * @var boolean
      */
     protected $_status = true;
 
     /**
-    * @var boolen
+    * @var boolean
     */
     protected $_oauth = true;
 
     /**
-     * @var boolen
+     * @var boolean
      */
     protected $_loaded = false;
 
     /**
      * Set defaults
      *
-     * @param boolen $status
-     * @param boolen $xfbml
-     * @param boolen $oauth
+     * @param boolean $status
+     * @param boolean $xfbml
+     * @param boolean $oauth
      * @return Application_View_Helper_FbConnect
      */
     public function fbConnect($status = null, $xfbml = null, $oauth = null)

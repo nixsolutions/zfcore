@@ -1,8 +1,6 @@
 <?php
 /**
- * Helper_Facebook
- *
- * @version $Id$
+ * Helper_DataTables
  */
 class Helper_DataTables
     extends Zend_Controller_Action_Helper_Abstract
