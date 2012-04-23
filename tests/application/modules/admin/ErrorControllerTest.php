@@ -26,47 +26,30 @@ class Admin_ErrorControllerTest extends ControllerTestCase
      *
      * allow access for admin
      */
-    public function testAdminInvalidAction()
+    public function testAdminInvalidController()
     {
         $this->_doLogin(Users_Model_User::ROLE_ADMIN);
 
-        $this->dispatch('/admin/index/foo');
+        $this->dispatch('/admin/foo');
 
-        $this->assertModule('users');
+        $this->assertModule('index');
         $this->assertController('error');
-        $this->assertAction('error');
+        $this->assertAction('notfound');
     }
 
     /**
      * Admin/Index/Index
      *
      * allow access for admin
-     * FIXME:
      */
-    /*public function testAdminErrorErrorAction()
+    public function testAdminInvalidAction()
     {
         $this->_doLogin(Users_Model_User::ROLE_ADMIN);
 
-        $this->dispatch('/admin/error/error');
+        $this->dispatch('/admin/index/foo');
 
-        $this->assertModule('admin');
+        $this->assertModule('index');
         $this->assertController('error');
         $this->assertAction('error');
-    }*/
-
-    /**
-     * Admin/Index/Index
-     *
-     * allow access for admin
-     */
-    public function testAdminErrorNotfoundAction()
-    {
-        $this->_doLogin(Users_Model_User::ROLE_ADMIN);
-
-        $this->dispatch('/admin/error/notfound');
-
-        $this->assertModule('admin');
-        $this->assertController('error');
-        $this->assertAction('notfound');
     }
 }

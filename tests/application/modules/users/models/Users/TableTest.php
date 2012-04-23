@@ -15,8 +15,8 @@ class Model_Users_TableTest extends ControllerTestCase
     {
         parent::setUp();
 
-        $this->_userTable = new Users_Model_Users_Table();
-        $this->_userManager = new Users_Model_Users_Manager();
+        $this->_userTable = new Users_Model_User_Table();
+        $this->_userManager = new Users_Model_User_Manager();
 
         $this->_password = 123456;
 

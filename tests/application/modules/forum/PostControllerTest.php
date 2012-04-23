@@ -24,7 +24,7 @@ class Forum_PostControllerTest extends ControllerTestCase
                                    'parentId' => 0,
                                    'alias' => 'title');
 
-        $users= new Users_Model_Users_Table();
+        $users= new Users_Model_User_Table();
         $user = $users->createRow(
             array(
                  'id'       => 75,
@@ -196,7 +196,7 @@ class Forum_PostControllerTest extends ControllerTestCase
 
     public function tearDown()
     {
-        $table= new Users_Model_Users_Table();
+        $table= new Users_Model_User_Table();
         $table->delete('1');
 
         $table = new Forum_Model_Post_Table();

@@ -35,8 +35,8 @@ class Users_ManagementControllerTest extends ControllerTestCase
             'ip'            => '10.10.10.10',
             'count'         => '5');
 
-        $this->_userManager = new Users_Model_Users_Manager();
-        $this->_userTable   = new Users_Model_Users_Table();
+        $this->_userManager = new Users_Model_User_Manager();
+        $this->_userTable   = new Users_Model_User_Table();
     }
 
     /**

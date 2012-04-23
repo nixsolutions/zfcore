@@ -15,8 +15,8 @@ class Model_Users_ManagerTest extends ControllerTestCase
     {
         parent::setUp();
 
-        $this->_userTable = new Users_Model_Users_Table();
-        $this->_userManager = new Users_Model_Users_Manager();
+        $this->_userTable = new Users_Model_User_Table();
+        $this->_userManager = new Users_Model_User_Manager();
 
         $this->_password = 123456;
 
@@ -77,14 +77,14 @@ class Model_Users_ManagerTest extends ControllerTestCase
     function testAuthenticate()
     {
         // guest user login/password (non activated)
-        $result = Users_Model_Users_Manager::authenticate(
+        $result = Users_Model_User_Manager::authenticate(
             $this->_fixture['guest']['login'],
             $this->_fixture['guest']['password']
         );
         $this->assertFalse($result);
 
         // blocked user login/password
-        $result = Users_Model_Users_Manager::authenticate(
+        $result = Users_Model_User_Manager::authenticate(
             $this->_fixture['blocked']['login'],
             $this->_fixture['blocked']['password']
         );
@@ -92,7 +92,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->assertFalse($result);
 
         // removed login/password
-        $result = Users_Model_Users_Manager::authenticate(
+        $result = Users_Model_User_Manager::authenticate(
             $this->_fixture['removed']['login'],
             $this->_fixture['removed']['password']
         );
@@ -100,7 +100,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->assertFalse($result);
 
         // wrong login/password
-        $result = Users_Model_Users_Manager::authenticate(
+        $result = Users_Model_User_Manager::authenticate(
             $this->_fixture['admin']['login'],
             $this->_fixture['admin']['password'].'d'
         );
@@ -108,7 +108,7 @@ class Model_Users_ManagerTest extends ControllerTestCase
         $this->assertFalse($result);
 
         // right login/password
-        $result = Users_Model_Users_Manager::authenticate(
+        $result = Users_Model_User_Manager::authenticate(
             $this->_fixture['admin']['login'],
             $this->_fixture['admin']['password']
         );

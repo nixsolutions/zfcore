@@ -20,7 +20,7 @@ class Sync_IndexControllerTest extends ControllerTestCase
         parent::setUp();
 
         //Testing tables
-        $this->_userTable = new Users_Model_Users_Table();
+        $this->_userTable = new Users_Model_User_Table();
         $this->_pagesTable = new Pages_Model_Page_Table();
 
         $this->_fixture['testuser'] = array(

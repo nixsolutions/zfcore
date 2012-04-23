@@ -27,7 +27,7 @@ class Users_LoginControllerTest extends ControllerTestCase
                                 'status'   => Users_Model_User::STATUS_ACTIVE,
                                 'password' => '123456');
 
-        $manager = new Users_Model_Users_Table();
+        $manager = new Users_Model_User_Table();
 
         $this->_user = $manager->createRow($this->_fixture);
         $this->_user->save();
@@ -145,7 +145,7 @@ class Users_LoginControllerTest extends ControllerTestCase
      */
     public function testRecoverPasswordAction()
     {
-        $userManager = new Users_Model_Users_Manager();
+        $userManager = new Users_Model_User_Manager();
         $user = $userManager->forgetPassword($this->_user['email']);
         $hash = $user->hashCode;
 

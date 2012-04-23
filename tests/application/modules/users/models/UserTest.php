@@ -22,7 +22,7 @@ class Model_UserTest extends ControllerTestCase
                                 'status'   => Users_Model_User::STATUS_ACTIVE,
                                 'password' => 123456);
 
-        $this->_userTable = new Users_Model_Users_Table();
+        $this->_userTable = new Users_Model_User_Table();
 
         $this->_user = $this->_userTable->createRow($this->_fixture);
         $this->_user->save();
@@ -49,7 +49,7 @@ class Model_UserTest extends ControllerTestCase
         $this->_user->save();
 
         $this->assertTrue(
-            Users_Model_Users_Manager::authenticate($this->_user->login, $password)
+            Users_Model_User_Manager::authenticate($this->_user->login, $password)
         );
     }
 

@@ -10,8 +10,8 @@ class IndexControllerTest extends ControllerTestCase
     public function testIndexAction()
     {
         $this->dispatch('/');
-        $this->assertModule('users');
-        $this->assertController('login');
+        $this->assertModule('index');
+        $this->assertController('index');
         $this->assertAction('index');
     }
 }

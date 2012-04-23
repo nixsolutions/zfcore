@@ -23,8 +23,8 @@ class Users_RegisterControllerTest extends ControllerTestCase
     {
         parent::setUp();
 
-        $this->_userManager = new Users_Model_Users_Manager();
-        $this->_userTable = new Users_Model_Users_Table();
+        $this->_userManager = new Users_Model_User_Manager();
+        $this->_userTable = new Users_Model_User_Table();
 
         $this->_fixture = array('login'     => 'testadmin'.time(),
                                 'email'     => 'test'.time().'@nixsolutions.com',
@@ -105,13 +105,13 @@ class Users_RegisterControllerTest extends ControllerTestCase
         $user->status = Users_Model_User::STATUS_ACTIVE;
         $user->save();
 
-        $auth = Users_Model_Users_Manager::authenticate(
+        $auth = Users_Model_User_Manager::authenticate(
             $this->_fixture['login'],
             $this->_fixture['password']
         );
         $this->assertTrue($auth);
 
-        Users_Model_Users_Manager::logout();
+        Users_Model_User_Manager::logout();
 
         $this->request
              ->setMethod('POST')
@@ -164,7 +164,7 @@ class Users_RegisterControllerTest extends ControllerTestCase
      */
     public function testForgetPasswordAction()
     {
-        Users_Model_Users_Manager::logout();
+        Users_Model_User_Manager::logout();
 
         $user = $this->_userTable->createRow($this->_fixture);
         $user->save();

@@ -191,8 +191,8 @@ abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
         $role = Users_Model_User::ROLE_USER,
         $status = Users_Model_User::STATUS_ACTIVE)
     {
-        $account = new stdClass();
-
+        $account = new Users_Model_User();
+        $account->avatar   = null;
         $account->login    = 'AutoTest' . date('YmdHis');
         $account->email    = 'autotest' . time() . '@example.org';
         $account->password = md5('password');

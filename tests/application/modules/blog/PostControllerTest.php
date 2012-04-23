@@ -7,12 +7,6 @@
  */
 class Blog_PostControllerTest extends ControllerTestCase
 {
-
-    public static function setUpBeforeClass()
-    {
-        parent::setUpBeforeClass();
-    }
-
     public function setUp()
     {
         parent::setUp();
@@ -56,7 +50,7 @@ class Blog_PostControllerTest extends ControllerTestCase
             'password' => '123456',
             'email'    => 'test@email.com'
         );
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
 
         $users->delete(' id = ' . $this->_fixture['user']['id']);
         $user = $users->createRow($this->_fixture['user']);
@@ -66,9 +60,9 @@ class Blog_PostControllerTest extends ControllerTestCase
     public function testEmptyPostAction()
     {
         $this->dispatch('/blog/post/');
-        $this->assertModule('users');
+        $this->assertModule('index');
         $this->assertController('error');
-        $this->assertAction('error');
+        $this->assertAction('notfound');
     }
 
     public function testIndexAction()
@@ -190,7 +184,7 @@ class Blog_PostControllerTest extends ControllerTestCase
                           )
                       );
 
-        $this->dispatch('/blog/post/edit/' . $this->_fixture['post']['alias']);
+        $this->dispatch('/blog/post/edit/alias/' . $this->_fixture['post']['alias']);
         $this->assertModule('blog');
         $this->assertController('post');
         $this->assertAction('edit');
@@ -207,12 +201,7 @@ class Blog_PostControllerTest extends ControllerTestCase
         $table = new Categories_Model_Category_Table();
         $table->delete(' id = 43');
 
-        $table = new Users_Model_Users_Table();
+        $table = new Users_Model_User_Table();
         $table->delete(' id = ' . $this->_fixture['user']['id']);
-    }
-
-    public static function tearDownAfterClass()
-    {
-        parent::tearDownAfterClass();
     }
 }
