@@ -37,7 +37,7 @@ class Model_Page_ManagerTest extends ControllerTestCase
             'title'   => 'Test: ' . $uid,
             'alias'   => 'test-' . $uid,
             'content' => '<h2>Test</h2><p>Content, content, content</p>',
-            'user_id' => 1,
+            'userId' => 1,
         );
         $this->_pageTable = new Pages_Model_Page_Table();
     }

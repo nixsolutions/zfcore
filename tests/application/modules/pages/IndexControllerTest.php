@@ -51,7 +51,7 @@ class Pages_IndexControllerTest extends ControllerTestCase
     public function testErrorPage()
     {
         $this->dispatch('/error-page.html');
-        $this->assertModule('users');
+        $this->assertModule('index');
         $this->assertController('error');
         $this->assertAction('notfound');
     }

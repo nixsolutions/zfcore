@@ -9,7 +9,17 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV')?getenv('APPLICATION_ENV'):'testing'));
 
-    defined('PUBLIC_PATH') || define('PUBLIC_PATH', APPLICATION_PATH . '/../public/');
+// Define path to public directory
+defined('PUBLIC_PATH')
+    || define('PUBLIC_PATH', APPLICATION_PATH . '/../public/');
+
+// Define short alias for DIRECTORY_SEPARATOR
+defined('DS')
+    || define('DS', DIRECTORY_SEPARATOR);
+
+// Define short alias for DIRECTORY_SEPARATOR
+defined('START_TIMER')
+    || define('START_TIMER', microtime(true));
 
     $_SERVER['HTTP_HOST'] = 'localhost';
     $_SERVER['REQUEST_URI'] = '/';

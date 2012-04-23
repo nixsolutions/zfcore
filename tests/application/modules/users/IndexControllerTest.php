@@ -17,7 +17,7 @@ class Users_IndexControllerTest extends ControllerTestCase
     {
         $this->_doLogin(Users_Model_User::ROLE_GUEST);
         $this->dispatch('/users/');
-        $this->assertModule('users');
+        $this->assertModule('index');
         $this->assertController('error');
         $this->assertAction('denied');
     }

@@ -5,7 +5,7 @@
  * @category Tests
  * @package  Pages
  */
-class Pages_UploadsControllerTest extends ControllerTestCase
+class Pages_ImagesControllerTest extends ControllerTestCase
 {
     /**
      * Setup TestCase
@@ -17,13 +17,13 @@ class Pages_UploadsControllerTest extends ControllerTestCase
     }
 
     /**
-     * Admin/Images/Index
+     * Admin/Pages/Images
      */
-    public function testAdminImagesIndexAction()
+    public function testAdminImagesListAction()
     {
-        $this->dispatch('/pages/uploads/');
+        $this->dispatch('/pages/images/list');
         $this->assertModule('pages');
-        $this->assertController('uploads');
-        $this->assertAction('index');
+        $this->assertController('images');
+        $this->assertAction('list');
     }
 }
