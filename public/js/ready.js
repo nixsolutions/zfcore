@@ -30,11 +30,13 @@
 
 		// jQUery UI widgets
         // Datepickers
-        if (!$.browser.opera) {
+        if (!$.browser.opera && $.isFunction($.datepicker)) {
             $('input[type=date]').datepicker({"dateFormat":'yy-mm-dd'});
         }
 		// Tabs
-		$(".tabs").tabs();
+		if ($.isFunction($.tabs)) {
+			$(".tabs").tabs();
+		}
 
         // Toggle the dropdown menu's
 //        $(".dropdown .button, .dropdown button").click(function () {

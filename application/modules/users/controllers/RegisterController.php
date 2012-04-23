@@ -20,7 +20,7 @@ class Users_RegisterController extends Core_Controller_Action
         $this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
 
         /* Initialize user model */
-        $this->_manager = new Users_Model_Users_Manager();
+        $this->_manager = new Users_Model_User_Manager();
     }
 
     /**

@@ -159,3 +159,27 @@ ul.help-inline {
 	margin: 0 auto;
 }
 /*/NIX*/
+/*fluid markup with fixed sidebar*/
+
+.filler{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    padding-right: 20px;
+}
+.filler.content {
+    z-index: -1;
+}
+.container-fluid { min-height: 100%;}
+.container-fluid > .sidebar {
+	position: absolute;
+	top: 0;
+	left: 20px;
+	width: 232px;
+}
+.container-fluid > .content {
+	margin-left: 260px;
+}

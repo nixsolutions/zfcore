@@ -6,8 +6,6 @@
  * @todo http://www.zimuel.it/blog/?p=86
  * @category Application
  * @package Model
- *
- * @version  $Id: User.php 146 2010-07-05 14:22:20Z AntonShevchuk $
  */
 class Users_Model_User extends Core_Db_Table_Row_Abstract
 {

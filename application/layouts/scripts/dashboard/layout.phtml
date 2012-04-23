@@ -17,13 +17,13 @@ $class[] = 'a-' . $request->getActionName();
         <div class="breadcrumbs shadow"><?php echo $this->navigation()->breadcrumbs()->setSeparator(' &raquo; ') ?></div>
     <?php endif; ?>
     <div class="container-fluid">
-        <div class="row-fluid">
-            <div class="span2">
-                <?php echo $this->render('dashboard/partial/navigation.phtml') ?>
-            </div>
-            <div class="span10">
-                <?php echo $this->layout()->content ?>
-            </div>
+        <div class="filler sidebar"></div>
+        <div class="filler content"></div>
+        <div class="sidebar">
+            <?php echo $this->render('dashboard/partial/navigation.phtml') ?>
+        </div>
+        <div class="content">
+            <?php echo $this->layout()->content ?>
         </div>
     </div>
     </body>

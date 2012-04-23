@@ -38,11 +38,11 @@ production:
             config: acl
             allowAll: on
             denied:
-              module: users
+              module: index
               controller: error
               action: denied
             error:
-              module: users
+              module: index
               controller: error
               action: notfound
             login:

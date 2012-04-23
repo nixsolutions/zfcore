@@ -5,10 +5,8 @@
  * @category Application
  * @package Model
  * @subpackage DbTable
- *
- * @version  $Id: Manager.php 163 2010-07-12 16:30:02Z AntonShevchuk $
  */
-class Users_Model_Users_Manager extends Core_Model_Manager
+class Users_Model_User_Manager extends Core_Model_Manager
 {
     /**
      * Zend_Auth_Result
@@ -40,7 +38,7 @@ class Users_Model_Users_Manager extends Core_Model_Manager
 
         if ($result->isValid()) {
             // success: store database row to auth's storage system
-            $users = new Users_Model_Users_Table();
+            $users = new Users_Model_User_Table();
             $auth->getStorage()->write($users->getByLogin($login));
             return true;
         }

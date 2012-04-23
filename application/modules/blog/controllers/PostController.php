@@ -33,7 +33,7 @@ class Blog_PostController extends Core_Controller_Action
             $this->_forwardNotFound();
             return;
         }
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
         $this->view->user = $users->getById($row->userId);
 
         $categories = new Categories_Model_Category_Table();

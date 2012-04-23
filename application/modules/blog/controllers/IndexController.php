@@ -66,7 +66,7 @@ class Blog_IndexController extends Core_Controller_Action
             throw new Zend_Controller_Action_Exception('Page not found');
         }
 
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
         if (!$row = $users->getByLogin($login)) {
             throw new Zend_Controller_Action_Exception('Blog not found');
         }

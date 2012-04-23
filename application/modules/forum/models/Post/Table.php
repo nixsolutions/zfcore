@@ -26,7 +26,7 @@ class Forum_Model_Post_Table extends Core_Db_Table_Abstract
      */
     public function getLastPosts()
     {
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
 
         $select = $this->select()->from(array('p' => $this->_name), array('*'));
         $select->setIntegrityCheck(false)
@@ -60,7 +60,7 @@ class Forum_Model_Post_Table extends Core_Db_Table_Abstract
      */
     public function getPostsSelect($categoryId = null)
     {
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
         
         $select = $this->select()->from(array('p' => $this->_name), array('*'));
         $select->setIntegrityCheck(false)

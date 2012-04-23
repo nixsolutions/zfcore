@@ -141,7 +141,7 @@ class Blog_Form_Admin_Create extends Core_Form
      */
     protected function _user()
     {
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
         $res = array();
         foreach ($users->fetchAll() as $row) {
             $res[$row->id] = $row->login;

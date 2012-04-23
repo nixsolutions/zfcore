@@ -35,7 +35,7 @@ class Users_ProfileController extends Core_Controller_Action
         if ($id == $identity->id) {
             $row = $identity;
         } else {
-            $users = new Users_Model_Users_Table();
+            $users = new Users_Model_User_Table();
             if (!$row = $users->getById($id)) {
                 throw new Zend_Controller_Action_Exception('Page not found');
             }
@@ -50,7 +50,7 @@ class Users_ProfileController extends Core_Controller_Action
     public function editAction()
     {
         $identity = Zend_Auth::getInstance()->getIdentity();
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
         $row = $users->getById($identity->id);
 
         $form = new Users_Form_Users_Profile();

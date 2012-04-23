@@ -29,7 +29,7 @@ class Blog_Model_Post_Table extends Core_Db_Table_Abstract
      */
     public function getSelect($category = null, $author = null, $date = 'NOW')
     {
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
         $categories = new Categories_Model_Category_Table();
         
         $select = $this->select()->setIntegrityCheck(false);

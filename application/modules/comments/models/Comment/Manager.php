@@ -20,7 +20,7 @@ class Comments_Model_Comment_Manager extends Core_Model_Manager
      */
     public function getSelect(Comments_Model_CommentAlias $commentAlias, $userId, $key = 0)
     {
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
 
         $select = $this->getDbTable()->select(true);
         $select->setIntegrityCheck(false)

@@ -43,7 +43,7 @@ class Users_ManagementController extends Core_Controller_Action_Crud
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender();
 
-        $table = new Users_Model_Users_Table();
+        $table = new Users_Model_User_Table();
 
         $row = null;
         if ($id = $this->_getParam('id')) {
@@ -83,7 +83,7 @@ class Users_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getTable()
     {
-        return new Users_Model_Users_Table();
+        return new Users_Model_User_Table();
     }
 
     /**

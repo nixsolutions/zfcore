@@ -5,8 +5,6 @@
  * @category   Application
  * @package    Dashboard
  * @subpackage Controller
- *
- * @version  $Id: ErrorController.php 144 2010-07-05 13:50:23Z AntonShevchuk $
  */
 class Admin_ErrorController extends Core_Controller_Action
 {

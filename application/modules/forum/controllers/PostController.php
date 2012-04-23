@@ -25,7 +25,7 @@ class Forum_PostController extends Core_Controller_Action
             throw new Zend_Controller_Action_Exception('Post not found');
         }
 
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
         $this->view->author = $users->getById($post->userId);
 
         $categories = new Categories_Model_Category_Table();

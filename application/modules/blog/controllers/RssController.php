@@ -141,7 +141,7 @@ class Blog_RssController extends Core_Controller_Action
         if (!$login = $this->_getParam('login')) {
             throw new Zend_Controller_Action_Exception('Page not found');
         }
-        $users = new Users_Model_Users_Table();
+        $users = new Users_Model_User_Table();
         if (!$user = $users->getByLogin($login)) {
             throw new Zend_Controller_Action_Exception('Page not found');
         }
