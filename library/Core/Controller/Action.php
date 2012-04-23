@@ -51,10 +51,12 @@ abstract class Core_Controller_Action extends Zend_Controller_Action
     /**
      * forward to not found page
      *
+     * @param string $error
      * @return void
      */
-    protected function _forwardNotFound()
+    protected function _forwardNotFound($error = '')
     {
+        $this->_request->setParam('error', $error);
         $this->_forward('notfound', 'error', 'index');
     }
 

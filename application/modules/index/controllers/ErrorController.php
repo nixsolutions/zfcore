@@ -69,5 +69,6 @@ class Index_ErrorController extends Core_Controller_Action
     public function notfoundAction()
     {
         $this->getResponse()->setHttpResponseCode(404);
+        $this->view->message = $this->_getParam('error');
     }
 }

@@ -1,1 +1,5 @@
+<?php if ($this->message) : ?>
+<h1><?php echo $this->message ?></h1>
+<?php else: ?>
 <h1><?php $this->_e('The page you are searching, not found.') ?></h1>
+<?php endif; ?>

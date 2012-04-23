@@ -18,11 +18,13 @@ class Forum_PostController extends Core_Controller_Action
     public function indexAction()
     {
         if (!$postId = $this->_getParam('id')) {
-            throw new Zend_Controller_Action_Exception('Page not found');
+            $this->_forwardNotFound();
+            return;
         }
         $posts = new Forum_Model_Post_Table();
         if (!$post = $posts->getById($postId)) {
-            throw new Zend_Controller_Action_Exception('Post not found');
+            $this->_forwardNotFound();
+            return;
         }
 
         $users = new Users_Model_User_Table();

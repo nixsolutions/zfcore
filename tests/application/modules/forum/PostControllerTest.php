@@ -39,9 +39,10 @@ class Forum_PostControllerTest extends ControllerTestCase
     public function testEmptyPostAction()
     {
         $this->dispatch('/forum/post/');
-        $this->assertModule('users');
+
+        $this->assertModule('index');
         $this->assertController('error');
-        $this->assertAction('error');
+        $this->assertAction('notfound');
     }
 
     public function testIndexAction()
@@ -57,6 +58,7 @@ class Forum_PostControllerTest extends ControllerTestCase
         $post->save();
 
         $this->dispatch('/forum/post/45');
+
         $this->assertModule('forum');
         $this->assertController('post');
         $this->assertAction('index');
@@ -123,12 +125,13 @@ class Forum_PostControllerTest extends ControllerTestCase
                           array(
                               'title' => 'title',
                               'body' => 'text',
-                              'categoryId' => 33,
+                              'category' => 33,
                               'status' => 'active'
                           )
                       );
 
         $this->dispatch('/forum/post/create/');
+
         $this->assertModule('forum');
         $this->assertController('post');
         $this->assertAction('create');
@@ -151,7 +154,7 @@ class Forum_PostControllerTest extends ControllerTestCase
 
         $this->_doLogin();
 
-        $this->dispatch('/forum/post/edit/45');
+        $this->dispatch('/forum/post/edit/id/45');
         $this->assertModule('forum');
         $this->assertController('post');
         $this->assertAction('edit');
@@ -184,7 +187,7 @@ class Forum_PostControllerTest extends ControllerTestCase
                           )
                       );
 
-        $this->dispatch('/forum/post/edit/45');
+        $this->dispatch('/forum/post/edit/id/45');
         $this->assertModule('forum');
         $this->assertController('post');
         $this->assertAction('edit');
