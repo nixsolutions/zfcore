@@ -51,7 +51,7 @@ class Mail_ManagementControllerTest extends ControllerTestCase
     public function testDeleteAction()
     {
         $this->dispatch('/mail/management/delete');
-        $this->assertModule('users');
+        $this->assertModule('index');
         $this->assertController('error');
         $this->assertAction('notfound');
     }
