@@ -1,0 +1,19 @@
+dashboard:
+  translate-managment:
+    label: Translate
+    uri:
+    class: font
+    order: 97
+    pages:
+      create:
+        label: Add New
+        module: translate
+        controller: management
+        action: create
+        route: default
+      edit:
+        label: All Translations
+        module: translate
+        controller: management
+        action: index
+        route: default

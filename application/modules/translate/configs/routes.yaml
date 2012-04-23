@@ -1,0 +1,6 @@
+translate-management-save:
+  route: translate/management/save
+  defaults:
+    module: translate
+    controller: management
+    action: save
