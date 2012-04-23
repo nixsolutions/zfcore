@@ -9,10 +9,11 @@
 # Server data
 echo "Permissions for ./data/"
 
-chmod a+w ./data/cache/   && echo " ./cache/"
-chmod a+w ./data/logs/    && echo " ./logs/"
-chmod a+w ./data/session/ && echo " ./session/"
-chmod a+w ./data/uploads/ && echo " ./uploads/"
+chmod a+w ./data/cache/     && echo " ./cache/"
+chmod a+w ./data/logs/      && echo " ./logs/"
+chmod a+w ./data/languages/ && echo " ./languages/"
+chmod a+w ./data/session/   && echo " ./session/"
+chmod a+w ./data/uploads/   && echo " ./uploads/"
 
 # Public data
 echo "Permissions for ./public/"

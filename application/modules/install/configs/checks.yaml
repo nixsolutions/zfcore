@@ -1,0 +1,138 @@
+minPhpVersion: '5.2.4'
+phpOptions:
+  magic_quotes_gpc:
+    desired: off
+    title: 'Checking that php.ini has magic_quotes_gpc set to off'
+  register_globals:
+    desired: off
+    title: 'Checking that php.ini has register_globals set to off'
+  session.auto_start:
+    desired: off
+    title: 'Checking that php.ini has session.auto_start set to off'
+directories:
+    cache_dir: 'data/cache'
+    logs_dir: 'data/logs'
+    language_dir: 'data/languages'
+    session_dir: 'data/session'
+    files_dir: 'data/uploads'
+    uploads_dir: 'public/uploads'
+    captcha_dir: 'public/captcha'
+extensions:
+  apc:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.apc.php">apc</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.cache.backends.html">Zend_Cache_Backend_Apc</a> (hard), <a href="http://framework.zend.com/manual/en/zend.file.transfer.html">Zend_File_Transfer</a> (soft)'
+  bcmath:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.bc.php">bcmath</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.locale.html">Zend_Locale</a> (soft)'
+  bitset:
+    title: 'Checking that <a href="http://pecl.php.net/package/Bitset">bitset</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.search.lucene.html">Zend_Search_Lucene</a> (soft)'
+  ctype:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.ctype.php">CTYPE</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.auth.adapter.http.html">Zend_Auth_Adapter_Http</a> (hard), <a href="http://framework.zend.com/manual/en/zend.gdata.html">Zend_Gdata</a> (hard), <a href="http://framework.zend.com/manual/en/zend.http.html">Zend_Http_Client</a> (hard), <a href="http://framework.zend.com/manual/en/zend.pdf.html">Zend_Pdf</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.client.html">Zend_Rest_Client</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.server.html">Zend_Rest_Server</a> (hard), <a href="http://framework.zend.com/manual/en/zend.search.lucene.html">Zend_Search_Lucene</a> (hard), <a href="http://framework.zend.com/manual/en/zend.uri.html">Zend_Uri</a> (hard), <a href="http://framework.zend.com/manual/en/zend.validate.html">Zend_Validate</a> (hard)'
+  curl:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.curl.php">CURL</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.http.client.adapters.html">Zend_Http_Client_Adapter_Curl</a> (hard)'
+  date:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.datetime.php">date</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.amf.html">Zend_Amf</a> (soft)'
+  dom:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.dom.php">DOM</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.amf.html">Zend_Amf</a> (hard), <a href="http://framework.zend.com/manual/en/zend.dom.html">Zend_Dom</a> (hard), <a href="http://framework.zend.com/manual/en/zend.feed.html">Zend_Feed</a> (hard), <a href="http://framework.zend.com/manual/en/zend.gdata.html">Zend_Gdata</a> (hard), <a href="http://framework.zend.com/manual/en/zend.log.formatters.html">Zend_Log_Formatter_Xml</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.server.html">Zend_Rest_Server</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.soap.html">Zend_Soap</a> (hard), <a href="http://framework.zend.com/manual/en/zend.search.lucene.html">Zend_Search_Lucene</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.amazon.html">Zend_Service_Amazon</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.delicious.html">Zend_Service_Delicious</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.flickr.html">Zend_Service_Flickr</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.simpy.html">Zend_Service_Simpy</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.yahoo.html">Zend_Service_Yahoo</a> (hard), <a href="http://framework.zend.com/manual/en/zend.xmlrpc.html">Zend_XmlRpc</a> (hard)'
+  gd:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.image.php">GD</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.captcha.html">Zend_Captcha</a> (hard), <a href="http://framework.zend.com/manual/en/zend.pdf.html">Zend_Pdf</a> (hard)'
+  hash:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.hash.php">HASH</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.auth.adapter.http.html">Zend_Auth_Adapter_Http</a> (hard)'
+  ibm_db2:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.ibm-db2.php">ibm_db2</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Db2</a> (hard)'
+  iconv:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.iconv.php">iconv</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.currency.html">Zend_Currency</a> (hard), <a href="http://framework.zend.com/manual/en/zend.locale.parsing.html">Zend_Locale_Format</a> (hard), <a href="http://framework.zend.com/manual/en/zend.mime.html">Zend_Mime</a> (hard), <a href="http://framework.zend.com/manual/en/zend.pdf.html">Zend_Pdf</a> (hard), <a href="http://framework.zend.com/manual/en/zend.search.lucene.html">Zend_Search_Lucene</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.audioscrobbler.html">Zend_Service_Audioscrobbler</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.flickr.html">Zend_Service_Flickr</a> (hard), <a href="http://framework.zend.com/manual/en/zend.xmlrpc.client.html">Zend_XmlRpc_Client</a> (hard)'
+  igbinary:
+    title: 'Checking that <a href="http://opensource.dynamoid.com/">igbinary</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.serializer.adapter.html">Zend_Serializer_Adapter_Igbinary</a> (hard)'
+  interbase:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.ibase.php">interbase</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.db.adapter.html">Zend_Db_Adapter_Firebird</a> (hard)'
+  json:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.json.php">json</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.json.html">Zend_Json</a> (soft), <a href="http://framework.zend.com/manual/en/zend.serializer.adapter.html">Zend_Serializer_Adapter_Json</a> (soft)'
+  ldap:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.ldap.php">ldap</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.ldap.html">Zend_Ldap</a> (hard)'
+  mbstring:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.mbstring.php">mbstring</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.feed.html">Zend_Feed</a> (hard)'
+  mcrypt:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.mcrypt.php">mcrypt</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.service.recaptcha.html#zend.service.recaptcha.mailhide">Zend_Service_ReCaptcha_MailHide</a> (hard)'
+  memcache:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.memcache.php">memcache</a> extension is loaded'
+    description: 'Dependence of <a href="Zend_Cache_Backend_Memcached">Zend_Cache_Backend_Memcached</a> (hard)'
+  memcached:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.memcached.php">memcached</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.cache.backends.html">Zend_Cache_Backend_Libmemcached</a> (hard)'
+  mime_magic:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.mime-magic.php">mime_magic</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.http.html">Zend_Http_Client</a> (soft)'
+  mysqli:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.mysqli.php">mysqli</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Mysqli</a> (hard)'
+  oci8:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.oci8.php">oci8</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Oracle</a> (hard)'
+  pcre:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.pcre.php">pcre</a> extension is loaded'
+    description: 'Dependence of virtually all components (hard)'
+  pdo_mssql:
+    title: 'Checking that pdo_mssql extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Pdo_Mssql</a> (hard)'
+  pdo_mysql:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.pdo-mysql.php">pdo_mysql</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Pdo_Mysql</a> (hard)'
+  pdo_oci:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.pdo-oci.php">pdo_oci</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Pdo_Oci</a> (hard)'
+  pdo_pgsql:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.pdo-pgsql.php">pdo_pgsql</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Pdo_Pgsql</a> (hard)'
+  pdo_sqlite:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.pdo-sqlite.php">pdo_sqlite</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.db.html">Zend_Db_Adapter_Pdo_Sqlite</a> (hard)'
+  posix:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.posix.php">posix</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.mail.html">Zend_Mail</a> (soft)'
+  Reflection:
+    title: 'Checking that <a href="http://www.php.net/manual/en/book.reflection.php">Reflection</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.controller.html">Zend_Controller</a> (hard), <a href="http://framework.zend.com/manual/en/zend.locale.html">Zend_Locale</a> (hard), <a href="http://framework.zend.com/manual/en/zend.filter.html">Zend_Filter</a> (hard), <a href="http://framework.zend.com/manual/en/zend.filter.input.html">Zend_Filter_Input</a> (hard), <a href="http://framework.zend.com/manual/en/zend.json.html">Zend_Json</a> (hard), <a href="http://framework.zend.com/manual/en/zend.log.html">Zend_Log</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.server.html">Zend_Rest_Server</a> (hard), <a href="http://framework.zend.com/manual/en/zend.server.reflection.html">Zend_Server_Reflection</a> (hard), <a href="http://framework.zend.com/manual/en/zend.validate.html">Zend_Validate</a> (hard), <a href="http://framework.zend.com/manual/en/zend.view.html">Zend_View</a> (hard), <a href="http://framework.zend.com/manual/en/zend.xmlrpc.server.html">Zend_XmlRpc_Server</a> (hard)'
+  session:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.session.php">session</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.controller.actionhelpers.html">Zend_Controller_Action_Helper_Redirector</a> (hard), <a href="http://framework.zend.com/manual/en/zend.session.html">Zend_Session</a> (hard)'
+  SimpleXML:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.simplexml.php">SimpleXML</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.config.adapters.xml.html">Zend_Config_Xml</a> (hard), <a href="http://framework.zend.com/manual/en/zend.feed.html">Zend_Feed</a> (hard), <a href="http://framework.zend.com/manual/en/zend.rest.client.html">Zend_Rest_Client</a> (hard), <a href="http://framework.zend.com/manual/en/zend.serializer.adapter.html">Zend_Serializer_Adapter_Wddx</a> (hard), <a href="http://framework.zend.com/manual/en/zend.service.audioscrobbler.html">Zend_Service_Audioscrobbler</a> (hard), <a href="http://framework.zend.com/manual/en/zend.soap.html">Zend_Soap</a> (hard), <a href="http://framework.zend.com/manual/en/zend.xmlrpc.html">Zend_XmlRpc</a> (hard), <a href="http://framework.zend.com/manual/en/zend.amf.html">Zend_Amf</a> (soft)'
+  soap:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.soap.php">soap</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.service.strikeiron.html">Zend_Service_StrikeIron</a> (hard), <a href="http://framework.zend.com/manual/en/zend.soap.html">Zend_Soap</a> (hard)'
+  SPL:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.spl.php">SPL</a> extension is loaded'
+    description: 'Dependence of virtually all components (hard)'
+  SQLite:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.sqlite.php">SQLite</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.cache.backends.html">Zend_Cache_Backend_Sqlite</a> (hard)'
+  standard:
+    title: 'Checking that `standard` extension is loaded'
+    description: 'Dependence of virtually all components (hard)'
+  wddx:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.wddx.php">wddx</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.serializer.adapter.html">Zend_Serializer_Adapter_Wddx</a> (hard)'
+  xml:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.xml.php">xml</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.translate.adapter.html">Zend_Translate_Adapter_Qt</a> (hard), <a href="http://framework.zend.com/manual/en/zend.translate.adapter.html">Zend_Translate_Adapter_Tmx</a> (hard), <a href="http://framework.zend.com/manual/en/zend.translate.adapter.html">Zend_Translate_Adapter_Xliff</a> (hard)'
+  zlib:
+    title: 'Checking that <a href="http://www.php.net/manual/en/ref.zlib.php">zlib</a> extension is loaded'
+    description: 'Dependence of <a href="http://framework.zend.com/manual/en/zend.pdf.html">Zend_Pdf</a> (hard), <a href="http://framework.zend.com/manual/en/zend.filter.set.compress.html">Zend_Filter_Compress</a> (hard)'
+

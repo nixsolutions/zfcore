@@ -13,11 +13,15 @@ class Blog_ImagesController extends Core_Controller_Action_Images
     /**
      * return upload dir
      *
-     * @todo different folder for every user
      * @return string
      */
     protected function _getUploadDir()
     {
-        return $this->_uploadDir;
+        $User = Zend_Auth::getInstance()->getIdentity();
+        if (!$User) {
+            throw new Exception("Permissions denied");
+        }
+
+        return $this->_uploadDir .'/'. $User->id;
     }
 }

@@ -1,18 +1,20 @@
-<?php
-
-$this->headLink(array(
-    'rel' => 'shortcut icon',
-    'href' => $this->baseUrl('/favicon.ico'),
-    'type' => 'image/x-icon'
-));
-
-$this->asset('default');
-
-?>
 <head>
     <?php echo $this->headMeta() ?>
     <?php echo $this->headTitle()->setSeparator(': ') ?>
-    <?php echo $this->headLink()->appendStylesheet('http://maksslesarenko.github.com/google-plus-ui/css/jquery-ui-1.8.16.google.plus.css') ?>
+    <link rel="profile" href="http://gmpg.org/xfn/11"/>
+    <link rel="stylesheet" href="<?=$this->baseUrl('/css/install/styles.css')?>" />
+    <link rel="stylesheet" href="<?=$this->baseUrl('/css/bootstrap.css')?>" />
+<!--    <link rel="stylesheet" href="--><?//=$this->baseUrl('/css/jquery-ui.css')?><!--" />-->
+    <link rel="shortcut icon" type="image/x-icon" href="<?=$this->baseUrl('favicon.ico')?>" />
+    <script src="<?=$this->baseUrl('/js/jquery/jquery.js')?>" ></script>
+    <script src="<?=$this->baseUrl('/js/bootstrap.js')?>" ></script>
+<!--    <script src="--><?//=$this->baseUrl('/js/jquery/jquery-ui.js')?><!--" ></script>-->
+    <script src="<?=$this->baseUrl('/js/ready.js')?>" ></script>
+    <script src="<?=$this->baseUrl('/js/messages.js')?>" ></script>
+    <!--[if lt IE 9]>
+    <script src="<?=$this->baseUrl('/js/html5.js')?>"></script>
+    <![endif]-->
+    <?php echo $this->headLink() ?>
     <?php echo $this->headStyle() ?>
     <?php echo $this->headScript() ?>
     <base href="<?php echo $this->baseUrl() ?>"/>

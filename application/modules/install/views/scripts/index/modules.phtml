@@ -1,0 +1,23 @@
+<h2><?php echo $this->__('Install modules')?>:</h2>
+<form action="" method="post">
+<article>
+
+    <p class="alert alert-info">
+        To be able to disable some modules directory in which it is located shall have the right to write
+        <code><?php echo 'chmod 777 ' . APPLICATION_PATH . '/modules/';?></code>
+    </p>
+
+
+    <ul>
+    <?php foreach ($this->modules as $module => $options): ?>
+        <li>
+            <input type="checkbox" <?php echo $options['checked'] ? 'checked="checked"' : ''; ?> <?php echo $options['required'] ? 'disabled="disabled"' : ''; ?> name="modules[<?php echo $module; ?>]" value="1" />
+            <?php echo $options['title'];?>
+            <?php echo $options['required'];?>
+            <em><?php echo $options['description'];?></em>
+        </li>
+    <?php endforeach;?>
+    </ul>
+</article>
+    <input type="submit" name="submit" id="submit" class="btn btn-primary pull-right" value="Next &raquo;">
+</form>

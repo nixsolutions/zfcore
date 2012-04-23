@@ -1,0 +1,18 @@
+<h2><?php echo $this->__('Can not create config file')?></h2>
+<hr/>
+<article>
+    <p class="alert">
+        <?php echo $this->__('Paste following code into config file')?>:
+        <br/>
+        <code><?php echo $this->filename?></code>
+        <br/><br/>
+        <textarea class="input-xxlarge" style="width:100%" rows="24" cols="52"><?php echo $this->config?></textarea>
+
+    </p>
+
+    <p class="alert alert-info">
+        <?php echo $this->__('And remove module Install')?>:
+        <br/>
+        <code><?php echo 'rm -r ' . APPLICATION_PATH . '/modules/install/';?></code>
+    </p>
+</article>

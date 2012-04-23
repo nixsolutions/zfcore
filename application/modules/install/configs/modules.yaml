@@ -1,0 +1,53 @@
+modules:
+  admin:
+    title: 'Admin module'
+    description: 'For managment other modules.'
+    required: on
+  asset:
+    title: 'Asset module'
+    description: 'Asset module.'
+    required: off
+  blog:
+    title: 'Blog module'
+    description: 'Module to implement the user\'s blog.'
+    required: off
+  categories:
+    title: 'Categories module'
+    description: 'For creating categories on blog and forum.'
+    required: off
+  comments:
+    title: 'Comments module'
+    description: 'For creating comments on blog and forum.'
+    required: off
+  debug:
+    title: 'Debug module'
+    description: 'Developers tools'
+    required: off
+  faq:
+    title: 'Faq module'
+    description: 'For creating FAQ.'
+    required: off
+  forum:
+    title: 'Forum module'
+    description: 'A simple forum, we suggest as an alternative to the integration of third-party forum.'
+    required: off
+  mail:
+    title: 'Mail module'
+    description: 'For sending e-mails.'
+    required: on
+  options:
+    title: 'Options module'
+    description: 'Needed to store the various configuration data in the database.'
+    required: on
+  pages:
+    title: 'Pages module'
+    description: 'For managment and creating static pages.'
+    required: off
+  translate:
+    title: 'Translate module'
+    description: 'For managment and translate content.'
+    required: off
+  users:
+    title: 'Users module'
+    description: 'For managment users.'
+    required: on

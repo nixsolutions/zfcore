@@ -1,0 +1,77 @@
+install-index-index:
+  type: Zend_Controller_Router_Route
+  route: install
+  defaults:
+    module: install
+    controller: index
+    action: index
+install-index-settings:
+  type: Zend_Controller_Router_Route
+  route: install/settings
+  defaults:
+    module: install
+    controller: index
+    action: settings
+install-index-requirements:
+  type: Zend_Controller_Router_Route
+  route: install/requirements
+  defaults:
+    module: install
+    controller: index
+    action: requirements
+install-index-mail:
+  type: Zend_Controller_Router_Route
+  route: install/mail
+  defaults:
+    module: install
+    controller: index
+    action: mail
+install-index-api:
+  type: Zend_Controller_Router_Route
+  route: install/api
+  defaults:
+    module: install
+    controller: index
+    action: api
+install-index-database:
+  type: Zend_Controller_Router_Route
+  route: install/database
+  defaults:
+    module: install
+    controller: index
+    action: database
+install-index-confirm:
+  type: Zend_Controller_Router_Route
+  route: install/confirm
+  defaults:
+    module: install
+    controller: index
+    action: confirm
+install-index-migrations:
+  type: Zend_Controller_Router_Route
+  route: install/migrations
+  defaults:
+    module: install
+    controller: index
+    action: migrations
+install-index-finish:
+  type: Zend_Controller_Router_Route
+  route: install/finish
+  defaults:
+    module: install
+    controller: index
+    action: finish
+install-index-admin:
+  type: Zend_Controller_Router_Route
+  route: install/admin
+  defaults:
+    module: install
+    controller: index
+    action: admin
+install-index-modules:
+  type: Zend_Controller_Router_Route
+  route: install/modules
+  defaults:
+    module: install
+    controller: index
+    action: modules

@@ -38,7 +38,6 @@ class Core_Controller_Action_Images extends Core_Controller_Action
     protected $_thumbHeight = 90;
     protected $_thumbQuality = 100;
 
-
     /**
      * return upload dir
      *
@@ -48,7 +47,6 @@ class Core_Controller_Action_Images extends Core_Controller_Action
     {
         return $this->_uploadDir;
     }
-
     /**
      * list all images
      */
@@ -84,7 +82,7 @@ class Core_Controller_Action_Images extends Core_Controller_Action
                 /* Check destination folder */
                 if (!is_dir($destination)) {
                     if (is_writable(PUBLIC_PATH . $this->_uploadPath)) {
-                        mkdir($destination);
+                        mkdir($destination, 0777, true);
                     } else {
                         throw new Exception("Uploads directory is not writable");
                     }

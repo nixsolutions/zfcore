@@ -1,0 +1,20 @@
+<div class="container">
+<ul class="breadcrumb">
+    <li><?php echo $this->__('Installer');?> <span class="divider">/</span></li>
+    <?php if (in_array(false, $this->progress)):?>
+        <?php foreach ($this->progress as $route => $status):?>
+            <li>
+            <?php if (false !== $status && isset($this->pages[$route])):?>
+                <a href="<?php echo $this->url(array(), $route)?>"><?php echo $this->pages[$route];?></a>
+                <span class="divider">/</span>
+            <?php elseif(isset($this->pages[$route])):?>
+                <?php echo $this->pages[$route];?>
+                <span class="divider">/</span>
+            <?php endif?>
+            </li>
+        <?php endforeach;?>
+    <?php else:?>
+        <li><?php echo $this->__('Installation Complete');?></li>
+    <?php endif?>
+</ul>
+</div>
