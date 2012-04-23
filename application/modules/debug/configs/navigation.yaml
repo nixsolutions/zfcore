@@ -17,9 +17,3 @@ dashboard:
         controller: session
         action: index
         route: default
-      file:
-        label: System Files
-        module: debug
-        controller: file
-        action: index
-        route: default
