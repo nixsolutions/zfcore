@@ -14,4 +14,13 @@ class Options_Test extends PHPUnit_Framework_TestSuite
         return $suite;
     }
 
+    protected function setUp()
+    {
+        ControllerTestCase::migrationUp('options');
+    }
+
+    protected function tearDown()
+    {
+        ControllerTestCase::migrationDown('options');
+    }
 }

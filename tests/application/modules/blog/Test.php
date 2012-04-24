@@ -18,14 +18,16 @@ class Blog_Test extends PHPUnit_Framework_TestSuite
 
     protected function setUp()
     {
-        ControllerTestCase::migrationUp('blog');
+        ControllerTestCase::migrationUp('categories');
         ControllerTestCase::migrationUp('comments');
+        ControllerTestCase::migrationUp('blog');
     }
 
     protected function tearDown()
     {
-        ControllerTestCase::migrationDown('comments');
         ControllerTestCase::migrationDown('blog');
+        ControllerTestCase::migrationDown('comments');
+        ControllerTestCase::migrationDown('categories');
     }
 
 }

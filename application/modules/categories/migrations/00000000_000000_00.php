@@ -1,6 +1,6 @@
 <?php
 
-class Migration_20110630_000000_00 extends Core_Migration_Abstract
+class Categories_Migration_00000000_000000_00 extends Core_Migration_Abstract
 {
 
     public function up()
@@ -16,24 +16,6 @@ class Migration_20110630_000000_00 extends Core_Migration_Abstract
                       `path` TEXT,
                       PRIMARY KEY  (`id`)
                     ) ENGINE=INNODB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 ");
-
-        // category table
-        $this->insert('categories', array(
-            'id'              =>  '1',
-            'title'       =>  'forum',
-            'description' =>  'forum',
-            'alias'   =>  'forum',
-            'path'   =>  'forum',
-        ));
-
-        // category table
-        $this->insert('categories', array(
-                    'id'  => '2',
-                    'title' => 'blog',
-                    'description' => 'blog',
-                    'alias' => 'blog',
-                    'path' => 'blog',
-        ));
     }
 
     public function down()

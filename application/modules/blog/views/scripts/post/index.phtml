@@ -21,7 +21,7 @@
         <a href="<?php echo $this->url(array('alias' => $this->category->alias), 'blogcategory') ?>"><?php echo $this->category->title?></a>
     </footer>
 </article>
-<?php echo $this->getComments('blog-post', 
+<?php echo $this->getComments('blog',
     array(
         'key' => $this->row->id,
         'template' => 'blog'

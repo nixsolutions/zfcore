@@ -32,32 +32,6 @@
  */
 class Core_Migration_Adapter_Pgsql extends Core_Migration_Adapter_Abstract
 {
-
-    /**
-     * Insert
-     *
-     * @param string $table
-     * @param array  $params
-     * @return Core_Migration_Adapter_Abstract
-     */
-    public function insert($table, array $params)
-    {
-        return $this->getDbAdapter()->insert($table, $params);
-    }
-
-    /**
-     * Updates table rows with specified data based on a WHERE clause.
-     *
-     * @param  mixed        $table The table to update.
-     * @param  array        $bind  Column-value pairs.
-     * @param  mixed        $where UPDATE WHERE clause(s).
-     * @return int          The number of affected rows.
-     */
-    public function update($table, array $bind, $where = '')
-    {
-        return $this->getDbAdapter()->update($table, $bind, $where);
-    }
-
     /**
      * Create table
      *

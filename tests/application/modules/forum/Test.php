@@ -18,14 +18,16 @@ class Forum_Test extends PHPUnit_Framework_TestSuite
 
     protected function setUp()
     {
-        ControllerTestCase::migrationUp('forum');
+        ControllerTestCase::migrationUp('categories');
         ControllerTestCase::migrationUp('comments');
+        ControllerTestCase::migrationUp('forum');
     }
 
     protected function tearDown()
     {
-        ControllerTestCase::migrationDown('comments');
         ControllerTestCase::migrationDown('forum');
+        ControllerTestCase::migrationDown('comments');
+        ControllerTestCase::migrationDown('categories');
     }
 
 }

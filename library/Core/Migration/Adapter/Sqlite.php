@@ -33,41 +33,6 @@
 class Core_Migration_Adapter_Sqlite extends Core_Migration_Adapter_Abstract
 {
     /**
-     * Insert
-     *
-     * @param string $table
-     * @param array  $params
-     * @return Core_Migration_Adapter_Abstract
-     */
-    public function insert($table, array $params)
-    {
-        /*$keys = array();
-        foreach ($params as $key => $value) {
-        array_push($keys, $this->getDbAdapter()->quote($key));;
-        }
-        $keys = implode(',', $keys);
-        $query = 'INSERT INTO ' . $this->getDbAdapter()->quote($table) .
-        ' (' . $keys . ') VALUES (' . $this->getDbAdapter()->quote($params) .
-        ')';
-        echo $query . "\n";*/
-
-        return $this->getDbAdapter()->insert($table, $params);
-    }
-
-    /**
-     * Updates table rows with specified data based on a WHERE clause.
-     *
-     * @param  mixed        $table The table to update.
-     * @param  array        $bind  Column-value pairs.
-     * @param  mixed        $where UPDATE WHERE clause(s).
-     * @return int          The number of affected rows.
-     */
-    public function update($table, array $bind, $where = '')
-    {
-        return $this->getDbAdapter()->update($table, $bind, $where);
-    }
-
-    /**
      * Create table
      *
      * @param string $table

@@ -38,7 +38,7 @@
             <?php echo $this->__('by')?>
             <a href="<?php echo $this->url(array('login' => $row->login), 'blogauthor') ?>"><?php echo $row->login?></a>
 
-            <a href="<?php echo $url?>" class="pull-right"><?php echo $this->__('Comments')?> (<span><?php echo $this->commentsCounter($row->id, 'blog-post', $this->paginator->getCurrentItems()->toArray(), 'id') ?></span>)</a>
+            <a href="<?php echo $url?>" class="pull-right"><?php echo $this->__('Comments')?> (<span><?php echo $this->commentsCounter($row->id, 'blog', $this->paginator->getCurrentItems()->toArray(), 'id') ?></span>)</a>
         </footer>
     </article>
     <?php endforeach;?>

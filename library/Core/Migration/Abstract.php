@@ -62,8 +62,14 @@ abstract class Core_Migration_Abstract
      *
      * @var Core_Migration_Adapter_Abstract
      */
-
     protected $_migrationAdapter = null;
+
+    /**
+     * migration manager
+     *
+     * @var Core_Migration_Manager
+     */
+    protected $_migrationManager = null;
 
     /**
      * up
@@ -83,7 +89,6 @@ abstract class Core_Migration_Abstract
      */
     abstract public function down();
 
-
     /**
      * getDescription
      *
@@ -91,33 +96,19 @@ abstract class Core_Migration_Abstract
      *
      * @return string
      */
-
     public function getDescription()
     {
         return '';
     }
 
 
-
-    /**
-     * __construct
-     *
-     * constructor of migration
-     *
-     * @return  rettype  return
-     */
-    public function __construct()
-    {
-
-    }
-
     /**
      * setDbAdapter
      *
      * @param  Zend_Db_Adapter_Abstract $dbAdapter
-     * @return return
+     * @return Core_Migration_Abstract
      */
-    function setDbAdapter($dbAdapter = null)
+    public function setDbAdapter($dbAdapter = null)
     {
         if ($dbAdapter && ($dbAdapter instanceof Zend_Db_Adapter_Abstract)) {
             $this->_dbAdapter = $dbAdapter;
@@ -130,9 +121,9 @@ abstract class Core_Migration_Abstract
     /**
      * getDbAdapter
      *
-     * @return return
+     * @return Zend_Db_Adapter_Abstract
      */
-    function getDbAdapter()
+    public function getDbAdapter()
     {
         if (!$this->_dbAdapter) {
             $this->setDbAdapter();
@@ -141,12 +132,37 @@ abstract class Core_Migration_Abstract
     }
 
     /**
+     * setMigrationMananger
+     *
+     * @param \Core_Migration_Manager $migrationManager
+     * @return Core_Migration_Abstract
+     */
+    public function setMigrationMananger(Core_Migration_Manager $migrationManager)
+    {
+        $this->_migrationManager = $migrationManager;
+        return $this;
+    }
+
+    /**
+     * getMigrationManager
+     *
+     * @return Core_Migration_Manager
+     */
+    public function getMigrationManager()
+    {
+        if (!$this->_migrationManager) {
+            throw new Core_Exception('Migration manager is not set');
+        }
+        return $this->_migrationManager;
+    }
+
+    /**
      * setMigrationAdapter
      *
      *
      * @return Core_Migration_Abstract
      */
-    function setMigrationAdapter()
+    public function setMigrationAdapter()
     {
         if ($this->getDbAdapter() instanceof Zend_Db_Adapter_Pdo_Mysql) {
             $className = 'Core_Migration_Adapter_Mysql';
@@ -165,9 +181,9 @@ abstract class Core_Migration_Abstract
     /**
      * getMigrationAdapter
      *
-     * @return return
+     * @return Core_Migration_Adapter_Abstract
      */
-    function getMigrationAdapter()
+    public function getMigrationAdapter()
     {
         if (!$this->_migrationAdapter) {
             $this->setMigrationAdapter();
@@ -188,12 +204,13 @@ abstract class Core_Migration_Abstract
     /**
      * query
      *
-     * @param   string     $query
-     * @return  Core_Migration_Abstract
+     * @param  string $query
+     * @param  array  $bind
+     * @return Core_Migration_Abstract
      */
-    public function query($query)
+    public function query($query, $bind = array())
     {
-        $this->getMigrationAdapter()->query($query);
+        $this->getMigrationAdapter()->query($query, $bind);
         return $this;
     }
 
@@ -328,8 +345,9 @@ abstract class Core_Migration_Abstract
      * dropColumn
      *
      * @param   string   $table
-     * @param   array    $columns
-     * @return  bool
+     * @param            $indName
+     * @internal param array $columns
+     * @return  Core_Migration_Abstract
      */
     public function dropUniqueIndexes($table, $indName)
     {

@@ -45,7 +45,5 @@ class Migration_20120106_131527_25_dbStateFix extends Core_Migration_Abstract
     {
         return 'Add column db_state to migrations table (if not exist)';
     }
-
-
 }
 

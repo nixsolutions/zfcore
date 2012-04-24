@@ -58,6 +58,13 @@ class Core_Migration_Manager
     protected $_messages = array();
 
     /**
+     * Check before start transaction
+     *
+     * @var bool
+     */
+    protected $_transactionFlag = false;
+
+    /**
      * Migration exists and ready to load
      */
     const MIGRATION_STATUS_READY = 1;
@@ -121,7 +128,7 @@ class Core_Migration_Manager
     public function getProjectDirectoryPath()
     {
         if (null == $this->_options['projectDirectoryPath']) {
-            throw new Zend_Exception('Project directory path undefined.');
+            throw new Core_Exception('Project directory path undefined.');
         }
 
         return $this->_options['projectDirectoryPath'];
@@ -147,7 +154,7 @@ class Core_Migration_Manager
     public function getModulesDirectoryPath()
     {
         if (null == $this->_options['modulesDirectoryPath']) {
-            throw new Zend_Exception('Modules directory path undefined.');
+            throw new Core_Exception('Modules directory path undefined.');
         }
 
         return $this->_options['modulesDirectoryPath'];
@@ -173,7 +180,7 @@ class Core_Migration_Manager
     public function getMigrationsDirectoryName()
     {
         if (null == $this->_options['migrationsDirectoryName']) {
-            throw new Zend_Exception('Migrations directory name undefined.');
+            throw new Core_Exception('Migrations directory name undefined.');
         }
 
         return $this->_options['migrationsDirectoryName'];
@@ -194,7 +201,7 @@ class Core_Migration_Manager
             $modulePath = $this->getModulesDirectoryPath() . '/' . $module;
 
             if (!file_exists($modulePath))
-                throw new Zend_Exception('Module `' . $module . '` not exists.');
+                throw new Core_Exception('Module `' . $module . '` not exists.');
 
             $path = $modulePath . '/' . $this->getMigrationsDirectoryName();
         }
@@ -288,6 +295,7 @@ class Core_Migration_Manager
     /**
      * Method retirns last migration for selected module
      *
+     * @param null $module
      * @return string
      */
     public function getLastMigration($module = null)
@@ -305,7 +313,7 @@ class Core_Migration_Manager
                 = Zend_Db_Table::getDefaultAdapter()->fetchOne($select);
 
             if (empty($this->_lastMigration)) {
-                throw new Zend_Exception(
+                throw new Core_Exception(
                     "Not found migration version in database"
                 );
             }
@@ -321,6 +329,9 @@ class Core_Migration_Manager
      * Method create's new migration file
      *
      * @param  string $module Module name
+     * @param null    $migrationBody
+     * @param string  $label
+     * @param string  $desc
      * @return string Migration name
      */
     public function create($module = null, $migrationBody = null, $label = '', $desc = '')
@@ -397,7 +408,6 @@ class Core_Migration_Manager
      * @param null $module
      * @return string
      */
-
     protected function getLastDbState($module = null)
     {
         $lastMigration = $this->getLastMigration($module);
@@ -439,10 +449,13 @@ class Core_Migration_Manager
     /**
      * get difference between current db state and last db state, after this
      * create migration with auto-generated queries
-     * @param null $module
+     *
+     * @param null   $module
      * @param string $blacklist
      * @param string $whitelist
-     * @param bool $showDiff
+     * @param bool   $showDiff
+     * @param string $label
+     * @param string $description
      * @return array|bool|string
      */
 
@@ -489,7 +502,6 @@ class Core_Migration_Manager
      * @param $module
      * @return bool
      */
-
     public function checkState($module)
     {
         $lastMigration = $this->getLastMigration($module);
@@ -530,18 +542,16 @@ class Core_Migration_Manager
 
         if ($to) {
             if (!self::isMigration($to)) {
-                throw new Zend_Exception("Migration name '$to' is not valid");
+                throw new Core_Exception("Migration name '$to' is not valid");
             } elseif ($lastMigration == $to) {
-                throw new Zend_Exception("Migration `'$to'` is current");
+                throw new Core_Exception("Migration `'$to'` is current");
             } elseif ($lastMigration > $to) {
-                throw new Zend_Exception(
+                throw new Core_Exception(
                     "Migration `" . $to . "` is older than current "
                     . "migration `" . $lastMigration . "`"
                 );
             }
         }
-
-
 
         $exists = $this->getExistsMigrations($module);
         $loaded = $this->getLoadedMigrations($module);
@@ -549,19 +559,24 @@ class Core_Migration_Manager
         $ready = array_diff($exists, $loaded);
 
         if (sizeof($ready) == 0) {
-            array_push($this->_messages, 'No migrations to upgrade.');
+            if ($module) {
+                array_push($this->_messages, $module .': no migrations to upgrade.');
+            } else {
+                array_push($this->_messages, 'No migrations to upgrade.');
+            }
+
             return;
         }
 
         sort($ready);
 
         if (($to) && (!in_array($to, $exists))) {
-            throw new Zend_Exception('Migration `' . $to . '` not exists');
+            throw new Core_Exception('Migration `' . $to . '` not exists');
         }
 
         foreach ($ready as $migration) {
             if ($migration < $lastMigration) {
-                throw new Zend_Exception(
+                throw new Core_Exception(
                     "Migration `" . $migration . "` is conflicted"
                 );
             }
@@ -575,22 +590,30 @@ class Core_Migration_Manager
                 $moduleAddon = ((null !== $module) ? ucfirst($module) . '_' : '');
 
                 $migrationClass = $moduleAddon . 'Migration_' . $migration;
+                /** @var Core_Migration_Abstract $migrationObject */
                 $migrationObject = new $migrationClass;
+                $migrationObject->setMigrationMananger($this);
 
-                $migrationObject->getDbAdapter()->beginTransaction();
-                try {
+                if (!$this->_transactionFlag) {
+                    $migrationObject->getDbAdapter()->beginTransaction();
+                    $this->_transactionFlag = true;
+                    try {
+                        $migrationObject->up();
+                        $migrationObject->getDbAdapter()->commit();
+                    } catch (Exception $e) {
+                        $migrationObject->getDbAdapter()->rollBack();
+                        throw new Core_Exception($e->getMessage());
+                    }
+                    $this->_transactionFlag = false;
+                } else {
                     $migrationObject->up();
-                    $migrationObject->getDbAdapter()->commit();
-                } catch (Exception $e) {
-                    $migrationObject->getDbAdapter()->rollBack();
-                    throw new Zend_Exception($e->getMessage());
                 }
 
-
-                array_push(
-                    $this->_messages,
-                    "Upgrade to revision '$migration'"
-                );
+                if ($module) {
+                    array_push($this->_messages, $module .": upgrade to revision '$migration'");
+                } else {
+                    array_push($this->_messages, "Upgrade to revision '$migration'");
+                }
 
                 $this->_pushMigration($module, $migration);
 
@@ -605,11 +628,12 @@ class Core_Migration_Manager
                 );
 
             } catch (Exception $e) {
-                throw new Zend_Exception(
+                throw new Core_Exception(
                     "Migration '$migration' return exception:\n"
                     . $e->getMessage()
                 );
             }
+
 
             if (($to) && ($migration == $to)) {
                 break;
@@ -617,15 +641,21 @@ class Core_Migration_Manager
         }
     }
 
+    /**
+     * @param $module
+     * @param $to
+     * @return mixed
+     * @throws Core_Exception
+     */
     public function fake($module, $to)
     {
         $lastMigration = $this->getLastMigration($module);
 
         if ($to) {
             if (!self::isMigration($to)) {
-                throw new Zend_Exception("Migration name '$to' is not valid");
+                throw new Core_Exception("Migration name '$to' is not valid");
             } elseif ($lastMigration == $to) {
-                throw new Zend_Exception("Migration `'$to'` is current");
+                throw new Core_Exception("Migration `'$to'` is current");
             }
 
             $exists = $this->getExistsMigrations($module);
@@ -648,7 +678,7 @@ class Core_Migration_Manager
             $this->_pushMigration($module, $to);
             array_push(
                 $this->_messages,
-                "Fake upgrade to revision '$migration'"
+                "Fake upgrade to revision '$to'"
             );
 
         } else {
@@ -676,11 +706,11 @@ class Core_Migration_Manager
 
         if (null !== $to) {
             if (!self::isMigration($to)) {
-                throw new Zend_Exception("Migration name '$to' is not valid");
+                throw new Core_Exception("Migration name '$to' is not valid");
             } elseif ($lastMigration == $to) {
-                throw new Zend_Exception("Migration `'$to'` is current");
+                throw new Core_Exception("Migration `'$to'` is current");
             } elseif ($lastMigration < $to) {
-                throw new Zend_Exception(
+                throw new Core_Exception(
                     "Migration `" . $to . "` is younger than current "
                     . "migration `" . $lastMigration . "`"
                 );
@@ -691,14 +721,18 @@ class Core_Migration_Manager
         $loaded = $this->getLoadedMigrations($module);
 
         if (sizeof($loaded) == 0) {
-            array_push($this->_messages, 'No migrations to degrade.');
+            if ($module) {
+                array_push($this->_messages, $module .': no migrations to degrade.');
+            } else {
+                array_push($this->_messages, 'No migrations to degrade.');
+            }
             return;
         }
 
         rsort($loaded);
 
         if (($to) && (!in_array($to, $loaded))) {
-            throw new Zend_Exception('Migration `' . $to . '` not loaded');
+            throw new Core_Exception('Migration `' . $to . '` not loaded');
         }
 
         foreach ($loaded as $migration) {
@@ -708,7 +742,7 @@ class Core_Migration_Manager
             }
 
             if (!in_array($migration, $exists)) {
-                throw new Zend_Exception(
+                throw new Core_Exception(
                     "Migration `" . $migration . "` not exists"
                 );
             }
@@ -723,21 +757,34 @@ class Core_Migration_Manager
 
                 $migrationClass = $moduleAddon . 'Migration_' . $migration;
                 $migrationObject = new $migrationClass;
+                /** @var Core_Migration_Abstract $migrationObject */
+                $migrationObject->setMigrationMananger($this);
 
-                $migrationObject->getDbAdapter()->beginTransaction();
-                try {
+                if (!$this->_transactionFlag) {
+                    $migrationObject->getDbAdapter()->beginTransaction();
+                    $this->_transactionFlag = true;
+                    try {
+                        $migrationObject->down();
+                        $migrationObject->getDbAdapter()->commit();
+                    } catch (Exception $e) {
+                        $migrationObject->getDbAdapter()->rollBack();
+                        throw new Core_Exception($e->getMessage());
+                    }
+                    $this->_transactionFlag = false;
+                } else {
                     $migrationObject->down();
-                    $migrationObject->getDbAdapter()->commit();
-                } catch (Exception $e) {
-                    $migrationObject->getDbAdapter()->rollBack();
-                    throw new Zend_Exception($e->getMessage());
                 }
 
-                array_push($this->_messages, "Degrade migration '$migration'");
+
+                if ($module) {
+                    array_push($this->_messages, $module .": degrade to revision '$migration'");
+                } else {
+                    array_push($this->_messages, "Degrade to revision '$migration'");
+                }
 
                 $this->_pullMigration($module, $migration);
             } catch (Exception $e) {
-                throw new Zend_Exception(
+                throw new Core_Exception(
                     "Migration '$migration' return exception:\n"
                     . $e->getMessage()
                 );
@@ -758,7 +805,7 @@ class Core_Migration_Manager
         $lastMigration = $this->getLastMigration($module);
 
         if (!is_numeric($step) || ($step <= 0)) {
-            throw new Zend_Exception("Step count '$step' is invalid");
+            throw new Core_Exception("Step count '$step' is invalid");
         }
 
         $exists = $this->getExistsMigrations($module);
@@ -774,7 +821,7 @@ class Core_Migration_Manager
         foreach ($loaded as $migration) {
 
             if (!in_array($migration, $exists)) {
-                throw new Zend_Exception(
+                throw new Core_Exception(
                     "Migration `" . $migration . "` not exists"
                 );
             }
@@ -796,14 +843,14 @@ class Core_Migration_Manager
                     $migrationObject->getDbAdapter()->commit();
                 } catch (Exception $e) {
                     $migrationObject->getDbAdapter()->rollBack();
-                    throw new Zend_Exception($e->getMessage());
+                    throw new Core_Exception($e->getMessage());
                 }
 
                 array_push($this->_messages, "Degrade migration '$migration'");
 
                 $this->_pullMigration($module, $migration);
             } catch (Exception $e) {
-                throw new Zend_Exception(
+                throw new Core_Exception(
                     "Migration '$migration' return exception:\n"
                     . $e->getMessage()
                 );
@@ -883,6 +930,11 @@ class Core_Migration_Manager
             preg_match('/\d{8}_\d{6}_\d{2}_[A-z0-9]*$/', $value);
     }
 
+    /**
+     * @param $migrationLabel
+     * @param null $module
+     * @return bool
+     */
     protected function getMigrationFullName($migrationLabel, $module = null )
     {
         if (preg_match('/^[A-z0-9]*$/', $migrationLabel)) {

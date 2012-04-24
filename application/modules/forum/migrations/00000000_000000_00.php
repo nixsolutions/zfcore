@@ -5,6 +5,10 @@ class Forum_Migration_00000000_000000_00 extends Core_Migration_Abstract
 
     public function up()
     {
+        // dependencies
+        $this->getMigrationManager()->up('categories');
+        $this->getMigrationManager()->up('comments');
+
         // post table
         $this->query(
             "CREATE TABLE `forum_post` (
@@ -22,10 +26,31 @@ class Forum_Migration_00000000_000000_00 extends Core_Migration_Abstract
             ) ENGINE=INNODB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8
             "
         );
+
+        // category table
+        $this->insert('categories', array(
+            'title'       =>  'forum',
+            'description' =>  'forum',
+            'alias'       =>  'forum',
+            'path'        =>  'forum',
+        ));
+
+
+
+        // comment_aliases table
+        $this->insert('comment_aliases', array(
+                    'alias'        => 'forum',
+                    'options'      => '["keyRequired","titleDisplayed","paginatorEnabled"]',
+                    'countPerPage' => 10,
+                    'relatedTable' => 'forum_post',
+        ));
     }
 
     public function down()
     {
+        $this->query('DELETE FROM `categories` WHERE `alias` = ?', array('forum'));
+        $this->query('DELETE FROM `comment_aliases` WHERE `alias` = ?', array('forum'));
+
         $this->dropTable('forum_post');
     }
 }

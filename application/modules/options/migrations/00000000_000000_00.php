@@ -1,6 +1,6 @@
 <?php
 
-class Migration_20080101_000000_00 extends Core_Migration_Abstract
+class Options_Migration_00000000_000000_00 extends Core_Migration_Abstract
 {
 
     public function up()
@@ -16,13 +16,6 @@ class Migration_20080101_000000_00 extends Core_Migration_Abstract
               PRIMARY KEY (`id`,`name`,`namespace`)
             ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
         ");
-
-        // insert data about revision number ZERO
-        $this->insert('options', array(
-            'name'    =>  'migration',  
-            'value'   =>  '00000000_000000_00',
-            'namespace'=> 'default'
-        ));
     }
 
     public function down()

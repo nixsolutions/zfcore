@@ -1,5 +1,7 @@
 <?php
-
+/**
+ *
+ */
 class Migration_20090101_000000_00 extends Core_Migration_Abstract
 {
     public function up()

@@ -1,6 +1,6 @@
 <?php
 
-class Comments_Migration_20111226_124739_72 extends Core_Migration_Abstract
+class Comments_Migration_00000000_000000_00 extends Core_Migration_Abstract
 {
 
     public function up()
@@ -32,13 +32,6 @@ class Comments_Migration_20111226_124739_72 extends Core_Migration_Abstract
                 `status` ENUM('active','deleted','review') NOT NULL DEFAULT 'active',
                 PRIMARY KEY (`id`)
             ) ENGINE=INNODB DEFAULT CHARSET=utf8;
-
-            INSERT  INTO `comment_aliases`(`id`,`alias`,`options`,`created`,`updated`,`countPerPage`,`relatedTable`)
-                VALUES
-                (1,'blog-post','[\"keyRequired\",\"preModerationRequired\"]','0000-00-00 00:00:00',
-                    '0000-00-00 00:00:00',5,'blog_post'),
-                (2,'forum-post','[\"keyRequired\",\"titleDisplayed\",\"paginatorEnabled\"]','0000-00-00 00:00:00',
-                    '0000-00-00 00:00:00',10,'forum_post');
             "
         );
     }

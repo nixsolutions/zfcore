@@ -52,7 +52,7 @@ abstract class Core_Migration_Adapter_Abstract
      * setDbAdapter
      *
      * @param  Zend_Db_Adapter_Abstract $dbAdapter
-     * @return return
+     * @return Core_Migration_Adapter_Abstract
      */
     protected function setDbAdapter($dbAdapter = null)
     {
@@ -81,12 +81,38 @@ abstract class Core_Migration_Adapter_Abstract
      * query
      *
      * @param   string     $query
+     * @param array        $bind
      * @return  Core_Migration_Abstract
      */
-    public function query($query)
+    public function query($query, $bind = array())
     {
-        $this->getDbAdapter()->query($query);
+        $this->getDbAdapter()->query($query, $bind);
         return $this;
+    }
+
+    /**
+     * Insert
+     *
+     * @param string $table
+     * @param array  $params
+     * @return Core_Migration_Adapter_Abstract
+     */
+    public function insert($table, array $params)
+    {
+        return $this->getDbAdapter()->insert($table, $params);
+    }
+
+    /**
+     * Updates table rows with specified data based on a WHERE clause.
+     *
+     * @param  mixed        $table The table to update.
+     * @param  array        $bind  Column-value pairs.
+     * @param  mixed        $where UPDATE WHERE clause(s).
+     * @return int          The number of affected rows.
+     */
+    public function update($table, array $bind, $where = '')
+    {
+        return $this->getDbAdapter()->update($table, $bind, $where);
     }
 
 
@@ -152,6 +178,7 @@ abstract class Core_Migration_Adapter_Abstract
     /**
      * Drop an index on table
      *
+     * @param        $table
      * @param string $indName
      * @return Core_Migration_Adapter_Abstract
      */
@@ -163,6 +190,7 @@ abstract class Core_Migration_Adapter_Abstract
      * @param string $name      Method name
      * @param mixed  $arguments Method Arguments
      *                          return Core_Migration_Adapter_Abstract
+     * @return \Core_Migration_Adapter_Abstract
      */
     public function  __call($name, $arguments)
     {
