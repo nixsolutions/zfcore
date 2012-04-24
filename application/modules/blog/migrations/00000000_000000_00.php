@@ -10,24 +10,30 @@ class Blog_Migration_00000000_000000_00 extends Core_Migration_Abstract
         $this->getMigrationManager()->up('comments');
 
         // post table
-        $this->query(
-            "CREATE TABLE `blog_post` (
-             `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-             `alias` VARCHAR(250) NOT NULL,
-             `title` VARCHAR(500) NOT NULL,
-             `teaser` VARCHAR(500) DEFAULT NULL,
-             `body` TEXT NOT NULL,
-             `categoryId` INT(10) NOT NULL,
-             `userId` INT(10) NOT NULL,
-             `status` ENUM('published','draft','deleted') NOT NULL DEFAULT 'draft',
-             `views` INT(10) NOT NULL DEFAULT '0',
-             `replies` INT(10) NOT NULL DEFAULT '0',
-             `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-             `updated` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-             `published` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-             PRIMARY KEY (`id`)
-           ) ENGINE=INNODB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8"
-        );
+        $this->query("
+            CREATE TABLE `blog_post` (
+              `id` int(10) NOT NULL AUTO_INCREMENT,
+              `alias` varchar(250) NOT NULL,
+              `title` varchar(500) NOT NULL,
+              `teaser` varchar(500) DEFAULT NULL,
+              `body` text NOT NULL,
+              `categoryId` int(10) NOT NULL,
+              `userId` bigint(20) NOT NULL,
+              `status` enum('published','draft','deleted') NOT NULL DEFAULT 'draft',
+              `views` int(10) NOT NULL DEFAULT '0',
+              `comments` int(10) NOT NULL DEFAULT '0',
+              `replies` int(10) NOT NULL DEFAULT '0',
+              `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+              `updated` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+              `published` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+              PRIMARY KEY (`id`),
+              UNIQUE KEY `blog_post_alias` (`alias`),
+              KEY `FK_blog_post_to_users` (`userId`),
+              KEY `FK_blog_post_to_categories` (`categoryId`),
+              CONSTRAINT `FK_blog_post_to_categories` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+              CONSTRAINT `FK_blog_post_to_users` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+        ");
 
         // category table
         $this->insert('categories', array(

@@ -52,7 +52,7 @@ class Faq_ManagementController extends Core_Controller_Action_Crud
      *
      * @return void
      */
-    function _prepareHeader()
+    protected function _prepareHeader()
     {
         $this->_addCreateButton();
         $this->_addDeleteButton();
@@ -74,6 +74,7 @@ class Faq_ManagementController extends Core_Controller_Action_Crud
                      'formatter' => array($this, array('trimFormatter'))
                  )
              );
+        $this->_addCreatedColumn();
         $this->_addEditColumn();
         $this->_addDeleteColumn();
     }

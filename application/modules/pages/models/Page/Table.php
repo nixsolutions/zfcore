@@ -5,8 +5,7 @@
  * @category Application
  * @package Model
  * @subpackage Manager
- * 
- * @version  $Id: Manager.php 47 2010-02-12 13:17:34Z AntonShevchuk $
+ * @method getByAlias
  */
 class Pages_Model_Page_Table extends Core_Db_Table_Abstract
 {
