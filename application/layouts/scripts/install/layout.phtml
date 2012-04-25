@@ -12,7 +12,7 @@ $class[] = 'a-' . $request->getActionName();
     <?php echo $this->render('install/partial/head.phtml') ?>
     <body class="<?php echo implode(' ', $class) ?>">
     <?php echo $this->render('install/partial/messages.phtml') ?>
-    <?php echo $this->render('default/partial/menu.phtml') ?>
+    <?php echo $this->render('install/partial/menu.phtml') ?>
     <div class="container well">
         <?php echo $this->render('install/partial/breadcrumbs.phtml') ?>
         <?php echo $this->layout()->content ?>
