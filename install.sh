@@ -20,6 +20,9 @@ echo "Permissions for ./public/"
 chmod a+w ./public/captcha/ && echo " ./captcha/"
 chmod a+w ./public/uploads/ && echo " ./uploads/"
 
+# Copy .htaccess file
+echo "Copy .htaccess file"
+cp ./public/.htaccess.sample ./public/.htaccess
 
 # Binary
 #chmod a+x ./bin/zf.sh
