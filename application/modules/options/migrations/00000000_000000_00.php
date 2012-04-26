@@ -8,13 +8,13 @@ class Options_Migration_00000000_000000_00 extends Core_Migration_Abstract
         // options table
         $this->query("
             CREATE TABLE `options` (
-              `id` bigint(20) NOT NULL AUTO_INCREMENT,
+              `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
               `name` varchar(255) NOT NULL,
               `value` longtext NOT NULL,
               `type` enum('int','float','string','array','object') NOT NULL DEFAULT 'string',
               `namespace` varchar(64) NOT NULL DEFAULT 'default',
               PRIMARY KEY (`id`,`name`,`namespace`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
         ");
     }
 

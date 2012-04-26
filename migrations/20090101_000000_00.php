@@ -9,26 +9,26 @@ class Migration_20090101_000000_00 extends Core_Migration_Abstract
         // users table
         $this->query("
             CREATE TABLE `users` (
-              `id` bigint(20) NOT NULL AUTO_INCREMENT,
+              `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
               `login` varchar(255) NOT NULL,
               `email` varchar(255) NOT NULL,
               `password` varchar(64) NOT NULL,
               `salt` varchar(32) NOT NULL,
               `firstname` varchar(255) DEFAULT NULL,
               `lastname` varchar(255) DEFAULT NULL,
-              `avatar` varchar(512) DEFAULT NULL,
-              `role` enum('guest','user','admin') NOT NULL DEFAULT 'guest',
-              `status` enum('active','blocked','registered','removed') NOT NULL DEFAULT 'registered',
+              `avatar` varchar(512) DEFAULT NULL COMMENT 'Path to image',
+              `role` enum('guest','user','admin') NOT NULL DEFAULT 'guest' COMMENT 'Defined in Users_Model_User',
+              `status` enum('active','blocked','registered','removed') NOT NULL DEFAULT 'registered' COMMENT 'Defined in Users_Model_User',
               `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-              `updated` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',
-              `logined` timestamp NOT NULL DEFAULT '2000-01-01 00:00:00',
+              `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+              `logined` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
               `ip` int(11) DEFAULT NULL,
-              `count` int(11) NOT NULL DEFAULT '1',
+              `count` int(11) NOT NULL DEFAULT '1' COMMENT 'Login counter',
               `hashCode` varchar(32) DEFAULT NULL,
               `inform` enum('true','false') NOT NULL DEFAULT 'false',
-              `fbUid` varchar(250) DEFAULT NULL COMMENT 'facebook ID',
-              `twId` varchar(250) DEFAULT NULL COMMENT 'twitter ID',
-              `gId` varchar(250) DEFAULT NULL COMMENT 'google ID',
+              `facebookId` varchar(250) DEFAULT NULL,
+              `twitterId` varchar(250) DEFAULT NULL,
+              `googleId` varchar(250) DEFAULT NULL,
               PRIMARY KEY (`id`),
               UNIQUE KEY `unique_login` (`login`),
               UNIQUE KEY `unique_email` (`email`),
@@ -36,18 +36,20 @@ class Migration_20090101_000000_00 extends Core_Migration_Abstract
             ) ENGINE=InnoDB AUTO_INCREMENT=10066 DEFAULT CHARSET=utf8
         ");
 
-        $this->query("CREATE TABLE `mail_templates` (
-          `id` bigint(20) NOT NULL AUTO_INCREMENT,
-          `description` varchar(255) DEFAULT NULL,
-          `subject` text,
-          `bodyHtml` text NOT NULL,
-          `bodyText` text NOT NULL,
-          `alias` varchar(255) NOT NULL,
-          `fromEmail` varchar(255) DEFAULT NULL,
-          `fromName` varchar(255) DEFAULT NULL,
-          `signature` enum('true','false') NOT NULL DEFAULT 'true',
-          PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8
+        $this->query("
+            CREATE TABLE `mail_templates` (
+              `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+              `description` varchar(512) DEFAULT NULL,
+              `subject` varchar(255) DEFAULT NULL,
+              `bodyHtml` text NOT NULL,
+              `bodyText` text NOT NULL,
+              `alias` varchar(255) NOT NULL,
+              `fromEmail` varchar(255) DEFAULT NULL,
+              `fromName` varchar(255) DEFAULT NULL,
+              `signature` enum('true','false') NOT NULL DEFAULT 'true',
+              PRIMARY KEY (`id`),
+              UNIQUE KEY `mail_templates_unique` (`alias`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
         ");
 
         $this->insert('mail_templates', array(

@@ -11,7 +11,7 @@ class Faq_Model_Question extends Core_Db_Table_Row_Abstract
     /**
      * get all questions
      *
-     * @return Core_Db_Table_Row
+     * @return Zend_Db_Table_Rowset_Abstract
      */
     public function getQuestions()
     {

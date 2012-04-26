@@ -9,29 +9,34 @@ class Comments_Migration_00000000_000000_00 extends Core_Migration_Abstract
         $this->query(
             "
             CREATE TABLE `comment_aliases` (
-                `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-                `alias` VARCHAR(255) NOT NULL,
-                `options` TEXT,
-                `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-                `updated` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-                `countPerPage` SMALLINT(5) DEFAULT '10',
-                `relatedTable` VARCHAR(64) DEFAULT NULL,
-                PRIMARY KEY (`id`)
-            ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+              `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+              `alias` varchar(255) NOT NULL,
+              `options` text,
+              `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+              `countPerPage` smallint(5) NOT NULL DEFAULT '10',
+              `relatedTable` varchar(64) DEFAULT NULL,
+              PRIMARY KEY (`id`),
+              UNIQUE KEY `comment_aliases_unique` (`alias`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
             CREATE TABLE `comments` (
-                `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-                `aliasId` INT(10) NOT NULL,
-                `key` VARCHAR(32) DEFAULT NULL,
-                `userId` INT(10) NOT NULL,
-                `parentId` INT(10) DEFAULT NULL,
-                `title` VARCHAR(250) DEFAULT NULL,
-                `body` TEXT,
-                `created` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-                `updated` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-                `status` ENUM('active','deleted','review') NOT NULL DEFAULT 'active',
-                PRIMARY KEY (`id`)
-            ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+              `id` bigint(20) unsigned NOT NULL,
+              `aliasId` int(10) unsigned NOT NULL,
+              `key` bigint(20) unsigned NOT NULL,
+              `userId` bigint(20) unsigned NOT NULL,
+              `parentId` bigint(20) unsigned DEFAULT NULL,
+              `title` varchar(512) NOT NULL,
+              `body` text,
+              `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+              `status` enum('active','banned','deleted','review') NOT NULL DEFAULT 'active',
+              PRIMARY KEY (`id`),
+              KEY `comments_target` (`aliasId`,`key`),
+              KEY `FK_comments_to_users` (`userId`),
+              CONSTRAINT `FK_comments_to_comment_aliases` FOREIGN KEY (`aliasId`) REFERENCES `comment_aliases` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+              CONSTRAINT `FK_comments_to_users` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             "
         );
     }

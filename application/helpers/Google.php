@@ -119,7 +119,7 @@ class Helper_Google extends Zend_Controller_Action_Helper_Abstract
             $info->login     = $data['entry']['displayName'];
             $info->firstname = $data['entry']['name']['givenName'];
             $info->lastname  = $data['entry']['name']['familyName'];
-            $info->gId       = $data['entry']['id'];
+            $info->googleId  = $data['entry']['id'];
 
             $client->setUri('https://www.googleapis.com/userinfo/email');
             $emailData = explode('&', $client->request()->getBody());

@@ -69,7 +69,7 @@ class Helper_Facebook extends Zend_Controller_Action_Helper_Abstract
         $info->email     = $user['email'];
         $info->firstname = $user['first_name'];
         $info->lastname  = $user['last_name'];
-        $info->fbUid     = $user['id'];
+        $info->facebookId = $user['id'];
 
         return $info;
     }

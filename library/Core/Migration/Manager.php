@@ -112,7 +112,7 @@ class Core_Migration_Manager
                 `module` varchar(128) NOT NULL,
                 `migration` varchar(64) NOT NULL,
                 `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                `db_state` longtext,
+                `state` longtext,
                 PRIMARY KEY (`id`),
                 UNIQUE KEY `UNIQUE_MIGRATION` (`module`,`migration`)
             ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -416,7 +416,7 @@ class Core_Migration_Manager
 
         $query = $dbAdapter->select()->from(
             $this->_options['migrationsSchemaTable'],
-            array('db_state')
+            array('state')
         )->where('migration=?', $lastMigration);
 
         if ($module)
@@ -514,7 +514,7 @@ class Core_Migration_Manager
 
             $dbAdapter->update(
                 $this->_options['migrationsSchemaTable'],
-                array('db_state' => $db->toString()),
+                array('state' => $db->toString()),
                 array($dbAdapter->quoteInto('migration=?', $lastMigration),
                     $dbAdapter->quoteInto('module=?', $module))
             );
@@ -617,12 +617,12 @@ class Core_Migration_Manager
 
                 $this->_pushMigration($module, $migration);
 
-                //add db state to migration
+                // add db state to migration
                 $db = new Core_Db_Database(array('blacklist'=>$this->_options['migrationsSchemaTable']));
                 $dbAdapter = Zend_Db_Table::getDefaultAdapter();
                 $dbAdapter->update(
                     $this->_options['migrationsSchemaTable'],
-                    array('db_state' => $db->toString()),
+                    array('state' => $db->toString()),
                     array($dbAdapter->quoteInto('migration=?', $migration),
                         $dbAdapter->quoteInto('module=?', $module))
                 );

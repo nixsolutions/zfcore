@@ -6,22 +6,24 @@ class Pages_Migration_00000000_000000_00 extends Core_Migration_Abstract
     public function up()
     {
         // static pages table
-        $this->query(
-            "
+        $this->query("
             CREATE TABLE `pages` (
-              `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-              `pid` BIGINT(20) NOT NULL,
-              `title` TEXT NOT NULL,
-              `alias` VARCHAR(255) NOT NULL,
-              `content` LONGTEXT,
-              `keywords` TEXT,
-              `description` TEXT,
-              `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-              `updated` TIMESTAMP NOT NULL DEFAULT '0000-00-00 00:00:00',
-              `userId` BIGINT(20) NOT NULL DEFAULT '1',
-              PRIMARY KEY  (`id`,`pid`),
-              UNIQUE KEY `unique` (`pid`,`alias`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8"
+              `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+              `pid` int(10) unsigned NOT NULL COMMENT 'Parent Page',
+              `title` text NOT NULL,
+              `alias` varchar(255) NOT NULL COMMENT 'Key for permalinks',
+              `content` longtext,
+              `keywords` text COMMENT 'Meta Keywords',
+              `description` text COMMENT 'Meta Description',
+              `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+              `userId` bigint(20) unsigned NOT NULL COMMENT 'Author',
+              PRIMARY KEY (`id`,`pid`),
+              UNIQUE KEY `unique` (`pid`,`alias`),
+              KEY `FK_pages_to_users` (`userId`),
+              CONSTRAINT `FK_pages_to_users` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+            "
         );
     }
 

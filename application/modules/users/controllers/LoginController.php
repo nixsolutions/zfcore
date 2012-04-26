@@ -164,14 +164,14 @@ class Users_LoginController extends Core_Controller_Action
         $users = new Users_Model_User_Table();
 
         if (empty($info->email)) {
-            $row = $users->getByTwid($info->twId);
+            $row = $users->getByTwitterid($info->twitterId);
         } else {
             $row = $users->getByEmail($info->email);
             if (!$row) {
                 if (self::OAUTH_FACEBOOK == $this->_getParam('type')) {
-                    $row = $users->getByFbuid($info->fbUid);
+                    $row = $users->getByFacebookid($info->facebookId);
                 } elseif (self::OAUTH_GOOGLE == $this->_getParam('type')) {
-                    $row = $users->getByGid($info->gId);
+                    $row = $users->getByGoogleid($info->googleId);
                 }
             }
         }

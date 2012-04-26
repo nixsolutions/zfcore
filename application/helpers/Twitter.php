@@ -123,7 +123,7 @@ class Helper_Twitter extends Zend_Controller_Action_Helper_Abstract
         if ($token = $this->getToken()) {
 
             $info = new ArrayObject(array(), ArrayObject::ARRAY_AS_PROPS);
-            $info->twId      = $token->getParam('user_id');
+            $info->twitterId = $token->getParam('user_id');
             $info->login     = $token->getParam('screen_name');
             $info->firstname = $info->login;
 
