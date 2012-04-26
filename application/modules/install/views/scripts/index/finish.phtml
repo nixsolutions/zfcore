@@ -2,7 +2,7 @@
 <hr/>
 <article>
     <p class="alert">
-        <?php echo $this->__('Paste following code into config file')?>:
+        <?php echo $this->__('Paste following code into configuration file')?>:
         <br/>
         <code><?php echo $this->filename?></code>
         <br/><br/>
@@ -16,4 +16,4 @@
         <code><?php echo 'rm -r ' . APPLICATION_PATH . '/modules/install/';?></code>
     </p>
 </article>
-<a href="<?php echo $this->baseUrl ?>" title="<?php echo $this->__('Finish')?>"><?php echo $this->__('Finish')?></a>
+<a href="<?php echo $this->baseUrl('/') ?>" title="<?php echo $this->__('Finish')?>" class="btn btn-primary pull-right"><?php echo $this->__('Finish')?></a>
