@@ -17,11 +17,10 @@ class Pages_Migration_00000000_000000_00 extends Core_Migration_Abstract
               `description` text COMMENT 'Meta Description',
               `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
               `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-              `userId` bigint(20) unsigned NOT NULL COMMENT 'Author',
+              `userId` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT 'Author, can be zero',
               PRIMARY KEY (`id`,`pid`),
               UNIQUE KEY `unique` (`pid`,`alias`),
-              KEY `FK_pages_to_users` (`userId`),
-              CONSTRAINT `FK_pages_to_users` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+              KEY `FK_pages_to_users` (`userId`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8
             "
         );

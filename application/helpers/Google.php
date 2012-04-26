@@ -47,10 +47,22 @@ class Helper_Google extends Zend_Controller_Action_Helper_Abstract
     {
         if (!Zend_Registry::isRegistered('googleConfig')) {
             throw new Zend_Controller_Action_Exception(
-                'Google Config not found'
+                'Google oAuth: config not found'
             );
         }
         $config = Zend_Registry::get('googleConfig');
+
+        if (empty($config->consumerKey)) {
+            throw new Zend_Controller_Action_Exception(
+                'Google oAuth: consumer key is missed'
+            );
+        }
+
+        if (empty($config->consumerSecret)) {
+            throw new Zend_Controller_Action_Exception(
+                'Google oAuth: consumer secret is missed'
+            );
+        }
 
         if (strpos($config['callbackUrl'], 'http') !== 0) {
             $view = new Zend_View();

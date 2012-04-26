@@ -30,10 +30,16 @@ class Helper_Facebook extends Zend_Controller_Action_Helper_Abstract
         if (!$this->_client) {
             if (!Zend_Registry::isRegistered('fbConfig')) {
                 throw new Zend_Controller_Action_Exception(
-                    'FbConnect Config not found'
+                    'Facebook Connect: config not found'
                 );
             }
             $config = Zend_Registry::get('fbConfig');
+
+            if (empty($config->appId)) {
+                throw new Zend_Controller_Action_Exception(
+                    'Facebook Connect: application Id is missed'
+                );
+            }
 
             $this->setClient($client = new Facebook_Facebook($config));
         }

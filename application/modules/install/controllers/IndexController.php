@@ -489,7 +489,7 @@ class Install_IndexController extends Core_Controller_Action
 
         $config = $this->_store->config->production->resources;
 
-        $config->frontController->defaultModule = 'users';
+        $config->frontController->defaultModule = 'index';
         $config->layout->layout = 'default/layout';
 
         $writer = new Core_Config_Writer_Yaml();

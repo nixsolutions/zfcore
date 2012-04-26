@@ -77,13 +77,22 @@ class Users_LoginController extends Core_Controller_Action
             $this->view->messages = $message;
         }
         if (Zend_Registry::isRegistered('fbConfig')) {
-            $this->view->facebook = true;
+            $fbConfig = Zend_Registry::get('fbConfig');
+            if (!empty($fbConfig->appId)) {
+                $this->view->facebook = true;
+            }
         }
         if (Zend_Registry::isRegistered('twitterConfig')) {
-            $this->view->twitter = true;
+            $twitterConfig = Zend_Registry::get('twitterConfig');
+            if (!empty($twitterConfig->consumerKey)) {
+                $this->view->twitter = true;
+            }
         }
         if (Zend_Registry::isRegistered('googleConfig')) {
-            $this->view->google = true;
+            $googleConfig = Zend_Registry::get('googleConfig');
+            if (!empty($twitterConfig->$googleConfig)) {
+                $this->view->google = true;
+            }
         }
         $this->view->form = $form;
     }

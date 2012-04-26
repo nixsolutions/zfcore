@@ -38,10 +38,22 @@ class Helper_Twitter extends Zend_Controller_Action_Helper_Abstract
         if (!$this->_client) {
             if (!Zend_Registry::isRegistered('twitterConfig')) {
                 throw new Zend_Controller_Action_Exception(
-                    'Twitter Config not found'
+                    'Twitter oAuth: config not found'
                 );
             }
             $config = Zend_Registry::get('twitterConfig');
+
+            if (empty($config->consumerKey)) {
+                throw new Zend_Controller_Action_Exception(
+                    'Twitter oAuth: consumer key is missed'
+                );
+            }
+
+            if (empty($config->consumerSecret)) {
+                throw new Zend_Controller_Action_Exception(
+                    'Twitter oAuth: consumer secret is missed'
+                );
+            }
 
             if (strpos($config['callbackUrl'], 'http') !== 0) {
                 $view = new Zend_View();
