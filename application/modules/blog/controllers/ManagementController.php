@@ -24,6 +24,9 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
             'SELECT COUNT(*) FROM `blog_post` WHERE `status` = ?',
             array(Blog_Model_Post::STATUS_PUBLISHED)
         );
+        // works with MySQL, Oracle, and SQL Server
+        // @see http://justinsomnia.org/2004/06/how-to-count-unique-records-with-sql/
+        $this->view->activeUsers = $adapter->fetchOne('SELECT COUNT(DISTINCT userId) FROM `blog_post`');
     }
 
     /**

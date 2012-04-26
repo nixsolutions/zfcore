@@ -1,0 +1,19 @@
+<div class="span3">
+<h4><a href="<?php echo $this->url(array('module'=>'forum', 'controller'=>'management'))?>"><i class="icon-th-list"></i> Forum</a></h4>
+<table class="table table-condensed well">
+  <tbody>
+    <tr>
+      <th>Total Topics</th>
+      <td width="50px"><?php echo $this->totalTopics ?></td>
+    </tr>
+    <tr>
+      <th>Open Topics</th>
+      <td><?php echo $this->openTopics ?></td>
+    </tr>
+    <tr>
+      <th>Active Users</th>
+      <td><?php echo $this->activeUsers ?></td>
+    </tr>
+  </tbody>
+</table>
+</div>

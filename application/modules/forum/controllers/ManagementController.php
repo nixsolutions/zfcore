@@ -1,15 +1,31 @@
 <?php
 /**
- * UsersController for admin module
+ * ManagementController for Forum module
  *
  * @category   Application
  * @package    Users
  * @subpackage Controller
- *
- * @version  $Id: ManagementController.php 48 2010-02-12 13:23:39Z AntonShevchuk $
  */
 class Forum_ManagementController extends Core_Controller_Action_Crud
 {
+
+    /**
+     * module statistic
+     *
+     * @return void
+     */
+    public function statsAction()
+    {
+        $adapter = Zend_Db_Table::getDefaultAdapter();
+        $this->view->totalTopics = $adapter->fetchOne('SELECT COUNT(*) FROM `forum_post`');
+        $this->view->openTopics = $adapter->fetchOne(
+            'SELECT COUNT(*) FROM `blog_post` WHERE `status` = ?',
+            array(Forum_Model_Post::STATUS_ACTIVE)
+        );
+        // works with MySQL, Oracle, and SQL Server
+        // @see http://justinsomnia.org/2004/06/how-to-count-unique-records-with-sql/
+        $this->view->activeUsers = $adapter->fetchOne('SELECT COUNT(DISTINCT userId) FROM `forum_post`');
+    }
 
     /**
      * Declare the source used to fetch the authors
