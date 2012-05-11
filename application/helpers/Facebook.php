@@ -36,7 +36,7 @@ class Helper_Facebook extends Zend_Controller_Action_Helper_Abstract
             }
             $config = Zend_Registry::get('fbConfig');
 
-            if (empty($config->appId)) {
+            if (empty($config['appId'])) {
                 throw new Zend_Controller_Action_Exception(
                     'Facebook Connect: application Id is missed'
                 );
