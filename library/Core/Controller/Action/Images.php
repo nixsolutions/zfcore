@@ -69,6 +69,8 @@ class Core_Controller_Action_Images extends Core_Controller_Action
 
     /**
      * Index
+     *
+     * @throws Exception
      */
     public function uploadAction()
     {
@@ -160,6 +162,7 @@ class Core_Controller_Action_Images extends Core_Controller_Action
      * create thumb for image
      *
      * @param string $file path to original image
+     * @throws Exception
      * @return boolean
      */
     protected function _createThumb($file)

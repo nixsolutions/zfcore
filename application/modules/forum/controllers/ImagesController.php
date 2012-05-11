@@ -13,6 +13,7 @@ class Forum_ImagesController extends Core_Controller_Action_Images
     /**
      * return upload dir
      *
+     * @throws Exception
      * @return string
      */
     protected function _getUploadDir()

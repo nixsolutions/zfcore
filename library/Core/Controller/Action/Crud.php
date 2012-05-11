@@ -207,10 +207,12 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     public function deleteAction()
     {
         $model = $this->_loadModel();
+
         if ($model) {
             $this->_helper->json($model->delete());
+        } else {
+            $this->_helper->json(false);
         }
-
     }
 
     /**

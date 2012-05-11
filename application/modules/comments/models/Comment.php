@@ -5,8 +5,6 @@
  * @category Application
  * @package Comments
  * @subpackage Model
- * 
- * @version  $Id: Comment.php 2011-11-21 11:59:34Z pavel.machekhin $
  */
 class Comments_Model_Comment extends Core_Db_Table_Row_Abstract
 {
@@ -41,16 +39,20 @@ class Comments_Model_Comment extends Core_Db_Table_Row_Abstract
     {
         $this->updated = date("Y-m-d h:i:s");
     }
-    
+
+    /**
+     *
+     */
     public function _delete()
     {   
         $this->decComments();
     }
-    
+
     /**
      * Increment comments amount
      *
      * @param integer $count
+     * @throws Zend_Db_Exception
      * @return Comments_Model_CommentAlias
      */
     protected function incComments($count = 1)
@@ -72,11 +74,12 @@ class Comments_Model_Comment extends Core_Db_Table_Row_Abstract
         
         return $this;
     }
-    
+
     /**
      * Decrement comments amount
      *
      * @param integer $count
+     * @throws Zend_Db_Exception
      * @return Comments_Model_CommentAlias
      */
     protected function decComments($count = 1)

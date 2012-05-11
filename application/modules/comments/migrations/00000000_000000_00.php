@@ -21,7 +21,7 @@ class Comments_Migration_00000000_000000_00 extends Core_Migration_Abstract
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
             CREATE TABLE `comments` (
-              `id` bigint(20) unsigned NOT NULL,
+              `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
               `aliasId` int(10) unsigned NOT NULL,
               `key` bigint(20) unsigned NOT NULL,
               `userId` bigint(20) unsigned NOT NULL,

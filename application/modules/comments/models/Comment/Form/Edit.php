@@ -5,8 +5,6 @@
  * @category Application
  * @package Model
  * @subpackage Form
- *
- * @version  $Id: Comment.php 2011-11-21 11:59:34Z pavel.machekhin $
  */
 class Comments_Model_Comment_Form_Edit extends Comments_Model_Comment_Form_Create
 {

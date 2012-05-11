@@ -123,6 +123,7 @@ class Core_Migration_Manager
     /**
      * Method return application directory path
      *
+     * @throws Core_Exception
      * @return string
      */
     public function getProjectDirectoryPath()
@@ -149,6 +150,7 @@ class Core_Migration_Manager
     /**
      * Method return application directory path
      *
+     * @throws Core_Exception
      * @return string
      */
     public function getModulesDirectoryPath()
@@ -175,6 +177,7 @@ class Core_Migration_Manager
     /**
      * Method return application directory path
      *
+     * @throws Core_Exception
      * @return string
      */
     public function getMigrationsDirectoryName()
@@ -190,6 +193,7 @@ class Core_Migration_Manager
      * Method returns path to migrations directory
      *
      * @param string $module Module name
+     * @throws Core_Exception
      * @return string
      */
     public function getMigrationsDirectoryPath($module = null)
@@ -201,7 +205,7 @@ class Core_Migration_Manager
             $modulePath = $this->getModulesDirectoryPath() . '/' . $module;
 
             if (!file_exists($modulePath))
-                throw new Core_Exception('Module `' . $module . '` not exists.');
+                throw new Core_Exception("Module `$module` not exists.");
 
             $path = $modulePath . '/' . $this->getMigrationsDirectoryName();
         }
@@ -293,9 +297,10 @@ class Core_Migration_Manager
     }
 
     /**
-     * Method retirns last migration for selected module
+     * Method returns last migration for selected module
      *
      * @param null $module
+     * @throws Core_Exception
      * @return string
      */
     public function getLastMigration($module = null)
@@ -531,6 +536,8 @@ class Core_Migration_Manager
      *
      * @param string $module Module name
      * @param string $to     Migration name or label
+     * @throws Core_Exception
+     * @return
      */
     public function up($module = null, $to = null)
     {
@@ -542,13 +549,13 @@ class Core_Migration_Manager
 
         if ($to) {
             if (!self::isMigration($to)) {
-                throw new Core_Exception("Migration name '$to' is not valid");
+                throw new Core_Exception("Migration name `$to` is not valid");
             } elseif ($lastMigration == $to) {
-                throw new Core_Exception("Migration `'$to'` is current");
+                throw new Core_Exception("Migration `$to` is current");
             } elseif ($lastMigration > $to) {
                 throw new Core_Exception(
-                    "Migration `" . $to . "` is older than current "
-                    . "migration `" . $lastMigration . "`"
+                    "Migration `$to` is older than current "
+                    . "migration `$lastMigration`"
                 );
             }
         }
@@ -571,13 +578,13 @@ class Core_Migration_Manager
         sort($ready);
 
         if (($to) && (!in_array($to, $exists))) {
-            throw new Core_Exception('Migration `' . $to . '` not exists');
+            throw new Core_Exception("Migration `$to` not exists");
         }
 
         foreach ($ready as $migration) {
             if ($migration < $lastMigration) {
                 throw new Core_Exception(
-                    "Migration `" . $migration . "` is conflicted"
+                    "Migration `$migration` is conflicted"
                 );
             }
 
@@ -610,9 +617,9 @@ class Core_Migration_Manager
                 }
 
                 if ($module) {
-                    array_push($this->_messages, $module .": upgrade to revision '$migration'");
+                    array_push($this->_messages, $module .": upgrade to revision `$migration`");
                 } else {
-                    array_push($this->_messages, "Upgrade to revision '$migration'");
+                    array_push($this->_messages, "Upgrade to revision `$migration`");
                 }
 
                 $this->_pushMigration($module, $migration);
@@ -629,7 +636,7 @@ class Core_Migration_Manager
 
             } catch (Exception $e) {
                 throw new Core_Exception(
-                    "Migration '$migration' return exception:\n"
+                    "Migration `$migration` return exception:\n"
                     . $e->getMessage()
                 );
             }
@@ -653,15 +660,15 @@ class Core_Migration_Manager
 
         if ($to) {
             if (!self::isMigration($to)) {
-                throw new Core_Exception("Migration name '$to' is not valid");
+                throw new Core_Exception("Migration name `$to`` is not valid");
             } elseif ($lastMigration == $to) {
-                throw new Core_Exception("Migration `'$to'` is current");
+                throw new Core_Exception("Migration `$to` is current");
             }
 
             $exists = $this->getExistsMigrations($module);
 
             if (($to) && (!in_array($to, $exists))) {
-                array_push($this->_messages, 'Migration `' . $to . '` not exists');
+                array_push($this->_messages, "Migration `$to` not exists");
                 return;
             }
 
@@ -670,7 +677,7 @@ class Core_Migration_Manager
             if (($to) && (in_array($to, $loaded))) {
                 array_push(
                     $this->_messages,
-                    'Migration `' . $to . '` already executed'
+                    "Migration `$to` already executed"
                 );
                 return;
             }
@@ -678,7 +685,7 @@ class Core_Migration_Manager
             $this->_pushMigration($module, $to);
             array_push(
                 $this->_messages,
-                "Fake upgrade to revision '$to'"
+                "Fake upgrade to revision `$to``"
             );
 
         } else {
@@ -695,6 +702,8 @@ class Core_Migration_Manager
      *
      * @param string $module Module name
      * @param int    $to     Migration name
+     * @throws Core_Exception
+     * @return
      */
     public function down($module, $to = null)
     {
@@ -706,13 +715,13 @@ class Core_Migration_Manager
 
         if (null !== $to) {
             if (!self::isMigration($to)) {
-                throw new Core_Exception("Migration name '$to' is not valid");
+                throw new Core_Exception("Migration name `$to` is not valid");
             } elseif ($lastMigration == $to) {
-                throw new Core_Exception("Migration `'$to'` is current");
+                throw new Core_Exception("Migration `$to` is current");
             } elseif ($lastMigration < $to) {
                 throw new Core_Exception(
-                    "Migration `" . $to . "` is younger than current "
-                    . "migration `" . $lastMigration . "`"
+                    "Migration `$to` is younger than current "
+                    . "migration `$lastMigration`"
                 );
             }
         }
@@ -732,7 +741,7 @@ class Core_Migration_Manager
         rsort($loaded);
 
         if (($to) && (!in_array($to, $loaded))) {
-            throw new Core_Exception('Migration `' . $to . '` not loaded');
+            throw new Core_Exception("Migration `$to` not loaded");
         }
 
         foreach ($loaded as $migration) {
@@ -743,7 +752,7 @@ class Core_Migration_Manager
 
             if (!in_array($migration, $exists)) {
                 throw new Core_Exception(
-                    "Migration `" . $migration . "` not exists"
+                    "Migration `$migration` not exists"
                 );
             }
 
@@ -777,15 +786,15 @@ class Core_Migration_Manager
 
 
                 if ($module) {
-                    array_push($this->_messages, $module .": degrade to revision '$migration'");
+                    array_push($this->_messages, $module .": degrade to revision `$migration`");
                 } else {
-                    array_push($this->_messages, "Degrade to revision '$migration'");
+                    array_push($this->_messages, "Degrade to revision `$migration``");
                 }
 
                 $this->_pullMigration($module, $migration);
             } catch (Exception $e) {
                 throw new Core_Exception(
-                    "Migration '$migration' return exception:\n"
+                    "Migration `$module`.`$migration` return exception:\n"
                     . $e->getMessage()
                 );
             }
@@ -799,13 +808,15 @@ class Core_Migration_Manager
      *
      * @param string $module Module name
      * @param int    $step   Steps to rollback
+     * @throws Core_Exception
+     * @return
      */
     public function rollback($module, $step)
     {
         $lastMigration = $this->getLastMigration($module);
 
         if (!is_numeric($step) || ($step <= 0)) {
-            throw new Core_Exception("Step count '$step' is invalid");
+            throw new Core_Exception("Step count `$step` is invalid");
         }
 
         $exists = $this->getExistsMigrations($module);
@@ -822,7 +833,7 @@ class Core_Migration_Manager
 
             if (!in_array($migration, $exists)) {
                 throw new Core_Exception(
-                    "Migration `" . $migration . "` not exists"
+                    "Migration `$migration` not exists"
                 );
             }
 
@@ -851,7 +862,7 @@ class Core_Migration_Manager
                 $this->_pullMigration($module, $migration);
             } catch (Exception $e) {
                 throw new Core_Exception(
-                    "Migration '$migration' return exception:\n"
+                    "Migration `$module`.`$migration` return exception:\n"
                     . $e->getMessage()
                 );
             }
