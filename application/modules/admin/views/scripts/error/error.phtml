@@ -1,7 +1,7 @@
 <h1><?php $this->_e('An error occurred') ?></h1>
 <h2><?php echo $this->message ?></h2>
 <hr/>
-<?php if ($this->env == 'development'): ?>
+<?php if (Zend_Controller_Front::getInstance()->getParam('displayExceptions')): ?>
 <h3>Exception information:</h3>
 <p>
   <b>Message:</b> <?php echo $this->exception->getMessage() ?>
