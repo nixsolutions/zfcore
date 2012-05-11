@@ -147,6 +147,7 @@ class Core_Db_Table_Abstract extends Zend_Db_Table_Abstract
      *
      * @param array $params
      * @param array $values
+     * @throws Core_Exception
      * @return object Zend_Db_Table_Select
      */
     private function __buildSelect($params, $values)

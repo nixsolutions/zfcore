@@ -200,10 +200,13 @@ class Forum_PostControllerTest extends ControllerTestCase
     public function tearDown()
     {
         $table= new Users_Model_User_Table();
-        $table->delete('1');
+        $table->delete('1'); /* delete all */
 
         $table = new Forum_Model_Post_Table();
-        $table->delete('1');
+        $table->delete('1'); /* delete all */
+
+//        $table = new Comments_Model_Comment_Table();
+//        $table->delete('1'); /* delete all */
 
         $table = new Categories_Model_Category_Table();
         $table->delete('id = 33');

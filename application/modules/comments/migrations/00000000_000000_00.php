@@ -44,8 +44,8 @@ class Comments_Migration_00000000_000000_00 extends Core_Migration_Abstract
     public function down()
     {
         // degrade
-        $this->dropTable('comment_aliases');
         $this->dropTable('comments');
+        $this->dropTable('comment_aliases');
     }
 
 
