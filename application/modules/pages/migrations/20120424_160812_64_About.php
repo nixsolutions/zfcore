@@ -9,6 +9,7 @@ class Pages_Migration_20120424_160812_64_About extends Core_Migration_Abstract
         $this->insert('pages', array(
             'title' => 'About ZFCore',
             'alias' => 'about',
+            'pid' => 0,
             'content' => '
                 <p>
                     ZFCore is a content management framework based on Zend Framework. It was developed by PHP Team of

@@ -214,6 +214,8 @@ development:
     error_reporting: E_ALL|E_STRICT
   resources:
     frontController:
+      params:
+        displayExceptions: on
       plugins:
         debug:
           class: Core_Controller_Plugin_Debug
