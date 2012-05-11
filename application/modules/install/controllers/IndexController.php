@@ -23,7 +23,6 @@ class Install_IndexController extends Core_Controller_Action
     public function init()
     {
         $this->_helper->layout->setLayout('install/layout');
-        $this->view->stylesheet()->module();
 
         $this->_store = new Zend_Session_Namespace(self::SESSION_KEY);
 
