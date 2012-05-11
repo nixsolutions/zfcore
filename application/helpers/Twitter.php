@@ -29,8 +29,9 @@ class Helper_Twitter extends Zend_Controller_Action_Helper_Abstract
     }
 
     /**
-     * Get fb client
+     * Get twitter client
      *
+     * @throws Zend_Controller_Action_Exception
      * @return Zend_Oauth_Consumer
      */
     public function getClient()
@@ -43,13 +44,13 @@ class Helper_Twitter extends Zend_Controller_Action_Helper_Abstract
             }
             $config = Zend_Registry::get('twitterConfig');
 
-            if (empty($config->consumerKey)) {
+            if (empty($config['consumerKey'])) {
                 throw new Zend_Controller_Action_Exception(
                     'Twitter oAuth: consumer key is missed'
                 );
             }
 
-            if (empty($config->consumerSecret)) {
+            if (empty($config['consumerSecret'])) {
                 throw new Zend_Controller_Action_Exception(
                     'Twitter oAuth: consumer secret is missed'
                 );
@@ -101,6 +102,7 @@ class Helper_Twitter extends Zend_Controller_Action_Helper_Abstract
     /**
      * Get Access Token
      *
+     * @todo Replace global var $_SESSION with ZF Session
      * @return Zend_Oauth_Token_Access|null
      */
     public function getToken()
@@ -128,6 +130,7 @@ class Helper_Twitter extends Zend_Controller_Action_Helper_Abstract
     /**
      * Get info
      *
+     * @todo Replace global var $_SESSION with ZF Session
      * @return ArrayObject
      */
     public function getInfo()

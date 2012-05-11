@@ -23,6 +23,7 @@ class Helper_Facebook extends Zend_Controller_Action_Helper_Abstract
     /**
      * Get fb client
      *
+     * @throws Zend_Controller_Action_Exception
      * @return Facebook_Facebook
      */
     public function getClient()

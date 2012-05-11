@@ -52,13 +52,13 @@ class Helper_Google extends Zend_Controller_Action_Helper_Abstract
         }
         $config = Zend_Registry::get('googleConfig');
 
-        if (empty($config->consumerKey)) {
+        if (empty($config['consumerKey'])) {
             throw new Zend_Controller_Action_Exception(
                 'Google oAuth: consumer key is missed'
             );
         }
 
-        if (empty($config->consumerSecret)) {
+        if (empty($config['consumerSecret'])) {
             throw new Zend_Controller_Action_Exception(
                 'Google oAuth: consumer secret is missed'
             );
@@ -89,6 +89,7 @@ class Helper_Google extends Zend_Controller_Action_Helper_Abstract
     /**
      * Get Access Token
      *
+     * @todo Replace global var $_SESSION with ZF Session
      * @return Zend_Oauth_Token_Access|null
      */
     public function getToken()
@@ -116,6 +117,7 @@ class Helper_Google extends Zend_Controller_Action_Helper_Abstract
     /**
      * Get info
      *
+     * @todo Replace global var $_SESSION with ZF Session
      * @return ArrayObject
      */
     public function getInfo()

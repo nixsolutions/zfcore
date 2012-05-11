@@ -660,7 +660,7 @@ class Core_Migration_Manager
 
         if ($to) {
             if (!self::isMigration($to)) {
-                throw new Core_Exception("Migration name `$to`` is not valid");
+                throw new Core_Exception("Migration name `$to` is not valid");
             } elseif ($lastMigration == $to) {
                 throw new Core_Exception("Migration `$to` is current");
             }
@@ -685,7 +685,7 @@ class Core_Migration_Manager
             $this->_pushMigration($module, $to);
             array_push(
                 $this->_messages,
-                "Fake upgrade to revision `$to``"
+                "Fake upgrade to revision `$to`"
             );
 
         } else {
@@ -788,7 +788,7 @@ class Core_Migration_Manager
                 if ($module) {
                     array_push($this->_messages, $module .": degrade to revision `$migration`");
                 } else {
-                    array_push($this->_messages, "Degrade to revision `$migration``");
+                    array_push($this->_messages, "Degrade to revision `$migration`");
                 }
 
                 $this->_pullMigration($module, $migration);
