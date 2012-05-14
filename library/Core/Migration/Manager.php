@@ -65,28 +65,6 @@ class Core_Migration_Manager
     protected $_transactionFlag = false;
 
     /**
-     * Migration exists and ready to load
-     */
-    const MIGRATION_STATUS_READY = 1;
-
-    /**
-     * Migration loaded but not exists (conflict situation need to be resolved,
-     * down command blocked)
-     */
-    const MIGRATION_STATUS_NOTEXISTS = 2;
-
-    /**
-     * Migration exists and loaded
-     */
-    const MIGRATION_STATUS_USED = 3;
-
-    /**
-     * Migration exists but less than current and not loaded
-     * (conflict situation need to be resolved, up command blocked)
-     */
-    const MIGRATION_STATUS_NOTLOADED = 9;
-
-    /**
      * Constructor of Core_Migration_Manager
      *
      * @access  public
@@ -317,7 +295,7 @@ class Core_Migration_Manager
             $lastMigration
                 = Zend_Db_Table::getDefaultAdapter()->fetchOne($select);
 
-            if (empty($this->_lastMigration)) {
+            if (!$lastMigration) {
                 throw new Core_Exception(
                     "Not found migration version in database"
                 );
