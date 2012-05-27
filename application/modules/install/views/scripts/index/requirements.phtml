@@ -17,13 +17,20 @@
     <hr/>
     <ul>
         <?php
-         foreach ($this->folders as $folder):?>
+         foreach ($this->directories as $directory => $info):?>
             <?php
-            if (!isset($this->unwritable[$folder])) {
-                echo '<li class="alert alert-success">Checking that `' . $folder .'` is writable</li>';
+            if (!$info['exists']) {
+                echo '<li class="alert alert-error">Checking path `' 
+                    . $directory .'`. It\'s not exists, run <code>'
+                    . 'mkdir ' . $info['path'] . ' | chmod 777 ' 
+                    . $info['path'] . '</code></li>';
+            } elseif (!$info['writable']) {
+                echo '<li class="alert alert-error">Checking path `' 
+                    . $directory .'`. It\'s not writable, run <code>'
+                    . 'chmod 777 ' . $info['path'] . '</code></li>';
             } else {
-                echo '<li class="alert alert-error">Checking that `' . $folder .'` is not writable, run <code>'
-                    . 'chmod 777 ' . realpath($this->unwritable[$folder]) . '</code></li>';
+                echo '<li class="alert alert-success">Checking path `' 
+                    . $directory .'`. It exists and is writable.</li>';
             }
             ?>
         <?php endforeach;?>

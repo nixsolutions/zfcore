@@ -87,39 +87,53 @@ class Install_IndexController extends Core_Controller_Action
     public function requirementsAction()
     {
         $config = APPLICATION_PATH . '/modules/install/configs/checks.yaml';
-        require_once 'Zend/Config/Yaml.php';
-        require_once 'Core/Config/Yaml.php';
+        
+        $isValid = true;
 
+        $rootDirectory = realpath(APPLICATION_PATH . '/../');
         $result = new Core_Config_Yaml($config);
+        
         $requirements = $result->toArray();
         $this->view->requirements = $requirements;
 
         $resources = $this->_store->config->production->resources;
         $resources->session->save_path = APPLICATION_PATH . '/../' . $requirements['directories']['session_dir'];
 
-        $unwritable = array();//check directories
-        foreach ($requirements['directories']  as $folder) {
-            $folderPath = APPLICATION_PATH . '/../' . $folder;
-            if (!is_writable($folderPath)) {
-                @chmod($folderPath, 0777);
+        $directories = array();//check directories
+
+        foreach ($requirements['directories'] as $directory) {
+            
+            $info = array();
+            
+            $info['path'] = $rootDirectory . '/' . $directory;         
+            $info['exists'] = file_exists($info['path']);
+            $info['writable'] = $info['exists'] && is_writable($info['path']);
+            
+            if (!$info['writable']) {
+                $isValid = false;
             }
-            if (!is_writable($folderPath)) {
-                $unwritable[$folder] = $folderPath;
-            }
+            
+            $directories[$directory] = $info;
         }
+        
+        
+        $this->view->directories = $directories;
+        
         //remove postfix
         $phpVersion = PHP_VERSION;
         $this->view->phpversion = $phpVersion;
-
-        $this->view->folders = $requirements['directories'];
-        if (!empty($unwritable)) {
-            $this->view->unwritable = $unwritable;
-        }
+        
         $isValidPhpVersion = false;//check PHP version
         if (version_compare($phpVersion, $requirements['minPhpVersion'], '>=')) {
             $isValidPhpVersion = true;
         }
         $this->view->isValidPhpVersion = $isValidPhpVersion;
+        
+        if (!$isValidPhpVersion) {
+            $isValid = false;
+        }
+        
+        $this->view->isValid = $isValid;
 
         $phpOptions = array();//check PHP options
         foreach ($requirements['phpOptions'] as $option => $val) {
@@ -143,12 +157,7 @@ class Install_IndexController extends Core_Controller_Action
             }
         }
         $this->view->phpExtensions = $phpExtensions;
-
-        $isValid = false;
-        if (empty($unwritable) && $isValidPhpVersion) {
-            $isValid = true;
-        }
-        $this->view->isValid = $isValid;
+        
         if ($this->_request->isPost() && $isValid) {
 
             $this->_store->progress['install-index-requirements'] = true;
