@@ -199,7 +199,8 @@ class Core_Tool_Project_Provider_MigrationProvider
         require_once 'bootstrap.php';
 
         $manager = $this->getManager();
-        $result = $manager->generateMigration($module, '', '', $blacklist, $whitelist, true);
+
+        $result = $manager->generateMigration($module, $blacklist, $whitelist, true, '', '');
 
         if (!empty($result)) {
             $this->message('Queries ('.sizeof($result['up']).') :'.PHP_EOL);
