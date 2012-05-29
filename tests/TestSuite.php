@@ -25,14 +25,8 @@ class TestSuite extends PHPUnit_Framework_TestSuite
         require_once 'blog/Test.php';
         $suite->addTestSuite('Blog_Test');
 
-        require_once 'default/Test.php';
-        $suite->addTestSuite('Default_Test');
-
         require_once 'faq/Test.php';
         $suite->addTestSuite('Faq_Test');
-
-        require_once 'feedback/Test.php';
-        $suite->addTestSuite('Feedback_Test');
 
         require_once 'forum/Test.php';
         $suite->addTestSuite('Forum_Test');
@@ -43,17 +37,11 @@ class TestSuite extends PHPUnit_Framework_TestSuite
         require_once 'mail/Test.php';
         $suite->addTestSuite('Mail_Test');
 
-        require_once 'menu/Test.php';
-        $suite->addTestSuite('Menu_Test');
-
         require_once 'options/Test.php';
         $suite->addTestSuite('Options_Test');
 
         require_once 'pages/Test.php';
         $suite->addTestSuite('Pages_Test');
-
-        require_once 'sync/Test.php';
-        $suite->addTestSuite('Sync_Test');
 
         require_once 'users/Test.php';
         $suite->addTestSuite('Users_Test');
