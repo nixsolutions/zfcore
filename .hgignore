@@ -1,14 +1,15 @@
-syntax: glob
 .idea/*
 nbproject/*
-build/
-data/cache/**
-data/session/**
-library/Zend/
+build/*
+data/cache/*
+data/session/*
+data/logs/*
+library/Zend/*
 .buildpath
 .project
 .settings
-public/uploads
+public/uploads/*
 application/configs/application.yaml
 public/assets/default/builds
 public/assets/dashboard/builds
+public/captcha/*
