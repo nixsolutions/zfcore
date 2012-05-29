@@ -36,7 +36,7 @@
         <chmod dir="${basedir}/public/uploads" perm="777"/>
         
         <!--Configuration-->
-        <copy file="${appDir}/configs/application.sample.yaml" tofile="${appDir}/configs/application.yaml" />
+        <copy file="${appDir}/configs/application.yaml.dist" tofile="${appDir}/configs/application.yaml" />
     </target>
     <!--<target name="phpdoc">
         <exec dir="${basedir}" executable="phpdoc" failonerror="false">

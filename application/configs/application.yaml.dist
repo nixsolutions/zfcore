@@ -189,6 +189,7 @@ testing:
     display_errors: on
   resources:
     db:
+      adapter: Pdo Mysql
       params:
         host: hippo.nixsolutions.com
         username: d_unittest
