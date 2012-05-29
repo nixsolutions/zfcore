@@ -134,7 +134,7 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
      * @param $args
      * @return mixed
      */
-    public function __call($method, $args)
+    public function __call($method, array $args)
     {
         if (strpos($method, 'is') === 0) {
             $method = substr($method, 2);
