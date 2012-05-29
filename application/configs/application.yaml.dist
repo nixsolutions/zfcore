@@ -188,6 +188,8 @@ testing:
     display_startup_errors: on
     display_errors: on
   resources:
+    layout:
+      layout: default/layout
     db:
       adapter: Pdo Mysql
       params:
@@ -197,6 +199,7 @@ testing:
         dbname: p_zfc_test
         persistent: on
     frontController:
+      defaultModule: index
       plugins:
         acl:
           options:
