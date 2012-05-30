@@ -90,8 +90,8 @@ production:
     mail:
       transport:
         type: Zend_Mail_Transport_Smtp
-        host: stubmail.nixsolutions.com
-        port: 2500
+        host: localhost
+        port: 25
       defaultFrom:
         email: zfc@nixsolutions.com
         name: ZFCore Webmaster
