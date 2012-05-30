@@ -18,9 +18,12 @@ class Comments_Migration_00000000_000000_00 extends Core_Migration_Abstract
               `relatedTable` varchar(64) DEFAULT NULL,
               PRIMARY KEY (`id`),
               UNIQUE KEY `comment_aliases_unique` (`alias`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+            "
+        );
 
-            CREATE TABLE `comments` (
+        $this->query(
+            "CREATE TABLE `comments` (
               `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
               `aliasId` int(10) unsigned NOT NULL,
               `key` bigint(20) unsigned NOT NULL,
