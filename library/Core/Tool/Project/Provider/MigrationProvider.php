@@ -275,7 +275,7 @@ class Core_Tool_Project_Provider_MigrationProvider
                 $migrationObject = new $migrationClass;
 
                 if (($description = $migrationObject->getDescription()))
-                    $this->message(chr(254).' '.$description, 'grey');
+                    $this->message(chr(254).' '.$description);
                 else
                     $this->message('');
 
