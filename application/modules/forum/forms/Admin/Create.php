@@ -35,20 +35,21 @@ class Forum_Form_Admin_Create extends Core_Form
               );
         $this->addElement($title);
 
-        $body = new Core_Form_Element_Redactor('body', array(
-           'label' => 'Text',
-           'cols'  => 50,
-           'rows'  => 25,
-           'required' => true,
-           'filters' => array('StringTrim'),
-           'redactor' => array(
-               'imageUpload'  => '/forum/images/upload/', // url or false
-               'imageGetJson' => '/forum/images/list/',
-               'fileUpload'   => '/admin/files/upload/',
-               'fileDownload' => '/admin/files/download/?file=',
-               'fileDelete'   => '/admin/files/delete/?file=',
-           )
-        ));
+        $body = new Core_Form_Element_Redactor(
+            'body', array(
+                'label' => 'Text',
+                'cols'  => 50,
+                'rows'  => 25,
+                'required' => true,
+                'filters' => array('StringTrim'),
+                'redactor' => array(
+                   'imageUpload'  => '/forum/images/upload/', // url or false
+                   'imageGetJson' => '/forum/images/list/',
+                   'fileUpload'   => '/admin/files/upload/',
+                   'fileDownload' => '/admin/files/download/?file=',
+                   'fileDelete'   => '/admin/files/delete/?file=',
+                ))
+        );
         $body->addDecorators($this->_inputDecorators);
 
         $this->addElement($body);
@@ -80,8 +81,7 @@ class Forum_Form_Admin_Create extends Core_Form
         $element->setLabel('Category')
                 ->setRequired(true)
                 ->addMultioptions($options)
-                ->setAttribs(array('class'=>'span2'))
-        ;
+                ->setAttribs(array('class'=>'span2'));
 
 
         return $element;

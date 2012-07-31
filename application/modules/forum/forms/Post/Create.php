@@ -26,18 +26,19 @@ class Forum_Form_Post_Create extends Core_Form
             )
         );
 
-        $body = new Core_Form_Element_Redactor('body', array(
-           'label' => 'Text',
-           'cols'  => 50,
-           'rows'  => 25,
-           'required' => true,
-           'filters' => array('StringTrim'),
-           'redactor' => array(
-               'imageUpload'  => '/forum/images/upload/', // url or false
-               'imageGetJson' => '/forum/images/list/',
-               'fileUpload'   => false
-           )
-        ));
+        $body = new Core_Form_Element_Redactor(
+            'body', array(
+                'label' => 'Text',
+                'cols'  => 50,
+                'rows'  => 25,
+                'required' => true,
+                'filters' => array('StringTrim'),
+                'redactor' => array(
+                   'imageUpload'  => '/forum/images/upload/', // url or false
+                   'imageGetJson' => '/forum/images/list/',
+                   'fileUpload'   => false
+                ))
+        );
 
         $this->addElement($body);
         $this->addElement($this->_submit());

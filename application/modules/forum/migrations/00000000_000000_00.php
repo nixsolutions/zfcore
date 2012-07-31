@@ -10,8 +10,8 @@ class Forum_Migration_00000000_000000_00 extends Core_Migration_Abstract
         $this->getMigrationManager()->up('comments');
 
         // post table
-        $this->query("
-            CREATE TABLE `forum_post` (
+        $this->query(
+            "CREATE TABLE `forum_post` (
               `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
               `title` text NOT NULL,
               `body` text NOT NULL,
@@ -25,29 +25,32 @@ class Forum_Migration_00000000_000000_00 extends Core_Migration_Abstract
               PRIMARY KEY (`id`),
               KEY `FK_forum_post_to_categories` (`categoryId`),
               KEY `FK_forum_post_to_users` (`userId`),
-              CONSTRAINT `FK_forum_post_to_users` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-              CONSTRAINT `FK_forum_post_to_categories` FOREIGN KEY (`categoryId`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-            "
+              CONSTRAINT `FK_forum_post_to_users`
+                FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+              CONSTRAINT `FK_forum_post_to_categories`
+                FOREIGN KEY (`categoryId`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8"
         );
 
         // category table
-        $this->insert('categories', array(
-            'title'       =>  'Forum',
-            'description' =>  '<strong>Forum module</strong>',
-            'alias'       =>  'forum',
-            'path'        =>  'forum',
-        ));
+        $this->insert(
+            'categories', array(
+                'title'       =>  'Forum',
+                'description' =>  '<strong>Forum module</strong>',
+                'alias'       =>  'forum',
+                'path'        =>  'forum')
+        );
 
 
 
         // comment_aliases table
-        $this->insert('comment_aliases', array(
-                    'alias'        => 'forum',
-                    'options'      => '["keyRequired","titleDisplayed","paginatorEnabled"]',
-                    'countPerPage' => 10,
-                    'relatedTable' => 'forum_post',
-        ));
+        $this->insert(
+            'comment_aliases', array(
+                'alias'        => 'forum',
+                'options'      => '["keyRequired","titleDisplayed","paginatorEnabled"]',
+                'countPerPage' => 10,
+                'relatedTable' => 'forum_post')
+        );
     }
 
     public function down()
