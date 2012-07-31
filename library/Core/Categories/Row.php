@@ -82,10 +82,11 @@ class Core_Categories_Row extends Zend_Db_Table_Row_Abstract
         return $this->_parent;
     }
 
+
     /**
      * Add child
      *
-     * @param self $row
+     * @return Zend_Db_Table_Rowset_Abstract
      * @throws Zend_Db_Table_Row_Exception
      */
     public function getChildren()

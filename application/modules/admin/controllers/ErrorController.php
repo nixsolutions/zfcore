@@ -18,6 +18,7 @@ class Admin_ErrorController extends Core_Controller_Action
     /**
      * Init controller plugins
      *
+     * @return closure
      */
     public function init()
     {
@@ -34,6 +35,8 @@ class Admin_ErrorController extends Core_Controller_Action
      * errorAction
      *
      * @access public
+     *
+     * @return closure
      */
     public function errorAction()
     {

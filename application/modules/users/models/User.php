@@ -63,7 +63,8 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     /**
      * Is password
      *
-     * @param string $value
+     * @param string $value Password value
+     *
      * @return boolean
      */
     public function isPassword($value)
@@ -74,8 +75,9 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     /**
      * Is column value equal to
      *
-     * @param        $column
-     * @param string $value
+     * @param string $column Column Name
+     * @param string $value  Value of column
+     *
      * @return boolean
      */
     public function is($column, $value)
@@ -86,7 +88,8 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     /**
      * Encrypt password
      *
-     * @param string $password
+     * @param string $password Password value
+     *
      * @return string
      */
     public function encrypt($password)
@@ -97,8 +100,9 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     /**
      * Set row field value
      *
-     * @param  string $columnName The column key.
-     * @param  mixed  $value      The value for the property.
+     * @param string $columnName The column key.
+     * @param mixed  $value      The value for the property.
+     *
      * @return void
      */
     public function __set($columnName, $value)
@@ -106,7 +110,7 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
         switch ($columnName) {
             case 'ip':
                 $value = ip2long($value);
-                break;
+            break;
             case 'avatar':
                 if (!$value) {
                     return;
@@ -130,8 +134,9 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
 
     /**
      * @see Zend_Db_Table_Row_Abstract::__call()
+     *
      * @param $method
-     * @param $args
+     * @param array $args
      * @return mixed
      */
     public function __call($method, array $args)
@@ -147,10 +152,12 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
         parent::__call($method, $args);
     }
 
+
     /**
      * Get row field value
      *
-     * @param  string $columnName The column key.
+     * @param string $columnName Column Name
+     *
      * @return string
      */
     public function __get($columnName)
@@ -160,10 +167,13 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
                 //return;
                 break;
             case 'ip':
-                return long2ip(parent::__get($columnName));
+                $result = long2ip(parent::__get($columnName));
+                break;
+            default:
+                $result = parent::__get($columnName);
                 break;
         }
-        return parent::__get($columnName);
+        return $result;
     }
 
     /**
@@ -171,7 +181,7 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
      * if $clean == false it return raw data(as is in base)
      * always use $clean true to get data if you can
      *
-     * @param bool $clean
+     * @param bool $clean Flag for cleaning raw data
      *
      * @return array
      */
@@ -190,7 +200,8 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     /**
      * Login user
      *
-     * @param boolean $update
+     * @param boolean $update Update count and logined data flag
+     *
      * @return Users_Model_User
      */
     public function login($update = true)

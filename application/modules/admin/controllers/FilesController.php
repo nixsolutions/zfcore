@@ -192,7 +192,7 @@ class Admin_FilesController extends Core_Controller_Action
      */
     public function deleteAction()
     {
-        $file = $this->_request->getParam('file');
+        //$file = $this->_request->getParam('file');
     }
 
 }

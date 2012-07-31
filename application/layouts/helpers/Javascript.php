@@ -47,6 +47,7 @@ class Application_View_Helper_Javascript extends Zend_View_Helper_Abstract
                 break;
             case 'action':
                 $script = $this->view->baseUrl("modules/$module/scripts/$controller/$action.js");
+                break;
             default:
                 break;
         }
