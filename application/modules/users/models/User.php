@@ -110,7 +110,7 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
         switch ($columnName) {
             case 'ip':
                 $value = ip2long($value);
-            break;
+                break;
             case 'avatar':
                 if (!$value) {
                     return;
