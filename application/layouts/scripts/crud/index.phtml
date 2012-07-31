@@ -1,0 +1,73 @@
+<?php
+$this->headScript()->appendFile($this->baseUrl('/js/grid.js'));
+?>
+<div class="grid-controls form-inline">
+    <?php echo $this->placeholder('grid_buttons') ?>
+    <?php if (sizeof($this->filters)): ?>
+        <form id="filter-form" action="" class="span8">
+            <?php echo $this->formSelect('filter-column', null, array(), $this->filters) ?>
+            <input type="text" id="filter-value" class="span3" value=""/>
+            <a href="#" id="filter-button" class="btn"><?php echo $this->__('Go')?></a>
+            <a href="#" id="filter-reset" class="btn"><?php echo $this->__('Reset')?></a>
+        </form>
+        <p class="pull-left alert fade in">
+            Support wildcard search (*)
+        </p>
+   <?php endif; ?>
+</div>
+<div id="grid" class="clear" data-url="<?php echo $this->url(array('action' => 'grid'), 'default') ?>"></div>
+<script>
+$(function() {
+    $('#grid').grid().delegate('a.delete', 'click', function() {
+        if (confirm('Are you sure you want to delete this record?')) {
+            $.post(this.href, function(res) {
+                $('#grid').data('plugin_grid').refresh();
+            });
+        }
+        return false;
+    });
+
+    $('#filter-form').submit(function() {
+        var filterColumn = $('#filter-column').val()
+          , filterValue = $('#filter-value').val();
+        $('#grid').data('plugin_grid').filter(filterColumn, filterValue);
+        return false;
+    });
+
+    $('#filter-button').click(function() {
+        var filterColumn = $('#filter-column').val()
+          , filterValue = $('#filter-value').val();
+        $('#grid').data('plugin_grid').filter(filterColumn, filterValue);
+        return false;
+    });
+
+    $('#filter-reset').click(function() {
+        $('#filter-value').val('');
+        $('#grid').data('plugin_grid').reset();
+        return false;
+    });
+
+    $('#grid').delegate('#selectAllCheckbox', 'click', (function() {
+        this.checked ? $('#grid').find(':checkbox').attr('checked', 'checked')
+                     : $('#grid').find(':checkbox').removeAttr('checked');
+    }));
+
+    $('#delete-all-button').click(function() {
+        var url = this.href
+          , res = [];
+        if (confirm('Are you sure you want to delete all selected?')) {
+            $('#grid').find("input:checked").each(function() {
+                res.push(this.value);
+            });
+            if(!res.length) {
+                alert('No row selected');
+            } else {
+                $.post(url, { ids: res }, function() {
+                    $('#grid').data('plugin_grid').refresh();
+                });
+            }
+        }
+        return false;
+    });
+});
+</script>

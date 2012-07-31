@@ -1,0 +1,56 @@
+<?php if ($this->grid->getData()): ?>
+<?php echo $this->paginationControl($this->grid->getPaginator(), 'Sliding', 'crud/paginator.phtml') ?>
+<table cols="<?php echo count($this->grid->getHeaders()) ?>" class="table" cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>
+            <?php foreach ($this->grid->getHeaders() as $header): ?>
+                <?php
+                    $attrs = $header->attribs;
+
+                    if (isset($attrs['class'])) {
+                        $attrs['class'] .= ' header';
+                    } else {
+                        $attrs['class'] = 'header';
+                    }
+
+                    if ($header->isOrdered) {
+                        $attrs['class'] .= $header->orderDirection == 'ASC' ? ' down' : ' up';
+                    }
+
+                    if ($header->type === Core_Grid::TYPE_DATA) {
+                        $attrs['class'] .= ' orderable';
+                        $attrs['data-column'] = $header->id;
+                        $attrs['data-direction'] = $header->orderDirection;
+                    }
+                    $attributes = array();
+                    foreach ($attrs as $attr => $value) {
+                        $attributes[] = $attr . '="' . $value . '"';
+                    }
+                ?>
+                <th <?php echo implode($attributes, ' ') ?>><?php echo $header->name ?></th>
+            <?php endforeach; ?>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($this->grid->getData() as $row): ?>
+        <tr>
+            <?php foreach ($row as $column): ?>
+                <td><?php echo $column ?></td>
+            <?php endforeach; ?>
+        </tr>
+        <?php endforeach; ?>
+        <?php for ($i = $this->grid->getItemCountPerPage() - count($this->grid->getData()); $i > 0; $i--): ?>
+        <tr>
+            <?php for ($j = count($this->grid->getHeaders()); $j > 0; $j--): ?>
+                <td>&nbsp;</td>
+            <?php endfor; ?>
+        </tr>
+        <?php endfor; ?>
+    </tbody>
+</table>
+<?php echo $this->paginationControl($this->grid->getPaginator(), 'Sliding', 'crud/paginator.phtml') ?>
+<?php else: ?>
+    <div class="alert alert-info">
+        Result is empty
+    </div>
+<?php endif; ?>

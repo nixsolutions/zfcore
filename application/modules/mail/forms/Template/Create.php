@@ -1,9 +1,12 @@
 <?php
 /**
+ *
+ */
+/**
  * Mail_Form_Template_Create
  *
- * @category Application
- * @package Model
+ * @category   Application
+ * @package    Model
  * @subpackage Form
  */
 class Mail_Form_Template_Create extends Core_Form
@@ -15,8 +18,7 @@ class Mail_Form_Template_Create extends Core_Form
      */
     public function init()
     {
-        $this->setName('mailCreateForm')
-             ->setMethod('post');
+        $this->setName('mailCreateForm')->setMethod('post');
 
         $this->addElements(
             array($this->_alias(),

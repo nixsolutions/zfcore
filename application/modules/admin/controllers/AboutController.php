@@ -1,5 +1,8 @@
 <?php
 /**
+ *
+ */
+/**
  * AboutController for admin module
  *
  * @category   Application
@@ -8,6 +11,11 @@
  */
 class Admin_AboutController extends Core_Controller_Action
 {
+    /**
+     * Initialize Controller
+     *
+     * @return void
+     */
     public function init()
     {
         /* Initialize */
@@ -17,8 +25,13 @@ class Admin_AboutController extends Core_Controller_Action
         $this->_useDashboard();
     }
 
+    /**
+     * Need implementation
+     *
+     * @return void
+     */
     public function indexAction()
     {
-
+        // Need implementation
     }
 }

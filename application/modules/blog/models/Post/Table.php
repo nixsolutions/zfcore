@@ -59,7 +59,7 @@ class Blog_Model_Post_Table extends Core_Db_Table_Abstract
                 $manager = new Blog_Model_Category_Manager();
                 $category = $manager->getById($category);
             }
-            $separator = Categories_Model_Category::PATH_SEPARATOR;
+            //$separator = Categories_Model_Category::PATH_SEPARATOR;
             $select->where('c.path LIKE ?', '%' . $category->alias . '%');
         }
         return $select;

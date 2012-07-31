@@ -130,10 +130,14 @@ class Users_Form_Users_Filter_ImageSize implements Zend_Filter_Interface
         return $this->_keepRatio;
     }
 
+
     /**
      * Resize file to width and height
      *
-     * @param string $value
+     * @param mixed $value File
+     *
+     * @return mixed|string
+     * @throws Zend_Filter_Exception
      */
     public function filter($value)
     {
