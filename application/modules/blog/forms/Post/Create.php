@@ -29,32 +29,32 @@ class Blog_Form_Post_Create extends Core_Form
 
         $this->addElement($this->_category());
 
-        $teaser = new Core_Form_Element_Redactor('teaser', array(
-                   'label' => 'Teaser',
-                   'cols'  => 50,
-                   'rows'  => 5,
-                   'required' => true,
-                   'filters' => array('StringTrim'),
-                   'redactor' => array(
-                       'imageUpload'  => '/blog/images/upload/', // url or false
-                       'imageGetJson' => '/blog/images/list/',
-                       'fileUpload'   => false,
-                   )
-                ));
+        $teaser = new Core_Form_Element_Redactor(
+            'teaser', array(
+            'label' => 'Teaser',
+            'cols'  => 50,
+            'rows'  => 5,
+            'required' => true,
+            'filters' => array('StringTrim'),
+            'redactor' => array(
+                'imageUpload'  => '/blog/images/upload/', // url or false
+                'imageGetJson' => '/blog/images/list/',
+                'fileUpload'   => false))
+        );
         $this->addElement($teaser);
 
-        $body = new Core_Form_Element_Redactor('body', array(
-                   'label' => 'Text',
-                   'cols'  => 50,
-                   'rows'  => 25,
-                   'required' => true,
-                   'filters' => array('StringTrim'),
-                   'redactor' => array(
-                       'imageUpload'  => '/blog/images/upload/', // url or false
-                       'imageGetJson' => '/blog/images/list/',
-                       'fileUpload'   => false,
-                   )
-                ));
+        $body = new Core_Form_Element_Redactor(
+            'body', array(
+                'label' => 'Text',
+                'cols'  => 50,
+                'rows'  => 25,
+                'required' => true,
+                'filters' => array('StringTrim'),
+                'redactor' => array(
+                    'imageUpload'  => '/blog/images/upload/', // url or false
+                    'imageGetJson' => '/blog/images/list/',
+                    'fileUpload'   => false))
+        );
         $this->addElement($body);
 
         $this->addElement($this->_status());

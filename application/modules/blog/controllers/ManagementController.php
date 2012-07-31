@@ -62,13 +62,12 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getSource()
     {
-        return new Core_Grid_Adapter_Select(
-            $this->_getTable()
-                 ->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
-                 ->setIntegrityCheck(false)
-                 ->joinLeft('users','users.id=blog_post.userId', array('login'))
-                 ->joinLeft('categories','categories.id=blog_post.categoryId', array('category'=>'title'))
-        );
+        $select = $this->_getTable()
+            ->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+            ->setIntegrityCheck(false)
+            ->joinLeft('users', 'users.id=blog_post.userId', array('login'))
+            ->joinLeft('categories', 'categories.id=blog_post.categoryId', array('category'=>'title'));
+        return new Core_Grid_Adapter_Select($select);
     }
 
     /**
@@ -105,42 +104,42 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
     {
         $this->_addCheckBoxColumn();
         $this->_grid->setColumn(
-                        'title',
-                        array(
-                            'name'  => 'Title',
-                            'type'  => Core_Grid::TYPE_DATA,
-                            'index' => 'title',
-                            'formatter' => array($this, 'titleFormatter'),
-                        )
-                    );
+            'title',
+            array(
+                'name'  => 'Title',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'title',
+                'formatter' => array($this, 'titleFormatter'),
+            )
+        );
         $this->_grid->setColumn(
-                                'login',
-                                array(
-                                    'name'  => 'Author',
-                                    'type'  => Core_Grid::TYPE_DATA,
-                                    'index' => 'login',
-                                    'attribs' => array('width'=>'120px')
-                                )
-                            );
+            'login',
+            array(
+                'name'  => 'Author',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'login',
+                'attribs' => array('width'=>'120px')
+            )
+        );
         $this->_grid->setColumn(
-                                'category',
-                                array(
-                                    'name'  => 'Category',
-                                    'type'  => Core_Grid::TYPE_DATA,
-                                    'index' => 'category',
-                                    'attribs' => array('width'=>'120px')
-                                )
-                            );
+            'category',
+            array(
+                'name'  => 'Category',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'category',
+                'attribs' => array('width'=>'120px')
+            )
+        );
         $this->_grid->setColumn(
-                                'comments',
-                                array(
-                                    'name'  => 'Comments',
-                                    'type'  => Core_Grid::TYPE_DATA,
-                                    'index' => 'comments',
-                                    'attribs' => array('width'=>'50px'),
-                                    'formatter' => array($this, 'badgeFormatter'),
-                                )
-                            );
+            'comments',
+            array(
+                'name'  => 'Comments',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'comments',
+                'attribs' => array('width'=>'50px'),
+                'formatter' => array($this, 'badgeFormatter'),
+            )
+        );
         $this->_addCreatedColumn();
         $this->_addEditColumn();
         $this->_addDeleteColumn();
