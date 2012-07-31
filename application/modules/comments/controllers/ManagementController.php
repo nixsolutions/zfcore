@@ -37,14 +37,13 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
      */
     protected function _getSource()
     {
-        return new Core_Grid_Adapter_Select(
-            $this->_getTable()
-                 ->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
-                 ->setIntegrityCheck(false)
-                 ->joinLeft('users','users.id=comments.userId', array('login'))
-                 ->where('comments.aliasId = ?', $this->_alias->id)
-                 ->order('comments.created DESC')
-        );
+        $select = $this->_getTable()
+            ->select(Zend_Db_Table::SELECT_WITH_FROM_PART)
+            ->setIntegrityCheck(false)
+            ->joinLeft('users', 'users.id=comments.userId', array('login'))
+            ->where('comments.aliasId = ?', $this->_alias->id)
+            ->order('comments.created DESC');
+        return new Core_Grid_Adapter_Select($select);
     }
     
     /**
@@ -109,23 +108,23 @@ class Comments_ManagementController extends Core_Controller_Action_Crud
     {
         $this->_addCheckBoxColumn();
         $this->_grid->setColumn(
-                        'login',
-                        array(
-                            'name'  => 'Author',
-                            'type'  => Core_Grid::TYPE_DATA,
-                            'index' => 'login',
-                            'attribs' => array('width'=>'120px')
-                        )
-                    );
+            'login',
+            array(
+                'name'  => 'Author',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'login',
+                'attribs' => array('width'=>'120px')
+            )
+        );
         $this->_grid->setColumn(
-                        'body',
-                        array(
-                            'name'  => 'Text',
-                            'type'  => Core_Grid::TYPE_DATA,
-                            'index' => 'body',
-                            'formatter' => array($this, 'trimFormatter'),
-                        )
-                    );
+            'body',
+            array(
+                'name'  => 'Text',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'body',
+                'formatter' => array($this, 'trimFormatter'),
+            )
+        );
         $this->_addCreatedColumn();
         $this->_addEditColumn();
         $this->_addDeleteColumn();
