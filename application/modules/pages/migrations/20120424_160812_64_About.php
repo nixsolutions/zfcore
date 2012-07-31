@@ -6,36 +6,37 @@ class Pages_Migration_20120424_160812_64_About extends Core_Migration_Abstract
     public function up()
     {
         // upgrade
-        $this->insert('pages', array(
-            'title' => 'About ZFCore',
-            'alias' => 'about',
-            'pid' => 0,
-            'content' => '
-                <p>
-                    ZFCore is a content management framework based on Zend Framework. It was developed by PHP Team of
-                    <a href="http://nixsolutions.com/">NIX Solutions Ltd</a>. In case you are interested in getting a multifunctional,
-                    secure project reliable in data processing like ZFCore, you can always turn to our skillful and experienced team
-                    of PHP developers. Moreover, we don\'t limit ourselves with PHP because sometimes it\'s useful to support projects
-                    with mobile applications. iPhone and Android Teams of NIX Solutions Ltd. are always ready to help and develop
-                    for you any kind of mobile apps.
-                </p>
-                <p>Used libraries:</p>
-                <ul>
-                    <li><a href="http://framework.zend.com/">Zend Framework 1.xx (latest)</a></li>
-                    <li><a href="http://jquery.com">jQuery</a></li>
-                    <li><a href="http://jqueryui.com/">jQuery UI</a></li>
-                    <li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a></li>
-                    <li><a href="http://addyosmani.github.com/jquery-ui-bootstrap/">Bootstrap jQuery UI</a></li>
-                    <li><a href="http://imperavi.com/redactor/">Imperavi jQuery redactor</a></li>
-                    <li>Icons Graciously provided by <a href="http://glyphicons.com/">Glyphicons</a></li>
-                </ul>
-                <p>
-                    Any questions, wishes, or offers? Feel free to contact us by <a href="mailto:ask@nixsolutions.com">ask@nixsolutions.com</a>
-                </p>
-            ',
-            'created' => '2012-04-24 16:08:12',
-            'updated' => '2012-04-24 16:08:12',
-        ));
+        $this->insert(
+            'pages', array(
+                'title' => 'About ZFCore',
+                'alias' => 'about',
+                'pid' => 0,
+                'content' => '
+                    <p>
+                        ZFCore is a content management framework based on Zend Framework. It was developed by PHP Team of
+                        <a href="http://nixsolutions.com/">NIX Solutions Ltd</a>. In case you are interested in getting a multifunctional,
+                        secure project reliable in data processing like ZFCore, you can always turn to our skillful and experienced team
+                        of PHP developers. Moreover, we don\'t limit ourselves with PHP because sometimes it\'s useful to support projects
+                        with mobile applications. iPhone and Android Teams of NIX Solutions Ltd. are always ready to help and develop
+                        for you any kind of mobile apps.
+                    </p>
+                    <p>Used libraries:</p>
+                    <ul>
+                        <li><a href="http://framework.zend.com/">Zend Framework 1.xx (latest)</a></li>
+                        <li><a href="http://jquery.com">jQuery</a></li>
+                        <li><a href="http://jqueryui.com/">jQuery UI</a></li>
+                        <li><a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap</a></li>
+                        <li><a href="http://addyosmani.github.com/jquery-ui-bootstrap/">Bootstrap jQuery UI</a></li>
+                        <li><a href="http://imperavi.com/redactor/">Imperavi jQuery redactor</a></li>
+                        <li>Icons Graciously provided by <a href="http://glyphicons.com/">Glyphicons</a></li>
+                    </ul>
+                    <p>
+                        Any questions, wishes, or offers? Feel free to contact us by <a href="mailto:ask@nixsolutions.com">ask@nixsolutions.com</a>
+                    </p>
+                ',
+                'created' => '2012-04-24 16:08:12',
+                'updated' => '2012-04-24 16:08:12')
+        );
     }
 
     public function down()

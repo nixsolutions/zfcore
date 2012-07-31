@@ -6,8 +6,8 @@ class Pages_Migration_00000000_000000_00 extends Core_Migration_Abstract
     public function up()
     {
         // static pages table
-        $this->query("
-            CREATE TABLE `pages` (
+        $this->query(
+            "CREATE TABLE `pages` (
               `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `pid` int(10) unsigned NOT NULL COMMENT 'Parent Page',
               `title` text NOT NULL,
@@ -21,8 +21,7 @@ class Pages_Migration_00000000_000000_00 extends Core_Migration_Abstract
               PRIMARY KEY (`id`,`pid`),
               UNIQUE KEY `unique` (`pid`,`alias`),
               KEY `FK_pages_to_users` (`userId`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-            "
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8"
         );
     }
 
