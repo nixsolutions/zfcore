@@ -92,7 +92,7 @@ class Admin_FilesController extends Core_Controller_Action
      */
     protected function getIco($type)
     {
-    	$fileicons = array('other' => 0,
+        $fileicons = array('other' => 0,
                            'avi' => 'avi',
                            'doc' => 'doc',
                            'docx' => 'doc',
@@ -112,7 +112,7 @@ class Admin_FilesController extends Core_Controller_Action
                            'xlsx' => 'xls',
                            'zip' => 'zip');
 
-    	if (isset($fileicons[$type])) {
+        if (isset($fileicons[$type])) {
             return $fileicons[$type];
         } else {
             return 'other';
