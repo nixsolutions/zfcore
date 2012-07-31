@@ -13,7 +13,11 @@
     <p class="alert alert-info">
         <?php echo $this->__('And remove module Install')?>:
         <br/>
-        <code><?php echo 'rm -r ' . APPLICATION_PATH . '/modules/install/';?></code>
+        <?php if(DIRECTORY_SEPARATOR == '/'): ?>
+            <code><?php echo 'rm -r ' . APPLICATION_PATH . '/modules/install/';?></code>
+        <?php else: ?>
+            <code><?php echo 'del ' . APPLICATION_PATH . '\modules\install\\';?></code>
+        <?php endif; ?>
     </p>
 </article>
 <a href="<?php echo $this->baseUrl('/') ?>" title="<?php echo $this->__('Finish')?>" class="btn btn-primary pull-right"><?php echo $this->__('Finish')?></a>

@@ -1,8 +1,11 @@
 @echo off
 set installDir=%CD%
 
+copy /v %installDir%\public\.htaccess.sample %installDir%\public\.htaccess
+echo Copy .htaccess file
+
 cd %installDir%\bin\
 
-zfc.bat up migration
+echo Done
 
 cd %installDir%

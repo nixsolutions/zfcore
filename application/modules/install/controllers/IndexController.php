@@ -15,7 +15,8 @@ class Install_IndexController extends Core_Controller_Action
      */
     protected $_store;
 
-    protected $_config = '/configs/application.yaml';
+    protected $_configFile = 'application.yaml';
+    protected $_configDir = '';
 
     /**
      * @see Zend_Controller_Action::init()
@@ -24,11 +25,12 @@ class Install_IndexController extends Core_Controller_Action
     {
         $this->_helper->layout->setLayout('install/layout');
 
+        $this->_configDir = APPLICATION_PATH . '/configs/';
         $this->_store = new Zend_Session_Namespace(self::SESSION_KEY);
 
         if (!$this->_store->config) {
             $this->_store->config = new Core_Config_Yaml(
-                APPLICATION_PATH . $this->_config . '.dist',
+                $this->_configDir . $this->_configFile . '.dist',
                 null,
                 array(
                     'allowModifications' => true,
@@ -493,7 +495,7 @@ class Install_IndexController extends Core_Controller_Action
      */
     public function finishAction()
     {
-        $filename = APPLICATION_PATH . $this->_config;
+        $filename = $this->_configDir . $this->_configFile;
 
         $config = $this->_store->config->production->resources;
 
@@ -502,15 +504,14 @@ class Install_IndexController extends Core_Controller_Action
 
         $writer = new Core_Config_Writer_Yaml();
         $writer->setConfig($this->_store->config);
-        if (is_writable($filename)) {
+        if (is_writable($this->_configDir)) {
 
             $writer->write($filename);
-
             $this->_store->unsetAll();
 
             //TODO remove install module
 
-            $this->_helper->flashMessenger('Installization complete');
+            $this->_helper->flashMessenger("Installization complete <br /> " . $this->view->__('And remove module Install'));
             $this->_helper->redirector(false, false, false);
         } else {
             $this->view->filename = $filename;
