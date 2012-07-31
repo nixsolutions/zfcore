@@ -72,20 +72,20 @@ class Mail_Form_Template_Create extends Core_Form
      */
     protected function _body()
     {
-        $body = new Core_Form_Element_Redactor('bodyHtml', array(
-           'label' => 'Content:',
-           'cols'  => 50,
-           'rows'  => 25,
-           'required' => true,
-           'filters' => array('StringTrim'),
-           'redactor' => array(
-               'imageUpload'  => '/mail/images/upload/', // url or false
-               'imageGetJson' => '/mail/images/list/',
-               'fileUpload'   => '/admin/files/upload/',
-               'fileDownload' => '/admin/files/download/?file=',
-               'fileDelete'   => '/admin/files/delete/?file=',
-           )
-        ));
+        $body = new Core_Form_Element_Redactor(
+            'bodyHtml', array(
+                'label' => 'Content:',
+                'cols'  => 50,
+                'rows'  => 25,
+                'required' => true,
+                'filters' => array('StringTrim'),
+                'redactor' => array(
+                    'imageUpload'  => '/mail/images/upload/', // url or false
+                    'imageGetJson' => '/mail/images/list/',
+                    'fileUpload'   => '/admin/files/upload/',
+                    'fileDownload' => '/admin/files/download/?file=',
+                    'fileDelete'   => '/admin/files/delete/?file='))
+        );
         $body->setRequired(true);
         return $body;
     }
