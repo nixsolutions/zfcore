@@ -156,7 +156,7 @@ class Debug_CrontabController extends Core_Controller_Action_Crud
         } elseif ($this->_request->isPost()) {
             // show errors
             $errors = $form->getErrors();
-            foreach($errors as $fn => $error) {
+            foreach ($errors as $fn => $error) {
                 if (empty($error)) continue;
                 $el = $form->getElement($fn);
                 $dec = $el->getDecorator('HtmlTag');

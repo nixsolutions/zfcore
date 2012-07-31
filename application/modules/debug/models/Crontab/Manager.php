@@ -69,7 +69,7 @@ HOME=/
      */
     public function _changeFormData($data = array())
     {
-        if ($key = array_search( $data['month'], $this->_selectOptionsMonth )) {
+        if ($key = array_search($data['month'], $this->_selectOptionsMonth)) {
             $data['month'] = $key;
         }
 
@@ -95,7 +95,7 @@ HOME=/
     private function _openCrontabFile()
     {
         $command = $this->_cronCommands['read'];
-        exec( $command, $output, $retval );
+        exec($command, $output, $retval);
         if ($retval != 0) {
             return array();
         }
@@ -118,19 +118,19 @@ HOME=/
         }
 
         $file = self::CRONTAB_FILE;
-        if (!$fp = @fopen( $file, 'w' )) {
+        if (!$fp = @fopen($file, 'w')) {
             return false;
         }
 
 
         $crontabStr = self::CRONTAB_FILE_HEAD . $crontabStr;
 
-        if (fwrite( $fp, $crontabStr ) === FALSE) {
+        if (false === fwrite($fp, $crontabStr)) {
             return false;
         }
 
         $command = $this->_cronCommands['save'] . $file;
-        exec( $command, $output, $retval );
+        exec($command, $output, $retval);
 
         $this->output = $output;
 
@@ -153,11 +153,11 @@ HOME=/
         foreach ($this->createGritArray() as $line) {
             if ($id != $line['id']) {
                 unset($line['id']);
-                $crontabs[] = join( ' ', $line );
+                $crontabs[] = join(' ', $line);
             }
         }
 
-        return $this->_saveCrontabFile( join( PHP_EOL, $crontabs ) );
+        return $this->_saveCrontabFile(join(PHP_EOL, $crontabs));
     }
 
     /**
@@ -173,9 +173,9 @@ HOME=/
         $crontabs = array();
 
         foreach ($this->_openCrontabFile() as $i => $line) {
-            if (substr( $line, 0, 1 ) != '#') {
-                $lineParts = explode( ' ', $line, self::CRONTAB_COLUMN_NUMBER );
-                if (count( $lineParts ) == self::CRONTAB_COLUMN_NUMBER) {
+            if (substr($line, 0, 1) != '#') {
+                $lineParts = explode(' ', $line, self::CRONTAB_COLUMN_NUMBER);
+                if (count($lineParts) == self::CRONTAB_COLUMN_NUMBER) {
                     $lineArr = array(
                         'id'         => ++$i,
                         'minute'     => $lineParts[0],
@@ -219,7 +219,7 @@ HOME=/
      */
     public function save(array $data, $id = null)
     {
-        $data = $this->_changeFormData( $data );
+        $data = $this->_changeFormData($data);
 
         $crontabs = array();
 
@@ -230,13 +230,13 @@ HOME=/
             }
 
             unset($line['id']);
-            $crontabs[] = join( ' ', $line );
+            $crontabs[] = join(' ', $line);
         }
         // create
         if (!$id) {
-            $crontabs[] = join( ' ', $data );
+            $crontabs[] = join(' ', $data);
         }
 
-        return $this->_saveCrontabFile( join( PHP_EOL, $crontabs ) );
+        return $this->_saveCrontabFile(join(PHP_EOL, $crontabs));
     }
 }
