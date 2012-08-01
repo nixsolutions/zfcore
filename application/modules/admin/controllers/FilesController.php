@@ -76,7 +76,10 @@ class Admin_FilesController extends Core_Controller_Action
 
                 $this->_helper->viewRenderer->setNoRender(true);
 
-                echo '<a href="javascript:void(null);" rel="'.$renameFile.'" class="redactor_file_link redactor_file_ico_'.$fileIco.'" title="'.$renameFile.'">'.$renameFile.'</a>';
+                $link = '<a href="javascript:void(null);" rel="' . $renameFile
+                      . '" class="redactor_file_link redactor_file_ico_' . $fileIco . '" title="'
+                      . $renameFile . '">' . $renameFile . '</a>';
+                echo $link;
 
             } catch (Exception $e) {
                 $this->_forwardError($e->getMessage());
