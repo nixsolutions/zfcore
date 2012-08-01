@@ -511,7 +511,9 @@ class Install_IndexController extends Core_Controller_Action
 
             //TODO remove install module
 
-            $this->_helper->flashMessenger("Installization complete <br /> " . $this->view->__('And remove module Install'));
+            $this->_helper->flashMessenger(
+                "Installization complete <br /> " . $this->view->__('And remove module Install')
+            );
             $this->_helper->redirector(false, false, false);
         } else {
             $this->view->filename = $filename;

@@ -37,8 +37,8 @@ class Comments_Model_Comment_Form_Create extends Zend_Form
      */
     protected function _title()
     {
-        $element = new Zend_Form_Element_Text('title',
-            array(
+        $element = new Zend_Form_Element_Text(
+            'title', array(
                 'order'      => 10,
                 'label'      => 'Comment title:',
                 'cols'       => '50',

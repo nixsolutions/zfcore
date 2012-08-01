@@ -23,13 +23,13 @@ class Debug_SessionController extends Core_Controller_Action_Crud
     {
         $this->_grid
             ->setColumn(
-                    'id',
-                    array(
-                        'name' => 'Id',
-                        'type' => Core_Grid::TYPE_DATA,
-                        'index' => 'id'
-                    )
+                'id',
+                array(
+                    'name' => 'Id',
+                    'type' => Core_Grid::TYPE_DATA,
+                    'index' => 'id'
                 )
+            )
             ->setColumn(
                 'value',
                 array(
@@ -38,8 +38,7 @@ class Debug_SessionController extends Core_Controller_Action_Crud
                     'index' => 'value',
                     'formatter' => array($this, 'formatter')
                 )
-            )
-        ;
+            );
         $this->_addShowColumn();
         $this->_addDeleteColumn();
     }

@@ -30,7 +30,7 @@ class Pages_Form_Create extends Core_Form
                     )
                 )
             );
-        $title->setAttrib('class','span4');
+        $title->setAttrib('class', 'span4');
 
         $alias = new Zend_Form_Element_Text('alias');
         $alias->setLabel('Alias(permalink):')
@@ -47,22 +47,23 @@ class Pages_Form_Create extends Core_Form
                     )
                 )
             );
-        $alias->setAttrib('class','span4');
+        $alias->setAttrib('class', 'span4');
 
-        $content = new Core_Form_Element_Redactor('content', array(
-           'label' => 'Content:',
-           'cols'  => 50,
-           'rows'  => 25,
-           'required' => true,
-           'filters' => array('StringTrim'),
-           'redactor' => array(
-               'imageUpload'  => '/pages/images/upload/', // url or false
-               'imageGetJson' => '/pages/images/list/',
-               'fileUpload'   => '/admin/files/upload/',
-               'fileDownload' => '/admin/files/download/?file=',
-               'fileDelete'   => '/admin/files/delete/?file=',
-           )
-        ));
+        $content = new Core_Form_Element_Redactor(
+            'content', array(
+                'label' => 'Content:',
+                'cols'  => 50,
+                'rows'  => 25,
+                'required' => true,
+                'filters' => array('StringTrim'),
+                'redactor' => array(
+                   'imageUpload'  => '/pages/images/upload/', // url or false
+                   'imageGetJson' => '/pages/images/list/',
+                   'fileUpload'   => '/admin/files/upload/',
+                   'fileDownload' => '/admin/files/download/?file=',
+                   'fileDelete'   => '/admin/files/delete/?file=',
+                ))
+        );
 
         $content->setRequired(true);
 
@@ -78,7 +79,7 @@ class Pages_Form_Create extends Core_Form
                          )
                      )
                  );
-        $keywords->setAttrib('class','span6');
+        $keywords->setAttrib('class', 'span6');
 
         $description = new Zend_Form_Element_Text('description');
         $description->setLabel('Description:')
@@ -94,7 +95,7 @@ class Pages_Form_Create extends Core_Form
                         )
                     );
 
-        $description->setAttrib('class','span6');
+        $description->setAttrib('class', 'span6');
         $pid = new Zend_Form_Element_Hidden('pid');
 
         $this->addElements(

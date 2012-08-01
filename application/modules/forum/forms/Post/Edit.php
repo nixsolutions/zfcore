@@ -30,11 +30,12 @@ class Forum_Form_Post_Edit extends Forum_Form_Post_Create
         $status = new Zend_Form_Element_Select('status');
         $status->setLabel('Status');
         $status->setRequired(true);
-        $status->addMultiOptions(array(
-            Forum_Model_Post::STATUS_ACTIVE  => Forum_Model_Post::STATUS_ACTIVE,
-            Forum_Model_Post::STATUS_CLOSED  => Forum_Model_Post::STATUS_CLOSED,
-            Forum_Model_Post::STATUS_DELETED => Forum_Model_Post::STATUS_DELETED,
-        ));
+        $status->addMultiOptions(
+            array(
+                Forum_Model_Post::STATUS_ACTIVE  => Forum_Model_Post::STATUS_ACTIVE,
+                Forum_Model_Post::STATUS_CLOSED  => Forum_Model_Post::STATUS_CLOSED,
+                Forum_Model_Post::STATUS_DELETED => Forum_Model_Post::STATUS_DELETED)
+        );
 
         return $status;
     }

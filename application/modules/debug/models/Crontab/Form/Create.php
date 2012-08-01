@@ -50,8 +50,8 @@ class Debug_Model_Crontab_Form_Create extends Core_Form
      */
     public function init()
     {
-        $this->setName( 'crontabCreateForm' )
-            ->setMethod( 'post' );
+        $this->setName('crontabCreateForm')
+            ->setMethod('post');
 
         $this->addElements(
             array($this->_minute(),
@@ -83,13 +83,13 @@ class Debug_Model_Crontab_Form_Create extends Core_Form
     protected function _minute()
     {
         $value = new Zend_Form_Element_Text('minute');
-        $value->setLabel( 'Minute' )
-            ->addDecorators( $this->_inputDecorators )
-            ->setRequired( true )
-            ->setAttribs( array('class'=> 'span1') )
+        $value->setLabel('Minute')
+            ->addDecorators($this->_inputDecorators)
+            ->setRequired(true)
+            ->setAttribs(array('class'=> 'span1'))
             ->addValidator(
-            new Zend_Validate_InArray(range( 0, 59 ))
-        );
+                new Zend_Validate_InArray(range(0, 59))
+            );
 
         return $value;
     }
@@ -102,13 +102,13 @@ class Debug_Model_Crontab_Form_Create extends Core_Form
     protected function _hour()
     {
         $value = new Zend_Form_Element_Text('hour');
-        $value->setLabel( 'Hour' )
-            ->addDecorators( $this->_inputDecorators )
-            ->setRequired( true )
-            ->setAttribs( array('class'=> 'span1') )
+        $value->setLabel('Hour')
+            ->addDecorators($this->_inputDecorators)
+            ->setRequired(true)
+            ->setAttribs(array('class'=> 'span1'))
             ->addValidator(
-            new Zend_Validate_InArray(range( 0, 23 ))
-        );
+                new Zend_Validate_InArray(range(0, 23))
+            );
         return $value;
     }
 
@@ -120,13 +120,13 @@ class Debug_Model_Crontab_Form_Create extends Core_Form
     protected function _dayOfMonth()
     {
         $value = new Zend_Form_Element_Text('dayOfMonth');
-        $value->setLabel( 'Day Of Month' )
-            ->addDecorators( $this->_inputDecorators )
-            ->setRequired( true )
-            ->setAttribs( array('class'=> 'span2') )
+        $value->setLabel('Day Of Month')
+            ->addDecorators($this->_inputDecorators)
+            ->setRequired(true)
+            ->setAttribs(array('class'=> 'span2'))
             ->addValidator(
-            new Zend_Validate_InArray(range( 1, 31 ))
-        );
+                new Zend_Validate_InArray(range(1, 31))
+            );
         return $value;
     }
 
@@ -138,11 +138,11 @@ class Debug_Model_Crontab_Form_Create extends Core_Form
     protected function _month()
     {
         $value = new Zend_Form_Element_Select('month');
-        $value->setLabel( 'Month' )
-            ->addDecorators( $this->_inputDecorators )
-            ->setRequired( true )
-            ->setAttribs( array('class'=> 'span2') )
-            ->setMultiOptions( $this->_selectOptionsMonth );
+        $value->setLabel('Month')
+            ->addDecorators($this->_inputDecorators)
+            ->setRequired(true)
+            ->setAttribs(array('class'=> 'span2'))
+            ->setMultiOptions($this->_selectOptionsMonth);
         return $value;
     }
 
@@ -154,11 +154,11 @@ class Debug_Model_Crontab_Form_Create extends Core_Form
     protected function _dayOfWeek()
     {
         $value = new Zend_Form_Element_Select('dayOfWeek');
-        $value->setLabel( 'Day Of Week' )
-            ->addDecorators( $this->_inputDecorators )
-            ->setRequired( true )
-            ->setAttribs( array('class'=> 'span2') )
-            ->setMultiOptions( $this->_selectOptionsDayOfWeek );
+        $value->setLabel('Day Of Week')
+            ->addDecorators($this->_inputDecorators)
+            ->setRequired(true)
+            ->setAttribs(array('class'=> 'span2'))
+            ->setMultiOptions($this->_selectOptionsDayOfWeek);
         return $value;
     }
 
@@ -170,17 +170,16 @@ class Debug_Model_Crontab_Form_Create extends Core_Form
     protected function _command()
     {
         $value = new Zend_Form_Element_Text('command');
-        $value->setLabel( 'Command' )
-            ->addDecorators( $this->_inputDecorators )
-            ->setRequired( true )
-            ->setAttribs( array('class'=> 'span8') )
-            ->addFilter( 'StripTags' )
-            ->addFilter( 'StringTrim' )
+        $value->setLabel('Command')
+            ->addDecorators($this->_inputDecorators)
+            ->setRequired(true)
+            ->setAttribs(array('class'=> 'span8'))
+            ->addFilter('StripTags')
+            ->addFilter('StringTrim')
             ->addValidator(
-            'StringLength', false,
-            array(0,
-                self::MAX_LINE_LENGTH)
-        );
+                'StringLength', false,
+                array(0, self::MAX_LINE_LENGTH)
+            );
         return $value;
     }
 }

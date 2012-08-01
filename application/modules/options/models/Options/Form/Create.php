@@ -189,7 +189,7 @@ class Options_Model_Options_Form_Create extends Zend_Form
     {
         $submit = new Zend_Form_Element_Submit('submit');
         $submit->setLabel('Create');
-        $submit->setAttrib('class','btn btn-primary');
+        $submit->setAttrib('class', 'btn btn-primary');
 
         return $submit;
     }

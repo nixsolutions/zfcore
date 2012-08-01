@@ -129,7 +129,7 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         } elseif ($this->_request->isPost()) {
             // show errors
             $errors = $form->getErrors();
-            foreach($errors as $fn => $error) {
+            foreach ($errors as $fn => $error) {
                 if (empty($error)) continue;
                 $el = $form->getElement($fn);
                 $dec = $el->getDecorator('HtmlTag');
@@ -257,7 +257,8 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
     /**
      * @abstract
      */
-    protected function _prepareHeader() {
+    protected function _prepareHeader()
+    {
         // can be empty
     }
 

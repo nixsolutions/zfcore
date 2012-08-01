@@ -25,7 +25,7 @@ class Core_Form extends Zend_Form
     {
         $element = new Zend_Form_Element_Submit('submit');
         $element->setLabel('Save');
-        $element->setAttrib('class','btn btn-primary span1');
+        $element->setAttrib('class', 'btn btn-primary span1');
         $element->setOrder(100);
 
         return $element;

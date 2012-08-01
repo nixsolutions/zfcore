@@ -109,22 +109,22 @@ class Comments_AliasesController extends Core_Controller_Action_Crud
     {
         $this->_addCheckBoxColumn();
         $this->_grid->setColumn(
-                        'alias',
-                        array(
-                            'name'  => 'Section Alias',
-                            'type'  => Core_Grid::TYPE_DATA,
-                            'index' => 'alias'
-                        )
-                    );
+            'alias',
+            array(
+                'name'  => 'Section Alias',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'alias'
+            )
+        );
         $this->_grid->setColumn(
-                        'options',
-                        array(
-                            'name'  => 'Options',
-                            'type'  => Core_Grid::TYPE_DATA,
-                            'index' => 'options',
-                            'formatter' => array($this, 'toStringFormatter')
-                        )
-                    );
+            'options',
+            array(
+                'name'  => 'Options',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'options',
+                'formatter' => array($this, 'toStringFormatter')
+            )
+        );
         $this->_addCreatedColumn();
         $this->_addShowCommentsColumn();
         $this->_addEditColumn();

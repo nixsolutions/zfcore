@@ -127,53 +127,53 @@ class Users_ManagementController extends Core_Controller_Action_Crud
     {
 
         $this->_grid->setColumn(
-                                'login',
-                                array(
-                                    'name'  => 'Username',
-                                    'type'  => Core_Grid::TYPE_DATA,
-                                    'index' => 'login',
-                                    'attribs' => array('width'=>'120px')
-                                )
-                            );
+            'login',
+            array(
+                'name'  => 'Username',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'login',
+                'attribs' => array('width'=>'120px')
+            )
+        );
         $this->_grid->setColumn(
-                                'lastname',
-                                array(
-                                    'name'  => 'Name',
-                                    'type'  => Core_Grid::TYPE_DATA,
-                                    'index' => 'lastname',
-                                    'formatter' => array($this, 'nameFormatter')
-                                )
-                            );
+            'lastname',
+            array(
+                'name'  => 'Name',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'lastname',
+                'formatter' => array($this, 'nameFormatter')
+            )
+        );
         $this->_grid->setColumn(
-                                'email',
-                                array(
-                                    'name'  => 'Email',
-                                    'type'  => Core_Grid::TYPE_DATA,
-                                    'index' => 'email',
-                                    'attribs' => array('width'=>'180px'),
-                                    'formatter' => array($this, 'emailFormatter')
-                                )
-                            );
+            'email',
+            array(
+                'name'  => 'Email',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'email',
+                'attribs' => array('width'=>'180px'),
+                'formatter' => array($this, 'emailFormatter')
+            )
+        );
 
         $this->_grid->setColumn(
-                                'role',
-                                array(
-                                    'name'  => 'Role',
-                                    'type'  => Core_Grid::TYPE_DATA,
-                                    'index' => 'role',
-                                    'attribs' => array('width'=>'80px')
-                                )
-                            );
+            'role',
+            array(
+                'name'  => 'Role',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'role',
+                'attribs' => array('width'=>'80px')
+            )
+        );
         $this->_grid->setColumn(
-                                'status',
-                                array(
-                                    'name'  => 'Status',
-                                    'type'  => Core_Grid::TYPE_DATA,
-                                    'index' => 'status',
-                                    'attribs' => array('width'=>'80px'),
-                                    'formatter' => array($this, 'statusFormatter')
-                                )
-                            );
+            'status',
+            array(
+                'name'  => 'Status',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'status',
+                'attribs' => array('width'=>'80px'),
+                'formatter' => array($this, 'statusFormatter')
+            )
+        );
 
         $this->_addEditColumn();
         $this->_addDeleteColumn();

@@ -17,11 +17,11 @@ class Blog_ImagesController extends Core_Controller_Action_Images
      */
     protected function _getUploadDir()
     {
-        $User = Zend_Auth::getInstance()->getIdentity();
-        if (!$User) {
+        $user = Zend_Auth::getInstance()->getIdentity();
+        if (!$user) {
             throw new Exception("Permissions denied");
         }
 
-        return $this->_uploadDir .'/'. $User->id;
+        return $this->_uploadDir .'/'. $user->id;
     }
 }

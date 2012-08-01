@@ -11,7 +11,7 @@ class Categories_Form_Category_Create extends Core_Form
     /**
      * Form initialization
      *
-     * @return void
+     * @return Categories_Form_Category_Create
      */
     public function init()
     {
@@ -74,17 +74,17 @@ class Categories_Form_Category_Create extends Core_Form
      */
     protected function _description()
     {
-        $description = new Core_Form_Element_Redactor('description', array(
-           'label' => 'Description',
-           'cols'  => 50,
-           'rows'  => 5,
-           'required' => true,
-           'filters' => array('StringTrim'),
-           'redactor' => array(
-               'imageUpload'  => false,
-               'fileUpload'   => false,
-           )
-        ));
+        $description = new Core_Form_Element_Redactor(
+            'description', array(
+                'label' => 'Description',
+                'cols'  => 50,
+                'rows'  => 5,
+                'required' => true,
+                'filters' => array('StringTrim'),
+                'redactor' => array(
+                    'imageUpload'  => false,
+                    'fileUpload'   => false))
+        );
         return $description;
     }
 

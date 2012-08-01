@@ -50,7 +50,7 @@ class Users_RegisterController extends Core_Controller_Action
 
                 // show errors
                 $errors = $form->getErrors();
-                foreach($errors as $fn => $error) {
+                foreach ($errors as $fn => $error) {
                     if (empty($error)) continue;
                     $el = $form->getElement($fn);
                     $dec = $el->getDecorator('HtmlTag');
@@ -121,7 +121,7 @@ class Users_RegisterController extends Core_Controller_Action
             } else {
                 // show errors
                 $errors = $form->getErrors();
-                foreach($errors as $fn => $error) {
+                foreach ($errors as $fn => $error) {
                     if (empty($error)) continue;
                     $el = $form->getElement($fn);
                     $dec = $el->getDecorator('HtmlTag');

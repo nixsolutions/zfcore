@@ -36,36 +36,36 @@ class Blog_Form_Admin_Create extends Core_Form
         $this->addElement($title);
 
         $this->addElement($this->_category());
-        $teaser = new Core_Form_Element_Redactor('teaser', array(
-           'label' => 'Teaser',
-           'cols'  => 50,
-           'rows'  => 5,
-           'required' => true,
-           'filters' => array('StringTrim'),
-           'redactor' => array(
-               'imageUpload'  => '/blog/images/upload/', // url or false
-               'imageGetJson' => '/blog/images/list/',
-               'fileUpload'   => false,
-           )
-        ));
+        $teaser = new Core_Form_Element_Redactor(
+            'teaser', array(
+                'label' => 'Teaser',
+                'cols'  => 50,
+                'rows'  => 5,
+                'required' => true,
+                'filters' => array('StringTrim'),
+                'redactor' => array(
+                   'imageUpload'  => '/blog/images/upload/', // url or false
+                   'imageGetJson' => '/blog/images/list/',
+                   'fileUpload'   => false))
+        );
         $teaser->addDecorators($this->_inputDecorators);
 
         $this->addElement($teaser);
 
-        $body = new Core_Form_Element_Redactor('body', array(
-           'label' => 'Text',
-           'cols'  => 50,
-           'rows'  => 25,
-           'required' => true,
-           'filters' => array('StringTrim'),
-           'redactor' => array(
-               'imageUpload'  => '/blog/images/upload/', // url or false
-               'imageGetJson' => '/blog/images/list/',
-               'fileUpload'   => '/admin/files/upload/',
-               'fileDownload' => '/admin/files/download/?file=',
-               'fileDelete'   => '/admin/files/delete/?file=',
-           )
-        ));
+        $body = new Core_Form_Element_Redactor(
+            'body', array(
+                'label' => 'Text',
+                'cols'  => 50,
+                'rows'  => 25,
+                'required' => true,
+                'filters' => array('StringTrim'),
+                'redactor' => array(
+                    'imageUpload'  => '/blog/images/upload/', // url or false
+                    'imageGetJson' => '/blog/images/list/',
+                    'fileUpload'   => '/admin/files/upload/',
+                    'fileDownload' => '/admin/files/download/?file=',
+                    'fileDelete'   => '/admin/files/delete/?file='))
+        );
         $body->addDecorators($this->_inputDecorators);
 
         $this->addElement($body);
@@ -75,8 +75,7 @@ class Blog_Form_Admin_Create extends Core_Form
             ->setRequired(true)
             ->addDecorators($this->_inputDecorators)
             ->setAttribs(array('class' => 'span2'))
-            ->setValue(date('Y-m-d H:i:s'))
-        ;
+            ->setValue(date('Y-m-d H:i:s'));
         $this->addElement($published);
 
         $this->addElement($this->_status());

@@ -41,10 +41,10 @@ class Install_Form_Settings_Admin extends Core_Form
                 ->addFilter('StringTrim')
                 ->addValidator('Alnum')
                 ->addValidator(
-                     'StringLength',
-                     false,
-                     array(Users_Model_User::MIN_USERNAME_LENGTH,
-                           Users_Model_User::MAX_USERNAME_LENGTH)
+                    'StringLength',
+                    false,
+                    array(Users_Model_User::MIN_USERNAME_LENGTH,
+                        Users_Model_User::MAX_USERNAME_LENGTH)
                 )
                 ->setValue('admin');
 

@@ -47,8 +47,7 @@ class Install_Form_Settings_Basic extends Core_Form
         $element->setLabel('Timezone')
                 ->addDecorators($this->_decorators)
                 ->setRequired(true)
-                ->setAttrib('class', 'span4')
-        ;
+                ->setAttrib('class', 'span4');
 
         $timezones = array();
         $timezoneIdentifiers = DateTimeZone::listIdentifiers();
