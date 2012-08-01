@@ -302,7 +302,7 @@ class Core_Migration_Manager
             }
         } catch (Exception $e) {
             // maybe table is not exist; this is first revision
-            $this->_lastMigration = '0';
+            $lastMigration = '0';
         }
 
         return $lastMigration;
@@ -515,7 +515,7 @@ class Core_Migration_Manager
      * @param string $module Module name
      * @param string $to     Migration name or label
      * @throws Core_Exception
-     * @return
+     * @return void
      */
     public function up($module = null, $to = null)
     {
@@ -681,7 +681,7 @@ class Core_Migration_Manager
      * @param string $module Module name
      * @param int    $to     Migration name
      * @throws Core_Exception
-     * @return
+     * @return void
      */
     public function down($module, $to = null)
     {
@@ -787,7 +787,7 @@ class Core_Migration_Manager
      * @param string $module Module name
      * @param int    $step   Steps to rollback
      * @throws Core_Exception
-     * @return
+     * @return void
      */
     public function rollback($module, $step)
     {
