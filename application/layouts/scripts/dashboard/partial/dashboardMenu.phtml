@@ -24,13 +24,19 @@
                 echo '</li>', PHP_EOL;
             }
 
+            // check if it is active (recursive)
+            $isActivePart = $page->isActive(true);
+
             if ($page->getPages()) {
                 foreach ($page as $page) {
-                    // check if it is active (recursive)
-                    $isActive = $page->isActive(true);
-                    $liClass = $isActive ? ' class="active"' : '';
+                    if ($page->isActive()) {
+                        $liClass = 'active';
+                    } elseif (!$isActivePart) {
+                        $liClass = 'hide';
+                    }
+                    //$liClass = $page->isActive() ? 'active' : '';
                     if ($page->getLabel() !== null && $page->isVisible(true)) {
-                        echo '<li ' . $liClass . '>' . $this->menu()->htmlify($page);
+                        echo '<li class="' . $liClass . '">' . $this->menu()->htmlify($page);
                         echo '</li>', PHP_EOL;
                     }
                 }

@@ -160,7 +160,6 @@ ul.help-inline {
 }
 /*/NIX*/
 /*fluid markup with fixed sidebar*/
-
 .filler{
     position: fixed;
     top: 0;
@@ -183,3 +182,8 @@ ul.help-inline {
 .container-fluid > .content {
 	margin-left: 260px;
 }
+/*Menu*/
+.nav-list li.nav-header {
+	cursor: pointer;
+}
+/*/Menu*/
