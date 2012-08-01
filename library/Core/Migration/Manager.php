@@ -295,7 +295,7 @@ class Core_Migration_Manager
             $lastMigration
                 = Zend_Db_Table::getDefaultAdapter()->fetchOne($select);
 
-            if (empty($lastMigration)) {
+            if (!$lastMigration) {
                 throw new Core_Exception(
                     "Not found migration version in database"
                 );
