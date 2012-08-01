@@ -27,18 +27,20 @@ class Options_Model_Options extends Zend_Db_Table_Row_Abstract
     {
         switch ($this->type) {
             case self::TYPE_INT:
-                return (int) $this->value;
+                $value = (int) $this->value;
                 break;
             case self::TYPE_FLOAT:
-                return (float) $this->value;
+                $value = (float) $this->value;
                 break;
             case self::TYPE_ARRAY:
             case self::TYPE_OBJECT:
-                return unserialize($this->value);
+                $value = unserialize($this->value);
                 break;
             default:
-                return $this->value;
+                $value = $this->value;
+                break;
         }
+        return $value;
     }
     /**
      * Allows pre-insert logic to be applied to row.
