@@ -27,16 +27,18 @@
             // check if it is active (recursive)
             $isActivePart = $page->isActive(true);
 
-            if ($page->getPages()) {
-                foreach ($page as $page) {
-                    if ($page->isActive()) {
+            if ($subPages = $page->getPages()) {
+                foreach ($subPages as $subPage) {
+                    if ($subPage->isActive()) {
                         $liClass = 'active';
                     } elseif (!$isActivePart) {
                         $liClass = 'hide';
+                    } else {
+                        $liClass = '';
                     }
                     //$liClass = $page->isActive() ? 'active' : '';
-                    if ($page->getLabel() !== null && $page->isVisible(true)) {
-                        echo '<li class="' . $liClass . '">' . $this->menu()->htmlify($page);
+                    if ($subPage->getLabel() !== null && $subPage->isVisible(true)) {
+                        echo '<li class="' . $liClass . '">' . $this->menu()->htmlify($subPage);
                         echo '</li>', PHP_EOL;
                     }
                 }
