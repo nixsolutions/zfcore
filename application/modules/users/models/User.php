@@ -163,12 +163,10 @@ class Users_Model_User extends Core_Db_Table_Row_Abstract
     public function __get($columnName)
     {
         switch ($columnName) {
-            case 'password':
-                //return;
-                break;
             case 'ip':
                 $result = long2ip(parent::__get($columnName));
                 break;
+            case 'password':
             default:
                 $result = parent::__get($columnName);
                 break;
