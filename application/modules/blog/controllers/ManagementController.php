@@ -112,6 +112,18 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
                 'formatter' => array($this, 'titleFormatter'),
             )
         );
+
+        $this->_grid->setColumn(
+            'status',
+            array(
+                'name'  => 'Status',
+                'type'  => Core_Grid::TYPE_DATA,
+                'index' => 'status',
+                'attribs' => array('width'=>'120px'),
+                'formatter' => array($this, 'statusFormatter'),
+            )
+        );
+
         $this->_grid->setColumn(
             'login',
             array(
@@ -121,6 +133,7 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
                 'attribs' => array('width'=>'120px')
             )
         );
+
         $this->_grid->setColumn(
             'category',
             array(
@@ -181,6 +194,23 @@ class Blog_ManagementController extends Core_Controller_Action_Crud
     {
         $badge = '<span class="badge badge-info">%s</span>';
         return sprintf($badge, $value);
+    }
+
+    public function statusFormatter($value, $row)
+    {
+        switch ($value) {
+            case Blog_Model_Post::STATUS_PUBLISHED:
+                $result = '<span class="label label-success">%s</span>';
+                break;
+            case Blog_Model_Post::STATUS_DRAFT:
+                $result = '<span class="label label-warning">%s</span>';
+                break;
+            case Blog_Model_Post::STATUS_DELETED:
+                $result = '<span class="label label-default">%s</span>';
+                break;
+        }
+
+        return sprintf($result, $value);
     }
 }
 
