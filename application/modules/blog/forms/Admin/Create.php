@@ -124,9 +124,9 @@ class Blog_Form_Admin_Create extends Core_Form
                 ->setAttribs(array('class' => 'span2'))
                 ->addMultioptions(
                     array(
-                        Pages_Model_Page::STATUS_ACTIVE => Pages_Model_Page::STATUS_ACTIVE,
-                        Pages_Model_Page::STATUS_CLOSED => Pages_Model_Page::STATUS_CLOSED,
-                        Pages_Model_Page::STATUS_DELETED => Pages_Model_Page::STATUS_DELETED,
+                        Blog_Model_Post::STATUS_PUBLISHED => Blog_Model_Post::STATUS_PUBLISHED,
+                        Blog_Model_Post::STATUS_DRAFT =>  Blog_Model_Post::STATUS_DRAFT,
+                        Blog_Model_Post::STATUS_DELETED =>  Blog_Model_Post::STATUS_DELETED,
                     )
                 );
 
