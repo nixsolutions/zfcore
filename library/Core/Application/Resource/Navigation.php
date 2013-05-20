@@ -83,11 +83,23 @@ class Core_Application_Resource_Navigation extends Zend_Application_Resource_Res
      */
     protected function _getConfig()
     {
+        $bootstrap = $this->getBootstrap();
+
+        $cache = false;
+        if ($this->_cache) {
+            if ($bootstrap->hasPluginResource('CacheManager')) {
+                $manager = $bootstrap->bootstrap('CacheManager')
+                    ->getResource('CacheManager');
+
+                $cache = $manager->getCache($this->_options['cache']);
+            }
+        }
+
         return Core_Module_Config::getConfig(
             $this->_config,
             null,
             Core_Module_Config::MAIN_ORDER_FIRST,
-            $this->_cache
+            $cache
         );
     }
 }

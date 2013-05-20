@@ -120,7 +120,7 @@ production:
 #          name: Core
 #          options:
 #            lifetime: 7200
-#            cache_id_prefix: meta
+#            cache_id_prefix: db_
 #            automatic_serialization: true
 #        backend:
 #          name: File
@@ -132,7 +132,7 @@ production:
 #          name: Core
 #          options:
 #            lifetime: 7200
-#            cache_id_prefix: meta
+#            cache_id_prefix: router_
 #            automatic_serialization: true
 #        backend:
 #          name: File
@@ -144,7 +144,7 @@ production:
 #          name: Core
 #          options:
 #            lifetime: 7200
-#            cache_id_prefix: meta
+#            cache_id_prefix: acl_
 #            automatic_serialization: true
 #        backend:
 #          name: File
@@ -156,7 +156,19 @@ production:
 #          name: Core
 #          options:
 #            lifetime: 7200
-#            cache_id_prefix: meta
+#            cache_id_prefix: navigation_
+#            automatic_serialization: true
+#        backend:
+#          name: File
+#          options:
+#            cache_dir: APPLICATION_PATH/../data/cache
+#            file_name_prefix: APPLICATION_ENV_metadata
+#      locale:
+#        frontend:
+#          name: Core
+#          options:
+#            lifetime: 7200
+#            cache_id_prefix: locale_
 #            automatic_serialization: true
 #        backend:
 #          name: File
