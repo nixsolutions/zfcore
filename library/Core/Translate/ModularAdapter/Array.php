@@ -123,6 +123,34 @@ class Core_Translate_ModularAdapter_Array extends Zend_Translate_Adapter_Array
                     return $result;
                 }
             }
+        } elseif ($messageId) {
+
+            if (isset($this->_options['saveToDb']) && $this->_options['saveToDb']) {
+                //Not found
+                $select = Zend_Db_Table::getDefaultAdapter()->select();
+                $select->from(array('t' => 'translate'))
+                    ->where('t.key = ?', $messageId)
+                    ->where('t.locale = ?', $locale)
+                    ->where('t.module = ?', $module);
+
+                $existTranslations = $select->query()->fetchAll();
+
+                if ($existTranslations) {
+                    return $messageId;
+                } else {
+                    //Save to DB
+                    Zend_Db_Table::getDefaultAdapter()->insert(
+                        'translate',
+                        array(
+                            'key' => $messageId,
+                            'value' => $messageId,
+                            'locale' => $locale,
+                            'module' => $module
+                        )
+                    );
+                    return $messageId;
+                }
+            }
         }
 
         $this->_log($messageId, $locale);

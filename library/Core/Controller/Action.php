@@ -33,6 +33,25 @@
  */
 abstract class Core_Controller_Action extends Zend_Controller_Action
 {
+
+    /**
+     * return translation of messages
+     *
+     * @param $messageId
+     * @param null $locale
+     * @return string
+     */
+    protected function __($messageId, $locale = null)
+    {
+        if ($translate = Zend_Registry::get(Zend_Application_Resource_Translate::DEFAULT_REGISTRY_KEY)) {
+            /* @var Zend_Translate_Adapter $translate */
+            return $translate->translate($messageId, $locale);
+        } else {
+            return $messageId;
+        }
+    }
+
+
     /**
      * _useDashboard
      *

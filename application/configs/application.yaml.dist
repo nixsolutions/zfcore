@@ -54,13 +54,18 @@ production:
     router:
       config: routes
       cache: router
+#    log:
+#      stream:
+#        writerName: Stream
+#        writerParams:
+#          stream: APPLICATION_PATH/../data/logs/application.log
     translate:
       locale: en
       scan: filename
+      saveToDb: off
       disableNotices: on
       logUntranslated: off
       logMessage: Undefined message '%message%' in '%locale%'
-      logPath: APPLICATION_PATH/../data/logs/lang.log
     locale: on
     modules: on
     layout:

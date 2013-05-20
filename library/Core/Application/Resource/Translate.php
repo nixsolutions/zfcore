@@ -43,6 +43,12 @@ class Core_Application_Resource_Translate
             $this->_options['content'] = Translate_Model_Translate::getTranslationPath();
             $this->_options['adapter'] = Translate_Model_Translate::ADAPTER;
         }
+
+        $log = $this->getBootstrap()->bootstrap('frontController')->getResource('log');
+        if (isset($this->_options['logUntranslated']) && $log) {
+            $this->_options['log'] = $log;
+        }
+
         $translate = $this->getTranslate();
         $front = $this->getBootstrap()->bootstrap('frontController')
             ->getResource('frontController');
