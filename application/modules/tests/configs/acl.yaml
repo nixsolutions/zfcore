@@ -2,3 +2,5 @@ mvc:
   tests:
     index:
       allow: guest
+    cli:
+      allow: guest
