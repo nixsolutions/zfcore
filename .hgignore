@@ -1,6 +1,9 @@
 .idea/*
 nbproject/*
 build/*
+vendor/*
+composer.lock
+composer.phar
 data/cache/*
 data/session/*
 data/logs/*

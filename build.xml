@@ -7,13 +7,18 @@
     <property name="logsDir"  value="${buildDir}/logs" />
     
     
-    <target name="clean">
+    <target name="clean" description="Cleanup build artifacts">
         <delete dir="${buildDir}"/>
         <delete>
             <fileset dir="${basedir}/data/cache" excludes=".empty"/>
             <fileset dir="${basedir}/data/logs" excludes=".empty"/>
             <fileset dir="${basedir}/data/session" excludes=".empty"/>
         </delete>
+
+        <delete dir="${basedir}/vendor"/>
+        <delete file="${basedir}/composer.phar"/>
+        <delete file="${basedir}/composer.lock"/>
+
     </target>
     <target name="prepare" depends="clean">
         <mkdir dir="${buildDir}"/>
@@ -34,6 +39,17 @@
         <chmod dir="${basedir}/data/uploads" perm="777"/>
         <chmod dir="${basedir}/public/captcha" perm="777"/>
         <chmod dir="${basedir}/public/uploads" perm="777"/>
+
+        <!--  Install composer  -->
+        <exec executable="wget" failonerror="true">
+            <arg value="-nc"/>
+            <arg value="http://getcomposer.org/composer.phar"/>
+        </exec>
+
+        <exec executable="php" failonerror="true">
+            <arg value="composer.phar"/>
+            <arg value="install"/>
+        </exec>
         
         <!--Configuration-->
         <copy file="${appDir}/configs/application.yaml.dist" tofile="${appDir}/configs/application.yaml" />
@@ -96,8 +112,9 @@
             <arg line="${testsDir}"/>
         </exec>
     </target>
-    <target name="phpunit" depends="prepare">
-        <exec dir="${basedir}/tests" executable="phpunit" output="${logsDir}/phpunit.log">
+    <target name="phpunit" depends="prepare" description="Run unit tests with PHPUnit">
+        <exec dir="${basedir}/tests" executable="${basedir}/vendor/bin/phpunit" output="${logsDir}/phpunit.log">
+            <!--<env key="APP_ENV" value="ci"/>-->
             <arg line="--verbose"/>
             <arg line="--log-junit '${logsDir}/junit.xml'"/>
             <arg line="--coverage-clover '${logsDir}/clover.xml'"/>

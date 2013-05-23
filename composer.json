@@ -1,0 +1,16 @@
+{
+    "name": "ZFCore",
+    "description": "ZFCore",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "",
+            "email": ""
+        }
+    ],
+
+    "require": {
+        "phpunit/phpunit": "3.7.*"
+
+    }
+}
