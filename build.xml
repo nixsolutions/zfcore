@@ -86,7 +86,7 @@
             <arg line="xml" />
             <arg line="naming,unusedcode,codesize" />
             <arg line="--reportfile ${logsDir}/pmd.xml" />
-            <arg line="--exclude bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests" />
+            <arg line="--exclude bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests,vendor" />
         </exec>
     </target>
 
@@ -96,7 +96,7 @@
             <arg line="--jdepend-xml=${logsDir}/jdepend.xml" />
             <arg line="--jdepend-chart=${buildDir}/pdepend/dependencies.svg" />
             <arg line="--overview-pyramid=${buildDir}/pdepend/overview-pyramid.svg" />
-            <arg line="--exclude=bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests"/>
+            <arg line="--exclude=bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests,vendor"/>
             <arg line="${basedir}"/>
         </exec>
     </target>
