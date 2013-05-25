@@ -14,7 +14,7 @@ class Core_Controller_Action_Cli extends Zend_Controller_Action
     const DEFAULT_MESSAGE = 'default';
 
 
-    private $stdin;
+    private $_stdin;
 
     private $_enabledColorize = false;
 
@@ -80,11 +80,11 @@ class Core_Controller_Action_Cli extends Zend_Controller_Action
     {
         $this->flush();
 
-        if (empty ($this->stdin)) {
-            $this->stdin = fopen('php://stdin', 'r');
+        if (empty ($this->_stdin)) {
+            $this->_stdin = fopen('php://stdin', 'r');
         }
 
-        $line = fgets($this->stdin);
+        $line = fgets($this->_stdin);
         $line = trim($line);
 
         if ('' == $line) {

@@ -8,7 +8,7 @@ class Core_Controller_Router_Cli extends Zend_Controller_Router_Rewrite
 {
 
     /** @var Zend_Controller_Request_Abstract */
-    protected $currentRequest;
+    protected $_currentRequest;
 
 
     /**
@@ -17,7 +17,7 @@ class Core_Controller_Router_Cli extends Zend_Controller_Router_Rewrite
      */
     public function route(Zend_Controller_Request_Abstract $request)
     {
-        $this->currentRequest = $request;
+        $this->_currentRequest = $request;
 
         $getOpt = new Zend_Console_Getopt(array());
         $arguments = $getOpt->getRemainingArgs();
@@ -40,7 +40,7 @@ class Core_Controller_Router_Cli extends Zend_Controller_Router_Rewrite
                     }
 
                     if ($arguments) {
-                        foreach($arguments as $arg) {
+                        foreach ($arguments as $arg) {
                             $parameter = explode('=', $arg, 2);
                             if (false == isset($parameter[1])) {
                                 $parameter[1] = true;
