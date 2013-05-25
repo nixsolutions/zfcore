@@ -17,7 +17,7 @@ class TestListener implements PHPUnit_Framework_TestListener
     
     public function __construct()
     {
-        
+
     }
     
     public function __destruct()
@@ -57,8 +57,8 @@ class TestListener implements PHPUnit_Framework_TestListener
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         $time = sprintf('%0.3f sec', microtime(1) - $this->_timeTest);
-        
-        echo "\t\t" . $test->getCount() . '(Assertions)';
+
+        echo "\t\t" . $test->getNumAssertions() . '(Assertions)';
         echo $this->_colorize("\t" . $time, 'green');
     }
 

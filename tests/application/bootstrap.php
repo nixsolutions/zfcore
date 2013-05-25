@@ -1,6 +1,8 @@
 <?php
 ini_set("memory_limit", "512M");
 date_default_timezone_set('Europe/Kiev');
+defined('PHPUNIT')
+    || define('PHPUNIT', true);
 // Define path to application directory
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../../application'));
