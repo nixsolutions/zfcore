@@ -69,9 +69,10 @@
     <target name="phploc" depends="prepare">
         <exec dir="${basedir}" executable="phploc" output="${logsDir}/phploc.log">
             <arg line="--count-tests" />
-            <arg line="--log-csv ${logsDir}/phploc.csv" />
+            <arg line="--log-xml ${logsDir}/phploc.xml" />
             <arg line="." />
         </exec>
+        <echo message="##teamcity[publishArtifacts '${logsdDir}/phploc.xml']" />
     </target>
     <target name="phpcpd" depends="prepare">
         <exec dir="${basedir}" executable="phpcpd" failonerror="false" output="${logsDir}/phpcpd.log">
@@ -79,6 +80,8 @@
             <arg line="${appDir}" />
             <arg line="${coreDir}" />
         </exec>
+        <echo message="##teamcity[importData type='pmd' path='${logsDir}/phpcpd.xml']"/>
+        <echo message="##teamcity[publishArtifacts '${logsDir}/phpcpd.xml']" />
     </target>
     <target name="phpmd" depends="prepare">
         <exec dir="${basedir}" executable="phpmd" failonerror="false" output="${logsDir}/phpmd.log">
@@ -88,22 +91,33 @@
             <arg line="--reportfile ${logsDir}/pmd.xml" />
             <arg line="--exclude bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests,vendor" />
         </exec>
+        <echo message="##teamcity[importData type='pmd' path='${logsDir}/phpmd.log']"/>
     </target>
 
 
     <target name="pdepend" depends="prepare" description="Generate jdepend.xml and software metrics charts using PHP_Depend">
         <exec dir="${basedir}" executable="pdepend" failonerror="false" output="${logsDir}/pdepend.log">
             <arg line="--jdepend-xml=${logsDir}/jdepend.xml" />
-            <arg line="--jdepend-chart=${buildDir}/pdepend/dependencies.svg" />
-            <arg line="--overview-pyramid=${buildDir}/pdepend/overview-pyramid.svg" />
+            <arg line="--jdepend-chart=${logsDir}/dependencies.png" />
+            <arg line="--overview-pyramid=${logsDir}/overview-pyramid.png" />
+            <arg line="--phpunit-xml=${logsDir}/pdepend.phpunit.xml"></arg>
+            <arg line="--summary-xml=${logsDir}/pdepend.summary.xml"></arg>
+            <arg line="--coverage-report=${logsDir}/phpunit.clover.xml"></arg>
+            <arg line="--coderank-mode=inheritance,property,method"></arg>
             <arg line="--exclude=bin,data,library/Zend,library/elFinder,library/Facebook,migrations,public,tests,vendor"/>
             <arg line="${basedir}"/>
         </exec>
+        <echo message="##teamcity[publishArtifacts '${logsDir}/pdepend.jdepend.chart.png']" />
+        <echo message="##teamcity[publishArtifacts '${logsDir}/pdepend.jdepend.xml']" />
+        <echo message="##teamcity[publishArtifacts '${logsDir}/pdepend.overview.pyramid.png']" />
+        <echo message="##teamcity[publishArtifacts '${logsDir}/pdepend.phpunit.xml']" />
+        <echo message="##teamcity[publishArtifacts '${logsDir}/pdepend.summary.xml']" />
+        <echo message="##teamcity[publishArtifacts '${logsDir}/phpunit.clover.xml']" />
     </target>
 
     <target name="phpcs" depends="prepare">
         <exec dir="${basedir}" executable="phpcs" failonerror="false" output="${logsDir}/phpcs.log">
-            <arg line="--report=checkstyle"/>
+            <arg line="--report=full" />
             <arg line="--extensions=php"/>
             <arg line="--standard=Zend"/>
             <arg line="--report-file=${logsDir}/checkstyle.xml" />
@@ -111,6 +125,7 @@
             <arg line="${coreDir}"/>
             <arg line="${testsDir}"/>
         </exec>
+        <echo message="##teamcity[publishArtifacts '${logsDir}/checkstyle.xml']" />
     </target>
     <target name="phpunit" depends="prepare" description="Run unit tests with PHPUnit">
         <exec dir="${basedir}/tests" executable="${basedir}/vendor/bin/phpunit" output="${logsDir}/phpunit.log">
@@ -121,15 +136,18 @@
             <arg line="--coverage-html '${logsDir}/clover'"/>
             <arg line="TestSuite.php"/>
         </exec>
+        <echo message="##teamcity[importData type='junit' path='${logsDir/phpunit.xml}']" />
     </target>
     <target name="phpcb" depends="phpcpd, phpmd, phpcs">
         <exec executable="phpcb" output="${logsDir}/phpcb.log">
             <arg line="--log ${logsDir}" />
             <arg line="--output ${buildDir}/phpcb" />
         </exec>
+        <zip destfile="${buildDir}/phpcb/phpcb.zip" basedir="${buildDir}/phpcb" />
+        <echo message="##teamcity[publishArtifacts '${buildDir}/phpcb/phpcb.zip']" />
     </target>
     
-    <target name="build" depends="prepare, phploc, phpmd, phpcs, phpcpd, pdepend, phpunit, phpcb"/>
+    <target name="build" depends="phploc, pdepend, phpunit, phpcb"/>
 
     <target name="update-source" depends="prepare">
         <exec dir="${basedir}" executable="hg" output="${logsDir}/hg.log">
