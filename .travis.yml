@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+
+env:
+  - DB=mysql
+
+before_script:
+  # Composer
+  - wget -nc http://getcomposer.org/composer.phar
+  - php composer.phar install
+  # Copy config
+  - cp application/configs/application.yaml.dist application/configs/application.yaml
+
+script:
+  # PHPUnit tests
+  - php vendor/bin/phpunit --configuration tests/phpunit.xml --coverage-text
