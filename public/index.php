@@ -48,6 +48,9 @@ function errorHandler() {
     include_once 'error.php';
 }
 
+//For Composer
+require_once 'autoload.php';
+
 /** Zend_Application */
 require_once 'Zend/Application.php';
 
@@ -63,7 +66,7 @@ try {
 
         $backendOptions  = array("file_name_prefix" => APPLICATION_ENV . "_config",
                                  "cache_dir" =>  APPLICATION_PATH ."/../data/cache",
-                                 "cache_file_umask" => 0644);
+                                 "cache_file_perm" => 0644);
 
         // getting a Zend_Cache_Core object
         $cache = Zend_Cache::factory(

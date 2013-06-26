@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "zendframework/zendframework1": "1.12.*@dev",
         "phpunit/phpunit": "3.7.*",
         "opauth/opauth": "*",
         "opauth/facebook": "*",
