@@ -83,3 +83,25 @@ usersvalidate:
     module: users
     controller: management
     action: validate
+
+userAuth:
+  type: Zend_Controller_Router_Route
+  route: /users/auth/:provider/*
+    defaults:
+      module: users
+      controller: auth
+      action: index
+
+userAuthEmptyProvider:
+  route: /users/auth/
+    defaults:
+      module: users
+      controller: index
+      action: index
+
+userAuthCallback:
+  route: /users/auth/callback
+    defaults:
+      module: users
+      controller: auth
+      action: callback

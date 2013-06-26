@@ -6,6 +6,7 @@ class Users_Test extends PHPUnit_Framework_TestSuite
     {
         require_once 'IndexControllerTest.php';
         require_once 'LoginControllerTest.php';
+        require_once 'AuthControllerTest.php';
         require_once 'ManagementControllerTest.php';
         require_once 'RegisterControllerTest.php';
 
@@ -17,6 +18,7 @@ class Users_Test extends PHPUnit_Framework_TestSuite
 
         $suite->addTest(new PHPUnit_Framework_TestSuite('Users_IndexControllerTest'));
         $suite->addTest(new PHPUnit_Framework_TestSuite('Users_LoginControllerTest'));
+        $suite->addTest(new PHPUnit_Framework_TestSuite('Users_AuthControllerTest'));
         $suite->addTest(new PHPUnit_Framework_TestSuite('Users_ManagementControllerTest'));
         $suite->addTest(new PHPUnit_Framework_TestSuite('Users_RegisterControllerTest'));
 

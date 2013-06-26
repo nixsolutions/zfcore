@@ -11,9 +11,6 @@
  */
 class Users_LoginController extends Core_Controller_Action
 {
-    const OAUTH_TWITTER  = 'twitter';
-    const OAUTH_FACEBOOK = 'facebook';
-    const OAUTH_GOOGLE   = 'google';
 
     /**
      * Init controller plugins
@@ -90,7 +87,7 @@ class Users_LoginController extends Core_Controller_Action
         }
         if (Zend_Registry::isRegistered('googleConfig')) {
             $googleConfig = Zend_Registry::get('googleConfig');
-            if ($googleConfig['consumerKey']) {
+            if ($googleConfig['clientId']) {
                 $this->view->google = true;
             }
         }
@@ -161,83 +158,4 @@ class Users_LoginController extends Core_Controller_Action
         $this->_helper->redirector(false, false, false);
     }
 
-    /**
-     * Oauth Connect
-     *
-     */
-    public function oauthAction()
-    {
-        $namespace = $this->_getOauthStorage();
-        $info = $namespace->info;
-
-        $users = new Users_Model_User_Table();
-
-        if (empty($info->email)) {
-            $row = $users->getByTwitterid($info->twitterId);
-        } else {
-            $row = $users->getByEmail($info->email);
-            if (!$row) {
-                if (self::OAUTH_FACEBOOK == $this->_getParam('type')) {
-                    $row = $users->getByFacebookid($info->facebookId);
-                } elseif (self::OAUTH_GOOGLE == $this->_getParam('type')) {
-                    $row = $users->getByGoogleid($info->googleId);
-                }
-            }
-        }
-        if (!$row) {
-            $loginFilter = new Zend_Filter_Alnum();
-            $info->login = $loginFilter->filter($info->login);
-
-            if ($users->getByLogin($info->login)) {
-
-                $form = new Users_Form_Auth_RegisterLogin();
-                if ($this->getRequest()->isPost()
-                    && $form->isValid($this->_getAllParams())) {
-
-                    $info->login = $form->getValue('login');
-                } else {
-                    $this->view->login = $info->login;
-                    $this->view->form = $form;
-                    return;
-                }
-            }
-
-            $row = $users->createRow($info->getArrayCopy());
-            $row->role = Users_Model_User::ROLE_USER;
-            $row->status = Users_Model_User::STATUS_ACTIVE;
-            $row->save();
-        }
-
-        $row->login();
-        $namespace->unsetAll();
-
-        $this->_helper->flashMessenger->addMessage('Now You\'re Logging!');
-        $this->_helper->redirector(false, false, false);
-    }
-
-    /**
-     * Oauth Connect
-     *
-     * @return Zend_Session_Namespace
-     */
-    protected function _getOauthStorage()
-    {
-        $namespace = new Zend_Session_Namespace('oauth');
-
-        if (empty($namespace->info)) {
-            switch ($this->_getParam('type')) {
-                case self::OAUTH_TWITTER:
-                    $helper = $this->_helper->twitter;
-                    break;
-                case self::OAUTH_GOOGLE:
-                    $helper = $this->_helper->google;
-                    break;
-                case self::OAUTH_FACEBOOK:
-                    $helper = $this->_helper->facebook;
-                    break;
-            }
-            $namespace->info = $helper->getInfo();
-        }
-        return $namespace;
-    }
 }
