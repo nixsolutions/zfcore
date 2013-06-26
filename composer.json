@@ -8,9 +8,13 @@
             "email": "naxel@land.ru"
         }
     ],
-
     "require": {
-        "phpunit/phpunit": "3.7.*"
-
+        "phpunit/phpunit": "3.7.*",
+        "opauth/opauth": "*",
+        "opauth/facebook": "*",
+        "opauth/google": "*",
+        "opauth/twitter": "*"
     }
+
+
 }

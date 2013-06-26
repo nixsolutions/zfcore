@@ -30,6 +30,7 @@ set_include_path(
         PATH_SEPARATOR,
         array(
             realpath(APPLICATION_PATH . '/../library'),
+            realpath(APPLICATION_PATH . '/../vendor'),
             get_include_path(),
         )
     )

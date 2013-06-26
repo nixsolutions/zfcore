@@ -14,7 +14,6 @@ production:
   appnamespace: Application
   autoloadernamespaces:
     - Core
-    - Facebook
   uploadDir: uploads
   resources:
     frontController:
@@ -75,23 +74,20 @@ production:
     registry:
       console:
         colorize: true
+      opauthConfig:
+        path: '/users/auth/'
+        callback_url: '/users/auth/callback/'
+        security_salt: 'ChangeMe'
       fbConfig:
         appId: 
-        secret: 
-        cookie: on
+        secret:
+        scope: 'email,user_checkins'
       twitterConfig:
-        callbackUrl: /users/login/oauth/type/twitter
-        siteUrl: http://twitter.com/oauth
         consumerKey: 
         consumerSecret: 
       googleConfig:
-        callbackUrl: /users/login/oauth/type/google
-        siteUrl: https://www.google.com/accounts/
-        authorizeUrl: https://www.google.com/accounts/OAuthAuthorizeToken
-        requestTokenUrl: https://www.google.com/accounts/OAuthGetRequestToken
-        accessTokenUrl: https://www.google.com/accounts/OAuthGetAccessToken
-        consumerKey: 
-        consumerSecret: 
+        clientId:
+        clientSecret:
     session:
       save_path: APPLICATION_PATH/../data/session
     mail:

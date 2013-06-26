@@ -1,5 +1,8 @@
 mvc:
   users:
+    auth:
+      allow: guest
+      deny: user
     api:
       allow: guest
     index:

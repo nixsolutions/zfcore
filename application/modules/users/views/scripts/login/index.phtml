@@ -15,23 +15,21 @@
                                    'forgetPassword'); ?>"><?php echo $this->__('Forget Password')?></a>
 
     <?php if ($this->google):?>        |
-        <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'google'), 'default');?>">
+        <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'auth', 'action' => 'index', 'provider' => 'google'), 'userAuth');?>">
             <?php echo $this->__('Sign in with Google')?>
         </a>
     <?php endif;?>
 
     <?php if ($this->twitter):?>        |
-        <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'twitter'), 'default');?>">
+        <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'auth', 'action' => 'index', 'provider' => 'twitter'), 'userAuth');?>">
             <?php echo $this->__('Sign in with Twitter')?>
         </a>
     <?php endif;?>
 
     <?php if ($this->facebook):?>        |
-        <?php echo $this->fbConnect()->login(
-            $this->__('Login with Facebook'),
-            array('email', 'user_checkins'),
-            $this->url(array('module' => 'users', 'controller' => 'login', 'action' => 'oauth', 'type' => 'facebook'), 'default')
-        );?>
+        <a href="<?php echo $this->url(array('module' => 'users', 'controller' => 'auth', 'action' => 'index', 'provider' => 'facebook'), 'userAuth');?>">
+            <?php echo $this->__('Sign in with Facebook')?>
+        </a>
     <?php endif;?>
 </p>
 </article>
