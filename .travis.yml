@@ -17,4 +17,4 @@ before_script:
 
 script:
   # PHPUnit tests
-  - php vendor/bin/phpunit --configuration tests/phpunit.xml --coverage-text
+  - php vendor/bin/phpunit --configuration tests/phpunit.xml --coverage-text --verbose tests/TestSuite.php
