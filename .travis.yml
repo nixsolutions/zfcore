@@ -2,11 +2,9 @@ language: php
 
 php:
   - 5.3
-  - 5.4
-  - 5.5
 
 env:
-  - DB=mysql
+  - APPLICATION_ENV="travis" DB="mysql"
 
 before_script:
   # Composer
@@ -15,7 +13,7 @@ before_script:
   # Copy config
   - cp application/configs/application.yaml.dist application/configs/application.yaml
   # Database
-  - mysql -e 'CREATE DATABASE p_zfc_test;'
+  - mysql -e 'CREATE DATABASE zfc_test;'
 
 script:
   # PHPUnit tests

@@ -243,3 +243,14 @@ development:
         profiler:
           enabled: on
           class: Zend_Db_Profiler_Firebug
+travis:
+  _extends: testing
+  resources:
+    db:
+      adapter: Pdo Mysql
+      params:
+        host: ''
+        username: ''
+        password: ''
+        dbname: zfc_test
+        persistent: on
