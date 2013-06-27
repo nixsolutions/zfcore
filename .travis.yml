@@ -14,6 +14,8 @@ before_script:
   - php composer.phar install
   # Copy config
   - cp application/configs/application.yaml.dist application/configs/application.yaml
+  # Database
+  - mysql -e 'CREATE DATABASE p_zfc_test;'
 
 script:
   # PHPUnit tests
