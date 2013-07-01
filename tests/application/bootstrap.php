@@ -39,6 +39,9 @@ set_include_path(
     )
 );
 
+//For Composer
+require_once APPLICATION_PATH . '/../vendor/autoload.php';
+
 require_once 'ControllerTestCase.php';
 require_once 'TestListener.php';
 
