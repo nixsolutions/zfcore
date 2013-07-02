@@ -25,11 +25,14 @@ class Users_Form_Users_Edit extends Users_Form_Users_Create
     }
 
     /**
-     * @see Zend_Form::setDefaults()
-     * @param $defaults
-     * @return \Zend_Form
+     * Set default values for elements
+     *
+     * Sets values for all elements specified in the array of $defaults.
+     *
+     * @param  array $defaults
+     * @return Zend_Form
      */
-    public function setDefaults($defaults)
+    public function setDefaults(array $defaults)
     {
         if (isset($defaults['id'])) {
             $this->getElement('email')->getValidator('Db_NoRecordExists')

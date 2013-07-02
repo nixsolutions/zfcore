@@ -1,6 +1,6 @@
 <?php
 require_once 'Zend/Application.php';
-require_once 'Zend/Test/PHPUnit/ControllerTestCase.php';
+require_once 'Core/Tests/PHPUnit/ControllerTestCase.php';
 require_once 'Zend/Config/Yaml.php';
 require_once 'Core/Config/Yaml.php';
 
@@ -9,7 +9,7 @@ require_once 'Core/Config/Yaml.php';
  *
  * @category Tests
  */
-abstract class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
+abstract class ControllerTestCase extends Core_Tests_PHPUnit_ControllerTestCase
 {
     /**
      * Application entity
