@@ -1,6 +1,7 @@
 <?php
-class Blog_Test extends PHPUnit_Framework_TestSuite
+class Blog_Test extends Core_Tests_PHPUnit_Framework_TestSuite
 {
+
 
     public static function suite()
     {
@@ -9,8 +10,12 @@ class Blog_Test extends PHPUnit_Framework_TestSuite
 
         $suite = new self('Blog');
 
-        $suite->addTest(new PHPUnit_Framework_TestSuite('Blog_IndexControllerTest'));
-        $suite->addTest(new PHPUnit_Framework_TestSuite('Blog_PostControllerTest'));
+        $testClasses = array(
+            'Blog_IndexControllerTest',
+            'Blog_PostControllerTest'
+        );
+
+        $suite->addTests($testClasses);
 
         return $suite;
     }
@@ -18,16 +23,20 @@ class Blog_Test extends PHPUnit_Framework_TestSuite
 
     protected function setUp()
     {
-        ControllerTestCase::migrationUp('categories');
-        ControllerTestCase::migrationUp('comments');
-        ControllerTestCase::migrationUp('blog');
+        if ($this->count()) {
+            ControllerTestCase::migrationUp('categories');
+            ControllerTestCase::migrationUp('comments');
+            ControllerTestCase::migrationUp('blog');
+        }
     }
 
     protected function tearDown()
     {
-        ControllerTestCase::migrationDown('blog');
-        ControllerTestCase::migrationDown('comments');
-        ControllerTestCase::migrationDown('categories');
+        if ($this->count()) {
+            ControllerTestCase::migrationDown('blog');
+            ControllerTestCase::migrationDown('comments');
+            ControllerTestCase::migrationDown('categories');
+        }
     }
 
 }

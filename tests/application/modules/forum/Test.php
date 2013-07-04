@@ -1,5 +1,5 @@
 <?php
-class Forum_Test extends PHPUnit_Framework_TestSuite
+class Forum_Test extends Core_Tests_PHPUnit_Framework_TestSuite
 {
 
     public static function suite()
@@ -9,8 +9,12 @@ class Forum_Test extends PHPUnit_Framework_TestSuite
 
         $suite = new self('Forum');
 
-        $suite->addTest(new PHPUnit_Framework_TestSuite('Forum_IndexControllerTest'));
-        $suite->addTest(new PHPUnit_Framework_TestSuite('Forum_PostControllerTest'));
+        $testClasses = array(
+            'Forum_IndexControllerTest',
+            'Forum_PostControllerTest'
+        );
+
+        $suite->addTests($testClasses);
 
         return $suite;
     }
@@ -18,16 +22,20 @@ class Forum_Test extends PHPUnit_Framework_TestSuite
 
     protected function setUp()
     {
-        ControllerTestCase::migrationUp('categories');
-        ControllerTestCase::migrationUp('comments');
-        ControllerTestCase::migrationUp('forum');
+        if ($this->count()) {
+            ControllerTestCase::migrationUp('categories');
+            ControllerTestCase::migrationUp('comments');
+            ControllerTestCase::migrationUp('forum');
+        }
     }
 
     protected function tearDown()
     {
-        ControllerTestCase::migrationDown('forum');
-        ControllerTestCase::migrationDown('comments');
-        ControllerTestCase::migrationDown('categories');
+        if ($this->count()) {
+            ControllerTestCase::migrationDown('forum');
+            ControllerTestCase::migrationDown('comments');
+            ControllerTestCase::migrationDown('categories');
+        }
     }
 
 }

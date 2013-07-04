@@ -88,7 +88,6 @@ class Users_AuthController extends Core_Controller_Action
             }
         }
 
-        require_once 'autoload.php';
     }
 
 

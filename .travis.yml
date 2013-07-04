@@ -1,0 +1,20 @@
+language: php
+
+php:
+  - 5.3
+
+env:
+  - APPLICATION_ENV="travis" DB="mysql"
+
+before_script:
+  # Composer
+  - wget -nc http://getcomposer.org/composer.phar
+  - php composer.phar install
+  # Copy config
+  - cp application/configs/application.yaml.dist application/configs/application.yaml
+  # Database
+  - mysql -e 'CREATE DATABASE zfc_test;'
+
+script:
+  # PHPUnit tests
+  - php vendor/bin/phpunit --configuration tests/phpunit.xml --coverage-text --verbose tests/TestSuite.php

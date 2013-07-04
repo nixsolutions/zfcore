@@ -139,7 +139,7 @@ class Options_Model_Options_Manager extends Core_Model_Manager
      */
     public function getOptions($namespace)
     {
-        if (!isset($this->_cache[$namespace])) {
+        if (!isset(self::$_cache[$namespace])) {
             self::$_cache[$namespace] = array();
 
             $rowset = $this->getDbTable()->getByNamespace($namespace);
