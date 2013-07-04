@@ -1,6 +1,6 @@
 <?php
 
-class Options_Test extends PHPUnit_Framework_TestSuite
+class Options_Test extends Core_Tests_PHPUnit_Framework_TestSuite
 {
 
 
@@ -9,18 +9,27 @@ class Options_Test extends PHPUnit_Framework_TestSuite
         require_once 'models/OptionTest.php';
 
         $suite = new self('Options');
-        $suite->addTest(new PHPUnit_Framework_TestSuite('Model_OptionTest'));
+
+        $testClasses = array(
+            'Model_OptionTest'
+        );
+
+        $suite->addTests($testClasses);
 
         return $suite;
     }
 
     protected function setUp()
     {
-        ControllerTestCase::migrationUp('options');
+        if ($this->count()) {
+            ControllerTestCase::migrationUp('options');
+        }
     }
 
     protected function tearDown()
     {
-        ControllerTestCase::migrationDown('options');
+        if ($this->count()) {
+            ControllerTestCase::migrationDown('options');
+        }
     }
 }

@@ -1,5 +1,5 @@
 <?php
-class Faq_Test extends PHPUnit_Framework_TestSuite
+class Faq_Test extends Core_Tests_PHPUnit_Framework_TestSuite
 {
 
     public static function suite()
@@ -7,19 +7,28 @@ class Faq_Test extends PHPUnit_Framework_TestSuite
         require_once 'IndexControllerTest.php';
 
         $suite = new self('Faq');
-        $suite->addTest(new PHPUnit_Framework_TestSuite('Faq_IndexControllerTest'));
+
+        $testClasses = array(
+            'Faq_IndexControllerTest'
+        );
+
+        $suite->addTests($testClasses);
 
         return $suite;
     }
 
     protected function setUp()
     {
-        ControllerTestCase::migrationUp('faq');
+        if ($this->count()) {
+            ControllerTestCase::migrationUp('faq');
+        }
     }
 
     protected function tearDown()
     {
-        ControllerTestCase::migrationDown('faq');
+        if ($this->count()) {
+            ControllerTestCase::migrationDown('faq');
+        }
     }
 
 }
