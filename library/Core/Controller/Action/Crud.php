@@ -169,25 +169,28 @@ abstract class Core_Controller_Action_Crud extends Core_Controller_Action
         $this->view->form = $form;
     }
 
+
     /**
      * load model
      *
      * @return Zend_Db_Table_Row_Abstract
+     * @throws Core_Controller_NotFoundException
      */
     protected function _loadModel()
     {
         if (!$id = $this->_getParam('id')) {
-            $this->_forwardNotFound();
+            throw new Core_Controller_NotFoundException('Not found');
         }
 
         $table = $this->_getTable();
 
         if (!$model = $table->getById($id)) {
-            $this->_forwardNotFound();
+            throw new Core_Controller_NotFoundException('Not found');
         }
 
         return $model;
     }
+
 
     /**
      * change view script path specification

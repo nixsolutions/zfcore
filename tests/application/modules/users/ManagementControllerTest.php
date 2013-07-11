@@ -108,6 +108,18 @@ class Users_ManagementControllerTest extends ControllerTestCase
         $user->delete();
     }
 
+
+    public function testIncorrectUserId()
+    {
+        //Test on Fatal error: Call to a member function toArray() on a non-object
+        $this->dispatch('/users/management/edit/id/100000000000000000');
+        $this->assertModule('index');
+        $this->assertController('error');
+        $this->assertAction('notfound');
+
+    }
+
+
     /**
      * Test /users/management/delete
      * FIXME: Trying to get property of non-object
