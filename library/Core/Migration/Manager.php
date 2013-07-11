@@ -230,8 +230,8 @@ class Core_Migration_Manager
 
         // foreach loop for $filesDirty array
         foreach ($filesDirty as $file) {
-            if (preg_match('/\d{8}_\d{6}_\d{2}\.php/', $file)
-                || preg_match('/\d{8}_\d{6}_\d{2}_[A-z0-9]*\.php/', $file)) {
+            if (preg_match('/\d{8}_\d{6}_\d{2}\.php$/', $file)
+                || preg_match('/\d{8}_\d{6}_\d{2}_[A-z0-9]*\.php$/', $file)) {
                 array_push($migrations, substr($file, 0, -4));
             }
         }
