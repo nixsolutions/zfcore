@@ -26,6 +26,12 @@ class Index_ErrorController extends Core_Controller_Action
                 $this->getResponse()->setHttpResponseCode(404);
                 $message = "The page you requested was not found.";
                 break;
+            case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_OTHER:
+                if ($errors->exception->getCode() == 404) {
+                    $message = "The page you requested was not found.";
+                    $this->forward('notfound', 'error', 'index');
+                    break;
+                }
             default:
                 // application error
                 $this->getResponse()->setHttpResponseCode(500);
