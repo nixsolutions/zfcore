@@ -41,7 +41,7 @@ class Core_Dump_ManagerTest extends ControllerTestCase
         $db->query(Core_Db_Database::dropTable(self::TABLE_NAME));
         $db->createTable(self::TABLE_NAME);
         $db->createColumn(self::TABLE_NAME, 'col1', Core_Migration_Abstract::TYPE_INT);
-        $db->createColumn(self::TABLE_NAME, 'col2', Core_Migration_Abstract::TYPE_VARCHAR, 50);
+        $db->createColumn(self::TABLE_NAME, 'col2', Core_Migration_Abstract::TYPE_TEXT);
 
         $db->query(Core_Db_Database::dropTable('test_black_table1'));
         $db->createTable('test_black_table1');
@@ -49,13 +49,21 @@ class Core_Dump_ManagerTest extends ControllerTestCase
         $db->query(Core_Db_Database::dropTable('test_black_table2'));
         $db->createTable('test_black_table2');
 
+        $testData = array(
+            'id' => '1',
+            'col1'=> '11',
+            'col2'=> '<p>ZFCore is a content management framework based on Zend Framework. It was developed by PHP Team of <a href="http://nixsolutions.com/">NIX Solutions Ltd</a>. In case you are interested in getting a multifunctional, secure project reliable in data processing like ZFCore, you can always turn to our skillful and experienced team of PHP developers. Moreover, we don\'t limit ourselves with PHP because sometimes it\'s useful to support projects with mobile applications. iPhone and Android Teams of NIX Solutions Ltd. are always ready to help and develop for you any kind of mobile apps.</p>'
+        );
+
+        $db->insert(self::TABLE_NAME, $testData);
 
         $dumpName = $this->_getManager()->create(
             self::FIXTURE_MODULE, self::DUMP_FILE_NAME, self::TABLE_NAME, 'test_black_table1,test_black_table2'
         );
 
         $compareTo = Core_Db_Database::dropTable(self::TABLE_NAME) . ';' . PHP_EOL
-            . Core_Db_Database::createTable(self::TABLE_NAME). ';' . PHP_EOL;
+            . Core_Db_Database::createTable(self::TABLE_NAME). ';' . PHP_EOL
+            . Core_Db_Database::insert(self::TABLE_NAME, $testData). ';' . PHP_EOL;
 
         $this->assertEquals(self::DUMP_FILE_NAME, $dumpName);
 

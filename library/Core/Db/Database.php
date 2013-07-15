@@ -90,21 +90,29 @@ class Core_Db_Database
 
     }
 
+
+    /**
+     * Generate dump
+     *
+     * @return string
+     */
     public function getDump()
     {
         $dump = '';
 
-        foreach ($this->_scheme as $tableName=>$fields) {
+        foreach ($this->_scheme as $tableName => $fields) {
 
-            $dump .= self::dropTable($tableName).';'.PHP_EOL;
-            $dump .= self::createTable($tableName).';'.PHP_EOL;
+            $dump .= self::dropTable($tableName) . ';' . PHP_EOL;
+            $dump .= self::createTable($tableName) . ';' . PHP_EOL;
 
             if (sizeof($this->_data[$tableName]) > 0)
-                foreach ($this->_data[$tableName] as $data)
-                    $dump .= self::insert($tableName, $data).';'.PHP_EOL;
+                foreach ($this->_data[$tableName] as $data) {
+                    $dump .= self::insert($tableName, $data) . ';' . PHP_EOL;
+                }
+
         }
 
-       return stripslashes($dump);
+        return $dump;
     }
 
 
@@ -393,6 +401,8 @@ class Core_Db_Database
         Core_Db_Database::addSqlExtras($sql, $column);
         return $sql;
     }
+
+
     /**
      * create CREATE TABLE query
      * @param $tblName
@@ -405,9 +415,9 @@ class Core_Db_Database
         $trow = $db->fetchRow("SHOW CREATE TABLE `{$tblName}`");
         $query = preg_replace('#AUTO_INCREMENT=\S+#is', '', $trow['Create Table']);
         //$query = preg_replace("#\n\s*#", ' ', $query); //uncomment if you want query in one line
-        $query = addcslashes($query, '\\\''); //escape slashes and single quotes
         return $query;
     }
+
 
     /**
      * create query for adding index
@@ -491,25 +501,30 @@ class Core_Db_Database
     }
 
 
+    /**
+     * Generate insert for dump
+     *
+     * @param string $table
+     * @param array $bind
+     * @return string
+     */
     public static function insert($table, array $bind)
     {
         $db = Zend_Db_Table::getDefaultAdapter();
 
         // extract and quote col names from the array keys
         $cols = array();
-        $vals = array();
-        $i = 0;
+        $values = array();
         foreach ($bind as $col => $val) {
-            $cols[] = '`'.$col.'`';
-            $vals[] = $db->quote($val);
-
+            $cols[] = '`' . $col . '`';
+            $values[] = $db->quote($val);
         }
 
         // build the statement
         $sql = "INSERT INTO `"
             . $table
             . '` (' . implode(', ', $cols) . ') '
-            . 'VALUES (' . implode(', ', $vals) . ')';
+            . 'VALUES (' . implode(', ', $values) . ')';
 
         return $sql;
     }
