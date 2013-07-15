@@ -468,22 +468,35 @@ class Core_Tool_Project_Provider_MigrationProvider
         }
     }
 
+
     /**
-     * message
-     *
-     * print input message
+     * Print input message
      *
      * @param string $text
      * @param string $color
+     * @param string $delimiter
      */
     protected function message($text, $color = 'white', $delimiter = "\n")
     {
-        if (function_exists('posix_isatty')) {
-            if (array_key_exists($color, $this->_colorOptions)) {
-                echo "\033[" . $this->_colorOptions[$color] . $text . "\033[m".$delimiter;
+        $colorize = false;
+        if (Zend_Registry::isRegistered('console')) {
+            $consoleConfig = Zend_Registry::get('console');
+            if (isset($consoleConfig["colorize"]) && $consoleConfig["colorize"] === true) {
+                $colorize = true;
+            }
+        }
+
+        if ($colorize) {
+            if (function_exists('posix_isatty')) {
+                if (array_key_exists($color, $this->_colorOptions)) {
+                    echo "\033[" . $this->_colorOptions[$color] . $text . "\033[m" . $delimiter;
+                }
+            } else {
+                echo $text . $delimiter;
             }
         } else {
             echo $text . $delimiter;
         }
+
     }
 }

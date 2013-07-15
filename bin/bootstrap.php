@@ -23,7 +23,9 @@ try {
         APPLICATION_ENV,
         APPLICATION_PATH . '/configs/application.yaml'
     );
-    $application->bootstrap('db')->bootstrap('frontController');
+    $application->bootstrap('registry')
+        ->bootstrap('db')
+        ->bootstrap('frontController');
 } catch (Exception $exception) {
     echo 'Error: ' . $exception->getMessage();
     exit(1);
