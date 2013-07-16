@@ -165,11 +165,15 @@ class Core_Tool_Project_Provider_MigrationProvider
 
     }
 
+
     /**
      * create migration with auto-generated queries
+     *
      * @param null $module
      * @param string $whitelist
      * @param string $blacklist
+     * @param string $label
+     * @param string $description
      */
     public function generate($module = null, $whitelist = '',
                              $blacklist = '', $label = '', $description = '')
@@ -182,12 +186,13 @@ class Core_Tool_Project_Provider_MigrationProvider
         );
 
         if ($result) {
-            $this->message('Migration '.$result.' created! ');
+            $this->message('Migration ' . $result . ' created! ');
         } else {
             $this->message('Your database has no changes from last revision!');
         }
-
     }
+
+
     /**
      * print differences on screen
      * @param null $module
