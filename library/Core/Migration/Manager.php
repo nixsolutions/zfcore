@@ -287,10 +287,13 @@ class Core_Migration_Manager
 
         try {
             $select = Zend_Db_Table::getDefaultAdapter()->select()
-                ->from($this->getMigrationsSchemaTable(), array('migration'))
-                ->where("module = ?", (null === $module) ? '' : $module)
-                ->order('migration DESC')
+                ->from($this->getMigrationsSchemaTable(), array('id'))
+                ->order('id DESC')
                 ->limit(1);
+
+            if ($module) {
+                $select->where("module = ?", $module);
+            }
 
             $lastMigration
                 = Zend_Db_Table::getDefaultAdapter()->fetchOne($select);
@@ -400,10 +403,11 @@ class Core_Migration_Manager
         $query = $dbAdapter->select()->from(
             $this->_options['migrationsSchemaTable'],
             array('state')
-        )->where('migration=?', $lastMigration);
+        )->where('id = ?', $lastMigration);
 
-        if ($module)
-            $query->where('module=?', $module);
+        if ($module) {
+            $query->where('module = ?', $module);
+        }
 
         $dbState = $dbAdapter->fetchOne($query);
 
