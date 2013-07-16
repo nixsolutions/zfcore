@@ -2,10 +2,40 @@
     "name": "ZFCore",
     "description": "ZFCore",
     "minimum-stability": "dev",
+    "config": {
+        "process-timeout": 600
+    },
     "authors": [
+        {
+            "name": "AntonShevchuk",
+            "email": "antonshevchuk@gmail.com"
+        },
         {
             "name": "naxel",
             "email": "naxel@land.ru"
+        },
+        {
+            "name": "MaksSlesarenko"
+        },
+        {
+            "name": "nix-rewolf"
+        },
+        {
+            "name": "bashmach"
+        },
+        {
+            "name": "Baziak",
+            "email": "realbaziak@gmail.com"
+        },
+        {
+            "name": "uglide"
+        },
+        {
+            "name": "galkin"
+        },
+        {
+            "name": "GerasimenkoAlexander",
+            "email": "gerasimenkoalexanderua@gmail.com"
         }
     ],
     "require": {
@@ -16,6 +46,5 @@
         "opauth/google": "*",
         "opauth/twitter": "*"
     }
-
 
 }
