@@ -279,15 +279,13 @@ class Core_Migration_Manager
      *
      * @param null $module
      * @throws Core_Exception
-     * @return string
+     * @return array
      */
     public function getLastMigration($module = null)
     {
-        $lastMigration = null;
-
         try {
             $select = Zend_Db_Table::getDefaultAdapter()->select()
-                ->from($this->getMigrationsSchemaTable(), array('id'))
+                ->from($this->getMigrationsSchemaTable(), array('id', 'migration'))
                 ->order('id DESC')
                 ->limit(1);
 
@@ -296,7 +294,7 @@ class Core_Migration_Manager
             }
 
             $lastMigration
-                = Zend_Db_Table::getDefaultAdapter()->fetchOne($select);
+                = Zend_Db_Table::getDefaultAdapter()->fetchRow($select);
 
             if (!$lastMigration) {
                 throw new Core_Exception(
@@ -305,7 +303,7 @@ class Core_Migration_Manager
             }
         } catch (Exception $e) {
             // maybe table is not exist; this is first revision
-            $lastMigration = '0';
+            $lastMigration = array('id' => 0, 'migration' => 0);
         }
 
         return $lastMigration;
@@ -403,7 +401,7 @@ class Core_Migration_Manager
         $query = $dbAdapter->select()->from(
             $this->_options['migrationsSchemaTable'],
             array('state')
-        )->where('id = ?', $lastMigration);
+        )->where('id = ?', $lastMigration['id']);
 
         if ($module) {
             $query->where('module = ?', $module);
@@ -502,7 +500,7 @@ class Core_Migration_Manager
             $dbAdapter->update(
                 $this->_options['migrationsSchemaTable'],
                 array('state' => $db->toString()),
-                array($dbAdapter->quoteInto('migration=?', $lastMigration),
+                array($dbAdapter->quoteInto('migration=?', $lastMigration['migration']),
                     $dbAdapter->quoteInto('module=?', $module))
             );
 
@@ -524,6 +522,7 @@ class Core_Migration_Manager
     public function up($module = null, $to = null)
     {
         $lastMigration = $this->getLastMigration($module);
+        $lastMigration = $lastMigration['migration'];
 
         if (($fullMigrationName = $this->getMigrationFullName($to, $module))) {
             $to = $fullMigrationName;
@@ -643,7 +642,7 @@ class Core_Migration_Manager
         if ($to) {
             if (!self::isMigration($to)) {
                 throw new Core_Exception("Migration name `$to` is not valid");
-            } elseif ($lastMigration == $to) {
+            } elseif ($lastMigration['migration'] == $to) {
                 throw new Core_Exception("Migration `$to` is current");
             }
 
@@ -690,6 +689,7 @@ class Core_Migration_Manager
     public function down($module, $to = null)
     {
         $lastMigration = $this->getLastMigration($module);
+        $lastMigration = $lastMigration['migration'];
 
         if (($fullMigrationName = $this->getMigrationFullName($to, $module))) {
             $to = $fullMigrationName;
