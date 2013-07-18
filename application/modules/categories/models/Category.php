@@ -23,7 +23,7 @@ class Categories_Model_Category extends Core_Categories_Row
         foreach ($rowset as $row) {
             if (isset($children[$row->id])) {
                 foreach ($children[$row->id] as $child) {
-                    $row->addChild($child, false);
+                    $row->addChild($child);
                 }
                 unset($children[$row->id]);
             }
@@ -33,7 +33,7 @@ class Categories_Model_Category extends Core_Categories_Row
             $children[$row->parentId][] = $row;
         }
         foreach ($children[$this->id] as $child) {
-            $this->addChild($child, false);
+            $this->addChild($child);
         }
         return $this;
     }
@@ -41,14 +41,13 @@ class Categories_Model_Category extends Core_Categories_Row
     /**
      * Add child
      *
-     * @param Categories_Model_Category $row
-     * @param bool $loadChildren default true
+     * @param Core_Categories_Row $row
      * @throws Zend_Db_Table_Row_Exception
      * @return Categories_Model_Category
      */
-    public function addChild(self $row, $loadChildren = true)
+    public function addChild(Core_Categories_Row $row)
     {
-        if (!$loadChildren && !$this->_children) {
+        if (!$this->_children) {
             $data = array(
                 'table'    => $this->getTable(),
                 'data'     => array(),
