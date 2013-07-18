@@ -3,7 +3,7 @@
     "description": "ZFCore",
     "minimum-stability": "dev",
     "config": {
-        "process-timeout": 600
+        "process-timeout": 1200
     },
     "authors": [
         {
