@@ -24,6 +24,13 @@ chmod a+w ./public/uploads/ && echo " ./uploads/"
 echo "Copy .htaccess file"
 cp ./public/.htaccess.sample ./public/.htaccess
 
+#Loading composer and dependencies
+echo "Downloading composer"
+curl -sS https://getcomposer.org/installer | php
+
+echo "Installing dependencies"
+php composer.phar install
+
 # Binary
 #chmod a+x ./bin/zf.sh
 #chmod a+x ./bin/zfc.sh
