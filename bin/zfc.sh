@@ -25,4 +25,4 @@ export ZEND_TOOL_INCLUDE_PATH_PREPEND
 # run from this file directory
 cd $FILE_DIR
 
-zf $@
+$ROOT_DIR/vendor/zendframework/zendframework1/bin/zf.sh $@

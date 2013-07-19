@@ -54,7 +54,7 @@ class Core_Categories_Row extends Zend_Db_Table_Row_Abstract
      * @throws Zend_Db_Table_Row_Exception
      * @return self
      */
-    public function addChild(self $row)
+    public function addChild(Core_Categories_Row $row)
     {
         if (empty($this->_cleanData)) {
             throw new Zend_Db_Table_Row_Exception('Parent category is not created yet');
