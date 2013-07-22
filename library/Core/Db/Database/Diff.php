@@ -274,6 +274,7 @@ class Core_Db_Database_Diff
 
                 if ($currentIndex['name'] === $publishedIndex['name']) {
                     $exist = true;
+                    break;
                 }
             }
 
