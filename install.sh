@@ -32,8 +32,7 @@ echo "Installing dependencies"
 php composer.phar install
 
 # Binary
-#chmod a+x ./bin/zf.sh
-#chmod a+x ./bin/zfc.sh
+chmod a+x ./bin/zfc.sh
 
 # Run migration
 #cd ./bin/
