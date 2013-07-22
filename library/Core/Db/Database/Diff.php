@@ -191,38 +191,35 @@ class Core_Db_Database_Diff
         $currentIndexes =  $this->_currentDb->getIndexList($table);
         $publishedIndexes = $this->_publishedDb->getIndexList($table);
 
-        //For creating indexes if they have been deleted
-        $nonExistIndexes = $this->getIndexesNonExists($currentIndexes, $publishedIndexes);
-
         foreach ($currentIndexes as $curIndex) {
-            $indexForCompare = $this->checkIndexExists($curIndex, $publishedIndexes);
+            $indexForCompare = $this->findIndex($curIndex, $publishedIndexes);
             if (!$indexForCompare) {
-                $this->down(Core_Db_Database::dropConstraint($curIndex));
-                $this->down(Core_Db_Database::dropIndex($curIndex));
-
                 $this->up(Core_Db_Database::addIndex($curIndex));
                 $this->up(Core_Db_Database::addConstraint($curIndex));
-            } elseif ($indexForCompare === $curIndex) {
-                continue;
-            } else {
+
+                $this->down(Core_Db_Database::dropConstraint($curIndex));
+                $this->down(Core_Db_Database::dropIndex($curIndex));
+            } elseif ($indexForCompare !== $curIndex) {
+                $this->up(Core_Db_Database::dropConstraint($curIndex));
+                $this->up(Core_Db_Database::dropIndex($curIndex));
+
                 $this->down(Core_Db_Database::dropConstraint($curIndex));
                 $this->down(Core_Db_Database::dropIndex($curIndex));
                 $this->down(Core_Db_Database::addIndex($indexForCompare));
                 $this->down(Core_Db_Database::addConstraint($indexForCompare));
-
-                $this->up(Core_Db_Database::dropConstraint($curIndex));
-                $this->up(Core_Db_Database::dropIndex($curIndex));
             }
         }
 
-        if ($nonExistIndexes) {
-            foreach ($nonExistIndexes as $nonExistIndex) {
-                //Create non-exist index
-                $this->down(Core_Db_Database::addConstraint($nonExistIndex));
-                $this->down(Core_Db_Database::addIndex($nonExistIndex));
-
-                $this->up(Core_Db_Database::dropConstraint($nonExistIndex));
-                $this->up(Core_Db_Database::dropIndex($nonExistIndex));
+        //For creating deleted indexes
+        $deletedIndexes = $this->getDeletedIndexes($currentIndexes, $publishedIndexes);
+        if ($deletedIndexes) {
+            foreach ($deletedIndexes as $deletedIndex) {
+                //Create deleted index
+                $this->up(Core_Db_Database::dropConstraint($deletedIndex));
+                $this->up(Core_Db_Database::dropIndex($deletedIndex));
+                //Delete index
+                $this->down(Core_Db_Database::addConstraint($deletedIndex));
+                $this->down(Core_Db_Database::addIndex($deletedIndex));
             }
         }
     }
@@ -242,30 +239,30 @@ class Core_Db_Database_Diff
     }
 
     /**
-     * check Index exists
+     * Find Index exists
      * @param $index
      * @param $indexList
-     * @return bool | array - if index exist return index
+     * @return null | array - if index exist return index
      */
-    protected function checkIndexExists($index, $indexList)
+    protected function findIndex($index, $indexList)
     {
         foreach ($indexList as $comparingIndex) {
             if ($index['name'] === $comparingIndex['name']) {
                 return $comparingIndex;
             }
         }
-        return false;
+        return null;
     }
 
 
     /**
-     * Get non-exist indexes in current DB
+     * Get deleted indexes in current DB
      *
      * @param array $currentIndexes
      * @param array $publishedIndexes
      * @return array
      */
-    protected function getIndexesNonExists($currentIndexes, $publishedIndexes)
+    protected function getDeletedIndexes($currentIndexes, $publishedIndexes)
     {
         $nonExistIndexes = array();
         foreach ($publishedIndexes as $publishedIndex) {
