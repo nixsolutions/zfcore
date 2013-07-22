@@ -237,6 +237,7 @@ class Core_Tool_Project_Provider_MigrationProvider
         $this->message('----------------------------------');
 
         $lastMigration = $this->getManager()->getLastMigration($module);
+        $lastMigration = $lastMigration['migration'];
 
         $exists = $this->getManager()->getExistsMigrations($module);
         $loaded = $this->getManager()->getLoadedMigrations($module);
