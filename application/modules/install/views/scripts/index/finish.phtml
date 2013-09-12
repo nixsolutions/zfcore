@@ -1,6 +1,10 @@
 <h2><?php echo $this->__('Can not create config file')?></h2>
 <hr/>
 <article>
+    <p class="alert alert-info">
+        To create a configuration file, the directory in which it is located, should have the right to write
+        <code><?php echo 'chmod 777 ' . APPLICATION_PATH . '/configs/';?></code>
+    </p>
     <p class="alert">
         <?php echo $this->__('Paste following code into configuration file')?>:
         <br/>

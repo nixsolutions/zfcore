@@ -1,11 +1,13 @@
 <h2><?php echo $this->__('Install modules')?>:</h2>
 <form action="" method="post">
 <article>
-
+    <?php if($this->isDisabled):?>
+    <input type="hidden" name="isDisabled" value="<?=$this->isDisabled?>">
     <p class="alert alert-info">
         To be able to disable some modules directory in which it is located shall have the right to write
         <code><?php echo 'chmod 777 ' . APPLICATION_PATH . '/modules/';?></code>
     </p>
+    <?php endif;?>
 
 
     <ul>
@@ -13,11 +15,13 @@
         <li>
             <input type="checkbox" <?php echo $options['checked'] ? 'checked="checked"' : ''; ?> <?php echo $options['required'] ? 'disabled="disabled"' : ''; ?> name="modules[<?php echo $module; ?>]" value="1" />
             <?php echo $options['title'];?>
-            <?php echo $options['required'];?>
+            <?php echo " - "; ?>
             <em><?php echo $options['description'];?></em>
         </li>
     <?php endforeach;?>
     </ul>
 </article>
+
+    <input type="submit" name="refresh" id="refresh" class="btn btn-primary" value="Reload page &raquo;">
     <input type="submit" name="submit" id="submit" class="btn btn-primary pull-right" value="Next &raquo;">
 </form>
