@@ -4,7 +4,7 @@
     <?php if($this->isDisabled):?>
     <input type="hidden" name="isDisabled" value="<?=$this->isDisabled?>">
     <p class="alert alert-info">
-        To be able to disable some modules directory in which it is located shall have the right to write
+        <?php echo $this->__('To be able to disable some modules directory in which it is located shall have the right to write')?>
         <code><?php echo 'chmod 777 ' . APPLICATION_PATH . '/modules/';?></code>
     </p>
     <?php endif;?>
