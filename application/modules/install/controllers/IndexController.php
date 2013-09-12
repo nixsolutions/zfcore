@@ -445,11 +445,17 @@ class Install_IndexController extends Core_Controller_Action
 
         }
         $this->view->modules = $modules;
+        $this->view->isDisabled = !$isWritableModulesDir;
 
-        if ($this->_request->isPost()) {
+        if ($this->_request->isPost() && !$this->_request->getParam('refresh')) {
 
             if ($this->_request->getParam('modules')) {
                 $installModules = array_merge($installModules, $this->_request->getParam('modules'));
+            } elseif ($this->_request->getParam('isDisabled')) {
+                // In case if the selection of modules has been locked
+                foreach ($modules as $module => $value) {
+                    $installModules[$module] = true;
+                }
             }
 
             $this->_store->modules = $installModules;
@@ -509,11 +515,17 @@ class Install_IndexController extends Core_Controller_Action
             $writer->write($filename);
             $this->_store->unsetAll();
 
-            //TODO remove install module
+            //remove install module
 
-            $this->_helper->flashMessenger(
-                "Installization complete <br /> " . $this->view->__('And remove module Install')
-            );
+            $pathToModules = APPLICATION_PATH . '/modules/';
+            $module = 'install';
+            $pathToModule = $pathToModules . $module;
+            if (is_dir($pathToModules) && is_writable($pathToModules) && is_dir($pathToModule)) {
+                rename($pathToModule, APPLICATION_PATH . '/modules/.' . $module);
+                $this->_helper->flashMessenger($this->view->__('Remove module Install'));
+            }
+
+            $this->_helper->flashMessenger("Installation complete");
             $this->_helper->redirector(false, false, false);
         } else {
             $this->view->filename = $filename;
