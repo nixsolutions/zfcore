@@ -67,8 +67,14 @@ class Helper_DataTables
         } else {
             $select->from($tableName, $expr);
         }
-        $iFilteredTotal = $table->fetchRow($select)->total;
-
+        
+        /* Data no result */
+        if($iFilteredTotal = $table->fetchRow($select)){
+            $iFilteredTotal = $iFilteredTotal->total;
+        }else{
+            $iFilteredTotal = 0;
+        }
+        
         $query->limit(
             $request->getParam('iDisplayLength'),
             $request->getParam('iDisplayStart')
