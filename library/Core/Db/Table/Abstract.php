@@ -41,6 +41,13 @@ class Core_Db_Table_Abstract extends Zend_Db_Table_Abstract
     protected $_rowClass = 'Core_Db_Table_Row_Abstract';
 
     /**
+     * Classname for rowset
+     *
+     * @var string
+     */
+    protected $_rowsetClass = 'Core_Db_Table_Rowset_Abstract';
+
+    /**
      * Return Primary Key
      *
      * @return array
