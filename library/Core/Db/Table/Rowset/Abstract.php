@@ -44,18 +44,7 @@ class Core_Db_Table_Rowset_Abstract extends Zend_Db_Table_Rowset_Abstract
     public function __wakeup()
     {
         $this->_connected = false;
-        $this->_table = $this->_getTableFromString($this->_tableClass);
-    }
-
-    /**
-     * _getTableFromString
-     *
-     * @param string $tableName
-     * @return Core_Db_Table_Abstract
-     */
-    protected function _getTableFromString($tableName)
-    {
-        return Core_Db_Table_Abstract::getTableFromString($tableName, $this->_table);
+        $this->_table = Core_Db_Table_Abstract::getTableFromString($tableName, $this->_table);
     }
 
 }
