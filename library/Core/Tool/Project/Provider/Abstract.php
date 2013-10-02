@@ -32,7 +32,7 @@ require_once 'Zend/Tool/Project/Provider/Abstract.php';
  * @author   Anton Shevchuk <AntonShevchuk@gmail.com>
  * @link     http://anton.shevchuk.name
  */
-class Core_Tool_Project_Provider_Abstract
+abstract class Core_Tool_Project_Provider_Abstract
     extends Zend_Tool_Project_Provider_Abstract
 {
     /**

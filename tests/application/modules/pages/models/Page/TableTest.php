@@ -67,7 +67,7 @@ class Model_Page_ManagerTest extends ControllerTestCase
         // Get Record from DB
         $page = $this->_pageTable->find($page->id);
 
-        $this->assertTrue(($page instanceof Zend_Db_Table_Rowset));
+        $this->assertTrue(($page instanceof Core_Db_Table_Rowset_Abstract));
         $this->assertEquals($this->_data['title'], $page['0']->title);
 
         try {
