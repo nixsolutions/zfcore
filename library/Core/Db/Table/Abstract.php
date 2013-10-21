@@ -31,14 +31,21 @@
  * @author     Anton Shevchuk <AntonShevchuk@gmail.com>
  * @link       http://anton.shevchuk.name
  */
-class Core_Db_Table_Abstract extends Zend_Db_Table_Abstract
+abstract class Core_Db_Table_Abstract extends Zend_Db_Table_Abstract
 {
     /**
      * Set default Row class
      *
      * @var string
      */
-    protected $_rowClass = 'Core_Db_Table_Row_Abstract';
+    protected $_rowClass = 'Core_Db_Table_Row';
+
+    /**
+     * Classname for rowset
+     *
+     * @var string
+     */
+    protected $_rowsetClass = 'Core_Db_Table_Rowset';
 
     /**
      * Return Primary Key

@@ -20,48 +20,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 /**
- * Class for SQL table row interface.
+ * Class for SQL table rowset interface.
  *
  * @category   Core
  * @package    Core_Db
  * @subpackage Table
  *
- * @author     Anton Shevchuk <AntonShevchuk@gmail.com>
- * @link       http://anton.shevchuk.name
+ * @author     Oleksandr Vladymyrov <vladymyrov@nixsolutions.com>
  *
- * @version    $Id: Abstract.php 146 2010-07-05 14:22:20Z AntonShevchuk $
+ * @version    $Id$
  */
-abstract class Core_Db_Table_Row_Abstract
-    extends Zend_Db_Table_Row_Abstract
+class Core_Db_Table_Rowset_Abstract extends Zend_Db_Table_Rowset_Abstract
 {
-    /**
-     * Constructor
-     *
-     * @param  array $config OPTIONAL Array of user-specified config options.
-     * @return \Core_Db_Table_Row_Abstract
-     */
-    public function __construct(array $config = array())
-    {
-        $this->_tableClass = get_class($this) . '_Table';
-        parent::__construct($config);
-    }
 
     /**
-     * Init Row
+     * Setup to do on wakeup.
+     * A de-serialized Rowset should not be assumed to have access to a live
+     * database connection, so set _connected = false.
      *
      * @return void
      */
-    public function init()
+    public function __wakeup()
     {
-        $cols = $this->getTable()->info(Zend_Db_Table::COLS);
-
-        foreach ($cols as $col) {
-            if (!isset($this->_data[$col])) {
-                $this->_data[$col] = null;
-            }
-        }
+        $this->_connected = false;
+        $this->_table = Core_Db_Table_Abstract::getTableFromString($this->_tableClass);
     }
 
 }
