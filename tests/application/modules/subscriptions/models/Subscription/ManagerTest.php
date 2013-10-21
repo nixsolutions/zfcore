@@ -33,8 +33,8 @@ class Subscriptions_Model_Subscription_ManagerTest extends ControllerTestCase
         $account->save();
 
         //Create order
-        $orderModel = new Payments_Model_Order();
-        $order = $orderModel->createOrder($userId, $price);
+        $orderManager = new Payments_Model_Order_Manager();
+        $order = $orderManager->createOrder($userId, $price);
 
         //Create custom param
         $customParam = implode('-', array($orderType, $order->id, $userId, $planId));

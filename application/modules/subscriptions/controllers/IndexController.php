@@ -87,8 +87,8 @@ class Subscriptions_IndexController extends Core_Controller_Action
             //Not free subscription
             if ($subscriptionPlan->price > 0) {
                 //Create order
-                $orderModel = new Payments_Model_Order_Manager();
-                $order = $orderModel->createOrder($userId, $subscriptionPlan->price);
+                $orderManager = new Payments_Model_Order_Manager();
+                $order = $orderManager->createOrder($userId, $subscriptionPlan->price);
 
                 $this->view->orderId = $order->id;
                 $this->view->subscriptionPlan = $subscriptionPlan;
