@@ -1,0 +1,13 @@
+mvc:
+  payments:
+    index:
+      index:
+        allow: user
+      complete:
+        allow: guest
+      canceled:
+        allow: guest
+    paypal:
+      allow: guest
+    management:
+      allow: admin

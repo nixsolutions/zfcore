@@ -1,0 +1,16 @@
+mvc:
+  subscriptions:
+    index:
+      index:
+        allow: guest
+      create:
+        allow: user
+      complete:
+        allow: user
+      plan-info:
+        allow: user
+    management:
+      allow: admin
+    cli:
+      check-status:
+        allow: guest

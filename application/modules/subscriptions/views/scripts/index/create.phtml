@@ -1,0 +1,29 @@
+<h3>Buy now!</h3>
+<div>
+                <p>
+                    <?php
+                    $description = $this->subscriptionPlan->description;
+                    switch ($this->subscriptionPlan->type) {
+                        case Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_INFINITE:
+                            $description .= ' Unlimited days';
+                            break;
+                        default:
+                            $description .= ' On ' . $this->subscriptionPlan->period . ' days';
+                    }
+                    ?>
+                </p>
+            </div>
+<?php
+echo $this->action(
+    'index',
+    'index',
+    'payments',
+    array(
+        'orderId' => $this->orderId,
+        'title' => $this->subscriptionPlan->name,
+        'description' => $description,
+        'price' => $this->subscriptionPlan->price,
+        'type' => $this->subscriptionPlan->type,
+        'paypalCustom' => $this->paypalCustom
+    )
+); ?>

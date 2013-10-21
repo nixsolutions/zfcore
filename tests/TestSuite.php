@@ -43,6 +43,12 @@ class TestSuite extends PHPUnit_Framework_TestSuite
         require_once 'pages/Test.php';
         $suite->addTestSuite('Pages_Test');
 
+        require_once 'payments/Test.php';
+        $suite->addTestSuite('Payments_Test');
+
+        require_once 'subscriptions/Test.php';
+        $suite->addTestSuite('Subscriptions_Test');
+
         require_once 'translate/Test.php';
         $suite->addTestSuite('Translate_Test');
 

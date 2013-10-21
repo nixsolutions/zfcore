@@ -1,0 +1,10 @@
+<h3>Thank you</h3>
+
+<p>Current plan: <b><?= $this->subscriptionPlan->name ?></b></p>
+<p><?= $this->subscriptionPlan->description ?></p>
+<?php if ($this->currentSubscription->expirationDate) {
+    ?>
+    <p>Expiration date: <b><?= $this->currentSubscription->expirationDate ?></b></p>
+<?php
+}
+?>

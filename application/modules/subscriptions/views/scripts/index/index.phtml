@@ -1,0 +1,98 @@
+<h3>Subscriptions</h3>
+<br/>
+<?php if ($this->currentSubscription) { ?>
+    <p>Current plan: <b><?= $this->currentSubscriptionPlan->name ?></b>
+        ( <?= $this->currentSubscriptionPlan->description ?> )</p>
+    <?php if ($this->currentSubscription->expirationDate) {
+        ?>
+        <p>Expiration date: <?= $this->currentSubscription->expirationDate ?></p>
+    <?php
+    }?>
+    <hr/>
+<?php
+}
+?>
+
+<div class="row-fluid">
+    <?php foreach ($this->subscriptionPlan as $plan) { ?>
+        <form action="/subscriptions/index/create" method="post" style="margin: 0;">
+            <div class="span3">
+                <input type="hidden" value="<?= $plan->id ?>" name="id">
+
+                <p><?= $plan->name ?></p>
+
+                <p class="muted"><?= $plan->type ?></p>
+
+                <p><?= $plan->description ?></p>
+
+                <p>
+                    <?php
+                    switch ($plan->type) {
+                        case Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_FREE:
+                        case Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_TRIAL:
+                            ?>
+                            Free
+                            <?php
+                            break;
+                        default:
+                            echo '$' . $plan->price;
+                    }
+                    ?>
+                </p>
+
+                <p>
+                    <?php
+                    switch ($plan->type) {
+                        case Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_FREE:
+                        case Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_INFINITE:
+                            ?>
+                            Unlimited days
+                            <?php
+                            break;
+                        default:
+                            echo 'On ' . $plan->period . ' days';
+                    }
+                    ?>
+                </p>
+
+                <p>
+                    <?php
+                    if ($this->currentSubscriptionPlan && $this->currentSubscriptionPlan->id === $plan->id) {
+                        if ($this->currentSubscriptionPlan->type === Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_MONTHLY
+                            && $this->currentSubscription->paypalSubscrId
+                        ) {
+                            ?>
+                            <a href="<?=$this->paypalHost ?>cgi-bin/webscr?cmd=_profile-recurring-payments&encrypted_profile_id=<?php
+                            echo $this->currentSubscription->paypalSubscrId ?>" target="_blank">
+                                <img src="https://www.paypalobjects.com/en_US/i/btn/btn_unsubscribe_LG.gif" border="0">
+                            </a>
+                        <?php } else { ?>
+                            Current plan
+                        <?php } ?>
+                    <?php
+                    } else {
+                        switch ($plan->type) {
+                            case Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_MONTHLY:
+                            case Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_INFINITE:
+                                ?>
+                                <button class="btn btn-primary" type="submit">Buy Now</button>
+                                <?php
+                                break;
+                            case Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_TRIAL:
+                                ?>
+                                <button class="btn btn-warning" type="submit">Try Now</button>
+                                <?php
+                                break;
+                            default:
+                                ?>
+                                    <button class="btn btn-success" type="submit">Use Free</button>
+                                <?php
+                        }
+                    }
+
+                    ?>
+                </p>
+            </div>
+        </form>
+    <?php } ?>
+</div>
