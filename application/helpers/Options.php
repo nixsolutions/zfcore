@@ -36,7 +36,7 @@ class Helper_Options extends Zend_Controller_Action_Helper_Abstract
      */
     public function setNamespace($namespace, array $options)
     {
-        Options_Model_Options_Manager::getNamespace($namespace, $options);
+        Options_Model_Options_Manager::setNamespace($namespace, $options);
     }
 
     /**

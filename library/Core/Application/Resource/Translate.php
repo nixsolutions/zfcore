@@ -29,19 +29,20 @@
 class Core_Application_Resource_Translate
     extends Zend_Application_Resource_Translate
 {
+    const DEFAULT_ADAPTER = 'Core_Translate_ModularAdapter_Array';
+
     /**
      * Init Resource
      * @return \Zend_Translate
      */
     public function init()
     {
-        //return;
-        if (!isset($this->_options['content'], $this->_options['data'])) {
+
+        if (!isset($this->_options['data'])) {
 
             $this->getBootstrap()->bootstrap('Modules');
 
-            $this->_options['content'] = Translate_Model_Translate::getTranslationPath();
-            $this->_options['adapter'] = Translate_Model_Translate::ADAPTER;
+            $this->_options['adapter'] = self::DEFAULT_ADAPTER;
         }
 
         $log = $this->getBootstrap()->bootstrap('frontController')->getResource('log');

@@ -65,6 +65,7 @@ production:
       disableNotices: on
       logUntranslated: off
       logMessage: Undefined message '%message%' in '%locale%'
+      content: APPLICATION_PATH/../data/languages
     locale: on
     modules: on
     layout:
