@@ -3,6 +3,18 @@
 class Payments_PaypalControllerTest extends ControllerTestCase
 {
 
+    public function testEmptyConfig()
+    {
+        Zend_Registry::set('payments', null);
+
+        $this->dispatch('/payments/paypal/callback');
+        $this->assertModule('index');
+        $this->assertController('error');
+        $this->assertAction('error');
+        $this->assertContains('<b>Message:</b> Paypal is not configured.</p>', $this->getResponse()->getBody());
+    }
+
+
     public function testCallbackAction()
     {
         //GET (method is not allowed)

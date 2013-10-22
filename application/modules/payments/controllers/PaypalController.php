@@ -123,7 +123,10 @@ class Payments_PaypalController extends Core_Controller_Action
         $response = $client->setUri($this->_paypalConfig['paypalHost'] . 'cgi-bin/webscr')->request();
 
         if ($response->getBody() == 'VERIFIED') {
+            exit('VERIFIED');
             return true;
+        }else{
+            exit('not-VERIFIED');
         }
         return false;
     }

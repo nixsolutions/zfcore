@@ -114,26 +114,25 @@ class Subscriptions_IndexController extends Core_Controller_Action
 
                     }
 
+                    //Create expiration date
+                    $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
+                    $expirationDate = $subscriptionManager->getExpirationDate($userId, $planId);
+
+                    $subscriptionManger = new Subscriptions_Model_Subscription_Manager();
+
+                    //Disable old subscriptions
+                    $subscriptionManger->disableAllSubscriptionsByUserId($userId);
+
+                    //Create subscription
+                    $subscriptionManger->createSubscription($userId, $planId, $expirationDate);
+
+                    //Redirect to Thank you page
+                    $this->redirect('/subscriptions/index/complete');
                 } catch (Zend_Controller_Action_Exception $ex) {
                     $this->_flashMessenger->addMessage($ex->getMessage());
                     $this->redirect('/subscriptions');
                 }
 
-
-                //Create expiration date
-                $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-                $expirationDate = $subscriptionManager->getExpirationDate($userId, $planId);
-
-                $subscriptionManger = new Subscriptions_Model_Subscription_Manager();
-
-                //Disable old subscriptions
-                $subscriptionManger->disableAllSubscriptionsByUserId($userId);
-
-                //Create subscription
-                $subscriptionManger->createSubscription($userId, $planId, $expirationDate);
-
-                //Redirect to Thank you page
-                $this->redirect('/subscriptions/index/complete');
             }
         } else {
             $this->redirect('/subscriptions');

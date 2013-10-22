@@ -83,6 +83,7 @@ class Subscriptions_Model_Subscription_Manager extends Core_Model_Manager
             ->where('userId =?', $userId)
             ->where('orderId =?', $orderId)
             ->where('subscriptionPlanId =?', $planId)
+            ->where('status =?', Subscriptions_Model_Subscription::STATUS_ACTIVE)
             ->where('paypalSubscrId =?', $subscrId);
         $subscription = $this->getDbTable()->fetchRow($select);
 
@@ -157,8 +158,10 @@ class Subscriptions_Model_Subscription_Manager extends Core_Model_Manager
                 return $expirationDate = date('Y-m-d H:i:s', strtotime($subscriptionRow->expirationDate) + $seconds);
             } else {
                 //If is first subscription this type
-                $seconds = (int)$subscriptionPlan->period * 86400;
-                return $expirationDate = date('Y-m-d H:i:s', time() + $seconds);
+                return $expirationDate = date(
+                    'Y-m-d H:i:s',
+                    mktime(date("H"), date("i"), date("s"), date("m"), (date("d") + (int)$subscriptionPlan->period), date("Y"))
+                );
             }
         }
 

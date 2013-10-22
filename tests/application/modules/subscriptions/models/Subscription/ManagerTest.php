@@ -41,18 +41,28 @@ class Subscriptions_Model_Subscription_ManagerTest extends ControllerTestCase
 
         $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
         $subscription = $subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId);
-
         $this->assertNotEmpty($subscription);
+        $this->assertNull($subscription->updated);
 
+
+        //Test update subscription
+        $subscription = $subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId);
+        $this->assertNotEmpty($subscription);
+        $this->assertNotNull($subscription->updated);
+
+        //Test canceled subscription
         $response = $subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId);
         $this->assertTrue($response);
+
+        //Test already canceled subscription
+        $response = $subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId);
+        $this->assertFalse($response);
     }
 
 
     public function testCreateSubscription()
     {
         //Fake data
-        $userId = '1234567';
         $planId = '3';
         //set one day expired date
         $expirationDate = date('Y-m-d H:i:s', mktime(0, 0, 0, date("m"), date("d") - 1, date("Y")));
@@ -65,11 +75,10 @@ class Subscriptions_Model_Subscription_ManagerTest extends ControllerTestCase
         $account->password = md5('password');
         $account->role = Users_Model_User::ROLE_USER;
         $account->status = Users_Model_User::STATUS_ACTIVE;
-        $account->id = $userId;
         $account->save();
 
         $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-        $subscription = $subscriptionManager->createSubscription($userId, $planId, $expirationDate);
+        $subscription = $subscriptionManager->createSubscription($account->id, $planId, $expirationDate);
         //Test create subscription
         $this->assertNotEmpty($subscription);
 
@@ -85,6 +94,38 @@ class Subscriptions_Model_Subscription_ManagerTest extends ControllerTestCase
         $subscriptions = $subscriptionManager->getExpiredActiveSubscriptions();
         $this->assertNotEmpty($subscriptions);
         $this->assertCount(0, $subscriptions);
+    }
+
+
+    public function testGetExpirationDate()
+    {
+        //Create user
+        $account = new Users_Model_User();
+        $account->avatar = null;
+        $account->login = 'testGetExpirationDate' . date('YmdHis');
+        $account->email = 'testGetExpirationDate' . time() . '@example.org';
+        $account->password = md5('password');
+        $account->role = Users_Model_User::ROLE_USER;
+        $account->status = Users_Model_User::STATUS_ACTIVE;
+        $account->save();
+
+        //Get subscription plan
+        $subscriptionPlansTable = new Subscriptions_Model_SubscriptionPlans_Table();
+        $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
+
+        //Get plan with infinite subscription
+        $subscriptionPlan = $subscriptionPlansTable->getByType(Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_INFINITE);
+        $expirationDate = $subscriptionManager->getExpirationDate($account->id, $subscriptionPlan->id);
+        $this->assertNull($expirationDate);
+
+        //Get plan with monthly subscription
+        $subscriptionPlan = $subscriptionPlansTable->getByType(Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_MONTHLY);
+        $expirationDate = $subscriptionManager->getExpirationDate($account->id, $subscriptionPlan->id);
+        $this->assertEquals(
+            date('Y-m-d H:i:s',mktime(date("H"), date("i"), date("s"), date("m")  , date("d")+30, date("Y"))),
+            $expirationDate
+        );
+
     }
 
 }
