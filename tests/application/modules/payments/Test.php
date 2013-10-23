@@ -26,14 +26,14 @@ class Payments_Test extends Core_Tests_PHPUnit_Framework_TestSuite
     {
         if ($this->count()) {
             ControllerTestCase::migrationUp('payments');
-            //ControllerTestCase::migrationUp('subscriptions');
+            ControllerTestCase::migrationUp('subscriptions');
         }
     }
 
     protected function tearDown()
     {
         if ($this->count()) {
-            //ControllerTestCase::migrationDown('subscriptions');
+            ControllerTestCase::migrationDown('subscriptions');
             ControllerTestCase::migrationDown('payments');
         }
     }
