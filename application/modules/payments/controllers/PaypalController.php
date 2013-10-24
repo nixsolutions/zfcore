@@ -22,8 +22,17 @@ class Payments_PaypalController extends Core_Controller_Action
                 $params = $this->getRequest()->getParams();
                 $orderManager = new Payments_Model_Order_Manager();
                 if ($orderManager->validateAndPayOrder($params)) {
+                    if (Zend_Registry::isRegistered('Log')) {
+                        $log = Zend_Registry::get('Log');
+                        $log->log('Payment with params ' . var_export($params, true) . ' is successful.', Zend_Log::INFO);
+                    }
                     exit('ok');
                 }
+            }
+        } else {
+            if (Zend_Registry::isRegistered('Log')) {
+                $log = Zend_Registry::get('Log');
+                $log->log('GET request to Payments_PaypalController->callbackAction()', Zend_Log::WARN);
             }
         }
 

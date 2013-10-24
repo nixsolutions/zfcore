@@ -64,7 +64,11 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
         }
 
         if (!$paypalConfig) {
-            throw new Exception("Paypal is not configured.");
+            if (Zend_Registry::isRegistered('Log')) {
+                $log = Zend_Registry::get('Log');
+                $log->log("PayPal is not configured.", Zend_Log::CRIT);
+            }
+            throw new Exception("PayPal is not configured.");
         }
 
         //check POST data
@@ -80,6 +84,10 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
             try {
                 list($orderType, $orderId, $userId) = explode('-', $customParam);
             } catch (Exception $ex) {
+                if (Zend_Registry::isRegistered('Log')) {
+                    $log = Zend_Registry::get('Log');
+                    $log->log("Incorrect format in PayPal custom param: " . var_export($customParam, true), Zend_Log::WARN);
+                }
                 return false;
             }
 
@@ -107,12 +115,24 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
                     } else {
                         //Error!
                         //Order has been payed or incorrect data in custom field.
+                        if (Zend_Registry::isRegistered('Log')) {
+                            $log = Zend_Registry::get('Log');
+                            $log->log(
+                                'Order has been payed or incorrect data in custom field. Params: $orderId = '
+                                . $orderId . ', $userId = ' . $userId . ', $amount = ' . $amount . ', $txnId = '
+                                . $txnId . '.', Zend_Log::WARN
+                            );
+                        }
                     }
                 }
 
             } else {
                 //Error!
                 //Incorrect data in custom field.
+                if (Zend_Registry::isRegistered('Log')) {
+                    $log = Zend_Registry::get('Log');
+                    $log->log("Incorrect data in PayPal custom param: " . var_export($customParam, true), Zend_Log::WARN);
+                }
             }
         }
 
@@ -142,6 +162,10 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
         if ($response->getBody() == 'VERIFIED') {
             return true;
         } else {
+            if (Zend_Registry::isRegistered('Log')) {
+                $log = Zend_Registry::get('Log');
+                $log->log("PayPal returned: " . $response->getBody(), Zend_Log::WARN);
+            }
             return false;
         }
     }
