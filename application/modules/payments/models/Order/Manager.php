@@ -89,8 +89,7 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
                     //Cancel subscription
                     if ($orderType === Payments_Model_Order::ORDER_TYPE_SUBSCRIPTION) {
                         $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-                        $subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $subscrId);
-                        return true;
+                        return $subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $subscrId);
                     } else {
                         //TBD
                         //For other types of order.
@@ -101,8 +100,9 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
                     if ($this->payOrder($orderId, $userId, $amount, $txnId)) {
                         if ($orderType === Payments_Model_Order::ORDER_TYPE_SUBSCRIPTION) {
                             $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-                            $subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $subscrId);
-                            return true;
+                            if ($subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $subscrId)) {
+                                return true;
+                            }
                         }
                     } else {
                         //Error!
@@ -140,7 +140,6 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
         $response = $client->setUri($paypalConfig['paypalHost'] . 'cgi-bin/webscr')->request();
 
         if ($response->getBody() == 'VERIFIED') {
-            //exit('VERIFIED');
             return true;
         } else {
             return false;

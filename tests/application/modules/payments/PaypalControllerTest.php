@@ -90,7 +90,16 @@ class Payments_PaypalControllerTest extends ControllerTestCase
         //Test payOrder() return false
         $this->assertFalse($mock->validateAndPayOrder($params));
 
+        //Test Cancel Subscription
         $params['txn_type'] = 'subscr_cancel';
         $this->assertTrue($mock->validateAndPayOrder($params));
+
+        //Test incorrect subscr_id
+        $params['subscr_id'] = 123;
+        $this->assertFalse($mock->validateAndPayOrder($params));
+
+        //Test incorrect orderType
+        $params['custom'] = implode('-', array('incorrect', $order->id, $account->id, $planId));;
+        $this->assertFalse($mock->validateAndPayOrder($params));
     }
 }
