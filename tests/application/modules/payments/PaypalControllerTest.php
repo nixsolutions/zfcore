@@ -60,25 +60,35 @@ class Payments_PaypalControllerTest extends ControllerTestCase
         $orderManager = new Payments_Model_Order_Manager();
         $order = $orderManager->createOrder($account->id, $price);
 
-        //Create custom param
-        $customParam = implode('-', array($orderType, $order->id, $account->id, $planId));
-
         $mock = $this->getMock('Payments_Model_Order_Manager', array('isCorrectPostParams'));
-
         $mock->expects($this->any())
             ->method('isCorrectPostParams')
             ->will($this->returnValue(true));
         $mock->setDbTable('Payments_Model_Order_Table');
 
+        //Create custom param
+        $customParam = implode('-', array($orderType, $order->id, $account->id, $planId));
+
         $params = array(
-            'custom' => $customParam,
+            'custom' => '111',
             'subscr_id' => 111,
             'mc_gross' => $price,
             'txn_type' => 111,
             'txn_id' => 111
         );
 
+        //Test incorrect custom param
+        $this->assertFalse($mock->validateAndPayOrder($params));
+
+        //Test incorrect custom param
+        $params['custom'] = '0-0-0';
+        $this->assertFalse($mock->validateAndPayOrder($params));
+
+        $params['custom'] = $customParam;
         $this->assertTrue($mock->validateAndPayOrder($params));
+
+        //Test payOrder() return false
+        $this->assertFalse($mock->validateAndPayOrder($params));
 
         $params['txn_type'] = 'subscr_cancel';
         $this->assertTrue($mock->validateAndPayOrder($params));

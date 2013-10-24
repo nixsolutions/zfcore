@@ -77,7 +77,11 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
             $txnType = $params['txn_type'];
             $txnId = $params['txn_id'];
 
-            list($orderType, $orderId, $userId) = explode('-', $customParam);
+            try {
+                list($orderType, $orderId, $userId) = explode('-', $customParam);
+            } catch (Exception $ex) {
+                return false;
+            }
 
             if ($orderType && $orderId && $userId) {
 
@@ -99,9 +103,6 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
                             $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
                             $subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $subscrId);
                             return true;
-                        } else {
-                            //TBD
-                            //For other types of order.
                         }
                     } else {
                         //Error!
@@ -113,9 +114,6 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
                 //Error!
                 //Incorrect data in custom field.
             }
-        } else {
-            //Error!
-            //Incorrect data in POST request
         }
 
         return false;
@@ -145,9 +143,8 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
             //exit('VERIFIED');
             return true;
         } else {
-            //exit('not-VERIFIED');
+            return false;
         }
-        return false;
     }
 
 }
