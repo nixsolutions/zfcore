@@ -8,8 +8,8 @@ class Subscriptions_Model_Subscription_Manager extends Core_Model_Manager
      *
      * @param int $userId
      * @param int $planId
-     * @param null|string $expirationDate  If null - unlimited subscription
-     * @param int|null $orderId  If null - free subscription
+     * @param null|string $expirationDate If null - unlimited subscription
+     * @param int|null $orderId If null - free subscription
      * @param int|null $subscrId Null for one-time payment and string for PayPal subscription
      * @return Zend_Db_Table_Row_Abstract
      */
@@ -204,7 +204,11 @@ class Subscriptions_Model_Subscription_Manager extends Core_Model_Manager
         $this->disableAllSubscriptionsByUserId($userId);
 
         //Create subscription
-        return $this->createSubscription($userId, $planId, $expirationDate, $orderId, $subscrId);
+        if ($this->createSubscription($userId, $planId, $expirationDate, $orderId, $subscrId)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

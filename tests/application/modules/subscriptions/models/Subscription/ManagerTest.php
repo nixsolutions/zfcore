@@ -37,26 +37,19 @@ class Subscriptions_Model_Subscription_ManagerTest extends ControllerTestCase
         $order = $orderManager->createOrder($userId, $price);
 
         //Create custom param
-        $customParam = implode('-', array($orderType, $order->id, $userId, $planId));
+        $customParam = implode('-', array($orderType, $order->id, $userId, $planId, 0));
 
         $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-        $subscription = $subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId);
-        $this->assertNotEmpty($subscription);
-        $this->assertNull($subscription->updated);
-
+        $this->assertTrue($subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId));
 
         //Test update subscription
-        $subscription = $subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId);
-        $this->assertNotEmpty($subscription);
-        $this->assertNotNull($subscription->updated);
+        $this->assertTrue($subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId));
 
         //Test canceled subscription
-        $response = $subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId);
-        $this->assertTrue($response);
+        $this->assertTrue($subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId));
 
         //Test already canceled subscription
-        $response = $subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId);
-        $this->assertFalse($response);
+        $this->assertFalse($subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId));
     }
 
 

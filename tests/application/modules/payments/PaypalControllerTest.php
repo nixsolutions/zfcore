@@ -10,7 +10,7 @@ class Payments_PaypalControllerTest extends ControllerTestCase
     {
         Zend_Registry::set('payments', null);
         $orderManager = new Payments_Model_Order_Manager();
-        $this->assertTrue($orderManager->validateAndPayOrder(array()));
+        $this->assertTrue($orderManager->handlePaypalRequest(array()));
     }
 
 
@@ -60,9 +60,9 @@ class Payments_PaypalControllerTest extends ControllerTestCase
         $orderManager = new Payments_Model_Order_Manager();
         $order = $orderManager->createOrder($account->id, $price);
 
-        $mock = $this->getMock('Payments_Model_Order_Manager', array('isCorrectPostParams'));
+        $mock = $this->getMock('Payments_Model_Order_Manager', array('checkPaypalPostParams'));
         $mock->expects($this->any())
-            ->method('isCorrectPostParams')
+            ->method('checkPaypalPostParams')
             ->will($this->returnValue(true));
         $mock->setDbTable('Payments_Model_Order_Table');
 
@@ -72,34 +72,68 @@ class Payments_PaypalControllerTest extends ControllerTestCase
         $params = array(
             'custom' => '111',
             'subscr_id' => 111,
-            'mc_gross' => $price,
+            'mc_gross' => 0,
             'txn_type' => 111,
             'txn_id' => 111
         );
 
         //Test incorrect custom param
-        $this->assertFalse($mock->validateAndPayOrder($params));
+        try {
+            $mock->handlePaypalRequest($params);
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $ex) {
+            // Test ok.
+        }
 
         //Test incorrect custom param
-        $params['custom'] = '0-0-0';
-        $this->assertFalse($mock->validateAndPayOrder($params));
+        $params['custom'] = '0-0-0-0';
+        try {
+            $mock->handlePaypalRequest($params);
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $ex) {
+            // Test ok.
+        }
 
         $params['custom'] = $customParam;
-        $this->assertTrue($mock->validateAndPayOrder($params));
+        try {
+            $mock->handlePaypalRequest($params);
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $ex) {
+            // Test empty $amount.
+        }
+
+        $params['mc_gross'] = $price;
+        $this->assertTrue($mock->handlePaypalRequest($params));
 
         //Test payOrder() return false
-        $this->assertFalse($mock->validateAndPayOrder($params));
+        try {
+            $mock->handlePaypalRequest($params);
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $ex) {
+            // Test ok.
+        }
 
         //Test Cancel Subscription
         $params['txn_type'] = 'subscr_cancel';
-        $this->assertTrue($mock->validateAndPayOrder($params));
+        $this->assertTrue($mock->handlePaypalRequest($params));
 
         //Test incorrect subscr_id
         $params['subscr_id'] = 123;
-        $this->assertFalse($mock->validateAndPayOrder($params));
+        try {
+            $mock->handlePaypalRequest($params);
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $ex) {
+            // Test ok.
+        }
 
         //Test incorrect orderType
-        $params['custom'] = implode('-', array('incorrect', $order->id, $account->id, $planId));;
-        $this->assertFalse($mock->validateAndPayOrder($params));
+        $params['custom'] = implode('-', array('incorrect', $order->id, $account->id, $planId));
+        try {
+            $mock->handlePaypalRequest($params);
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $ex) {
+            // Test ok.
+        }
     }
+
 }

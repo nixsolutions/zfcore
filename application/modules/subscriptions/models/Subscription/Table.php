@@ -12,5 +12,4 @@ class Subscriptions_Model_Subscription_Table extends Core_Db_Table_Abstract
     /** Primary Key */
     protected $_primary = 'id';
 
-
 }

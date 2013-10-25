@@ -12,6 +12,7 @@ class Payments_PaypalController extends Core_Controller_Action
      */
     public function callbackAction()
     {
+
         //check request
         if ($this->getRequest()->isPost()) {
 
@@ -21,12 +22,20 @@ class Payments_PaypalController extends Core_Controller_Action
             if ($txnId || ($txnType && $txnType === 'subscr_cancel')) {
                 $params = $this->getRequest()->getParams();
                 $orderManager = new Payments_Model_Order_Manager();
-                if ($orderManager->validateAndPayOrder($params)) {
+                try {
+
+                    $orderManager->handlePaypalRequest($params);
                     if (Zend_Registry::isRegistered('Log')) {
                         $log = Zend_Registry::get('Log');
                         $log->log('Payment with params ' . var_export($params, true) . ' is successful.', Zend_Log::INFO);
                     }
-                    exit('ok');
+                    return; //ok
+
+                } catch (Exception $e) {
+                    if (Zend_Registry::isRegistered('Log')) {
+                        $log = Zend_Registry::get('Log');
+                        $log->log($e->getMessage() . ' at ' . $e->getFile() . '#' . $e->getLine(), Zend_Log::CRIT);
+                    }
                 }
             }
         } else {

@@ -12,5 +12,4 @@ class Payments_Model_Order_Table extends Core_Db_Table_Abstract
     /** Primary Key */
     protected $_primary = 'id';
 
-
 }
