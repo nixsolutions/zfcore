@@ -1,7 +1,7 @@
 mvc:
   payments:
     index:
-      index:
+      create:
         allow: user
       complete:
         allow: guest

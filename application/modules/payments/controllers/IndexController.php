@@ -26,6 +26,10 @@ class Payments_IndexController extends Core_Controller_Action
         }
 
         if (!$paypalConfig) {
+            if (Zend_Registry::isRegistered('Log')) {
+                $log = Zend_Registry::get('Log');
+                $log->log("PayPal is not configured.", Zend_Log::CRIT);
+            }
             throw new Exception($this->__("Paypal is not configured."));
         }
 
@@ -34,20 +38,27 @@ class Payments_IndexController extends Core_Controller_Action
 
 
     /**
+     * This action need call only from view
+     *
+     * Example:
+         echo $this->action(
+             'create',
+             'index',
+             'payments',
+             array(
+                 'orderId' => $this->orderId,
+                 ...
+                 'callFrom' => 'view'
+             )
+         );
+     *
      * @throws Zend_Controller_Action_Exception
      */
-    public function indexAction()
+    public function createAction()
     {
-        /**
-         * merchant@zfcore.naxel.rhino.nixsolutions.com
-         *
-         * https://www.sandbox.paypal.com/us/cgi-bin/webscr?cmd=_profile-website-payments
-         * https://www.sandbox.paypal.com/us/cgi-bin/webscr?cmd=_profile-summary
-         *
-         */
         $orderId = (int)$this->_getParam('orderId');
 
-        if ($orderId) {
+        if ($orderId && $this->_getParam('callFrom') == 'view') {
             $ordersTable = new Payments_Model_Order_Table();
             $order = $ordersTable->getById($orderId);
             if ($order) {

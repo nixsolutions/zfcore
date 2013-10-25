@@ -53,6 +53,10 @@ class Subscriptions_IndexController extends Core_Controller_Action
                 }
 
                 if (!$paypalHost) {
+                    if (Zend_Registry::isRegistered('Log')) {
+                        $log = Zend_Registry::get('Log');
+                        $log->log("PayPal is not configured.", Zend_Log::CRIT);
+                    }
                     throw new Exception($this->__("Paypal is not configured."));
                 }
 

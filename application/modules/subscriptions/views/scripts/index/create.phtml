@@ -15,7 +15,7 @@
             </div>
 <?php
 echo $this->action(
-    'index',
+    'create',
     'index',
     'payments',
     array(
@@ -24,6 +24,7 @@ echo $this->action(
         'description' => $description,
         'price' => $this->subscriptionPlan->price,
         'type' => $this->subscriptionPlan->type,
-        'paypalCustom' => $this->paypalCustom
+        'paypalCustom' => $this->paypalCustom,
+        'callFrom' => 'view'
     )
 ); ?>

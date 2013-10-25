@@ -23,7 +23,7 @@ class Payments_IndexControllerTest extends ControllerTestCase
         //for guest
         $this->_doLogin(Users_Model_User::ROLE_GUEST);
 
-        $this->dispatch('/payments/index/index');
+        $this->dispatch('/payments/index/create');
         $this->assertModule('index');
         $this->assertController('error');
         $this->assertAction('denied');
@@ -35,7 +35,7 @@ class Payments_IndexControllerTest extends ControllerTestCase
         //for user
         $this->_doLogin(Users_Model_User::ROLE_USER);
 
-        $this->dispatch('/payments/index/index');
+        $this->dispatch('/payments/index/create');
         $this->assertModule('index');
         $this->assertController('error');
         $this->assertAction('error');
@@ -52,8 +52,8 @@ class Payments_IndexControllerTest extends ControllerTestCase
 
         $this->request
              ->setMethod('GET')
-             ->setPost(array('orderId' => 111111111111111111));
-        $this->dispatch('/payments/index/index');
+             ->setPost(array('orderId' => 111111111111111111, 'callFrom' => 'view'));
+        $this->dispatch('/payments/index/create');
         $this->assertModule('index');
         $this->assertController('error');
         $this->assertAction('error');
@@ -84,11 +84,11 @@ class Payments_IndexControllerTest extends ControllerTestCase
 
         $this->request
              ->setMethod('GET')
-             ->setPost(array('orderId' => $order->id));
-        $this->dispatch('/payments/index/index');
+             ->setPost(array('orderId' => $order->id, 'callFrom' => 'view'));
+        $this->dispatch('/payments/index/create');
         $this->assertModule('payments');
         $this->assertController('index');
-        $this->assertAction('index');
+        $this->assertAction('create');
 
     }
 
@@ -98,7 +98,7 @@ class Payments_IndexControllerTest extends ControllerTestCase
         //Removing config
         Zend_Registry::set('payments', null);
 
-        $this->dispatch('/payments');
+        $this->dispatch('/payments/index/create');
         $this->assertModule('index');
         $this->assertController('error');
         $this->assertAction('error');
