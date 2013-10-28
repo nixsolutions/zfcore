@@ -277,4 +277,27 @@ class Subscriptions_IndexControllerTest extends ControllerTestCase
     }
 
 
+    /**
+     * Index action
+     */
+    public function testCompletePaymentActionAction()
+    {
+        $this->dispatch('/subscriptions/index/complete-payment');
+        $this->assertModule('subscriptions');
+        $this->assertController('index');
+        $this->assertAction('complete-payment');
+        $this->assertRedirectTo('/subscriptions');
+    }
+
+
+    public function testCanceledPaymentActionn()
+    {
+        $this->dispatch('/subscriptions/index/canceled-payment');
+        $this->assertModule('subscriptions');
+        $this->assertController('index');
+        $this->assertAction('canceled-payment');
+        $this->assertRedirectTo('/subscriptions');
+    }
+
+
 }

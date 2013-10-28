@@ -58,8 +58,10 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
         $paypalConfig = false;
         if (Zend_Registry::isRegistered('payments')) {
             $payments = Zend_Registry::get('payments');
-            if (isset($payments['paypal']) && $payments['paypal']) {
-                $paypalConfig = $payments['paypal'];
+            if (isset($payments['gateways']) && $payments['gateways']
+                && isset($payments['gateways']['paypal']) && $payments['gateways']['paypal']
+            ) {
+                $paypalConfig = $payments['gateways']['paypal'];
             }
         }
 
@@ -92,8 +94,17 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
 
             if ($txnType === 'subscr_cancel' && $subscrId) {
                 //Cancel subscription
-                $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-                return $subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $subscrId);
+                if (isset($payments['events']) && isset($payments['events']['callbackPaypalCancelSubscription'])) {
+                    //Triggering event
+                    return call_user_func(
+                        array(
+                            new $payments['events']['callbackPaypalCancelSubscription']['class'],
+                            $payments['events']['callbackPaypalCancelSubscription']['method']
+                        ),
+                        $customParam,
+                        $subscrId
+                    );
+                }
 
             } else {
 
@@ -102,8 +113,17 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
                 }
                 //Create order
                 if ($this->payOrder($orderId, $userId, $amount, $txnId)) {
-                    $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-                    return $subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $subscrId);
+                    if (isset($payments['events']) && isset($payments['events']['callbackPaypalOrderPaid'])) {
+                        //Triggering event
+                        return call_user_func(
+                            array(
+                                new $payments['events']['callbackPaypalOrderPaid']['class'],
+                                $payments['events']['callbackPaypalOrderPaid']['method']
+                            ),
+                            $customParam,
+                            $subscrId
+                        );
+                    }
                 } else {
                     //Error! Order has been payed or incorrect data in custom field.
                     throw new Exception('Order has been payed or incorrect data in custom field. Params: $orderId = '

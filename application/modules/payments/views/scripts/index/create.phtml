@@ -1,23 +1,20 @@
-<h3>Payment methods:</h3>
+<h5>Payment methods:</h5>
 <div class="tabbable">
     <ul class="nav nav-tabs">
         <li class="active"><a href="#paypal" data-toggle="tab">PayPal</a></li>
-        <li><a href="#authorizeNet" data-toggle="tab">Authorize Net</a></li>
+        <li><a href="#authorizeNet" data-toggle="tab">Authorize.Net</a></li>
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="paypal">
-            <p><?=$this->title?></p>
-            <p><?=$this->description?></p>
-            <p>Price: $ <?=number_format($this->price, 2, '.', ' ');?></p>
 
             <form action="<?= $this->paypalHost ?>cgi-bin/webscr" method="post" target="_top">
                 <!-- Identify your business so that you can collect the payments. -->
                 <input type="hidden" name="business" value="<?= $this->paypalEmail ?>">
 
                 <input type="hidden" name="return"
-                       value="http://<?= $_SERVER['HTTP_HOST'] ?>/payments/index/complete">
+                       value="http://<?= $_SERVER['HTTP_HOST'] . $this->completeCallback;?>">
                 <input type="hidden" name="cancel_return"
-                       value="http://<?= $_SERVER['HTTP_HOST'] ?>/payments/index/canceled">
+                       value="http://<?= $_SERVER['HTTP_HOST'] . $this->cancelCallback;?>">
 
 
                 <input type="hidden" name="notify_url"

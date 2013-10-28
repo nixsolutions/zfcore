@@ -3,10 +3,6 @@ mvc:
     index:
       create:
         allow: user
-      complete:
-        allow: guest
-      canceled:
-        allow: guest
     paypal:
       allow: guest
     management:

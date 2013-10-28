@@ -90,13 +90,20 @@ production:
         clientId:
         clientSecret:
       payments:
-        #test keys
-        paypal:
-          email: 'merchant@zfcore.naxel.rhino.nixsolutions.com'
-          currency: 'USD'
-          #settingsInUrl: https://www.sandbox.paypal.com/us/cgi-bin/webscr?cmd=_profile-website-payments
-          paypalHost: 'https://www.sandbox.paypal.com/'
-          errorLogFile: 'paypal_errors.log'
+        gateways:
+          #test keys
+          paypal:
+            email: 'merchant@zfcore.naxel.rhino.nixsolutions.com'
+            currency: 'USD'
+            #settingsInUrl: https://www.sandbox.paypal.com/us/cgi-bin/webscr?cmd=_profile-website-payments
+            paypalHost: 'https://www.sandbox.paypal.com/'
+        events:
+          callbackPaypalOrderPaid:
+            class: 'Subscriptions_Model_Subscription_Manager'
+            method: 'createSubscriptionByPaypalCustomParam'
+          callbackPaypalCancelSubscription:
+            class: 'Subscriptions_Model_Subscription_Manager'
+            method: 'cancelSubscriptionByPaypalCustomParam'
     session:
       save_path: APPLICATION_PATH/../data/session
     mail:

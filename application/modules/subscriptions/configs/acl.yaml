@@ -9,6 +9,10 @@ mvc:
         allow: user
       plan-info:
         allow: user
+      complete-payment:
+        allow: guest
+      canceled-payment:
+        allow: guest
     management:
       allow: admin
     cli:

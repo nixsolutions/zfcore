@@ -105,27 +105,4 @@ class Payments_IndexControllerTest extends ControllerTestCase
         $this->assertContains('<b>Message:</b> Paypal is not configured.</p>', $this->getResponse()->getBody());
     }
 
-
-    /**
-     * Index action
-     */
-    public function testCompleteAction()
-    {
-        $this->dispatch('/payments/index/complete');
-        $this->assertModule('payments');
-        $this->assertController('index');
-        $this->assertAction('complete');
-        $this->assertRedirectTo('/subscriptions');
-    }
-
-
-    public function testCanceledAction()
-    {
-        $this->dispatch('/payments/index/canceled');
-        $this->assertModule('payments');
-        $this->assertController('index');
-        $this->assertAction('canceled');
-        $this->assertRedirectTo('/subscriptions');
-    }
-
 }

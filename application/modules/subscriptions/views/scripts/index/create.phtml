@@ -1,18 +1,18 @@
-<h3>Buy now!</h3>
-<div>
-                <p>
-                    <?php
-                    $description = $this->subscriptionPlan->description;
-                    switch ($this->subscriptionPlan->type) {
-                        case Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_INFINITE:
-                            $description .= ' Unlimited days';
-                            break;
-                        default:
-                            $description .= ' On ' . $this->subscriptionPlan->period . ' days';
-                    }
-                    ?>
-                </p>
-            </div>
+<h3>Order details:</h3>
+<?php
+$description = $this->subscriptionPlan->description;
+
+switch ($this->subscriptionPlan->type) {
+    case Subscriptions_Model_SubscriptionPlan::PLAN_TYPE_INFINITE:
+        $description .= ' Unlimited days';
+        break;
+    default:
+        $description .= ' On ' . $this->subscriptionPlan->period . ' days';
+}
+?>
+<p><?=$this->subscriptionPlan->name?></p>
+<p><?=$description?></p>
+<p>Price: $ <?=number_format($this->subscriptionPlan->price, 2, '.', ' ');?></p>
 <?php
 echo $this->action(
     'create',
@@ -25,6 +25,8 @@ echo $this->action(
         'price' => $this->subscriptionPlan->price,
         'type' => $this->subscriptionPlan->type,
         'paypalCustom' => $this->paypalCustom,
-        'callFrom' => 'view'
+        'callFrom' => 'view',
+        'return' => '/subscriptions/index/complete-payment',
+        'cancel_return' => '/subscriptions/index/canceled-payment'
     )
 ); ?>

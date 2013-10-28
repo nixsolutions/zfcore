@@ -47,8 +47,9 @@ class Subscriptions_IndexController extends Core_Controller_Action
                 $paypalHost = false;
                 if (Zend_Registry::isRegistered('payments')) {
                     $payments = Zend_Registry::get('payments');
-                    if (isset($payments['paypal']) && $payments['paypal']) {
-                        $paypalHost = $payments['paypal']['paypalHost'];
+                    if (isset($payments['gateways']) && $payments['gateways']
+                        && isset($payments['gateways']['paypal']) && $payments['gateways']['paypal']) {
+                        $paypalHost = $payments['gateways']['paypal']['paypalHost'];
                     }
                 }
 
@@ -193,6 +194,20 @@ class Subscriptions_IndexController extends Core_Controller_Action
             throw new Zend_Controller_Action_Exception('Page not found');
         }
 
+    }
+
+
+    public function completePaymentAction()
+    {
+        $this->_helper->flashMessenger('Payment complete! Please wait a minute.');
+        $this->_helper->redirector->gotoUrl('/subscriptions');
+    }
+
+
+    public function canceledPaymentAction()
+    {
+        $this->_helper->flashMessenger('Payment canceled :(');
+        $this->_helper->redirector->gotoUrl('/subscriptions');
     }
 
 }

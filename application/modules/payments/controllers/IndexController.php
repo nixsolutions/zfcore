@@ -20,8 +20,9 @@ class Payments_IndexController extends Core_Controller_Action
         $paypalConfig = false;
         if (Zend_Registry::isRegistered('payments')) {
             $payments = Zend_Registry::get('payments');
-            if (isset($payments['paypal']) && $payments['paypal']) {
-                $paypalConfig = $payments['paypal'];
+            if (isset($payments['gateways']) && $payments['gateways']
+                && isset($payments['gateways']['paypal']) && $payments['gateways']['paypal']) {
+                $paypalConfig = $payments['gateways']['paypal'];
             }
         }
 
@@ -75,6 +76,10 @@ class Payments_IndexController extends Core_Controller_Action
                 $this->view->paypalEmail = $this->_paypalConfig['email'];
                 $this->view->paypalCurrency = $this->_paypalConfig['currency'];
 
+                //Callbacks
+                $this->view->completeCallback = $this->_getParam('return');
+                $this->view->cancelCallback = $this->_getParam('cancel_return');
+
                 $this->view->order = $order;
             } else {
                 throw new Zend_Controller_Action_Exception('Page not found');
@@ -84,20 +89,6 @@ class Payments_IndexController extends Core_Controller_Action
             throw new Zend_Controller_Action_Exception('Page not found');
         }
 
-    }
-
-
-    public function completeAction()
-    {
-        $this->_helper->flashMessenger('Payment complete! Please wait a minute.');
-        $this->_helper->redirector->gotoUrl('/subscriptions');
-    }
-
-
-    public function canceledAction()
-    {
-        $this->_helper->flashMessenger('Payment canceled :(');
-        $this->_helper->redirector->gotoUrl('/subscriptions');
     }
 
 }
