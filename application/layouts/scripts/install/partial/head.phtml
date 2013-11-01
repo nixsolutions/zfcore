@@ -14,8 +14,8 @@
         'text/javascript',
         array('conditional' => 'lt IE 9')
     );?>
-    <?php $this->displayStyles() ?>
+    <?php echo $this->headLink() ?>
     <?php echo $this->headStyle() ?>
-    <?php $this->displayScripts() ?>
+    <?php echo $this->headScript() ?>
     <base href="<?php echo $this->baseUrl() ?>"/>
 </head>
