@@ -98,12 +98,12 @@ production:
             #settingsInUrl: https://www.sandbox.paypal.com/us/cgi-bin/webscr?cmd=_profile-website-payments
             paypalHost: 'https://www.sandbox.paypal.com/'
         events:
-          callbackPaypalOrderPaid:
+          paySubscription:
             class: 'Subscriptions_Model_Subscription_Manager'
-            method: 'createSubscriptionByPaypalCustomParam'
-          callbackPaypalCancelSubscription:
+            method: 'paySubscription'
+          cancelSubscription:
             class: 'Subscriptions_Model_Subscription_Manager'
-            method: 'cancelSubscriptionByPaypalCustomParam'
+            method: 'cancelSubscription'
     session:
       save_path: APPLICATION_PATH/../data/session
     mail:

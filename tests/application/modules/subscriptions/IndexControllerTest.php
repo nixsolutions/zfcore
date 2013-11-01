@@ -59,7 +59,7 @@ class Subscriptions_IndexControllerTest extends ControllerTestCase
         Zend_Auth::getInstance()->getStorage()->write($account);
 
         $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-         $subscriptionManager->createSubscription($account->id, $planTypeId);
+        $subscriptionManager->createFreeSubscription($account->id, $planTypeId);
 
         $this->dispatch('/subscriptions');
         $this->assertModule('subscriptions');
@@ -85,7 +85,7 @@ class Subscriptions_IndexControllerTest extends ControllerTestCase
         Zend_Auth::getInstance()->getStorage()->write($account);
 
         $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-        $subscriptionManager->createSubscription($account->id, $planTypeId);
+        $subscriptionManager->createFreeSubscription($account->id, $planTypeId);
 
         //Test empty config
         Zend_Registry::set('payments', null);
@@ -221,7 +221,7 @@ class Subscriptions_IndexControllerTest extends ControllerTestCase
         Zend_Auth::getInstance()->getStorage()->write($account);
 
         $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-        $subscriptionManager->createSubscription($account->id, 1);
+        $subscriptionManager->createFreeSubscription($account->id, 1);
 
         $this->dispatch('/subscriptions/index/plan-info');
         $this->assertModule('subscriptions');
@@ -256,7 +256,7 @@ class Subscriptions_IndexControllerTest extends ControllerTestCase
         Zend_Auth::getInstance()->getStorage()->write($account);
 
         $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-        $subscriptionManager->createSubscription($account->id, 1);
+        $subscriptionManager->createFreeSubscription($account->id, 1);
 
         $this->dispatch('/subscriptions/index/complete');
         $this->assertModule('subscriptions');

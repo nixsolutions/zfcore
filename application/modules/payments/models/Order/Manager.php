@@ -23,24 +23,23 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
 
     /**
      * @param int $orderId
-     * @param int $userId
-     * @param float $amount
      * @param string $txnId
+     * @param string $paymentSystem
+     * @param string|null $paymentSubscrId
      * @return bool
      */
-    public function payOrder($orderId, $userId, $amount, $txnId)
+    public function payOrder($orderId, $txnId, $paymentSystem, $paymentSubscrId = null)
     {
         $select = $this->getDbTable()
             ->select()
-            ->where('id = ?', $orderId)
-            ->where('userId = ?', $userId)
-            ->where('amount = ?', $amount)
-            ->where('status = ?', Payments_Model_Order::ORDER_STATUS_WAITING);
+            ->where('id = ?', $orderId);
         $order = $this->getDbTable()->fetchRow($select);
         if ($order) {
             $order->status = Payments_Model_Order::ORDER_STATUS_COMPLETE;
             $order->transactionId = $txnId;
             $order->paidDate = date('Y-m-d H:i:s');
+            $order->paymentSystem = $paymentSystem;
+            $order->paymentSubscrId = $paymentSubscrId;
             $order->save();
             return true;
         } else {
@@ -80,61 +79,56 @@ class Payments_Model_Order_Manager extends Core_Model_Manager
         $txnId = $params['txn_id'];
 
         $customParamArray = explode('-', $customParam);
-        if (count($customParamArray) !== 4) {
+        if (count($customParamArray) !== 2) {
             throw new Exception("Incorrect format in PayPal custom param: " . var_export($customParamArray, true));
         }
 
-        list($orderType, $orderId, $userId) = $customParamArray;
+        list($orderType, $orderId) = $customParamArray;
 
-        if (!$orderType || !$orderId || !$userId) {
+        if (!$orderType || !$orderId) {
             throw new Exception("Incorrect data in PayPal custom param: " . var_export($customParam, true));
         }
 
-        if ($orderType === Payments_Model_Order::ORDER_TYPE_SUBSCRIPTION) {
-
-            if ($txnType === 'subscr_cancel' && $subscrId) {
-                //Cancel subscription
-                if (isset($payments['events']) && isset($payments['events']['callbackPaypalCancelSubscription'])) {
-                    //Triggering event
-                    return call_user_func(
-                        array(
-                            new $payments['events']['callbackPaypalCancelSubscription']['class'],
-                            $payments['events']['callbackPaypalCancelSubscription']['method']
-                        ),
-                        $customParam,
-                        $subscrId
-                    );
-                }
-
-            } else {
-
-                if (!$amount || !$txnId) {
-                    throw new Exception('Incorrect data from PayPal. $amount = ' . $amount . ' $txnId = ' . $txnId);
-                }
-                //Create order
-                if ($this->payOrder($orderId, $userId, $amount, $txnId)) {
-                    if (isset($payments['events']) && isset($payments['events']['callbackPaypalOrderPaid'])) {
-                        //Triggering event
-                        return call_user_func(
-                            array(
-                                new $payments['events']['callbackPaypalOrderPaid']['class'],
-                                $payments['events']['callbackPaypalOrderPaid']['method']
-                            ),
-                            $customParam,
-                            $subscrId
-                        );
-                    }
-                } else {
-                    //Error! Order has been payed or incorrect data in custom field.
-                    throw new Exception('Order has been payed or incorrect data in custom field. Params: $orderId = '
-                        . $orderId . ', $userId = ' . $userId . ', $amount = ' . $amount . ', $txnId = '
-                        . $txnId . '.');
-                }
+        if ($txnType === 'subscr_cancel') {
+            //Cancel subscription
+            if (isset($payments['events']) && isset($payments['events']['cancel' . ucfirst($orderType)])) {
+                //Triggering event
+                return call_user_func(
+                    array(
+                        new $payments['events']['cancel' . ucfirst($orderType)]['class'],
+                        $payments['events']['cancel' . ucfirst($orderType)]['method']
+                    ),
+                    $orderId
+                );
             }
 
         } else {
-            //TBD. For other types of order.
-            throw new Exception('Incorrect $orderType: ' . $orderType);
+
+            if (!$amount || !$txnId) {
+                throw new Exception('Incorrect data from PayPal. $amount = ' . $amount . ' $txnId = ' . $txnId);
+            }
+
+            //Pay order
+            if ($this->payOrder($orderId, $txnId, Payments_Model_Order::PAYMENT_SYSTEM_PAYPAL, $subscrId)) {
+                if (isset($payments['events']) && isset($payments['events']['pay' . ucfirst($orderType)])) {
+                    //Triggering event
+                    //paySubscription($userId, $orderId)
+                    return call_user_func(
+                        array(
+                            new $payments['events']['pay' . ucfirst($orderType)]['class'],
+                            $payments['events']['pay' . ucfirst($orderType)]['method']
+                        ),
+                        $orderId
+                    );
+                } else {
+                    throw new Exception('Incorrect $orderType: ' . $orderType);
+                }
+            } else {
+                //Error! Order has been payed or incorrect data in custom field.
+                throw new Exception('Order has been payed or incorrect data in custom field. Params: $orderId = '
+                    . $orderId . ', $amount = ' . $amount . ', $txnId = '
+                    . $txnId . '.');
+            }
         }
 
     }

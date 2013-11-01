@@ -29,12 +29,20 @@ class Payments_Model_Order_ManagerTest extends ControllerTestCase
         //Is created order
         $this->assertNotEmpty($order);
 
-        $response = $orderManager->payOrder($order->id, $userId, $amount, $txnId);
+        $response = $orderManager->payOrder(
+            $order->id,
+            $txnId,
+            Payments_Model_Order::PAYMENT_SYSTEM_PAYPAL
+        );
         //Is payed order
         $this->assertTrue($response);
 
-        //Is already payed order
-        $response = $orderManager->payOrder($order->id, $userId, $amount, $txnId);
+        //Incorrect orderId
+        $response = $orderManager->payOrder(
+            '123456789',
+            $txnId,
+            Payments_Model_Order::PAYMENT_SYSTEM_PAYPAL
+        );
         $this->assertFalse($response);
     }
 

@@ -15,6 +15,8 @@ class Payments_Migration_00000000_000000_00 extends Core_Migration_Abstract
               `status` enum('waiting','complete','canceled') COLLATE utf8_unicode_ci DEFAULT 'waiting',
               `paidDate` datetime DEFAULT NULL,
               `transactionId` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+              `paymentSystem` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+              `paymentSubscrId` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
               PRIMARY KEY (`id`),
               KEY `FK_payments_to_users` (`userId`),
               CONSTRAINT `FK_payments_to_users` FOREIGN KEY (`userId`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE

@@ -2,18 +2,20 @@
     <?php echo $this->headMeta() ?>
     <?php echo $this->headTitle()->setSeparator(': ') ?>
     <link rel="profile" href="http://gmpg.org/xfn/11"/>
-    <link rel="stylesheet" href="<?=$this->baseUrl('/css/install/styles.css')?>" />
-    <link rel="stylesheet" href="<?=$this->baseUrl('/css/bootstrap.css')?>" />
+    <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/install/styles.css'));?>
+    <?php $this->headLink()->appendStylesheet($this->baseUrl('/css/bootstrap.css'));?>
     <link rel="shortcut icon" type="image/x-icon" href="<?=$this->baseUrl('favicon.ico')?>" />
-    <script src="<?=$this->baseUrl('/js/jquery/jquery.js')?>" ></script>
-    <script src="<?=$this->baseUrl('/js/bootstrap.js')?>" ></script>
-    <script src="<?=$this->baseUrl('/js/ready.js')?>" ></script>
-    <script src="<?=$this->baseUrl('/js/messages.js')?>" ></script>
-    <!--[if lt IE 9]>
-    <script src="<?=$this->baseUrl('/js/html5.js')?>"></script>
-    <![endif]-->
-    <?php echo $this->headLink() ?>
+    <?php $this->headScript()->appendFile($this->baseUrl('/js/jquery/jquery.js'));?>
+    <?php $this->headScript()->appendFile($this->baseUrl('/js/bootstrap.js'));?>
+    <?php $this->headScript()->appendFile($this->baseUrl('/js/ready.js'));?>
+    <?php $this->headScript()->appendFile($this->baseUrl('/js/messages.js'));?>
+    <?php $this->headScript()->appendFile(
+        '/js/html5.js',
+        'text/javascript',
+        array('conditional' => 'lt IE 9')
+    );?>
+    <?php $this->displayStyles() ?>
     <?php echo $this->headStyle() ?>
-    <?php echo $this->headScript() ?>
+    <?php $this->displayScripts() ?>
     <base href="<?php echo $this->baseUrl() ?>"/>
 </head>

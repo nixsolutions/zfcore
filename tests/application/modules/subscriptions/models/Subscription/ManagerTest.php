@@ -15,8 +15,7 @@ class Subscriptions_Model_Subscription_ManagerTest extends ControllerTestCase
     public function testCreateAndCancelSubscriptionByPaypalCustomParam()
     {
         //Fake data
-        $orderType = Payments_Model_Order::ORDER_TYPE_SUBSCRIPTION;
-        $userId = '123456';
+        $orderType = Subscriptions_Model_Subscription::ORDER_TYPE_SUBSCRIPTION;
         $planId = '3';
         $price = '50';
         $payPalSubscriptionId = 'paypal';
@@ -29,27 +28,27 @@ class Subscriptions_Model_Subscription_ManagerTest extends ControllerTestCase
         $account->password = md5('password');
         $account->role = Users_Model_User::ROLE_USER;
         $account->status = Users_Model_User::STATUS_ACTIVE;
-        $account->id = $userId;
         $account->save();
 
         //Create order
         $orderManager = new Payments_Model_Order_Manager();
-        $order = $orderManager->createOrder($userId, $price);
+        $order = $orderManager->createOrder($account->id, $price);
 
-        //Create custom param
-        $customParam = implode('-', array($orderType, $order->id, $userId, $planId, 0));
 
         $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-        $this->assertTrue($subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId));
+        $this->assertNotNull($subscriptionManager->createPaidSubscription($account->id, $planId, $order->id));
 
-        //Test update subscription
-        $this->assertTrue($subscriptionManager->createSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId));
+        //Test paySubscription incorrect orderId
+        $this->assertFalse($subscriptionManager->paySubscription('123456789'));
+
+        //Test paySubscription
+        $this->assertTrue($subscriptionManager->paySubscription($order->id));
 
         //Test canceled subscription
-        $this->assertTrue($subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId));
+        $this->assertTrue($subscriptionManager->cancelSubscription($order->id));
 
-        //Test already canceled subscription
-        $this->assertFalse($subscriptionManager->cancelSubscriptionByPaypalCustomParam($customParam, $payPalSubscriptionId));
+        //Test canceled subscription incorrect orderId
+        $this->assertFalse($subscriptionManager->cancelSubscription('123456789'));
     }
 
 
@@ -71,11 +70,14 @@ class Subscriptions_Model_Subscription_ManagerTest extends ControllerTestCase
         $account->save();
 
         $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-        $subscription = $subscriptionManager->createSubscription($account->id, $planId, $expirationDate);
+        $subscription = $subscriptionManager->createFreeSubscription($account->id, $planId);
         //Test create subscription
         $this->assertNotEmpty($subscription);
 
         //Test expired subscription
+        $subscription->expirationDate = $expirationDate;
+        $subscription->save();
+
         $subscriptions = $subscriptionManager->getExpiredActiveSubscriptions();
         $this->assertNotEmpty($subscriptions);
         $this->assertCount(1, $subscriptions);

@@ -15,6 +15,7 @@ class Payments_Model_Order extends Core_Db_Table_Row_Abstract
     const ORDER_PERIODICITY_TYPE_ONETIME  = 'onetime';
     const ORDER_PERIODICITY_TYPE_MONTHLY  = 'monthly';
 
-    const ORDER_TYPE_SUBSCRIPTION = 'subscription';
+
+    const PAYMENT_SYSTEM_PAYPAL = 'paypal';
 
 }

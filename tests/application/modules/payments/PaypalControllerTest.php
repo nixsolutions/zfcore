@@ -42,7 +42,7 @@ class Payments_PaypalControllerTest extends ControllerTestCase
     public function testCallbackActionCorrectTxnId()
     {
         //Fake data
-        $orderType = Payments_Model_Order::ORDER_TYPE_SUBSCRIPTION;
+        $orderType = Subscriptions_Model_Subscription::ORDER_TYPE_SUBSCRIPTION;
         $planId = '3';
         $price = '50';
 
@@ -67,7 +67,7 @@ class Payments_PaypalControllerTest extends ControllerTestCase
         $mock->setDbTable('Payments_Model_Order_Table');
 
         //Create custom param
-        $customParam = implode('-', array($orderType, $order->id, $account->id, $planId));
+        $customParam = implode('-', array($orderType, $order->id));
 
         $params = array(
             'custom' => '111',
@@ -76,6 +76,9 @@ class Payments_PaypalControllerTest extends ControllerTestCase
             'txn_type' => 111,
             'txn_id' => 111
         );
+
+        $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
+        $subscriptionManager->createPaidSubscription($account->id, $planId, $order->id);
 
         //Test incorrect custom param
         try {
@@ -86,7 +89,7 @@ class Payments_PaypalControllerTest extends ControllerTestCase
         }
 
         //Test incorrect custom param
-        $params['custom'] = '0-0-0-0';
+        $params['custom'] = '0-0';
         try {
             $mock->handlePaypalRequest($params);
             $this->fail('An expected exception has not been raised.');
@@ -105,7 +108,17 @@ class Payments_PaypalControllerTest extends ControllerTestCase
         $params['mc_gross'] = $price;
         $this->assertTrue($mock->handlePaypalRequest($params));
 
-        //Test payOrder() return false
+        //Test payOrder() incorrect orderType
+        $params['custom'] = implode('-', array('incorrect', $order->id));
+        try {
+            $mock->handlePaypalRequest($params);
+            $this->fail('An expected exception has not been raised.');
+        } catch (Exception $ex) {
+            // Test ok.
+        }
+
+        //Test payOrder() incorrect orderId
+        $params['custom'] = implode('-', array('incorrect', '12345678'));
         try {
             $mock->handlePaypalRequest($params);
             $this->fail('An expected exception has not been raised.');
@@ -115,19 +128,11 @@ class Payments_PaypalControllerTest extends ControllerTestCase
 
         //Test Cancel Subscription
         $params['txn_type'] = 'subscr_cancel';
+        $params['custom'] = $customParam;
         $this->assertTrue($mock->handlePaypalRequest($params));
 
-        //Test incorrect subscr_id
-        $params['subscr_id'] = 123;
-        try {
-            $mock->handlePaypalRequest($params);
-            $this->fail('An expected exception has not been raised.');
-        } catch (Exception $ex) {
-            // Test ok.
-        }
-
-        //Test incorrect orderType
-        $params['custom'] = implode('-', array('incorrect', $order->id, $account->id, $planId));
+        //Test Cancel Subscription incorrect orderType
+        $params['custom'] = implode('-', array('incorrect', $order->id));
         try {
             $mock->handlePaypalRequest($params);
             $this->fail('An expected exception has not been raised.');

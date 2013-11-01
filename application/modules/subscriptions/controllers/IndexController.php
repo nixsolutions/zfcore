@@ -98,8 +98,12 @@ class Subscriptions_IndexController extends Core_Controller_Action
                 $this->view->orderId = $order->id;
                 $this->view->subscriptionPlan = $subscriptionPlan;
 
+                $subscriptionManger = new Subscriptions_Model_Subscription_Manager();
+                //Create paid subscription
+                $subscriptionManger->createPaidSubscription($userId, $subscriptionPlan->id, $order->id);
+
                 //'type'-orderId-userId-planId
-                $this->view->paypalCustom = Payments_Model_Order::ORDER_TYPE_SUBSCRIPTION . '-' . $order->id . '-' . $userId . '-' . $subscriptionPlan->id;
+                $this->view->paypalCustom = Subscriptions_Model_Subscription::ORDER_TYPE_SUBSCRIPTION . '-' . $order->id;
 
             } else {
                 //Free subscription
@@ -119,17 +123,9 @@ class Subscriptions_IndexController extends Core_Controller_Action
 
                     }
 
-                    //Create expiration date
-                    $subscriptionManager = new Subscriptions_Model_Subscription_Manager();
-                    $expirationDate = $subscriptionManager->getExpirationDate($userId, $planId);
-
                     $subscriptionManger = new Subscriptions_Model_Subscription_Manager();
-
-                    //Disable old subscriptions
-                    $subscriptionManger->disableAllSubscriptionsByUserId($userId);
-
                     //Create subscription
-                    $subscriptionManger->createSubscription($userId, $planId, $expirationDate);
+                    $subscriptionManger->createFreeSubscription($userId, $planId);
 
                     //Redirect to Thank you page
                     $this->redirect('/subscriptions/index/complete');

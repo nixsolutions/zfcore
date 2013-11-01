@@ -8,48 +8,93 @@ class Subscriptions_Model_Subscription_Manager extends Core_Model_Manager
      *
      * @param int $userId
      * @param int $planId
-     * @param null|string $expirationDate If null - unlimited subscription
-     * @param int|null $orderId If null - free subscription
-     * @param int|null $subscrId Null for one-time payment and string for PayPal subscription
+     * @param int $orderId If null - free subscription
      * @return Zend_Db_Table_Row_Abstract
      */
-    public function createSubscription($userId, $planId, $expirationDate = null, $orderId = null, $subscrId = null)
+    public function createPaidSubscription($userId, $planId, $orderId)
     {
-        $subscription = null;
-        if ($subscrId) {
-            //Get subscription if exist
-            $select = $this->getDbTable()->select()
-                ->where('userId =?', $userId)
-                ->where('orderId =?', $orderId)
-                ->where('subscriptionPlanId =?', $planId)
-                ->where('paypalSubscrId =?', $subscrId);
-            $subscription = $this->getDbTable()->fetchRow($select);
-        }
+        //Disable old subscriptions
+        $this->disableAllSubscriptionsByUserId($userId);
 
-        if ($subscription) {
-            //For renewal subscriptions
-            $subscription->updated = date('Y-m-d H:i:s');
-        } else {
-            //Create new subscription
-            $subscription = $this->getDbTable()->createRow();
-            $subscription->created = date('Y-m-d H:i:s');
-            $subscription->subscriptionPlanId = $planId;
-            //If Null $orderId - free subscription
-            $subscription->orderId = $orderId;
-            $subscription->userId = $userId;
-        }
+        //Create new subscription
+        $subscription = $this->getDbTable()->createRow();
+        $subscription->created = date('Y-m-d H:i:s');
+        $subscription->subscriptionPlanId = $planId;
+        //If Null $orderId - free subscription
+        $subscription->orderId = $orderId;
+        $subscription->userId = $userId;
 
-        if ($subscrId) {
-            //Add PayPal subscriptionId if it is recurrent payment
-            $subscription->paypalSubscrId = $subscrId;
-        }
-
-        //If Null $expirationDate - infinite
-        $subscription->expirationDate = $expirationDate;
-        $subscription->status = Subscriptions_Model_Subscription::STATUS_ACTIVE;
+        $subscription->status = Subscriptions_Model_Subscription::STATUS_INITIAL;
 
         $subscription->save();
         return $subscription;
+    }
+
+
+    public function paySubscription($orderId)
+    {
+        $select = $this->getDbTable()->select()
+            ->where('orderId =?', $orderId);
+        $subscription = $this->getDbTable()->fetchRow($select);
+        if (!$subscription) {
+            return false;
+        }
+
+        $subscription->status = Subscriptions_Model_Subscription::STATUS_ACTIVE;
+        $subscription->expirationDate = $this->getExpirationDate(
+            $subscription->userId,
+            $subscription->subscriptionPlanId
+        );
+        $subscription->updated = date('Y-m-d H:i:s');
+
+        return (bool)$subscription->save();
+    }
+
+
+    /**
+     * @param $userId
+     * @param $planId
+     * @return Zend_Db_Table_Row_Abstract
+     */
+    public function createFreeSubscription($userId, $planId)
+    {
+        //Disable old subscriptions
+        $this->disableAllSubscriptionsByUserId($userId);
+
+        //Create new subscription
+        $subscription = $this->getDbTable()->createRow();
+        $subscription->created = date('Y-m-d H:i:s');
+        $subscription->subscriptionPlanId = $planId;
+        $subscription->userId = $userId;
+
+        //Create expiration date, If Null $expirationDate - infinite
+        $subscription->expirationDate = $this->getExpirationDate($userId, $planId);
+        $subscription->status = Subscriptions_Model_Subscription::STATUS_ACTIVE;
+        $subscription->save();
+
+        return $subscription;
+    }
+
+
+    /**
+     * Cancel PayPal subscription
+     *
+     * @param int $orderId
+     * @return bool
+     */
+    public function cancelSubscription($orderId)
+    {
+        //Get subscription if exist
+        $select = $this->getDbTable()->select()
+            ->where('orderId =?', $orderId);
+        $subscription = $this->getDbTable()->fetchRow($select);
+
+        if ($subscription) {
+            $subscription->updated = date('Y-m-d H:i:s');
+            $subscription->status = Subscriptions_Model_Subscription::STATUS_CANCELED;
+            return (bool)$subscription->save();
+        }
+        return false;
     }
 
 
@@ -64,36 +109,6 @@ class Subscriptions_Model_Subscription_Manager extends Core_Model_Manager
             ),
             'userId = "' . $userId . '"'
         );
-    }
-
-
-    /**
-     * Cancel PayPal subscription
-     *
-     * @param int $userId
-     * @param int $planId
-     * @param int $orderId
-     * @param string $subscrId
-     * @return bool
-     */
-    public function cancelSubscription($userId, $planId, $orderId, $subscrId)
-    {
-        //Get subscription if exist
-        $select = $this->getDbTable()->select()
-            ->where('userId =?', $userId)
-            ->where('orderId =?', $orderId)
-            ->where('subscriptionPlanId =?', $planId)
-            ->where('status =?', Subscriptions_Model_Subscription::STATUS_ACTIVE)
-            ->where('paypalSubscrId =?', $subscrId);
-        $subscription = $this->getDbTable()->fetchRow($select);
-
-        if ($subscription) {
-            $subscription->updated = date('Y-m-d H:i:s');
-            $subscription->status = Subscriptions_Model_Subscription::STATUS_CANCELED;
-            $subscription->save();
-            return true;
-        }
-        return false;
     }
 
 
@@ -176,55 +191,14 @@ class Subscriptions_Model_Subscription_Manager extends Core_Model_Manager
      */
     public function getCurrentSubscription($userId)
     {
-        //@todo fix it
         $select = $this->getDbTable()->select()
-            ->from(array('subscriptions'))
-            ->where('status =?', Subscriptions_Model_Subscription::STATUS_ACTIVE)
-            ->where('userId =?', $userId)
-            ->order('created DESC');
+            ->setIntegrityCheck(false)
+            ->from(array('s' => 'subscriptions'))
+            ->joinLeft(array('o' => 'orders'), 'o.id = s.orderId', array('o.paymentSystem', 'o.paymentSubscrId'))
+            ->where('s.status =?', Subscriptions_Model_Subscription::STATUS_ACTIVE)
+            ->where('s.userId =?', $userId)
+            ->order('s.created DESC');
         return $this->getDbTable()->fetchRow($select);
-    }
-
-
-    /**
-     * Create subscription by PayPal custom field in request
-     *
-     * @param string $customParam
-     * @param string|null $subscrId
-     * @return Zend_Db_Table_Row_Abstract
-     */
-    public function createSubscriptionByPaypalCustomParam($customParam, $subscrId = null)
-    {
-        list($orderType, $orderId, $userId, $planId) = explode('-', $customParam);
-
-        //Create expiration date
-        $expirationDate = $this->getExpirationDate($userId, $planId);
-
-        //Disable old subscriptions
-        $this->disableAllSubscriptionsByUserId($userId);
-
-        //Create subscription
-        if ($this->createSubscription($userId, $planId, $expirationDate, $orderId, $subscrId)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * Disable subscriptions
-     *
-     * @param array $customParam
-     * @param string $subscrId
-     * @return bool
-     */
-    public function cancelSubscriptionByPaypalCustomParam($customParam, $subscrId)
-    {
-        list($orderType, $orderId, $userId, $planId) = explode('-', $customParam);
-
-        //Disable old subscriptions
-        return $this->cancelSubscription($userId, $planId, $orderId, $subscrId);
     }
 
 }
