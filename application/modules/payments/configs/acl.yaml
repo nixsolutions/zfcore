@@ -1,0 +1,9 @@
+mvc:
+  payments:
+    index:
+      create:
+        allow: user
+    paypal:
+      allow: guest
+    management:
+      allow: admin

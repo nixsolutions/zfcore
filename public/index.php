@@ -8,6 +8,10 @@
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
 
+// Define path to logs directory
+defined('LOGS_PATH')
+    || define('LOGS_PATH', realpath(dirname(__FILE__) . '/../data/logs'));
+
 // Define application environment
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));

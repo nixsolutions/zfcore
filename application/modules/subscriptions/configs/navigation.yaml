@@ -1,0 +1,8 @@
+default:
+  subscriptions:
+    label: Subscriptions
+    route: default
+    module: subscriptions
+    controller: index
+    action: index
+    order: 8

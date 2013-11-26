@@ -89,6 +89,21 @@ production:
       googleConfig:
         clientId:
         clientSecret:
+      payments:
+        gateways:
+          #test keys
+          paypal:
+            email: 'merchant@zfcore.naxel.rhino.nixsolutions.com'
+            currency: 'USD'
+            #settingsInUrl: https://www.sandbox.paypal.com/us/cgi-bin/webscr?cmd=_profile-website-payments
+            paypalHost: 'https://www.sandbox.paypal.com/'
+        events:
+          paySubscription:
+            class: 'Subscriptions_Model_Subscription_Manager'
+            method: 'paySubscription'
+          cancelSubscription:
+            class: 'Subscriptions_Model_Subscription_Manager'
+            method: 'cancelSubscription'
     session:
       save_path: APPLICATION_PATH/../data/session
     mail:

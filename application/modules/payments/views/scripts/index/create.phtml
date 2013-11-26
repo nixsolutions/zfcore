@@ -1,0 +1,72 @@
+<h5>Payment methods:</h5>
+<div class="tabbable">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#paypal" data-toggle="tab">PayPal</a></li>
+        <li><a href="#authorizeNet" data-toggle="tab">Authorize.Net</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="paypal">
+
+            <form action="<?= $this->paypalHost ?>cgi-bin/webscr" method="post" target="_top">
+                <!-- Identify your business so that you can collect the payments. -->
+                <input type="hidden" name="business" value="<?= $this->paypalEmail ?>">
+
+                <input type="hidden" name="return"
+                       value="http://<?= $_SERVER['HTTP_HOST'] . $this->completeCallback;?>">
+                <input type="hidden" name="cancel_return"
+                       value="http://<?= $_SERVER['HTTP_HOST'] . $this->cancelCallback;?>">
+
+
+                <input type="hidden" name="notify_url"
+                       value="http://<?= $_SERVER['HTTP_HOST'] ?>/payments/paypal/callback">
+
+                <!-- Specify a button. -->
+                <?php if ($this->type === Payments_Model_Order::ORDER_PERIODICITY_TYPE_MONTHLY) { ?>
+                    <input type="hidden" name="cmd" value="_xclick-subscriptions">
+                    <input type="hidden" name="a3" value="<?=number_format($this->price, 2, '.', '');?>">
+                    <input type="hidden" name="p3" value="1">
+                    <input type="hidden" name="t3" value="M">
+                    <input type="hidden" name="src" value="1">
+                    <input type="hidden" name="no_note" value="1">
+
+                <?php } else { ?>
+                    <input type="hidden" name="cmd" value="_xclick">
+                    <input type="hidden" name="amount" value="<?=number_format($this->price, 2, '.', '');?>">
+                <?php } ?>
+
+                <input type="hidden" name="lc" value="EN">
+                <input name="custom" type="hidden" value="<?php echo $this->paypalCustom; ?>">
+
+                <!-- Specify details about the item that buyers will purchase. -->
+                <input type="hidden" name="item_name"
+                       value="<?=$this->title?> <?=$this->description?>">
+
+                <input type="hidden" name="currency_code" value="<?= $this->paypalCurrency ?>">
+
+                <div class="control-group">
+                    <div class="controls">
+
+                        <button class="btn btn-primary" type="submit"><?php $this->_e('Pay now'); ?></button>
+
+                        <?php /*if ($this->recurringPayment) { ?>
+                            <?php $this->_e('or'); ?>
+
+                            <a href="<?= $this->paypalHost ?>cgi-bin/webscr?cmd=_subscr-find&alias=<?= $this->email ?>">
+                                <span class="btn btn-primary"
+                                      type="submit"><?php $this->_e('Unsubscribe'); ?></span>
+                            </a>
+                        <?php }*/ ?>
+
+                    </div>
+                </div>
+
+            </form>
+
+
+
+        </div>
+        <div class="tab-pane" id="authorizeNet">
+            <p>TBD</p>
+        </div>
+    </div>
+</div>
