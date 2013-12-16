@@ -233,7 +233,7 @@ class Core_Tool_Project_Provider_MigrationProvider
         $this->message('+' . ' - Already loaded', 'green');
         $this->message('o' . ' - Ready for load', 'yellow');
         $this->message('-' . ' - Loaded, not exists', 'red');
-        $this->message('=' . ' - Conflict, not load', 'bgRed');
+        $this->message('x' . ' - Conflict, not load', 'bgRed');
         $this->message('----------------------------------');
 
         $lastMigration = $this->getManager()->getLastMigration($module);
@@ -259,7 +259,7 @@ class Core_Tool_Project_Provider_MigrationProvider
             switch ($v) {
                 case 1:
                     $color = ($migration < $lastMigration) ? 'bgRed' : 'yellow';
-                    $symbol = ($migration < $lastMigration) ? '=' : 'o';
+                    $symbol = ($migration < $lastMigration) ? 'x' : 'o';
                     break;
                 case 2:
                     $color = 'red';
