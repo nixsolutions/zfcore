@@ -351,6 +351,7 @@ class Core_Migration_Manager
             if (isset($migrationBody['up'])) {
                 $upBody = '';
                 foreach ($migrationBody['up'] as $query) {
+                    $query = addslashes($query);
                     $upBody .= '$this->query(\'' . $query . '\');' . PHP_EOL;
                 }
                 $methodUp->setBody($upBody);
@@ -358,6 +359,7 @@ class Core_Migration_Manager
             if (isset($migrationBody['down'])) {
                 $downBody = '';
                 foreach ($migrationBody['down'] as $query) {
+                    $query = addslashes($query);
                     $downBody .= '$this->query(\'' . $query . '\');' . PHP_EOL;
                 }
                 $methodDown->setBody($downBody);
