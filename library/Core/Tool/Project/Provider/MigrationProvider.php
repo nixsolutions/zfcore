@@ -230,10 +230,10 @@ class Core_Tool_Project_Provider_MigrationProvider
         require_once 'bootstrap.php';
 
         $this->message('----------------------------------');
-        $this->message(chr(254) . ' - Already loaded', 'green');
-        $this->message(chr(254) . ' - Ready for load', 'yellow');
-        $this->message(chr(254) . ' - Loaded, not exists', 'red');
-        $this->message(chr(254) . ' - Conflict, not load', 'bgRed');
+        $this->message('+' . ' - Already loaded', 'green');
+        $this->message('o' . ' - Ready for load', 'yellow');
+        $this->message('-' . ' - Loaded, not exists', 'red');
+        $this->message('=' . ' - Conflict, not load', 'bgRed');
         $this->message('----------------------------------');
 
         $lastMigration = $this->getManager()->getLastMigration($module);
@@ -259,15 +259,18 @@ class Core_Tool_Project_Provider_MigrationProvider
             switch ($v) {
                 case 1:
                     $color = ($migration < $lastMigration) ? 'bgRed' : 'yellow';
+                    $symbol = ($migration < $lastMigration) ? '=' : 'o';
                     break;
                 case 2:
                     $color = 'red';
+                    $symbol = '-';
                     break;
                 case 3:
                     $color = 'green';
+                    $symbol = '+';
                     break;
             }
-            $this->message($migration, $color, "\t");
+            $this->message($symbol.' '.$migration, $color, "\t");
 
             try {
                 $includePath = $this->getManager()->getMigrationsDirectoryPath($module)
