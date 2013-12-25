@@ -112,6 +112,34 @@ class Core_Tool_Project_Provider_MigrationProvider
         'bgWhite'   => '47m'
     );
 
+    public $status_mapping = array(
+        '' => array(
+            'color' => 'white',
+            'symbol' => ' ',
+            'description' => '',
+        ),
+        'applied' => array(
+            'color' => 'green',
+            'symbol' => '+',
+            'description' => 'Already loaded',
+        ),
+        'ready' => array(
+            'color' => 'yellow',
+            'symbol' => 'o',
+            'description' => 'Ready for load',
+        ),
+        'notexist' => array(
+            'color' => 'red',
+            'symbol' => '-',
+            'description' => 'Loaded, not exists',
+        ),
+        'conflict' => array(
+            'color' => 'bgRed',
+            'symbol' => 'x',
+            'description' => 'Conflict, not load',
+        ),
+    );
+
     /**
      * getName()
      *
@@ -225,71 +253,33 @@ class Core_Tool_Project_Provider_MigrationProvider
      *
      * @param string $module
      */
-    public function listing($module = null)
+    public function listing($module='__all') 
     {
         require_once 'bootstrap.php';
+        $this->message('Legend:');
+        foreach ($this->status_mapping as $key => $map) {
+            if (empty($key)) continue;
+            $this->message($map['symbol'] . ' - ' . $map['description'], $map['color']);
+        }
 
-        $this->message('----------------------------------');
-        $this->message('+' . ' - Already loaded', 'green');
-        $this->message('o' . ' - Ready for load', 'yellow');
-        $this->message('-' . ' - Loaded, not exists', 'red');
-        $this->message('x' . ' - Conflict, not load', 'bgRed');
-        $this->message('----------------------------------');
+        if ($module == '__all') {
+            $modules = $this->getListOfAllModules();
+        } else {
+            $modules = array($module);
+        }
 
-        $lastMigration = $this->getManager()->getLastMigration($module);
-        $lastMigration = $lastMigration['migration'];
+        foreach ($modules as $module) {
+            $migrations = $this->getManager()->listing($module);
+            if(empty($migrations))
+                continue;
 
-        $exists = $this->getManager()->getExistsMigrations($module);
-        $loaded = $this->getManager()->getLoadedMigrations($module);
+            $this->message('');
+            $this->message('Module: '.$module);
 
-        $migrations = array_merge($exists, $loaded);
-        $migrations = array_unique($migrations);
-
-        sort($migrations);
-
-        foreach ($migrations as $migration) {
-            $v = 0;
-            if (in_array($migration, $exists)) {
-                $v = $v + 1;
-            }
-            if (in_array($migration, $loaded)) {
-                $v = $v + 2;
-            }
-
-            switch ($v) {
-                case 1:
-                    $color = ($migration < $lastMigration) ? 'bgRed' : 'yellow';
-                    $symbol = ($migration < $lastMigration) ? 'x' : 'o';
-                    break;
-                case 2:
-                    $color = 'red';
-                    $symbol = '-';
-                    break;
-                case 3:
-                    $color = 'green';
-                    $symbol = '+';
-                    break;
-            }
-            $this->message($symbol.' '.$migration, $color, "\t");
-
-            try {
-                $includePath = $this->getManager()->getMigrationsDirectoryPath($module)
-                              . '/' . $migration . '.php';
-
-                include_once $includePath;
-
-                $moduleAddon = ((null !== $module) ? ucfirst($module) . '_' : '');
-
-                $migrationClass = $moduleAddon . 'Migration_' . $migration;
-                $migrationObject = new $migrationClass;
-
-                if (($description = $migrationObject->getDescription()))
-                    $this->message(chr(254).' '.$description);
-                else
-                    $this->message('');
-
-            } catch (Exception $e) {
-
+            foreach ($migrations as $migration) {
+                $map = $this->status_mapping[$migration['status']];
+                $this->message($map['symbol'] . ' ' . $migration['migration'], $map['color'], "\t");
+                $this->message($migration['description']);
             }
         }
     }
@@ -303,6 +293,7 @@ class Core_Tool_Project_Provider_MigrationProvider
     {
         require_once 'bootstrap.php';
         $revision = $this->getManager()->getLastMigration($module);
+        $revision = $revision['migration'];
         if ('0' == $revision) {
             $this->message("None", 'hiWhite');
         } else {
@@ -335,47 +326,6 @@ class Core_Tool_Project_Provider_MigrationProvider
         return $profile->search($profileSearchParams);
     }
 
-    /**
-     * Method returns path to project directory
-     *
-     * @param  Zend_Tool_Project_Profile $profile
-     * @return string
-     */
-    protected static function _getProjectDirectoryPath(
-        Zend_Tool_Project_Profile $profile
-    )
-    {
-        $projectDirectory = $profile->search(array('projectDirectory'));
-
-        if (!($projectDirectory instanceof Zend_Tool_Project_Profile_Resource)) {
-            throw new Zend_Tool_Project_Provider_Exception(
-                "Project resource undefined."
-            );
-        }
-
-        return $projectDirectory->getPath();
-    }
-
-    /**
-     * Method returns path to modules directory
-     *
-     * @param  Zend_Tool_Project_Profile $profile
-     * @return string
-     */
-    protected static function _getModulesDirectoryPath(
-        Zend_Tool_Project_Profile $profile
-    )
-    {
-        $modulesDirectory = $profile->search(array('modulesDirectory'));
-
-        if (!($modulesDirectory instanceof Zend_Tool_Project_Profile_Resource)) {
-            throw new Zend_Tool_Project_Provider_Exception(
-                "Modules resource undefined."
-            );
-        }
-
-        return $modulesDirectory->getPath();
-    }
 
     /**
      * create new migration
@@ -485,8 +435,11 @@ class Core_Tool_Project_Provider_MigrationProvider
      * @param string $color
      * @param string $delimiter
      */
-    protected function message($text, $color = 'white', $delimiter = "\n")
-    {
+    protected function message($text, $color = 'white', $delimiter = "\n") {
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $text = mb_convert_encoding($text, 'CP866', 'UTF-8');
+        }
+
         $colorize = false;
         if (Zend_Registry::isRegistered('console')) {
             $consoleConfig = Zend_Registry::get('console');
@@ -506,6 +459,18 @@ class Core_Tool_Project_Provider_MigrationProvider
         } else {
             echo $text . $delimiter;
         }
+    }
 
+    public static function getListOfAllModules() {
+        $frontController = Zend_Controller_Front::getInstance();
+        $module_dir = substr(str_replace("\\","/",$frontController->getModuleDirectory()),0,strrpos(str_replace("\\","/",$frontController->getModuleDirectory()),'/'));
+        $temp = array_diff( scandir( $module_dir), array( ".", "..", ".svn", ".git"));
+        $modules = array(null);
+        foreach ($temp as $module) {
+            if ($module{0}!="." && is_dir($module_dir . "/" . $module)) {
+                array_push($modules,$module);
+            }
+        }
+        return $modules;
     }
 }

@@ -249,17 +249,32 @@ class Core_Migration_Manager
      */
     public function getLoadedMigrations($module = null)
     {
-        $select = Zend_Db_Table::getDefaultAdapter()->select()
-            ->from($this->getMigrationsSchemaTable())
-            ->where("module = ?", (null === $module) ? '' : $module)
-            ->order('migration ASC');
-
-        $items = Zend_Db_Table::getDefaultAdapter()->fetchAll($select);
+        $items = $this->getLoadedMigrationsEx((null === $module) ? '' : $module);
 
         $migrations = array();
         foreach ($items as $item) {
             $migrations[] = $item['migration'];
         }
+
+        return $migrations;
+    }
+
+    /**
+     * Method return array of loaded migrations
+     *
+     * @param string $module Module name
+     * @return array
+     */
+    public function getLoadedMigrationsEx($module = null)
+    {
+        $select = Zend_Db_Table::getDefaultAdapter()->select()
+                               ->from($this->getMigrationsSchemaTable())
+                               ->columns(array('migration', 'module', 'timestamp'))
+                               ->order('migration ASC');
+
+        if (!is_null($module)) $select->where("module = ?", $module);
+
+        $migrations = Zend_Db_Table::getDefaultAdapter()->fetchAll($select);
 
         return $migrations;
     }
@@ -286,12 +301,9 @@ class Core_Migration_Manager
         try {
             $select = Zend_Db_Table::getDefaultAdapter()->select()
                 ->from($this->getMigrationsSchemaTable(), array('id', 'migration'))
-                ->order('id DESC')
+                ->where("module = ?", (null === $module) ? '' : $module)
+                ->order('migration DESC')
                 ->limit(1);
-
-            if ($module) {
-                $select->where("module = ?", $module);
-            }
 
             $lastMigration
                 = Zend_Db_Table::getDefaultAdapter()->fetchRow($select);
@@ -303,7 +315,7 @@ class Core_Migration_Manager
             }
         } catch (Exception $e) {
             // maybe table is not exist; this is first revision
-            $lastMigration = array('id' => 0, 'migration' => 0);
+            $lastMigration = array('id' => 0, 'migration' => '0');
         }
 
         return $lastMigration;
@@ -329,6 +341,11 @@ class Core_Migration_Manager
             $_migrationName .= '_'.$label;
         }
 
+        //add description
+        $methodDesc = new Zend_CodeGenerator_Php_Method();
+        $methodDesc->setName('getDescription')
+                   ->setBody("return '".addslashes($desc)."'; ");
+
         // Configuring after instantiation
         $methodUp = new Zend_CodeGenerator_Php_Method();
         $methodUp->setName('up')
@@ -339,19 +356,12 @@ class Core_Migration_Manager
         $methodDown->setName('down')
             ->setBody('// degrade');
 
-        //add description
-        if (!empty($desc)) {
-            $methodDesc = new Zend_CodeGenerator_Php_Method();
-            $methodDesc->setName('getDescription')
-                ->setBody("return '".addslashes($desc)."'; ");
-        }
-
 
         if ($migrationBody) {
             if (isset($migrationBody['up'])) {
                 $upBody = '';
                 foreach ($migrationBody['up'] as $query) {
-                    $query = addslashes($query);
+                    $query = addcslashes($query, "'");
                     $upBody .= '$this->query(\'' . $query . '\');' . PHP_EOL;
                 }
                 $methodUp->setBody($upBody);
@@ -359,7 +369,7 @@ class Core_Migration_Manager
             if (isset($migrationBody['down'])) {
                 $downBody = '';
                 foreach ($migrationBody['down'] as $query) {
-                    $query = addslashes($query);
+                    $query = addcslashes($query, "'");
                     $downBody .= '$this->query(\'' . $query . '\');' . PHP_EOL;
                 }
                 $methodDown->setBody($downBody);
@@ -374,12 +384,9 @@ class Core_Migration_Manager
 
         $class->setName($className)
             ->setExtendedClass('Core_Migration_Abstract')
+            ->setMethod($methodDesc)
             ->setMethod($methodUp)
             ->setMethod($methodDown);
-
-        if (isset($methodDesc)) {
-            $class->setMethod($methodDesc);
-        }
 
         $file = new Zend_CodeGenerator_Php_File();
         $file->setClass($class)
@@ -564,6 +571,7 @@ class Core_Migration_Manager
             throw new Core_Exception("Migration `$to` not exists");
         }
 
+        @set_time_limit(0);
         foreach ($ready as $migration) {
             if ($migration < $lastMigration) {
                 throw new Core_Exception(
@@ -740,6 +748,7 @@ class Core_Migration_Manager
                 );
             }
 
+            @set_time_limit(0);
             try {
                 $includePath = $this->getMigrationsDirectoryPath($module)
                     . '/' . $migration . '.php';
@@ -770,9 +779,9 @@ class Core_Migration_Manager
 
 
                 if ($module) {
-                    array_push($this->_messages, $module .": degrade to revision `$migration`");
+                    array_push($this->_messages, $module .": degrade revision `$migration`");
                 } else {
-                    array_push($this->_messages, "Degrade to revision `$migration`");
+                    array_push($this->_messages, "Degrade revision `$migration`");
                 }
 
                 $this->_pullMigration($module, $migration);
@@ -785,6 +794,11 @@ class Core_Migration_Manager
 
             //if (!$to) { break; }
         }
+
+
+        $lastMigration = $this->getLastMigration($module);
+        $lastMigration = $lastMigration['migration'];
+        array_push($this->_messages, "Current revision is `$lastMigration`");
     }
 
     /**
@@ -813,6 +827,7 @@ class Core_Migration_Manager
 
         rsort($loaded);
 
+        @set_time_limit(0);
         foreach ($loaded as $migration) {
 
             if (!in_array($migration, $exists)) {
@@ -945,4 +960,80 @@ class Core_Migration_Manager
 
         return false;
     }
+
+    public function listing($module) {
+        $lastMigration = $this->getLastMigration($module);
+        $lastMigration = $lastMigration['migration'];
+
+        $exists = $this->getExistsMigrations($module);
+        $loaded = $this->getLoadedMigrations($module);
+        $timestamps = $this->getLoadedMigrationsEx($module);
+
+        $migrations = array_merge($exists, $loaded);
+        $migrations = array_unique($migrations);
+
+        sort($migrations);
+        $list = array();
+
+        foreach ($migrations as $migration) {
+            $v = 0;
+            if (in_array($migration, $exists)) {
+                $v = $v + 1;
+            }
+            if (in_array($migration, $loaded)) {
+                $v = $v + 2;
+            }
+
+            $status = '';
+            switch ($v) {
+                case 1:
+                    $status = ($migration < $lastMigration) ? 'conflict' : 'ready';
+                    break;
+                case 2:
+                    $status = 'notexist';
+                    break;
+                case 3:
+                    $status = 'applied';
+                    break;
+            }
+            $list_item = array(
+                'module' => $module,
+                'migration' => $migration,
+                'status' => $status,
+                'description' => '',
+            );
+
+            foreach ($timestamps as $ts) {
+                if ($ts['migration']==$migration)
+                    $list_item['timestamp'] = $ts['timestamp'];
+            }
+
+            $includePath = $this->getMigrationsDirectoryPath($module)
+                . '/' . $migration . '.php';
+
+            //if migration file not exists
+            if ($v==2) {
+                $list[] = $list_item;
+                continue;
+            }
+
+            try {
+                include_once $includePath;
+
+                $moduleAddon = ((null !== $module) ? ucfirst($module) . '_' : '');
+
+                $migrationClass = $moduleAddon . 'Migration_' . $migration;
+                $migrationObject = new $migrationClass;
+
+                $list_item['description'] = $migrationObject->getDescription();
+                $list[] = $list_item;
+
+            } catch (Exception $e) {
+
+            }
+        }
+
+        return $list;
+    }
+
 }
