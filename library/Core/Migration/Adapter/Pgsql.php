@@ -355,4 +355,15 @@ CREATE INDEX fki_foraaa ON foo(fortest); */
         return implode(',', $quotedColumns);
     }
 
+    /**
+     * setForeignKeysChecks
+     *
+     * @param  bool $flag
+     * @return Core_Migration_Adapter_Abstract
+     */
+    public function setForeignKeysChecks($flag)
+    {
+        //TODO: see http://www.postgresql.org/message-id/4EA2057F.3000002@ringerc.id.au
+        return $this;
+    }
 }

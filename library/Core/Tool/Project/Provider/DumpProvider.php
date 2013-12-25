@@ -91,46 +91,4 @@ class Core_Tool_Project_Provider_DumpProvider
 
     }
 
-    /**
-     * Method returns path to project directory
-     *
-     * @param  Zend_Tool_Project_Profile $profile
-     * @return string
-     */
-    protected static function _getProjectDirectoryPath(
-        Zend_Tool_Project_Profile $profile
-    )
-    {
-        $projectDirectory = $profile->search(array('projectDirectory'));
-
-        if (!($projectDirectory instanceof Zend_Tool_Project_Profile_Resource)) {
-            throw new Zend_Tool_Project_Provider_Exception(
-                "Project resource undefined."
-            );
-        }
-
-        return $projectDirectory->getPath();
-    }
-
-    /**
-     * Method returns path to modules directory
-     *
-     * @param  Zend_Tool_Project_Profile $profile
-     * @return string
-     */
-    protected static function _getModulesDirectoryPath(
-        Zend_Tool_Project_Profile $profile
-    )
-    {
-        $modulesDirectory = $profile->search(array('modulesDirectory'));
-
-        if (!($modulesDirectory instanceof Zend_Tool_Project_Profile_Resource)) {
-            throw new Zend_Tool_Project_Provider_Exception(
-                " Modules resource undefined."
-            );
-        }
-
-        return $modulesDirectory->getPath();
-    }
-
 }

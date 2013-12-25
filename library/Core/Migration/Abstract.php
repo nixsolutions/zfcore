@@ -369,4 +369,17 @@ abstract class Core_Migration_Abstract
         echo $message . "\n";
         return $this;
     }
+
+    /**
+     * setForeignKeysChecks
+     *
+     * @param  bool $flag
+     * @return Core_Migration_Abstract
+     */
+    public function setForeignKeysChecks($flag)
+    {
+        $this->getMigrationAdapter()->setForeignKeysChecks($flag);
+        return $this;
+    }
+
 }

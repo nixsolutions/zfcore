@@ -234,4 +234,17 @@ class Core_Migration_Adapter_Mysql extends Core_Migration_Adapter_Abstract
 
         return implode(',', $quotedColumns);
     }
+
+    /**
+     * setForeignKeysChecks
+     *
+     * @param  bool $flag
+     * @return Core_Migration_Adapter_Abstract
+     */
+    public function setForeignKeysChecks($flag)
+    {
+        $this->query('SET FOREIGN_KEY_CHECKS=' . (int)$flag . ';');
+        return $this;
+    }
+
 }

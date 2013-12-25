@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 FILE_PATH="${BASH_SOURCE[0]}";
 
