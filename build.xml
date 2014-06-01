@@ -136,7 +136,7 @@
             <arg line="--coverage-html '${logsDir}/clover'"/>
             <arg line="TestSuite.php"/>
         </exec>
-        <echo message="##teamcity[importData type='junit' path='${logsDir/phpunit.xml}']" />
+        <echo message="##teamcity[importData type='junit' path='${logsDir}/junit.xml']" />
     </target>
     <target name="phpcb" depends="phpcpd, phpmd, phpcs">
         <exec executable="phpcb" output="${logsDir}/phpcb.log">
